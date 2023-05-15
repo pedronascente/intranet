@@ -1,8 +1,11 @@
 @extends('layouts.applogin')
 @section('content')
     <div class="login-logo">
-        <a href="../../index2.html"><b>Intra</b>NET</a>
+        <a href="../../index2.html">
+            <img src="{{ asset('/dist/img/intraNet.png') }}" class=" mr-3 " style="width:200px">
+        </a>
     </div>
+
     <!-- /.login-logo -->
     <div class="card">
         <div class="card-body login-card-body">
