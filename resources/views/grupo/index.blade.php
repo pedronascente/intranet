@@ -4,7 +4,7 @@
         <div class="card-header">
             <h3 class="card-title">
                 <a href="/empresa/create" class="btn btn-block bg-gradient-primary btn-sm">
-                     Novo
+                    Novo
                 </a>
             </h3>
             <div class="card-tools">
@@ -23,14 +23,18 @@
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th>Colaborador</th>
                         <th>Empresa</th>
+                        <th>Ativo</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>183</td>
+                        <td>01</td>
+                        <td>Colaborador zesinho</td>
                         <td>Volpato</td>
+                        <td>sim</td>
                         <td>
                             <div class="btn-group float-right">
                                 <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
@@ -40,8 +44,10 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>183</td>
+                        <td>01</td>
+                        <td>Colaborador zesinho</td>
                         <td>Volpato</td>
+                        <td>sim</td>
                         <td>
                             <div class="btn-group float-right">
                                 <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
@@ -51,8 +57,10 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>183</td>
+                        <td>01</td>
+                        <td>Colaborador zesinho</td>
                         <td>Volpato</td>
+                        <td>sim</td>
                         <td>
                             <div class="btn-group float-right">
                                 <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
@@ -62,8 +70,10 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>183</td>
+                        <td>01</td>
+                        <td>Colaborador zesinho</td>
                         <td>Volpato</td>
+                        <td>sim</td>
                         <td>
                             <div class="btn-group float-right">
                                 <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
@@ -72,6 +82,33 @@
                             </div>
                         </td>
                     </tr>
+                    <tr>
+                        <td>01</td>
+                        <td>Colaborador zesinho</td>
+                        <td>Volpato</td>
+                        <td>sim</td>
+                        <td>
+                            <div class="btn-group float-right">
+                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
+                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
+                                <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>01</td>
+                        <td>Colaborador zesinho</td>
+                        <td>Volpato</td>
+                        <td>sim</td>
+                        <td>
+                            <div class="btn-group float-right">
+                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
+                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
+                                <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+
                 </tbody>
             </table>
         </div>
@@ -79,7 +116,8 @@
             <div class="row">
                 <div class="col-sm-12 col-md-5">
                     <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
-                        Mostrando 1 à 10 de 57 entradas</div>
+                        Mostrando 1 à 10 de 57 entradas
+                    </div>
                 </div>
                 <div class="col-sm-12 col-md-7">
                     <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
