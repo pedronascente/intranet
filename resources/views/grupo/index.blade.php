@@ -3,13 +3,13 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
-                <a href="/empresa/create" class="btn btn-block bg-gradient-primary btn-sm">
+                <a href="{{ route('perfil.create') }}" class="btn btn-block bg-gradient-primary btn-sm">
                     Novo
                 </a>
             </h3>
             <div class="card-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                    <input type="text" name="table_search" class="form-control float-right" placeholder="Pesquisar">
                     <div class="input-group-append">
                         <button type="submit" class="btn btn-default">
                             <i class="fas fa-search"></i>
@@ -19,100 +19,42 @@
             </div>
         </div>
         <div class="card-body table-responsive p-0">
-            <table class="table table-hover text-nowrap">
+            <table class="table table-hover text-nowrap  table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Colaborador</th>
-                        <th>Empresa</th>
+                        <th>COD</th>
+                        <th>Perfil</th>
+                        <th>Descrição</th>
                         <th>Ativo</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>01</td>
-                        <td>Colaborador zesinho</td>
-                        <td>Volpato</td>
-                        <td>sim</td>
-                        <td>
-                            <div class="btn-group float-right">
-                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>01</td>
-                        <td>Colaborador zesinho</td>
-                        <td>Volpato</td>
-                        <td>sim</td>
-                        <td>
-                            <div class="btn-group float-right">
-                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>01</td>
-                        <td>Colaborador zesinho</td>
-                        <td>Volpato</td>
-                        <td>sim</td>
-                        <td>
-                            <div class="btn-group float-right">
-                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>01</td>
-                        <td>Colaborador zesinho</td>
-                        <td>Volpato</td>
-                        <td>sim</td>
-                        <td>
-                            <div class="btn-group float-right">
-                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>01</td>
-                        <td>Colaborador zesinho</td>
-                        <td>Volpato</td>
-                        <td>sim</td>
-                        <td>
-                            <div class="btn-group float-right">
-                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>01</td>
-                        <td>Colaborador zesinho</td>
-                        <td>Volpato</td>
-                        <td>sim</td>
-                        <td>
-                            <div class="btn-group float-right">
-                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-
+                    @for ($i = 0; $i < 8; $i++)
+                        <tr>
+                            <td>00{{ $i }}</td>
+                            <td> Grupo XPTO</td>
+                            <td> RESPONSAVEL POR BELELEU </td>
+                            <td> sim </td>
+                            <td>
+                                <div class="btn-group float-right">
+                                    <a href="/perfil/{{ $i }}/edit" class="btn btn-default">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a>
+                                    <a href="perfil/desativar/{{ $i }}" class="btn btn-default">
+                                        <i class="fas fa-times"></i>
+                                    </a>
+                                    <a href="perfil/{{ $i }}" class="btn btn-default">
+                                        <i class="fas fa-solid fa-eye"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    @endfor
                 </tbody>
             </table>
         </div>
-        <div class="card-footer ">
+        <div class="card-footer">
             <div class="row">
                 <div class="col-sm-12 col-md-5">
                     <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">

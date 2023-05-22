@@ -11,11 +11,6 @@ class EmpresaController extends Controller
         return view('empresa.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('empresa.create');
@@ -40,18 +35,12 @@ class EmpresaController extends Controller
      */
     public function show($id)
     {
-        //
+        dd($id);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        return view('empresa.edit');
     }
 
     /**
@@ -66,14 +55,8 @@ class EmpresaController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        dd($id);
     }
 }

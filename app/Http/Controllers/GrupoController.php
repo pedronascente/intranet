@@ -11,15 +11,9 @@ class GrupoController extends Controller
         return view('grupo.index');
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        return view('grupo.create');
     }
 
     /**
@@ -41,18 +35,17 @@ class GrupoController extends Controller
      */
     public function show($id)
     {
-        //
+        dd($id);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        return view('grupo.edit');
+    }
+
+    public function desativar($id)
+    {
+        dd($id);
     }
 
     /**
@@ -75,6 +68,5 @@ class GrupoController extends Controller
      */
     public function destroy($id)
     {
-        //
     }
 }

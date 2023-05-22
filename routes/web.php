@@ -11,9 +11,8 @@ Route::resource('/usuario', UsuarioController::class);
 Route::resource('/colaborador', ColaboradorController::class);
 Route::resource('/perfil', GrupoController::class);
 
-Route::get('/', function () {
-    return view('login');
-});
+Route::get('/perfil/desativar/{id}', [GrupoController::class, 'desativar']);
+
 Route::get('/home', function () {
     return view('home');
 });

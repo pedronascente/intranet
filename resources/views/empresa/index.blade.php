@@ -3,23 +3,13 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
-                <a href="/empresa/create" class="btn btn-block bg-gradient-primary btn-sm">
-                     Novo
+                <a href="{{ route('empresa.create') }}" class="btn btn-block bg-gradient-primary btn-sm">
+                    Novo
                 </a>
             </h3>
-            <div class="card-tools">
-                <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-                    <div class="input-group-append">
-                        <button type="submit" class="btn btn-default">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="card-body table-responsive p-0">
-            <table class="table table-hover text-nowrap">
+            <table class="table table-hover text-nowrap table-striped">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -28,50 +18,29 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>183</td>
-                        <td>Volpato</td>
-                        <td>
-                            <div class="btn-group float-right">
-                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>183</td>
-                        <td>Volpato</td>
-                        <td>
-                            <div class="btn-group float-right">
-                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>183</td>
-                        <td>Volpato</td>
-                        <td>
-                            <div class="btn-group float-right">
-                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>183</td>
-                        <td>Volpato</td>
-                        <td>
-                            <div class="btn-group float-right">
-                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
-                            </div>
-                        </td>
-                    </tr>
+                    @for ($i = 0; $i < 8; $i++)
+                        <tr>
+                            <td>00{{ $i }}</td>
+                            <td>Volpato</td>
+                            <td>
+                                <div class="btn-group float-right">
+                                    <a href="/empresa/{{ $i }}/edit" class="btn btn-default">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a>
+                                    <form action="{{ route('empresa.destroy', $i) }}" method="post">
+                                        @method('DELETE')
+                                        @csrf
+                                        <button type="submit" class="btn btn-default">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </form>
+                                    <a href="empresa/{{ $i }}" class="btn btn-default">
+                                        <i class="fas fa-solid fa-eye"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    @endfor
                 </tbody>
             </table>
         </div>
