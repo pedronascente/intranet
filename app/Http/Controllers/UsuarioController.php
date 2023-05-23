@@ -28,26 +28,14 @@ class UsuarioController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        //
+        dd($id);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        dd($id);
     }
 
     /**
@@ -70,6 +58,6 @@ class UsuarioController extends Controller
      */
     public function destroy($id)
     {
-        //
+        dd($id);
     }
 }

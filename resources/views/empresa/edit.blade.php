@@ -12,7 +12,6 @@
                                 <input type="email" name="email" class="form-control" placeholder="Enter Empresa">
                             </div>
                         </div>
-                        <!-- /.card-body -->
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary">Editar</button>
                         </div>

@@ -3,7 +3,7 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
-                <a href="/empresa/create" class="btn btn-block bg-gradient-primary btn-sm">
+                <a href="{{ route('colaborador.create') }}" class="btn btn-block bg-gradient-primary btn-sm">
                     Novo
                 </a>
             </h3>
@@ -24,91 +24,37 @@
                     <tr>
                         <th>ID</th>
                         <th>Colaborador</th>
+                        <th>Usuário</th>
                         <th>Empresa</th>
-                        <th>Ativo</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>01</td>
-                        <td>Colaborador zesinho</td>
-                        <td>Volpato</td>
-                        <td>sim</td>
-                        <td>
-                            <div class="btn-group float-right">
-                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>01</td>
-                        <td>Colaborador zesinho</td>
-                        <td>Volpato</td>
-                        <td>sim</td>
-                        <td>
-                            <div class="btn-group float-right">
-                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>01</td>
-                        <td>Colaborador zesinho</td>
-                        <td>Volpato</td>
-                        <td>sim</td>
-                        <td>
-                            <div class="btn-group float-right">
-                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>01</td>
-                        <td>Colaborador zesinho</td>
-                        <td>Volpato</td>
-                        <td>sim</td>
-                        <td>
-                            <div class="btn-group float-right">
-                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>01</td>
-                        <td>Colaborador zesinho</td>
-                        <td>Volpato</td>
-                        <td>sim</td>
-                        <td>
-                            <div class="btn-group float-right">
-                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>01</td>
-                        <td>Colaborador zesinho</td>
-                        <td>Volpato</td>
-                        <td>sim</td>
-                        <td>
-                            <div class="btn-group float-right">
-                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-
+                    @for ($i = 0; $i < 10; $i++)
+                        <tr>
+                            <td>{{ $i }}</td>
+                            <td>Colaborador zesinho</td>
+                            <td>zesinho.pacheco</td>
+                            <td>Volpato</td>
+                            <td>
+                                <div class="btn-group float-right">
+                                    <a href="/colaborador/{{ $i }}/edit" class="btn btn-default">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a>
+                                    <form action="{{ route('colaborador.destroy', $i) }}" method="post">
+                                        @method('DELETE')
+                                        @csrf
+                                        <button type="submit" class="btn btn-default">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </form>
+                                    <a href="colaborador/{{ $i }}" class="btn btn-default">
+                                        <i class="fas fa-solid fa-eye"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    @endfor
                 </tbody>
             </table>
         </div>

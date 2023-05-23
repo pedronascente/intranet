@@ -29,66 +29,30 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>183</td>
-                        <td>usuario@bol.com</td>
-                        <td>sim</td>
-                        <td>
-                            <div class="btn-group float-right">
-                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>183</td>
-                        <td>usuario@bol.com</td>
-                        <td>sim</td>
-                        <td>
-                            <div class="btn-group float-right">
-                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>183</td>
-                        <td>usuario@bol.com</td>
-                        <td>sim</td>
-                        <td>
-                            <div class="btn-group float-right">
-                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>183</td>
-                        <td>usuario@bol.com</td>
-                        <td>sim</td>
-                        <td>
-                            <div class="btn-group float-right">
-                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>183</td>
-                        <td>usuario@bol.com</td>
-                        <td>sim</td>
-                        <td>
-                            <div class="btn-group float-right">
-                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
-                            </div>
-                        </td>
-                    </tr>
+                    @for ($i = 0; $i < 10; $i++)
+                        <tr>
+                            <td>183</td>
+                            <td>usuario@bol.com</td>
+                            <td>sim</td>
+                            <td>
+                                <div class="btn-group float-right">
+                                    <a href="/usuario/{{ $i }}/edit" class="btn btn-default">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a>
+                                    <form action="{{ route('usuario.destroy', $i) }}" method="post">
+                                        @method('DELETE')
+                                        @csrf
+                                        <button type="submit" class="btn btn-default">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </form>
+                                    <a href="usuario/{{ $i }}" class="btn btn-default">
+                                        <i class="fas fa-solid fa-eye"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    @endfor
                 </tbody>
             </table>
         </div>

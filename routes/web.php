@@ -13,6 +13,13 @@ Route::resource('/perfil', GrupoController::class);
 
 Route::get('/perfil/desativar/{id}', [GrupoController::class, 'desativar']);
 
+
+
+Route::get('/', function () {
+    return view('login');
+});
+
+
 Route::get('/home', function () {
     return view('home');
 });
