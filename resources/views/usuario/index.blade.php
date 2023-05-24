@@ -34,7 +34,7 @@
                         <tr>
                             <td>183</td>
                             <td>usuario@bol.com</td>
-                            <td>Perfil</td>
+                            <td>Grupo XPTO</td>
                             <td>sim</td>
                             <td>
                                 <div class="btn-group float-right">

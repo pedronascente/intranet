@@ -7,16 +7,15 @@
                     <form action="/modulo">
                         <div class="card-body">
                             <div class="form-group">
-                                <label>Nome do Usuário:</label>
+                                <label>Nome do Módulo:</label>
                                 <input type="text" name="nome" class="form-control" placeholder="nome">
                             </div>
                             <div class="form-group">
-                                <label for="exampleSelectRounded0">Ativo</label>
-                                <select class="custom-select rounded-0">
-                                    <option value="s">Sim</option>
-                                    <option value="n">Não</option>
-                                </select>
+                                <label>Descrição:</label>
+                                <input type="text" name="descricao" class="form-control"
+                                    placeholder="Escreva uma breve descrição">
                             </div>
+
                         </div>
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary">Editar</button>

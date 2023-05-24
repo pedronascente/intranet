@@ -3,18 +3,19 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
-                <a href="{{ route('usuario.create') }}" class="btn btn-block bg-gradient-primary btn-sm">
+                <a href="{{ route('modulo.create') }}" class="btn btn-block bg-gradient-primary btn-sm">
                     Novo
                 </a>
             </h3>
         </div>
         <div class="card-body table-responsive p-0">
-            <table class="table table-hover text-nowrap">
+            <table class="table table-hover text-nowrap table-striped">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Módulo</th>
-                        <th></th>
+                        <th>Descrição</th>
+                        <th width="5%" class="text-center">Permições</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -22,6 +23,7 @@
                         <tr>
                             <td>{{ $i }}</td>
                             <td>ALARME CFTV</td>
+                            <td>MÓDULO BLÁ BLÁ</td>
                             <td>
                                 <div class="btn-group float-right">
                                     <a href="/modulo/{{ $i }}/edit" class="btn btn-default">

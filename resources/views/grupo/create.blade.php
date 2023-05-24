@@ -4,11 +4,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card card-primary">
-                    <!--
-                            <div class="card-header">
-                                <h3 class="card-title">Cadastrar perfil</h3>
-                            </div>
-                            -->
+
                     <form action="/perfil">
                         <div class="card-body">
                             <div class="form-group">
@@ -27,7 +23,7 @@
                                     <thead>
                                         <tr>
                                             <th colspan="3"></th>
-                                            <th colspan="4" class="text-center">Permissões Gerais</th>
+                                            <th width="5%" colspan="4" class="text-center">Permissões Gerais</th>
                                         </tr>
                                         <tr>
                                             <th>Permissões</th>
