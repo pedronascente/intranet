@@ -26,7 +26,7 @@
                         <th>Colaborador</th>
                         <th>Usuário</th>
                         <th>Empresa</th>
-                        <th></th>
+                        <th width="5%" class="text-center">Permições</th>
                     </tr>
                 </thead>
                 <tbody>

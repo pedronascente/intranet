@@ -22,11 +22,11 @@
             <table class="table table-hover text-nowrap  table-striped">
                 <thead>
                     <tr>
-                        <th>COD</th>
+                        <th>ID</th>
                         <th>Perfil</th>
                         <th>Descrição</th>
-                        <th>Ativo</th>
-                        <th></th>
+                        <th width="5%">Ativo</th>
+                        <th width="5%" class="text-center">Permições</th>
                     </tr>
                 </thead>
                 <tbody>

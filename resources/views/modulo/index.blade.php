@@ -3,38 +3,38 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
-                <a href="{{ route('empresa.create') }}" class="btn btn-block bg-gradient-primary btn-sm">
+                <a href="{{ route('usuario.create') }}" class="btn btn-block bg-gradient-primary btn-sm">
                     Novo
                 </a>
             </h3>
         </div>
         <div class="card-body table-responsive p-0">
-            <table class="table table-hover text-nowrap table-striped">
+            <table class="table table-hover text-nowrap">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Empresa</th>
-                        <th width="5%" class="text-center">Permições</th>
+                        <th>Módulo</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @for ($i = 0; $i < 8; $i++)
+                    @for ($i = 0; $i < 10; $i++)
                         <tr>
-                            <td>00{{ $i }}</td>
-                            <td>Volpato</td>
+                            <td>{{ $i }}</td>
+                            <td>ALARME CFTV</td>
                             <td>
                                 <div class="btn-group float-right">
-                                    <a href="/empresa/{{ $i }}/edit" class="btn btn-default">
+                                    <a href="/modulo/{{ $i }}/edit" class="btn btn-default">
                                         <i class="fas fa-pencil-alt"></i>
                                     </a>
-                                    <form action="{{ route('empresa.destroy', $i) }}" method="post">
+                                    <form action="{{ route('modulo.destroy', $i) }}" method="post">
                                         @method('DELETE')
                                         @csrf
                                         <button type="submit" class="btn btn-default">
                                             <i class="fas fa-times"></i>
                                         </button>
                                     </form>
-                                    <a href="empresa/{{ $i }}" class="btn btn-default">
+                                    <a href="modulo/{{ $i }}" class="btn btn-default">
                                         <i class="fas fa-solid fa-eye"></i>
                                     </a>
                                 </div>
@@ -48,7 +48,8 @@
             <div class="row">
                 <div class="col-sm-12 col-md-5">
                     <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
-                        Mostrando 1 à 10 de 57 entradas</div>
+                        Mostrando 1 à 10 de 57 entradas
+                    </div>
                 </div>
                 <div class="col-sm-12 col-md-7">
                     <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">

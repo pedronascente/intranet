@@ -19,13 +19,14 @@
             </div>
         </div>
         <div class="card-body table-responsive p-0">
-            <table class="table table-hover text-nowrap">
+            <table class="table table-hover text-nowrap  table-striped">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Usuario</th>
-                        <th>Ativo</th>
-                        <th></th>
+                        <th>Perfil</th>
+                        <th width="5%">Ativo</th>
+                        <th width="5%" class="text-center">Permições</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,6 +34,7 @@
                         <tr>
                             <td>183</td>
                             <td>usuario@bol.com</td>
+                            <td>Perfil</td>
                             <td>sim</td>
                             <td>
                                 <div class="btn-group float-right">

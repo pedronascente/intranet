@@ -1,15 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\GrupoController;
+use App\Http\Controllers\ModuloController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ColaboradorController;
-use App\Http\Controllers\GrupoController;
 
 Route::resource('/empresa', EmpresaController::class);
 Route::resource('/usuario', UsuarioController::class);
 Route::resource('/colaborador', ColaboradorController::class);
 Route::resource('/perfil', GrupoController::class);
+Route::resource('/modulo', ModuloController::class);
 
 Route::get('/perfil/desativar/{id}', [GrupoController::class, 'desativar']);
 
