@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Empresa;
 
 class EmpresaController extends Controller
 {
     public function index()
     {
-        return view('empresa.index');
+        $empresas = Empresa::paginate(6);
+        return view('empresa.index', ['collection' => $empresas]);
     }
 
     public function create()
@@ -16,47 +18,54 @@ class EmpresaController extends Controller
         return view('empresa.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $this->validarFormulario($request);
+
+        $empresa = new Empresa();
+        $empresa->nome = $request->nome;
+        $empresa->save();
+
+        return redirect('empresa/create')->with('status', 'Registro Salvo!');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        dd($id);
+        $empresa = Empresa::find($id);
+        return view('empresa.show', ['empresa' => $empresa]);
     }
 
     public function edit($id)
     {
-        return view('empresa.edit');
+        $empresa = Empresa::find($id);
+        return view('empresa.edit', ['empresa' => $empresa]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        $this->validarFormulario($request);
+        $empresa = Empresa::findOrFail($id);
+        $empresa->nome = $request->nome;
+        $empresa->update();
+        return redirect('empresa')->with('status', 'Registro Atualizado!');
     }
 
     public function destroy($id)
     {
-        dd($id);
+        $empresa = Empresa::findOrFail($id);
+        $empresa->delete();
+        return redirect('empresa')->with('status', 'Registro Excluido!');
+    }
+
+    private function validarFormulario(Request $request)
+    {
+        $request->validate(
+            [
+                'nome' => 'required|max:200|min:5',
+            ],
+            [
+                'nome.required' => 'Campo obrigatório.'
+            ]
+        );
     }
 }
