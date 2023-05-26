@@ -21,7 +21,7 @@
                                 <td>{{ $empresa->nome }}</td>
                                 <td>
                                     <div class="btn-group float-right">
-                                        <a href="/empresa/$empresa->id/edit" class="btn btn-default">
+                                        <a href="/empresa/{{ $empresa->id }}/edit" class="btn btn-default">
                                             <i class="fas fa-pencil-alt"></i>
                                         </a>
                                         <form action="/empresa/$empresa->id" method="post">
