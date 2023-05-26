@@ -38,15 +38,33 @@
             </div>
             <section class="content">
                 <div class="container-fluid">
-
-                    @yield('content')
-
+                    <div class="row">
+                        <div class="col-md-12">
+                            @if (session('status'))
+                                <div class="alert alert-success">
+                                    {{ session('status') }}
+                                </div>
+                            @elseif (session('error'))
+                                <div class="alert alert-danger">
+                                    {{ session('error') }}
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            @yield('content')
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>
         @include('layouts.includes.footer')
     </div>
     @include('layouts.includes.scripts')
+
+
+
 </body>
 
 </html>

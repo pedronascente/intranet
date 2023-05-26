@@ -1,14 +1,5 @@
 @extends('layouts.app')
 @section('content')
-    <div class="row">
-        <div class="col-md-12">
-            @if (session('status'))
-                <div class="alert alert-success">
-                    {{ session('status') }}
-                </div>
-            @endif
-        </div>
-    </div>
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
@@ -34,19 +25,20 @@
                                 <td>{{ $item->nome }}</td>
                                 <td>
                                     <div class="btn-group float-right">
-                                        <a href="/empresa/{{ $item->id }}/edit" class="btn btn-default">
+                                        <a href="/empresa/{{ $item->id }}/edit" class="btn btn-sm btn-default">
                                             <i class="fas fa-pencil-alt"></i>
                                         </a>
                                         <form action="{{ route('empresa.destroy', $item->id) }}" method="post">
                                             @method('DELETE')
                                             @csrf
-                                            <button type="submit" class="btn btn-default">
+                                            <button type="submit" class="btn  btn-sm btn-default">
                                                 <i class="fas fa-times"></i>
                                             </button>
                                         </form>
-                                        <a href="empresa/{{ $item->id }}" class="btn btn-default">
+                                        <a href="empresa/{{ $item->id }}" class="btn  btn-sm btn-default">
                                             <i class="fas fa-solid fa-eye"></i>
                                         </a>
+
                                     </div>
                                 </td>
                             </tr>
@@ -55,7 +47,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="card-footer ">
+        <div class="card-footer">
             <div class="row">
                 <div class="col-sm-12 col-md-5">
                     <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">

@@ -9,7 +9,7 @@ class EmpresaController extends Controller
 {
     public function index()
     {
-        $empresas = Empresa::paginate(6);
+        $empresas = Empresa::orderBy('id', 'desc')->paginate(6);
         return view('empresa.index', ['collection' => $empresas]);
     }
 
@@ -20,13 +20,11 @@ class EmpresaController extends Controller
 
     public function store(Request $request)
     {
-        $this->validarFormulario($request);
-
-        $empresa = new Empresa();
+        $this->validarFormulario($request); //Válidar Formulário.
+        $empresa = new Empresa(); //Instânciar objeto.
         $empresa->nome = $request->nome;
-        $empresa->save();
-
-        return redirect('empresa/create')->with('status', 'Registro Salvo!');
+        $empresa->save(); //persistir dados.
+        return redirect('empresa/create')->with('status', 'Registro Salvo!'); //retorna resultado.
     }
 
     public function show($id)
@@ -37,24 +35,28 @@ class EmpresaController extends Controller
 
     public function edit($id)
     {
-        $empresa = Empresa::find($id);
-        return view('empresa.edit', ['empresa' => $empresa]);
+        $empresa = Empresa::findOrFail($id);
+        if ($empresa) {
+            return view('empresa.edit', ['empresa' => $empresa]);
+        } else {
+            return redirect('empresa/')->with('error', 'Registro não existe!'); //retorna resultado.
+        }
     }
 
     public function update(Request $request, $id)
     {
-        $this->validarFormulario($request);
+        $this->validarFormulario($request); //Válidar Formulário.
         $empresa = Empresa::findOrFail($id);
         $empresa->nome = $request->nome;
         $empresa->update();
-        return redirect('empresa')->with('status', 'Registro Atualizado!');
+        return redirect('empresa')->with('status', 'Registro Atualizado!'); //retorna resultado.
     }
 
     public function destroy($id)
     {
         $empresa = Empresa::findOrFail($id);
         $empresa->delete();
-        return redirect('empresa')->with('status', 'Registro Excluido!');
+        return redirect('empresa')->with('status', 'Registro Excluido!'); //retorna resultado.
     }
 
     private function validarFormulario(Request $request)

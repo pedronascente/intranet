@@ -1,28 +1,29 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card card-primary">
-                    <form action="/modulo">
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label>Nome do Módulo:</label>
-                                <input type="text" name="nome" class="form-control" placeholder="nome">
-                            </div>
-                            <div class="form-group">
-                                <label>Descrição:</label>
-                                <input type="text" name="descricao" class="form-control"
-                                    placeholder="Escreva uma breve descrição">
-                            </div>
-
-                        </div>
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Salvar</button>
-                        </div>
-                    </form>
+    <div class="card card-primary">
+        <form action="{{ route('modulo.store') }}" method="POST">
+            @csrf
+            <div class="card-body">
+                <div class="form-group">
+                    <label>Nome</label>
+                    <input type="text" name="nome" class="form-control  @error('nome') is-invalid  @enderror"
+                        placeholder="nome">
+                    @error('nome')
+                        <span class=" invalid-feedback">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <input type="text" name="descricao" class="form-control  @error('descricao') is-invalid  @enderror"
+                        placeholder="Escreva uma Descrição">
+                    @error('descricao')
+                        <span class=" invalid-feedback">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
-        </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+        </form>
     </div>
 @endsection

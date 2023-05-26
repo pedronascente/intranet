@@ -19,30 +19,30 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @for ($i = 0; $i < 10; $i++)
+                    @foreach ($collection as $item)
                         <tr>
-                            <td>{{ $i }}</td>
-                            <td>ALARME CFTV</td>
-                            <td>MÓDULO BLÁ BLÁ</td>
+                            <td>{{ $item->id }}</td>
+                            <td>{{ $item->nome }}</td>
+                            <td>{{ $item->descricao }}</td>
                             <td>
                                 <div class="btn-group float-right">
-                                    <a href="/modulo/{{ $i }}/edit" class="btn btn-default">
+                                    <a href="/modulo/{{ $item->id }}/edit" class="btn btn-sm btn-default">
                                         <i class="fas fa-pencil-alt"></i>
                                     </a>
-                                    <form action="{{ route('modulo.destroy', $i) }}" method="post">
+                                    <form action="{{ route('modulo.destroy', $item->id) }}" method="post">
                                         @method('DELETE')
                                         @csrf
-                                        <button type="submit" class="btn btn-default">
+                                        <button type="submit" class="btn btn-sm btn-default">
                                             <i class="fas fa-times"></i>
                                         </button>
                                     </form>
-                                    <a href="modulo/{{ $i }}" class="btn btn-default">
+                                    <a href="modulo/{{ $item->id }}" class="btn  btn-sm btn-default">
                                         <i class="fas fa-solid fa-eye"></i>
                                     </a>
                                 </div>
                             </td>
                         </tr>
-                    @endfor
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -50,33 +50,10 @@
             <div class="row">
                 <div class="col-sm-12 col-md-5">
                     <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
-                        Mostrando 1 à 10 de 57 entradas
-                    </div>
+                        Mostrando 1 à 10 de 57 entradas</div>
                 </div>
                 <div class="col-sm-12 col-md-7">
-                    <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
-                        <ul class="pagination">
-                            <li class="paginate_button page-item previous disabled" id="example2_previous">
-                                <a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0"
-                                    class="page-link">Previous</a>
-                            </li>
-                            <li class="paginate_button page-item active"><a href="#" aria-controls="example2"
-                                    data-dt-idx="1" tabindex="0" class="page-link">1</a></li>
-                            <li class="paginate_button page-item "><a href="#" aria-controls="example2"
-                                    data-dt-idx="2" tabindex="0" class="page-link">2</a></li>
-                            <li class="paginate_button page-item "><a href="#" aria-controls="example2"
-                                    data-dt-idx="3" tabindex="0" class="page-link">3</a></li>
-                            <li class="paginate_button page-item "><a href="#" aria-controls="example2"
-                                    data-dt-idx="4" tabindex="0" class="page-link">4</a></li>
-                            <li class="paginate_button page-item "><a href="#" aria-controls="example2"
-                                    data-dt-idx="5" tabindex="0" class="page-link">5</a></li>
-                            <li class="paginate_button page-item "><a href="#" aria-controls="example2"
-                                    data-dt-idx="6" tabindex="0" class="page-link">6</a></li>
-                            <li class="paginate_button page-item next" id="example2_next"><a href="#"
-                                    aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
-                            </li>
-                        </ul>
-                    </div>
+                    {!! $collection->links() !!}
                 </div>
             </div>
         </div>
