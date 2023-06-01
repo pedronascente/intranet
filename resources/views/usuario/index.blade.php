@@ -22,33 +22,38 @@
             <table class="table table-hover text-nowrap  table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Usuario</th>
-                        <th>Perfil</th>
-                        <th width="5%">Ativo</th>
+
+                        <th width="5%">Foto</th>
+                        <th width="25%">Nome do usuário</th>
+                        <th width="25%">Usuário</th>
+                        <th>Email</th>
+                        <th width="5%">Status</th>
                         <th width="5%" class="text-center">Permições</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @for ($i = 0; $i < 10; $i++)
+                    @for ($i = 0; $i < 6; $i++)
                         <tr>
-                            <td>183</td>
+                            <td>
+                                <img src="{{ asset('dist/img/dummy-round.png') }}" alt="" width="50">
+                            </td>
+                            <td>JULIANA MOURA</td>
+                            <td>juliana.moura</td>
                             <td>usuario@bol.com</td>
-                            <td>Grupo XPTO</td>
-                            <td>sim</td>
+                            <td>sim - Ativo</td>
                             <td>
                                 <div class="btn-group float-right">
-                                    <a href="/usuario/{{ $i }}/edit" class="btn btn-default">
+                                    <a href="/usuario/{{ $i }}/edit" class="btn btn-default" title="Editar">
                                         <i class="fas fa-pencil-alt"></i>
                                     </a>
-                                    <form action="{{ route('usuario.destroy', $i) }}" method="post">
+                                    <form action="{{ route('usuario.destroy', $i) }}" method="post" title="Desativar">
                                         @method('DELETE')
                                         @csrf
                                         <button type="submit" class="btn btn-default">
-                                            <i class="fas fa-times"></i>
+                                            <i class="fa fa-toggle-on" aria-hidden="true"></i>
                                         </button>
                                     </form>
-                                    <a href="usuario/{{ $i }}" class="btn btn-default">
+                                    <a href="usuario/{{ $i }}" class="btn btn-default" title="Visualizar">
                                         <i class="fas fa-solid fa-eye"></i>
                                     </a>
                                 </div>

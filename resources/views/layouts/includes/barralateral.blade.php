@@ -23,14 +23,12 @@
                 data-accordion="false">
                 <li @if (Request::segment(1) == 'perfil' ||
                         Request::segment(1) == 'usuario' ||
-                        Request::segment(1) == 'colaborador' ||
                         Request::segment(1) == 'empresa' ||
                         Request::segment(1) == 'modulo') class="nav-item menu-open"  @else  class="nav-item" @endif>
 
                     <a href="#"
                         @if (Request::segment(1) == 'perfil' ||
                                 Request::segment(1) == 'usuario' ||
-                                Request::segment(1) == 'colaborador' ||
                                 Request::segment(1) == 'empresa' ||
                                 Request::segment(1) == 'modulo') class="nav-link active"  @else   class="nav-link" @endif>
                         <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -51,13 +49,7 @@
                                 <p> Usuaário</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="/colaborador"
-                                @if (Request::segment(1) == 'colaborador') class="nav-link active"  @else   class="nav-link" @endif>
-                                <i class="nav-icon fas fa-user-tie"></i>
-                                <p>Colaborador </p>
-                            </a>
-                        </li>
+
                         <li class="nav-item">
                             <a href="/empresa"
                                 @if (Request::segment(1) == 'empresa') class="nav-link active"  @else   class="nav-link" @endif>

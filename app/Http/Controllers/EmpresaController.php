@@ -24,7 +24,10 @@ class EmpresaController extends Controller
         $empresa = new Empresa(); //Instânciar objeto.
         $empresa->nome = $request->nome;
         $empresa->save(); //persistir dados.
-        return redirect('empresa/create')->with('status', 'Registro Salvo!'); //retorna resultado.
+
+        return redirect()
+            ->action('App\Http\Controllers\EmpresaController@index')
+            ->with('status', "Registrado com sucesso!");
     }
 
     public function show($id)

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
+use App\Models\Usuario;
+use App\Models\Empresa;
 
 class UsuarioController extends Controller
 {
-
     public function index()
     {
         return view('usuario.index');
@@ -14,23 +16,33 @@ class UsuarioController extends Controller
 
     public function create()
     {
-        return view('usuario.create');
+        $empresa = Empresa::orderBy('id', 'desc')->get();
+        return view('usuario.create', ['empresas' => $empresa]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        // Validar.
+        // Upload da foto.
+        // Salvar na base.
+        // Criar mensagens de status.
+        // Redirecionar para pagina de listagem de usuário.
+
+        if ($this->validarFormulario($request)) {
+            return redirect()
+                ->back()
+                ->withInput($request->all());
+        } else {
+            return redirect()
+                ->action('App\Http\Controllers\UsuarioController@index')
+                ->with('status', "Registrado com sucesso!");
+        }
     }
 
     public function show($id)
     {
-        dd($id);
+        //$usuario = Usuario::findOrFail($id);
+        return view('usuario.show');
     }
 
     public function edit($id)
@@ -40,11 +52,44 @@ class UsuarioController extends Controller
 
     public function update(Request $request, $id)
     {
-        //
+        //dd($request, $id);
+        return redirect()
+            ->action('App\Http\Controllers\UsuarioController@index')
+            ->with('status', "Editdo com sucesso!");
     }
 
     public function destroy($id)
     {
-        dd($id);
+        // dd($id);
+        return redirect()
+            ->action('App\Http\Controllers\UsuarioController@index')
+            ->with('status', "Inativado com sucesso!");
+    }
+
+    private function validarFormulario(Request $request)
+    {
+        $request->validate(
+            [
+                'name' => 'required|max:200|min:5',
+                'usuario' => 'required|max:200|min:5',
+                'email' => 'required|email',
+                'password' => [
+                    'required',
+                    'min:6',
+                    'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
+
+                ],
+                'grupo' => 'required',
+                'empresa' => 'required',
+            ],
+            [
+                'name.required' => 'Campo obrigatório.',
+                'usuario.required' => 'Campo obrigatório.',
+                'email.required' => 'Digite um e-mail válido',
+                'password.required' => 'Campo obrigatório.',
+                'grupo.required' => 'Campo obrigatório.',
+                'empresa.required' => 'Campo obrigatório.',
+            ]
+        );
     }
 }

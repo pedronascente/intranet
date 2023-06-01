@@ -12,8 +12,9 @@
             <table class="table table-hover text-nowrap table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th width="5%">#</th>
                         <th>Empresa</th>
+                        <th>Cnpj</th>
                         <th width="5%" class="text-center">Permições</th>
                     </tr>
                 </thead>
@@ -23,6 +24,7 @@
                             <tr>
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->nome }}</td>
+                                <td>{{ $item->cnpj }}</td>
                                 <td>
                                     <div class="btn-group float-right">
                                         <a href="/empresa/{{ $item->id }}/edit" class="btn btn-sm btn-default">
@@ -38,7 +40,6 @@
                                         <a href="empresa/{{ $item->id }}" class="btn  btn-sm btn-default">
                                             <i class="fas fa-solid fa-eye"></i>
                                         </a>
-
                                     </div>
                                 </td>
                             </tr>
