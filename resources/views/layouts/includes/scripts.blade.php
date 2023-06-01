@@ -13,8 +13,12 @@
 <!-- Sparkline -->
 <script src="{{ asset('/plugins/sparklines/sparkline.js') }}"></script>
 <!-- JQVMap -->
+
+<!--
 <script src="{{ asset('/plugins/jqvmap/jquery.vmap.min.js') }}"></script>
 <script src="{{ asset('/plugins/jqvmap/maps/jquery.vmap.usa.js') }}"></script>
+-->
+
 <!-- jQuery Knob Chart -->
 <script src="{{ asset('/plugins/jquery-knob/jquery.knob.min.js') }}"></script>
 <!-- daterangepicker -->
@@ -29,10 +33,13 @@
 
 <!-- bs-custom-file-input -->
 <script src="{{ asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
+<!-- mask -->
+<script src="{{ asset('plugins/inputmask/jquery.inputmask.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('/dist/js/adminlte.js') }}"></script>
 <script>
     $(function() {
         bsCustomFileInput.init();
+        $('[data-mask]').inputmask();
     });
 </script>

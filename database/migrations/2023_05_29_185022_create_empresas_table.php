@@ -11,6 +11,7 @@ class CreateEmpresasTable extends Migration
         SCHEMA::CREATE('empresas', function (Blueprint $TABLE) {
             $TABLE->increments('id');
             $TABLE->string('nome');
+            $TABLE->string('cnpj', 20);
             $TABLE->timestamps();
         });
     }

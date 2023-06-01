@@ -11,7 +11,7 @@ class Usuario extends Model
 
     public function user()
     {
-        return $this->hasOne([Tipos::class]);
+        return $this->hasOne(Tipos::class);
     }
 
     public function empresa()

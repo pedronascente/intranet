@@ -8,7 +8,7 @@
                     <form action="/perfil">
                         <div class="card-body">
                             <div class="form-group">
-                                <label>Nome do Perfil</label>
+                                <label>Nome Perfil</label>
                                 <input type="text" name="nome" class="form-control" placeholder="perfil">
                             </div>
                             <div class="form-group">

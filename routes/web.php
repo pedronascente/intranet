@@ -5,11 +5,11 @@ use App\Http\Controllers\GrupoController;
 use App\Http\Controllers\ModuloController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\UsuarioController;
-use App\Http\Controllers\ColaboradorController;
+use App\Http\Controllers\TipoController;
 
-Route::resource('/empresa', EmpresaController::class);
 Route::resource('/usuario', UsuarioController::class);
-Route::resource('/colaborador', ColaboradorController::class);
+Route::resource('/empresa', EmpresaController::class);
+Route::resource('/cargo', TipoController::class);
 Route::resource('/perfil', GrupoController::class);
 Route::resource('/modulo', ModuloController::class);
 Route::get('/perfil/desativar/{id}', [GrupoController::class, 'desativar']);

@@ -56,8 +56,9 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>CNPJ:</label>
-                            <input type="text" name="cnpj" class="form-control" placeholder="cnpj"
-                                value="{{ old('cnpj') }}">
+                            <input type="text" name="cnpj" maxlength="20" placeholder="__.__.___/_____-__"
+                                class="form-control @error('cnpj') is-invalid  @enderror" value="{{ old('cnpj') }}"
+                                data-inputmask="'alias': '99.999.999/9999-99'" data-mask="" inputmode="decimal">
                         </div>
                     </div>
                 </div>

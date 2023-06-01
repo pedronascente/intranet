@@ -22,9 +22,8 @@
             <table class="table table-hover text-nowrap  table-striped">
                 <thead>
                     <tr>
-
                         <th width="5%">Foto</th>
-                        <th width="25%">Nome do usuário</th>
+                        <th width="25%">Nome usuário</th>
                         <th width="25%">Usuário</th>
                         <th>Email</th>
                         <th width="5%">Status</th>
