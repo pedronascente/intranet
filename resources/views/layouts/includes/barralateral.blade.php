@@ -25,6 +25,7 @@
                         Request::segment(1) == 'usuario' ||
                         Request::segment(1) == 'empresa' ||
                         Request::segment(1) == 'cargo' ||
+                        Request::segment(1) == 'colaborador' ||
                         Request::segment(1) == 'modulo') class="nav-item menu-open"  @else  class="nav-item" @endif>
 
                     <a href="#"
@@ -32,6 +33,7 @@
                                 Request::segment(1) == 'usuario' ||
                                 Request::segment(1) == 'empresa' ||
                                 Request::segment(1) == 'cargo' ||
+                                Request::segment(1) == 'colaborador' ||
                                 Request::segment(1) == 'modulo') class="nav-link active"  @else   class="nav-link" @endif>
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Admin <i class="right fas fa-angle-left"></i></p>
@@ -86,9 +88,9 @@
                             </ul>
                         </li>
                         <li
-                            @if (Request::segment(1) == 'usuario') class="nav-item  menu-open"  @else   class="nav-item" @endif>
+                            @if (Request::segment(1) == 'usuario' || Request::segment(1) == 'cartao') class="nav-item  menu-open"  @else   class="nav-item" @endif>
                             <a href="#"
-                                @if (Request::segment(1) == 'usuario') class="nav-link active"  @else   class="nav-link" @endif>
+                                @if (Request::segment(1) == 'usuario' || Request::segment(1) == 'cartao') class="nav-link active"  @else   class="nav-link" @endif>
                                 <i class="nav-icon far fa-user"></i>
                                 <p>
                                     Usuário
@@ -103,11 +105,17 @@
                                         <p>usuário</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="/cartao"
+                                        @if (Request::segment(1) == 'cartao') class="nav-link active"  @else   class="nav-link" @endif>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Cartão de Acesso (Token)</p>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                     </ul>
                 </li>
-
                 <li @if (Request::segment(1) == 'setor01' ||
                         Request::segment(1) == 'setor02' ||
                         Request::segment(1) == 'setor03' ||
@@ -154,7 +162,6 @@
                         </li>
                     </ul>
                 </li>
-
             </ul>
         </nav>
     </div>

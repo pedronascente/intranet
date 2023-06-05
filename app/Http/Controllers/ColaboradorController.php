@@ -12,17 +12,12 @@ class ColaboradorController extends Controller
     public function index()
     {
         $collection = Colaborador::orderBy('id', 'desc')->paginate(6);
-
-
         return view('colaborador.index', ['collection' => $collection]);
     }
 
     public function create()
     {
         $empresas = Empresa::orderBy('id', 'desc')->get();
-
-
-
         $cargos = Cargo::orderBy('id', 'desc')->get();
         return view('colaborador.create', [
             'empresas' => $empresas,
@@ -54,46 +49,40 @@ class ColaboradorController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        //
+        $c = Colaborador::findOrFail($id);
+        return view('colaborador.show', ['colaborador' => $c]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        $colaboraodor = Colaborador::findOrFail($id);
+        $empresas = Empresa::orderBy('id', 'desc')->get();
+        $cargos = Cargo::orderBy('id', 'desc')->get();
+
+        return view('colaborador.edit', [
+            'colaborador' => $colaboraodor,
+            'empresas' => $empresas,
+            'cargos' => $cargos,
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        $colaborador = Colaborador::findOrFail($id);
+        $colaborador->nome = $request->nome;
+        $colaborador->sobrenome = $request->sobrenome;
+        $colaborador->email = $request->email;
+        $colaborador->rg = $request->rg;
+        $colaborador->cpf = $request->cpf;
+        $colaborador->cnpj = $request->cnpj;
+        $colaborador->cargo_id = $request->cargo_id;
+        $colaborador->empresa_id = $request->empresa_id;
+        $colaborador->update();
+        return redirect('colaborador')->with('status', 'Registro Atualizado!'); //retorna resultado.
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //

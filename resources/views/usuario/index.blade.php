@@ -22,9 +22,9 @@
             <table class="table table-hover text-nowrap  table-striped">
                 <thead>
                     <tr>
-                        <th width="5%">Foto</th>
-                        <th width="25%">Nome usuário</th>
+                        <th width="5%">#</th>
                         <th width="25%">Usuário</th>
+                        <th width="25%">Colaborador</th>
                         <th>Email</th>
                         <th width="5%">Status</th>
                         <th width="5%" class="text-center">Permições</th>
@@ -33,11 +33,9 @@
                 <tbody>
                     @for ($i = 0; $i < 6; $i++)
                         <tr>
-                            <td>
-                                <img src="{{ asset('dist/img/dummy-round.png') }}" alt="" width="50">
-                            </td>
-                            <td>JULIANA MOURA</td>
+                            <td>4</td>
                             <td>juliana.moura</td>
+                            <td>juliana moura</td>
                             <td>usuario@bol.com</td>
                             <td>sim - Ativo</td>
                             <td>

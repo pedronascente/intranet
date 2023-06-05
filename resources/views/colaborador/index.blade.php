@@ -12,9 +12,11 @@
             <table class="table table-hover text-nowrap table-striped">
                 <thead>
                     <tr>
-                        <th width="5%">#</th>
+                        <th width="5%">COD</th>
+                        <th width="5%">Foto</th>
                         <th>Nome</th>
                         <th>Sobre Nome</th>
+                        <th>Cargo</th>
                         <th>Empresa</th>
                         <th width="5%" class="text-center">Permições</th>
                     </tr>
@@ -24,8 +26,12 @@
                         @foreach ($collection as $item)
                             <tr>
                                 <td>{{ $item->id }}</td>
+                                <td>
+                                    <img src="{{ asset('dist/img/dummy-round.png') }}" alt="" width="50">
+                                </td>
                                 <td>{{ $item->nome }}</td>
                                 <td>{{ $item->sobrenome }}</td>
+                                <td>{{ $item->cargo->nome }}</td>
                                 <td>{{ $item->empresa->nome }}</td>
                                 <td>
                                     <div class="btn-group float-right">

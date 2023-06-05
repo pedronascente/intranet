@@ -9,8 +9,8 @@ class Cargo extends Model
 {
     use HasFactory;
 
-    public function cargo()
+    public function colaboradores()
     {
-        return $this->BelongsTo(Colaborador::class);
+        return $this->hasMany(Colaborador::class);
     }
 }

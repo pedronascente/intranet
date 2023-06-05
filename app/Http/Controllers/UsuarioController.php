@@ -76,10 +76,9 @@ class UsuarioController extends Controller
                     'required',
                     'min:6',
                     'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
-
                 ],
                 'grupo' => 'required',
-
+                'colaborador_id' => 'required|max:4',
             ],
             [
                 'name.required' => 'Campo obrigatório.',
@@ -87,7 +86,7 @@ class UsuarioController extends Controller
                 'email.required' => 'Digite um e-mail válido',
                 'password.required' => 'Campo obrigatório.',
                 'grupo.required' => 'Campo obrigatório.',
-
+                'colaborador_id.required' => 'Campo obrigatório.',
             ]
         );
     }

@@ -15,4 +15,9 @@ class Colaborador extends Model
     {
         return $this->BelongsTo(Empresa::class);
     }
+
+    public function cargo()
+    {
+        return $this->BelongsTo(Cargo::class);
+    }
 }
