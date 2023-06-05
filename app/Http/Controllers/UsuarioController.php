@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Usuario;
-use App\Models\Empresa;
+
 
 class UsuarioController extends Controller
 {
@@ -16,8 +16,7 @@ class UsuarioController extends Controller
 
     public function create()
     {
-        $empresa = Empresa::orderBy('id', 'desc')->get();
-        return view('usuario.create', ['empresas' => $empresa]);
+        return view('usuario.create');
     }
 
     public function store(Request $request)
@@ -80,7 +79,7 @@ class UsuarioController extends Controller
 
                 ],
                 'grupo' => 'required',
-                'empresa' => 'required',
+
             ],
             [
                 'name.required' => 'Campo obrigatório.',
@@ -88,7 +87,7 @@ class UsuarioController extends Controller
                 'email.required' => 'Digite um e-mail válido',
                 'password.required' => 'Campo obrigatório.',
                 'grupo.required' => 'Campo obrigatório.',
-                'empresa.required' => 'Campo obrigatório.',
+
             ]
         );
     }

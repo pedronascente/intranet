@@ -6,13 +6,9 @@
         </a>
     </div>
 
-    <!-- /.login-logo -->
     <div class="card">
         <div class="card-body login-card-body">
-            <p class="login-box-msg">Bom Dia Inicie sessão para iniciar a sessão</p>
-            <p class="login-box-msg">Boa Tarde Inicie sessão para iniciar a sessão</p>
-            <p class="login-box-msg">Bom Noite Inicie sessão para iniciar a sessão</p>
-
+            <p class="login-box-msg">{{ $mensagem }}</p>
             <form action="" method="post">
                 <div class="input-group mb-3">
                     <input type="senha" class="form-control" placeholder="Usuário">
@@ -45,12 +41,9 @@
                     </div>
                 </div>
             </form>
-
             <p class="mb-1">
                 <a href="forgot-password.html">Esqueci minha senha</a>
             </p>
-
         </div>
-        <!-- /.login-card-body -->
     </div>
 @endsection

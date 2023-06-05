@@ -52,12 +52,12 @@
                             </a>
                         </li>
                         <li
-                            @if (Request::segment(1) == 'usuario' || Request::segment(1) == 'cargo' || Request::segment(1) == 'empresa') class="nav-item  menu-open"  @else   class="nav-item" @endif>
+                            @if (Request::segment(1) == 'colaborador' || Request::segment(1) == 'cargo' || Request::segment(1) == 'empresa') class="nav-item  menu-open"  @else   class="nav-item" @endif>
                             <a href="#"
-                                @if (Request::segment(1) == 'usuario' || Request::segment(1) == 'cargo' || Request::segment(1) == 'empresa') class="nav-link active"  @else   class="nav-link" @endif>
+                                @if (Request::segment(1) == 'colaborador' || Request::segment(1) == 'cargo' || Request::segment(1) == 'empresa') class="nav-link active"  @else   class="nav-link" @endif>
                                 <i class="nav-icon far fa-user"></i>
                                 <p>
-                                    Usuário
+                                    Colaborador
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
@@ -76,12 +76,31 @@
                                         <p>Cargo</p>
                                     </a>
                                 </li>
-
+                                <li class="nav-item">
+                                    <a href="/colaborador"
+                                        @if (Request::segment(1) == 'colaborador') class="nav-link active"  @else   class="nav-link" @endif>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Colaborador</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li
+                            @if (Request::segment(1) == 'usuario') class="nav-item  menu-open"  @else   class="nav-item" @endif>
+                            <a href="#"
+                                @if (Request::segment(1) == 'usuario') class="nav-link active"  @else   class="nav-link" @endif>
+                                <i class="nav-icon far fa-user"></i>
+                                <p>
+                                    Usuário
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="/usuario"
                                         @if (Request::segment(1) == 'usuario') class="nav-link active"  @else   class="nav-link" @endif>
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Cadastro</p>
+                                        <p>usuário</p>
                                     </a>
                                 </li>
                             </ul>

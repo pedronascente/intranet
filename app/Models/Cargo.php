@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Empresa extends Model
+class Cargo extends Model
 {
     use HasFactory;
 
-    public function colaboradores()
+    public function cargo()
     {
-        return $this->hasMany(Colaborador::class);
+        return $this->BelongsTo(Colaborador::class);
     }
 }

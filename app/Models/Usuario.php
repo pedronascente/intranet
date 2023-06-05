@@ -9,15 +9,8 @@ class Usuario extends Model
 {
     use HasFactory;
 
-    public function user()
-    {
-        return $this->hasOne(Tipos::class);
-    }
 
-    public function empresa()
-    {
-        return $this->hasOne(Empresa::class);
-    }
+
 
     public function grupo()
     {

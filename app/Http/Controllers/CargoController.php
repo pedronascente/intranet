@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tipo;
+use App\Models\Cargo;
 use Illuminate\Http\Request;
 
-class TipoController extends Controller
+class CargoController extends Controller
 {
     public function index()
     {
-        $empresas = Tipo::orderBy('id', 'desc')->paginate(6);
+        $empresas = Cargo::orderBy('id', 'desc')->paginate(6);
         return view('cargo.index', ['collection' => $empresas]);
     }
 
@@ -26,19 +26,19 @@ class TipoController extends Controller
                 ->withInput($request->all());
         } else {
 
-            $tipo = new Tipo();
-            $tipo->nome = $request->nome;
-            $tipo->save();
+            $cargo = new Cargo();
+            $cargo->nome = $request->nome;
+            $cargo->save();
 
             return redirect()
-                ->action('App\Http\Controllers\TipoController@index')
+                ->action('App\Http\Controllers\CargoController@index')
                 ->with('status', "Registrado com sucesso!");
         }
     }
 
     public function edit($id)
     {
-        $cargo = Tipo::findOrFail($id);
+        $cargo = Cargo::findOrFail($id);
         if ($cargo) {
             return view('cargo.edit', ['cargo' => $cargo]);
         } else {
@@ -49,7 +49,7 @@ class TipoController extends Controller
     public function update(Request $request, $id)
     {
         $this->validarFormulario($request); //Válidar Formulário.
-        $cargo = Tipo::findOrFail($id);
+        $cargo = Cargo::findOrFail($id);
         $cargo->nome = $request->nome;
         $cargo->update();
         return redirect('cargo')->with('status', 'Registro Atualizado!'); //retorna resultado.

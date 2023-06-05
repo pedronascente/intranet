@@ -5,12 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tipo extends Model
+class Colaborador extends Model
 {
     use HasFactory;
 
-    public function tipo()
+    protected $table = "colaboradores";
+
+    public function empresa()
     {
-        return $this->BelongsTo(Usuaurio::class);
+        return $this->BelongsTo(Empresa::class);
     }
 }

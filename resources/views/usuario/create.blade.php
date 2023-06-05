@@ -79,24 +79,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label>Empresa:</label>
-                            <select name="empresa" class="custom-select @error('empresa') is-invalid @enderror">
-                                <option value="">...</option>
-                                @foreach ($empresas as $item)
-                                    <option value="{{ $item->id }}" @if (old('empresa') == $item->id) selected @endif>
-                                        {{ $item->nome }}</option>
-                                @endforeach
-
-                            </select>
-                            @error('empresa')
-                                <span class=" invalid-feedback">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
+                
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
