@@ -23,8 +23,12 @@ class EmpresaController extends Controller
         $this->validarFormulario($request); //Válidar Formulário.
         $empresa = new Empresa(); //Instânciar objeto.
         $empresa->nome = $request->nome;
+        $empresa->cnpj = $request->cnpj;
         $empresa->save(); //persistir dados.
-        return redirect('empresa/create')->with('status', 'Registro Salvo!'); //retorna resultado.
+
+        return redirect()
+            ->action('App\Http\Controllers\EmpresaController@index')
+            ->with('status', "Registrado com sucesso!");
     }
 
     public function show($id)
@@ -48,6 +52,7 @@ class EmpresaController extends Controller
         $this->validarFormulario($request); //Válidar Formulário.
         $empresa = Empresa::findOrFail($id);
         $empresa->nome = $request->nome;
+        $empresa->cnpj = $request->cnpj;
         $empresa->update();
         return redirect('empresa')->with('status', 'Registro Atualizado!'); //retorna resultado.
     }
@@ -63,10 +68,12 @@ class EmpresaController extends Controller
     {
         $request->validate(
             [
-                'nome' => 'required|max:200|min:5',
+                'nome' => 'required|max:190|min:2',
+                'cnpj' => 'required|max:20',
             ],
             [
-                'nome.required' => 'Campo obrigatório.'
+                'nome.required' => 'Campo obrigatório.',
+                'cnpj.required' => 'Campo obrigatório.'
             ]
         );
     }

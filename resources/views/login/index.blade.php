@@ -6,22 +6,20 @@
         </a>
     </div>
 
-    <!-- /.login-logo -->
     <div class="card">
         <div class="card-body login-card-body">
-            <p class="login-box-msg">Inicie sessão para iniciar a sessão</p>
-
+            <p class="login-box-msg">{{ $mensagem }}</p>
             <form action="" method="post">
                 <div class="input-group mb-3">
-                    <input type="email" class="form-control" placeholder="Email">
+                    <input type="senha" class="form-control" placeholder="Usuário">
                     <div class="input-group-append">
                         <div class="input-group-text">
-                            <span class="fas fa-envelope"></span>
+                            <span class="fas fa-user"></span>
                         </div>
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" class="form-control" placeholder="Password">
+                    <input type="password" class="form-control" placeholder="Senha">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
@@ -43,12 +41,9 @@
                     </div>
                 </div>
             </form>
-
             <p class="mb-1">
                 <a href="forgot-password.html">Esqueci minha senha</a>
             </p>
-
         </div>
-        <!-- /.login-card-body -->
     </div>
 @endsection

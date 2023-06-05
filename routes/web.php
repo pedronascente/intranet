@@ -5,19 +5,19 @@ use App\Http\Controllers\GrupoController;
 use App\Http\Controllers\ModuloController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\CargoController;
 use App\Http\Controllers\ColaboradorController;
+use App\Http\Controllers\LoginController;
 
-Route::resource('/empresa', EmpresaController::class);
 Route::resource('/usuario', UsuarioController::class);
-Route::resource('/colaborador', ColaboradorController::class);
+Route::resource('/empresa', EmpresaController::class);
+Route::resource('/cargo', CargoController::class);
 Route::resource('/perfil', GrupoController::class);
 Route::resource('/modulo', ModuloController::class);
+Route::resource('/colaborador', ColaboradorController::class);
 Route::get('/perfil/desativar/{id}', [GrupoController::class, 'desativar']);
 
-Route::get('/', function () {
-    return view('login');
-});
-
+Route::resource('/', LoginController::class);
 
 Route::get('/home', function () {
     return view('home');

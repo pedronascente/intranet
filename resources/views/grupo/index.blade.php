@@ -23,10 +23,9 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Perfil</th>
+                        <th>Módulo</th>
                         <th>Descrição</th>
-                        <th width="5%">Ativo</th>
-                        <th width="5%" class="text-center">Permições</th>
+                        <th width="5%" class="text-center">Permissões</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,7 +34,7 @@
                             <td>00{{ $i }}</td>
                             <td> Grupo XPTO</td>
                             <td> RESPONSAVEL POR BELELEU </td>
-                            <td> sim </td>
+
                             <td>
                                 <div class="btn-group float-right">
                                     <a href="/perfil/{{ $i }}/edit" class="btn btn-default">

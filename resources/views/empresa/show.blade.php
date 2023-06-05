@@ -14,6 +14,9 @@
                         <tr>
                             <td><b>Nome :</b> {{ $empresa->nome }}</td>
                         </tr>
+                        <tr>
+                            <td><b>CNPJ :</b> {{ $empresa->cnpj }}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -30,6 +33,9 @@
                         <i class="fas fa-times"></i>
                     </button>
                 </form>
+                <a href="/empresa" class="btn  btn-sm btn-default" title="Voltar">
+                    <i class="fa fa-reply" aria-hidden="true"></i>
+                </a>
             </div>
         </div>
     </div>
