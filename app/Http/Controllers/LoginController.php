@@ -6,22 +6,33 @@ use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
+    private  $messagem;
+
+    public function __construct()
+    {
+        $this->messagem = $this->formatarData();
+    }
+
     public function index()
     {
-        $messagem = $this->formatarData();
-
-        return view('login.index', ['mensagem' => $messagem]);
+        return view('login.index', ['mensagem' =>   $this->messagem]);
     }
+
+    public function create_token()
+    {
+        return view('login.authtoken', ['mensagem' => $this->messagem]);
+    }
+
     private function formatarData()
     {
         $horaAtual = now()->format('H');
 
         if ($horaAtual >= 19) {
-            $ret = 'Boa Noite, para iniciar insira seus dados.';
+            $ret = 'Boa Noite';
         } else if ($horaAtual <= 18 &&  $horaAtual >= 12) {
-            $ret = 'Boa Tarde, para iniciar insira seus dados.';
+            $ret = 'Boa Tarde';
         } else {
-            $ret = 'Bom Dia, para iniciar insira seus dados.';
+            $ret = 'Bom Dia';
         }
         return $ret;
     }
