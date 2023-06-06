@@ -20,6 +20,8 @@ Route::resource('/permissao', PermissaoController::class);
 Route::get('/perfil/desativar/{id}', [GrupoController::class, 'desativar']);
 
 Route::resource('/', LoginController::class);
+Route::get('/login/auth-token', [LoginController::class, 'create_token']);
+
 
 Route::get('/home', function () {
     return view('home');
