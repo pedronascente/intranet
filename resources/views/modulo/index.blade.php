@@ -12,16 +12,14 @@
             <table class="table table-hover text-nowrap table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Módulo</th>
                         <th>Descrição</th>
-                        <th width="5%" class="text-center">Permições</th>
+                        <th width="5%" class="text-center">Permissões</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($collection as $item)
                         <tr>
-                            <td>{{ $item->id }}</td>
                             <td>{{ $item->nome }}</td>
                             <td>{{ $item->descricao }}</td>
                             <td>
@@ -36,9 +34,7 @@
                                             <i class="fas fa-times"></i>
                                         </button>
                                     </form>
-                                    <a href="modulo/{{ $item->id }}" class="btn  btn-sm btn-default">
-                                        <i class="fas fa-solid fa-eye"></i>
-                                    </a>
+
                                 </div>
                             </td>
                         </tr>

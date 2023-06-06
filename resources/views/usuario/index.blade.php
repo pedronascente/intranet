@@ -27,7 +27,7 @@
                         <th width="25%">Colaborador</th>
                         <th>Email</th>
                         <th width="5%">Status</th>
-                        <th width="5%" class="text-center">Permições</th>
+                        <th width="5%" class="text-center">Permissões</th>
                     </tr>
                 </thead>
                 <tbody>

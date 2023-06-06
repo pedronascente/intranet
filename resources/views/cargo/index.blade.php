@@ -12,16 +12,14 @@
             <table class="table table-hover text-nowrap table-striped">
                 <thead>
                     <tr>
-                        <th width="5%">#</th>
                         <th>Cargo</th>
-                        <th width="5%" class="text-center">Permições</th>
+                        <th width="5%" class="text-center">Permissões</th>
                     </tr>
                 </thead>
                 <tbody>
                     @if (@isset($collection))
                         @foreach ($collection as $item)
                             <tr>
-                                <td>{{ $item->id }}</td>
                                 <td>{{ $item->nome }}</td>
                                 <td>
                                     <div class="btn-group float-right">

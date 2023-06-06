@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="card card-primary">
-        <form action="{{ route('modulo.store') }}" method="POST">
+        <form action="{{ route('modulo.store') }}" method="POST" name="Formulario-modulo-create">
             @csrf
             <div class="card-body">
                 <div class="form-group">

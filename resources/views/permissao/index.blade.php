@@ -3,7 +3,7 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
-                <a href="{{ route('empresa.create') }}" class="btn btn-block bg-gradient-primary btn-sm">
+                <a href="{{ route('permissao.create') }}" class="btn btn-block bg-gradient-primary btn-sm">
                     Novo
                 </a>
             </h3>
@@ -12,8 +12,7 @@
             <table class="table table-hover text-nowrap table-striped">
                 <thead>
                     <tr>
-                        <th>Empresa</th>
-                        <th>Cnpj</th>
+                        <th>Nome</th>
                         <th width="5%" class="text-center">Permissões</th>
                     </tr>
                 </thead>
@@ -22,22 +21,18 @@
                         @foreach ($collection as $item)
                             <tr>
                                 <td>{{ $item->nome }}</td>
-                                <td>{{ $item->cnpj }}</td>
                                 <td>
                                     <div class="btn-group float-right">
-                                        <a href="/empresa/{{ $item->id }}/edit" class="btn btn-sm btn-default">
+                                        <a href="/permissao/{{ $item->id }}/edit" class="btn btn-sm btn-default">
                                             <i class="fas fa-pencil-alt"></i>
                                         </a>
-                                        <form action="{{ route('empresa.destroy', $item->id) }}" method="post">
+                                        <form action="{{ route('permissao.destroy', $item->id) }}" method="post">
                                             @method('DELETE')
                                             @csrf
-                                            <button type="submit" class="btn  btn-sm btn-default">
+                                            <button type="submit" class="btn btn-sm btn-default">
                                                 <i class="fas fa-times"></i>
                                             </button>
                                         </form>
-                                        <a href="empresa/{{ $item->id }}" class="btn  btn-sm btn-default">
-                                            <i class="fas fa-solid fa-eye"></i>
-                                        </a>
                                     </div>
                                 </td>
                             </tr>

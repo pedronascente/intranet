@@ -25,7 +25,9 @@ class ModuloController extends Controller
         $modulo->nome = $request->nome;
         $modulo->descricao = $request->descricao;
         $modulo->save(); //persistir dados.
-        return redirect('modulo/create')->with('status', 'Registro Salvo!'); //retorna resultado.
+        return redirect()
+            ->action('App\Http\Controllers\ModuloController@index')
+            ->with('status', "Registrado com sucesso!");
     }
 
     public function show($id)
@@ -49,7 +51,7 @@ class ModuloController extends Controller
         $this->validarFormulario($request); //Válidar Formulário.
         $modulo = Modulo::findOrFail($id); //Recuperar modulo da base de dados.
         $modulo->nome = $request->nome;
-        $modulo->nome = $request->descricao;
+        $modulo->descricao = $request->descricao;
         $modulo->update();
         return redirect('/modulo')->with('status', 'Registro Atualizado!'); //retorna resultado.
     }

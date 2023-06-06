@@ -18,7 +18,7 @@
                         <th>Sobre Nome</th>
                         <th>Cargo</th>
                         <th>Empresa</th>
-                        <th width="5%" class="text-center">Permições</th>
+                        <th width="5%" class="text-center">Permissões</th>
                     </tr>
                 </thead>
                 <tbody>
