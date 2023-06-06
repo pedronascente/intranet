@@ -1,7 +1,8 @@
 @extends('layouts.app')
 @section('content')
     <div class="card card-primary">
-        <form action="{{ route('colaborador.update', $colaborador->id) }}" method="POST" name="Formulario-Colaborador-update">
+        <form action="{{ route('colaborador.update', $colaborador->id) }}" method="POST" enctype="multipart/form-data"
+            name="Formulario-Colaborador-update">
             @csrf
             @method('PUT')
             <div class="card-body">
@@ -77,7 +78,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label>Cargo:</label>
                             <select name="cargo_id" class="custom-select @error('cargo_id') is-invalid @enderror">
@@ -92,7 +93,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label>Empresa:</label>
                             <select name="empresa_id" class="custom-select @error('empresa_id') is-invalid @enderror">
@@ -105,6 +106,17 @@
                             @error('empresa_id')
                                 <span class=" invalid-feedback">{{ $message }}</span>
                             @enderror
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label for="customFile">Foto</label>
+                            <div class="custom-file">
+                                <input type="file" name="foto" class="custom-file-input" id="customFile">
+                                <label class="custom-file-label" for="customFile"></label>
+                            </div>
                         </div>
                     </div>
                 </div>

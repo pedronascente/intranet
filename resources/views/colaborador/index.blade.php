@@ -27,7 +27,10 @@
                             <tr>
                                 <td>{{ $item->id }}</td>
                                 <td>
-                                    <img src="{{ asset('dist/img/dummy-round.png') }}" alt="" width="50">
+                                    <a href="/colaborador/{{ $item->id }}" title="Visualizar">
+                                        <img src="{{ asset('img/colaborador/' . $item->foto . '') }}"
+                                            alt="{{ $item->nome }}" width="35" class="rounded-circle">
+                                    </a>
                                 </td>
                                 <td>{{ $item->nome }}</td>
                                 <td>{{ $item->sobrenome }}</td>
@@ -35,19 +38,22 @@
                                 <td>{{ $item->empresa->nome }}</td>
                                 <td>
                                     <div class="btn-group float-right">
-                                        <a href="/colaborador/{{ $item->id }}/edit" class="btn btn-sm btn-default">
+                                        <a href="/colaborador/{{ $item->id }}/edit" class="btn btn-sm btn-default"
+                                            title="Editar">
                                             <i class="fas fa-pencil-alt"></i>
+                                        </a>
+
+                                        <a href="/colaborador/{{ $item->id }}" class="btn  btn-sm btn-default"
+                                            title="Visualizar">
+                                            <i class="fas fa-solid fa-eye"></i>
                                         </a>
                                         <form action="{{ route('colaborador.destroy', $item->id) }}" method="post">
                                             @method('DELETE')
                                             @csrf
-                                            <button type="submit" class="btn  btn-sm btn-default">
+                                            <button type="submit" class="btn  btn-sm btn-default" title="Excluir">
                                                 <i class="fas fa-times"></i>
                                             </button>
                                         </form>
-                                        <a href="/colaborador/{{ $item->id }}" class="btn  btn-sm btn-default">
-                                            <i class="fas fa-solid fa-eye"></i>
-                                        </a>
                                     </div>
                                 </td>
                             </tr>

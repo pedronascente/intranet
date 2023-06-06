@@ -15,9 +15,7 @@ class CreateUsuariosTable extends Migration
             $table->string('usuario');
             $table->string('email')->UNIQUE();
             $table->timestamp('email_verified_at')->nullable();
-            $table->char('ativo', 4);
-
-            $table->text('foto')->nullable();
+            $table->char('ativo', 5);
             $table->rememberToken();
 
             $table->integer('grupo_id')->unsigned();

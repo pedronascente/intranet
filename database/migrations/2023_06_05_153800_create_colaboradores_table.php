@@ -16,7 +16,7 @@ class CreateColaboradoresTable extends Migration
             $table->char('rg', 20)->nullable();
             $table->char('cpf', 20)->nullable();
             $table->char('cnpj', 20)->nullable();
-
+            $table->text('foto')->nullable();
             $table->integer('empresa_id')->unsigned();
             $table->foreign('empresa_id')->references('id')->on('empresas');
 

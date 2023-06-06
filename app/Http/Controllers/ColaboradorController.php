@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Colaborador;
-use App\Models\Empresa;
 use App\Models\Cargo;
+use App\Models\Empresa;
+use App\Models\Colaborador;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class ColaboradorController extends Controller
 {
@@ -32,17 +33,21 @@ class ColaboradorController extends Controller
                 ->back()
                 ->withInput($request->all());
         } else {
-            $c = new Colaborador();
-            $c->nome = $request->nome;
-            $c->sobrenome = $request->sobrenome;
-            $c->email = $request->email;
-            $c->rg = $request->rg;
-            $c->cpf = $request->cpf;
-            $c->cnpj = $request->cnpj;
-            $c->cargo_id = $request->cargo_id;
-            $c->empresa_id = $request->empresa_id;
-            $c->save();
-
+            $colaborador = new Colaborador();
+            $colaborador->nome = $request->nome;
+            $colaborador->sobrenome = $request->sobrenome;
+            $colaborador->email = $request->email;
+            $colaborador->rg = $request->rg;
+            $colaborador->cpf = $request->cpf;
+            $colaborador->cnpj = $request->cnpj;
+            $colaborador->cargo_id = $request->cargo_id;
+            $colaborador->empresa_id = $request->empresa_id;
+            if ($foto = $this->upload($request)) {
+                $colaborador->foto = $foto;
+            } else {
+                $colaborador->foto = 'dummy-round.png';
+            }
+            $colaborador->save();
             return redirect()
                 ->action('App\Http\Controllers\ColaboradorController@index')
                 ->with('status', "Registrado com sucesso!");
@@ -79,13 +84,36 @@ class ColaboradorController extends Controller
         $colaborador->cnpj = $request->cnpj;
         $colaborador->cargo_id = $request->cargo_id;
         $colaborador->empresa_id = $request->empresa_id;
+
+        if ($request->hasFile('foto')) {
+            $destino = 'img/colaborador/' . $colaborador->foto;
+            if (File::exists($destino)) {
+                File::delete($destino);
+            }
+            $colaborador->foto = $this->upload($request);
+        }
+
         $colaborador->update();
         return redirect('colaborador')->with('status', 'Registro Atualizado!'); //retorna resultado.
     }
 
     public function destroy($id)
     {
-        //
+        //Buscar objeto na base de dados.
+        //mapeia onde o arquivo esta armazenado.
+        //verifica se existe um arquivo armazenado com o nome recuperado na base de dados.
+        //caso existir deletar o arquivo.
+        //delete o regostro na base de dados.
+        //redireciona para lista , com a mensagem para usuario.
+
+        $colaborador = Colaborador::findOrFail($id);
+        $destino = 'img/colaborador/' . $colaborador->foto;
+        if (File::exists($destino)) {
+            File::delete($destino);
+        }
+
+        $colaborador->delete();
+        return redirect('colaborador')->with('status', 'Registro Excluido com sucesso'); //retorna resultado.
     }
 
     private function validarFormulario(Request $request)
@@ -110,5 +138,18 @@ class ColaboradorController extends Controller
                 'cargo_id.required' => 'Campo obrigatório.',
             ]
         );
+    }
+
+    private function upload(Request $request)
+    {
+        //Verifica se informou o arquivo  e se é valido. 
+        if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
+            $requestImagem = $request->foto;
+            $extension = $requestImagem->extension();
+            $imagemName = md5($requestImagem->getClientOriginalName() . strtotime('now')) . '.' . $extension;
+            $requestImagem->move(public_path('img/colaborador'), $imagemName);
+            return $imagemName;
+        }
+        return false;
     }
 }
