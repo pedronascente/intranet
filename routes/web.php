@@ -24,7 +24,7 @@ Route::get('/login/auth-token', [LoginController::class, 'create_token']);
 
 
 Route::get('/home', function () {
-    return view('home');
+    return view('home'); //
 });
 
 Route::get('/setor01', function () {
