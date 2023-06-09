@@ -1,81 +1,82 @@
 @extends('layouts.app')
 @section('content')
     <div class="card card-primary">
-        <form action="{{ route('usuario.update', 4) }}" method="POST">
+        <form action="{{ route('usuario.update', $usuario->id) }}" method="POST">
             @csrf
             @method('PUT')
             <div class="card-body">
-                <div class="form-group ">
-                    <label>Nome:</label>
-                    <input type="text" name="name" class="form-control" placeholder="nome">
-                </div>
-                <div class="form-group">
-                    <label>Usuário:</label>
-                    <input type="text" name="usuario" class="form-control " placeholder="usuario">
-                </div>
-                <div class="form-group">
-                    <label>Email:</label>
-                    <input type="email" name="email" class="form-control" placeholder="email">
-                </div>
-                <div class="form-group">
-                    <label>Password:</label>
-                    <input type="text" name="password" class="form-control" placeholder="password">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <a href="/colaborador" title="Pesquisar cód. colaborador.">
+                                <label> CÓD Colaborador:</label>
+                            </a>
+                            <input type="text" name="colaborador_id"
+                                class="form-control @error('colaborador_id') is-invalid @enderror"
+                                placeholder="Informe o cód." value="{{ $usuario->colaborador->id }}">
+                            @error('colaborador_id')
+                                <span class=" invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Status:</label>
+                            <select name="ativo" class="custom-select">
+                                <option value="on" @if ($usuario->ativo == 'on') selected @endif> Sim</option>
+                                <option value="off" @if ($usuario->ativo == 'off') selected @endif> Não</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>RG:</label>
-                            <input type="text" name="rg" class="form-control" placeholder="rg">
+                            <label>Usuário:</label>
+                            <input type="text" name="usuario" class="form-control @error('usuario') is-invalid @enderror"
+                                placeholder="usuario" value="{{ $usuario->usuario }}">
+                            @error('usuario')
+                                <span class=" invalid-feedback">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>CPF:</label>
-                            <input type="text" name="cpf" class="form-control" placeholder="cpf">
+                            <label>Password:</label>
+                            <input type="text" name="password"
+                                class="form-control @error('password') is-invalid @enderror" placeholder="password"
+                                value="{{ $usuario->password }}">
+                            @error('password')
+                                <span class=" invalid-feedback">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label>CNPJ:</label>
-                            <input type="text" name="cnpj" class="form-control" placeholder="cnpj">
+                            <label>Email:</label>
+                            <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
+                                placeholder="email" value="{{ $usuario->email }}">
+                            @error('email')
+                                <span class=" invalid-feedback">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-5">
                         <div class="form-group">
                             <label>Grupo:</label>
-                            <select name="grupo" class="custom-select">
-                                <option value="">Selecionar...</option>
-                                <option value="1">Monitoramento</option>
-                                <option value="2">Comercial</option>
+                            <select name="grupo_id" class="custom-select @error('grupo_id') is-invalid @enderror">
+                                @foreach ($collection_grupo as $item)
+                                    <option value="{{ $item->id }}" @if ($item->id == $usuario->grupo_id) selected @endif>
+                                        {{ $item->nome }}</option>
+                                @endforeach
                             </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label>Empresa:</label>
-                            <select name="empresa" class="custom-select">
-                                <option value="">Selecionar...</option>
-                                <option value="1">Monitoramento</option>
-                                <option value="2">Comercial</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label>Ativo:</label>
-                            <select name="ativo" class="custom-select ">
-                                <option value="">Selecionar...</option>
-                                <option value="on">Sim</option>
-                                <option value="off">Não</option>
-                            </select>
+                            @error('grupo')
+                                <span class=" invalid-feedback">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                 </div>

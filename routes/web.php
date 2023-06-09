@@ -42,3 +42,9 @@ Route::get('/setor03', function () {
 Route::get('/setor04', function () {
     return view('setor_demo');
 });
+
+
+
+Route::get('/cartao', function () {
+    echo 'cartao';
+});

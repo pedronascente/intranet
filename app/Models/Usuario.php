@@ -9,11 +9,16 @@ class Usuario extends Model
 {
     use HasFactory;
 
-
-
+    protected $fillable = ['ativo', 'usuario', 'password', 'email', 'colaborador_id', 'grupo_id'];
 
     public function grupo()
     {
         return $this->belongsTo(Grupo::class);
+    }
+
+    //pertense a
+    public function colaborador()
+    {
+        return $this->belongsTo(Colaborador::class);
     }
 }
