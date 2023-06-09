@@ -20,4 +20,10 @@ class Colaborador extends Model
     {
         return $this->BelongsTo(Cargo::class);
     }
+
+    //tem um 
+    public function usuario()
+    {
+        return $this->hasOne(Usuario::class);
+    }
 }

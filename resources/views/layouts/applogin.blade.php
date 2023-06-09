@@ -30,6 +30,13 @@
             -ms-flex-pack: center;
             justify-content: center;
         }
+
+        .login-box-msg,
+        .register-box-msg {
+            margin: 0;
+            padding: 0 10px 20px;
+            text-align: center;
+        }
     </style>
 
 </head>

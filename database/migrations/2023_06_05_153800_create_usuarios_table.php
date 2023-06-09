@@ -10,26 +10,24 @@ class CreateUsuariosTable extends Migration
     {
         Schema::create('usuarios', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('password');
+
+            $table->integer('colaborador_id')->unsigned();
+            $table->foreign('colaborador_id')->references('id')->on('colaboradores');
+
+            $table->integer('grupo_id')->unsigned();
+            $table->foreign('grupo_id')->references('id')->on('grupos');
+
             $table->string('usuario');
+            $table->string('password');
             $table->string('email')->UNIQUE();
             $table->timestamp('email_verified_at')->nullable();
             $table->char('ativo', 5);
             $table->rememberToken();
 
-            $table->integer('grupo_id')->unsigned();
-            $table->foreign('grupo_id')->references('id')->on('grupos');
-
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('usuarios');

@@ -66,14 +66,14 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-5">
                         <div class="form-group">
                             <label>Grupo:</label>
-                            <select name="grupo" class="custom-select @error('grupo') is-invalid @enderror">
-                                <option value="">...</option>
-                                <option value="1" @if (old('grupo') == '1') selected @endif>
+                            <select name="grupo_id" class="custom-select @error('grupo_id') is-invalid @enderror">
+                                <option value="">Selecione...</option>
+                                <option value="1" @if (old('grupo_id') == '1') selected @endif>
                                     Monitoramento</option>
-                                <option value="2" @if (old('grupo') == '2') selected @endif>
+                                <option value="2" @if (old('grupo_id') == '2') selected @endif>
                                     Comercial</option>
                             </select>
                             @error('grupo')

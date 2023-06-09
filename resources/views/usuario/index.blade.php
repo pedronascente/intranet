@@ -31,32 +31,43 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @for ($i = 0; $i < 6; $i++)
-                        <tr>
-                            <td>4</td>
-                            <td>juliana.moura</td>
-                            <td>juliana moura</td>
-                            <td>usuario@bol.com</td>
-                            <td>sim - Ativo</td>
-                            <td>
-                                <div class="btn-group float-right">
-                                    <a href="/usuario/{{ $i }}/edit" class="btn btn-default" title="Editar">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </a>
-                                    <form action="{{ route('usuario.destroy', $i) }}" method="post" title="Desativar">
-                                        @method('DELETE')
-                                        @csrf
-                                        <button type="submit" class="btn btn-default">
-                                            <i class="fa fa-toggle-on" aria-hidden="true"></i>
-                                        </button>
-                                    </form>
-                                    <a href="usuario/{{ $i }}" class="btn btn-default" title="Visualizar">
-                                        <i class="fas fa-solid fa-eye"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    @endfor
+                    @if ($collections)
+                        @foreach ($collections as $item)
+                            <tr>
+                                <td>{{ $item->id }}</td>
+                                <td>{{ $item->usuario }}</td>
+                                <td>
+                                    <a href="/colaborador/{{ $item->colaborador->id }}">{{ $item->colaborador->nome }}</a>
+                                </td>
+                                <td>{{ $item->colaborador->email }}</td>
+                                <td>
+                                    @if ($item->ativo == 'on')
+                                        Sim - Ativo
+                                    @else
+                                        Não - Ativo
+                                    @endif
+                                </td>
+                                <td>
+                                    <div class="btn-group float-right">
+                                        <a href="/usuario/{{ $item->id }}/edit" class="btn btn-default" title="Editar">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </a>
+                                        <form action="{{ route('usuario.destroy', $item->id) }}" method="post"
+                                            title="Desativar">
+                                            @method('DELETE')
+                                            @csrf
+                                            <button type="submit" class="btn btn-default">
+                                                <i class="fa fa-toggle-on" aria-hidden="true"></i>
+                                            </button>
+                                        </form>
+                                        <a href="usuario/{{ $item->id }}" class="btn btn-default" title="Visualizar">
+                                            <i class="fas fa-solid fa-eye"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>

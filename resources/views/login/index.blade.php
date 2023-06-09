@@ -6,10 +6,10 @@
 
     <div class="card">
         <div class="card-body login-card-body">
-            <p class="login-box-msg">{{ $mensagem }},<br> para iniciar insira seus <b>dados</b>.</p>
+            <p class="login-box-msg">{{ $mensagem }}, para iniciar insira seus <b>dados</b>.</p>
             <form action="/login/auth-token" method="post">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Usuário.">
+                    <input type="text" class="form-control" placeholder="Usuário">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-user"></span>
@@ -37,6 +37,13 @@
             <p class="mb-1">
 
             </p>
+        </div>
+    </div>
+    <div class="row mt-5 text-center">
+        <div class="col-md-12">
+            <a href="forgot-password.html">Link XPOT</a> |
+            <a href="forgot-password.html">Link XPOT</a> |
+            <a href="forgot-password.html">Link XPOT</a>
         </div>
     </div>
 @endsection
