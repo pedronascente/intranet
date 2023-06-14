@@ -67,7 +67,7 @@ class ModuloController extends Controller
     {
         $request->validate(
             [
-                'nome' => 'required|max:190|min:5',
+                'nome' => 'required|max:190|min:2',
                 'descricao' => 'required|max:190|min:5',
             ],
             [

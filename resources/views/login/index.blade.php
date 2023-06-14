@@ -26,7 +26,7 @@
                 </div>
                 <div class="row">
                     <div class="col-8">
-                        <a href="forgot-password.html">Esqueci minha senha</a>
+                        <a href="/login/esqueci-minha-senha">Esqueci minha senha</a>
                     </div>
                     <div class="col-4">
                         <a href="/login/auth-token" class="btn btn-primary btn-block">Entrar</a>

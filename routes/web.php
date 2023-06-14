@@ -20,7 +20,12 @@ Route::resource('/permissao', PermissaoController::class);
 Route::get('/perfil/desativar/{id}', [GrupoController::class, 'desativar']);
 
 Route::resource('/', LoginController::class);
-Route::get('/login/auth-token', [LoginController::class, 'create_token']);
+
+Route::prefix('/login')->group(function () {
+    Route::get('/auth-token', [LoginController::class, 'create_token']);
+    Route::get('/esqueci-minha-senha', [LoginController::class, 'recuperarSenha']);
+    Route::get('/recuperar-cartao-token', [LoginController::class, 'recuperarCartao']);
+});
 
 
 Route::get('/home', function () {
@@ -42,8 +47,6 @@ Route::get('/setor03', function () {
 Route::get('/setor04', function () {
     return view('setor_demo');
 });
-
-
 
 Route::get('/cartao', function () {
     echo 'cartao';

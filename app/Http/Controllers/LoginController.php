@@ -23,6 +23,16 @@ class LoginController extends Controller
         return view('login.authtoken', ['mensagem' => $this->messagem]);
     }
 
+    public function recuperarSenha()
+    {
+        echo 'Descreva nos requisitos como será este processo de recuperação de senha';
+    }
+
+    public function recuperarCartao()
+    {
+        echo 'Descreva nos requisitos como será este processo de recuperação de cartao';
+    }
+
     private function formatarData()
     {
         $horaAtual = now()->format('H');
