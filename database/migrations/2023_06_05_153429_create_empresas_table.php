@@ -10,8 +10,8 @@ class CreateEmpresasTable extends Migration
     {
         Schema::create('empresas', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nome');
-            $table->string('cnpj', 20);
+            $table->string('nome')->unique();
+            $table->string('cnpj', 20)->unique();
             $table->timestamps();
         });
     }

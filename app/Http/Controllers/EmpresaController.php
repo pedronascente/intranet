@@ -20,12 +20,16 @@ class EmpresaController extends Controller
 
     public function store(Request $request)
     {
-        $this->validarFormulario($request); //Válidar Formulário.
+        $this->validarFormulario($request);
+        if ($this->validar_duplicidade($request)) {
+            return redirect()
+                ->action('App\Http\Controllers\EmpresaController@index')
+                ->with('warning', "Registro já está cadastrado!");
+        }
         $empresa = new Empresa(); //Instânciar objeto.
         $empresa->nome = $request->nome;
         $empresa->cnpj = $request->cnpj;
         $empresa->save(); //persistir dados.
-
         return redirect()
             ->action('App\Http\Controllers\EmpresaController@index')
             ->with('status', "Registrado com sucesso!");
@@ -60,8 +64,17 @@ class EmpresaController extends Controller
     public function destroy($id)
     {
         $empresa = Empresa::findOrFail($id);
+        $colaboradores =  $empresa->colaboradores->count();
+        if ($colaboradores >= 1) {
+            return redirect()
+                ->action('App\Http\Controllers\EmpresaController@index')
+                ->with('warning', "Esta empresa tem colaborador associado, por tanto não pode ser excluida.");
+        }
+
         $empresa->delete();
-        return redirect('empresa')->with('status', 'Registro Excluido!'); //retorna resultado.
+        return redirect()
+            ->action('App\Http\Controllers\EmpresaController@index')
+            ->with('status', "Registro Excluido!");
     }
 
     private function validarFormulario(Request $request)
@@ -76,5 +89,14 @@ class EmpresaController extends Controller
                 'cnpj.required' => 'Campo obrigatório.'
             ]
         );
+    }
+
+    private function validar_duplicidade(Request $request)
+    {
+        $duplicado = Empresa::where('nome', $request->nome)
+            ->orWhere('cnpj', $request->cnpj)
+            ->get()->count();
+
+        return $duplicado;
     }
 }
