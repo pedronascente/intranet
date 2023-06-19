@@ -11,7 +11,7 @@
                     <input type="senha" class="form-control" placeholder="Código do cartão">
                     <div class="input-group-append">
                         <div class="input-group-text">
-                            <span class="fas fa-user"></span>
+                            <span class="fas fa-id-card"></span>
                         </div>
                     </div>
                 </div>
@@ -25,7 +25,7 @@
                 </div>
                 <div class="row">
                     <div class="col-8">
-                        <a href="forgot-password.html">Perdi meu cartao Token</a>
+                        <a href="/login/recuperar-cartao-token">Perdi meu cartão Token</a>
                     </div>
                     <div class="col-4">
                         <a href="/home" class="btn btn-primary btn-block">Entrar</a>

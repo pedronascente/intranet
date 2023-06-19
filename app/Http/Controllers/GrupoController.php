@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Modulo;
+use App\Models\Permissao;
 
 class GrupoController extends Controller
 {
@@ -13,29 +15,17 @@ class GrupoController extends Controller
 
     public function create()
     {
-        return view('grupo.create');
+        $modulos =  Modulo::all();
+        $permissoes =  Permissao::all();
+        return view('grupo.create', [
+            'modulos' => $modulos,
+            'permissoes' => $permissoes,
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        dd($id);
+        dd($request->all());
     }
 
     public function edit($id)
@@ -46,27 +36,5 @@ class GrupoController extends Controller
     public function desativar($id)
     {
         dd($id);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
     }
 }
