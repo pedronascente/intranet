@@ -1,23 +1,10 @@
 @extends('layouts.app')
 @section('content')
     <div class="card card-primary">
-        <form action="{{ route('usuario.store') }}" method="POST">
+        <form action="{{ route('user.store') }}" method="POST">
             @csrf
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <a href="/colaborador" class="" title="Pesquisar cód. colaborador.">
-                                <label> CÓD Colaborador:</label>
-                            </a>
-                            <input type="text" name="colaborador_id"
-                                class="form-control @error('colaborador_id') is-invalid @enderror"
-                                placeholder="Informe o cód. " value="{{ old('colaborador_id') }}">
-                            @error('colaborador_id')
-                                <span class=" invalid-feedback">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label>Ativo:</label>
@@ -31,25 +18,49 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group">
                             <label>Usuário:</label>
-                            <input type="text" name="usuario" class="form-control @error('usuario') is-invalid @enderror"
-                                placeholder="usuario" value="{{ old('usuario') }}">
-                            @error('usuario')
+                            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
+                                placeholder="name" value="{{ old('name') }}">
+                            @error('name')
                                 <span class=" invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-6">
+                </div>
+                <div class="row">
+                    <div class="col-md-7">
                         <div class="form-group">
-                            <label>Password:</label>
+                            <label>Senha:</label>
                             <input type="text" name="password"
                                 class="form-control @error('password') is-invalid @enderror" placeholder="password"
                                 value="{{ old('password') }}">
                             @error('password')
                                 <span class=" invalid-feedback">{{ $message }}</span>
                             @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>Confirma senha:</label>
+                            <input type="text" name="password_confirmation"
+                                class="form-control @error('password_confirmation') is-invalid @enderror"
+                                placeholder="password_confirmation" value="{{ old('password_confirmation') }}">
+                            @error('password_confirmation')
+                                <span class=" invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="alert alert-warning alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h5><i class="icon fas fa-exclamation-triangle"></i>Dicas para uma boa senha!</h5>
+                            <ul>
+                                <li>deve ter pelo menos 6 caracteres: [ min:6 ]</li>
+                                <li>deve conter pelo menos uma letra minúscula: [a-z]</li>
+                                <li>deve conter pelo menos uma letra maiúscula: [A-Z]</li>
+                                <li>deve conter pelo menos um dígito: [0-9]</li>
+                                <li>deve conter um caractere especial:[@$!%*#?&]</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -71,10 +82,13 @@
                             <label>Grupo:</label>
                             <select name="grupo_id" class="custom-select @error('grupo_id') is-invalid @enderror">
                                 <option value="">Selecione...</option>
-                                <option value="1" @if (old('grupo_id') == '1') selected @endif>
-                                    Monitoramento</option>
-                                <option value="2" @if (old('grupo_id') == '2') selected @endif>
-                                    Comercial</option>
+                                @if ($grupos)
+                                    @foreach ($grupos as $item)
+                                        <option value="{{ $item->id }}"
+                                            @if (old('grupo_id')) selected @endif>
+                                            {{ $item->nome }}</option>
+                                    @endforeach
+                                @endif
                             </select>
                             @error('grupo')
                                 <span class=" invalid-feedback">{{ $message }}</span>

@@ -12,10 +12,8 @@
             <table class="table table-hover text-nowrap table-striped">
                 <thead>
                     <tr>
-                        <th width="5%">COD</th>
                         <th width="5%">Foto</th>
                         <th>Nome</th>
-                        <th>Sobre Nome</th>
                         <th>Cargo</th>
                         <th>Empresa</th>
                         <th width="5%" class="text-center">Permissões</th>
@@ -25,15 +23,14 @@
                     @if ($collection)
                         @foreach ($collection as $item)
                             <tr>
-                                <td>{{ $item->id }}</td>
                                 <td>
                                     <a href="/colaborador/{{ $item->id }}" title="Visualizar">
                                         <img src="{{ asset('img/colaborador/' . $item->foto . '') }}"
                                             alt="{{ $item->nome }}" width="35" class="rounded-circle">
                                     </a>
                                 </td>
-                                <td>{{ $item->nome }}</td>
-                                <td>{{ $item->sobrenome }}</td>
+                                <td>{{ $item->nome }} {{ $item->sobrenome }}</td>
+
                                 <td>{{ $item->cargo->nome }}</td>
                                 <td>{{ $item->empresa->nome }}</td>
                                 <td>
@@ -62,16 +59,6 @@
                 </tbody>
             </table>
         </div>
-        <div class="card-footer">
-            <div class="row">
-                <div class="col-sm-12 col-md-5">
-                    <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
-                        Mostrando 1 à 10 de 57 entradas</div>
-                </div>
-                <div class="col-sm-12 col-md-7">
-                    {!! $collection->links() !!}
-                </div>
-            </div>
-        </div>
+
     </div>
 @endsection

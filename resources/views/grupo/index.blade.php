@@ -23,42 +23,47 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Módulo</th>
+                        <th>Perfil</th>
                         <th>Descrição</th>
                         <th width="5%" class="text-center">Permissões</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @for ($i = 0; $i < 8; $i++)
-                        <tr>
-                            <td>00{{ $i }}</td>
-                            <td> Grupo XPTO</td>
-                            <td> RESPONSAVEL POR BELELEU </td>
+                    @if ($collections)
+                        @foreach ($collections as $item)
+                            <tr>
+                                <td>{{ $item->id }}</td>
+                                <td>{{ $item->nome }}</td>
+                                <td>{{ $item->descricao }}</td>
+                                <td>
+                                    <div class="btn-group float-right">
+                                        <a href="/usuario/{{ $item->id }}/edit" class="btn btn-default" title="Editar">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </a>
+                                        <form action="{{ route('usuario.destroy', $item->id) }}" method="post"
+                                            title="Desativar">
+                                            @method('DELETE')
+                                            @csrf
+                                            <button type="submit" class="btn btn-default">
+                                                <i class="fa fa-toggle-on" aria-hidden="true"></i>
+                                            </button>
+                                        </form>
+                                        <a href="usuario/{{ $item->id }}" class="btn btn-default" title="Visualizar">
+                                            <i class="fas fa-solid fa-eye"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
 
-                            <td>
-                                <div class="btn-group float-right">
-                                    <a href="/perfil/{{ $i }}/edit" class="btn btn-default">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </a>
-                                    <a href="perfil/desativar/{{ $i }}" class="btn btn-default">
-                                        <i class="fas fa-times"></i>
-                                    </a>
-                                    <a href="perfil/{{ $i }}" class="btn btn-default">
-                                        <i class="fas fa-solid fa-eye"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    @endfor
                 </tbody>
             </table>
         </div>
         <div class="card-footer">
             <div class="row">
                 <div class="col-sm-12 col-md-5">
-                    <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
-                        Mostrando 1 à 10 de 57 entradas
-                    </div>
+
                 </div>
                 <div class="col-sm-12 col-md-7">
                     <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">

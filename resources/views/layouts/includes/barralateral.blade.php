@@ -47,7 +47,7 @@
                                 @if (Request::segment(1) == 'modulo' || Request::segment(1) == 'permissao' || Request::segment(1) == 'perfil') class="nav-link active"  @else   class="nav-link" @endif>
                                 <i class="nav-icon far fa-user"></i>
                                 <p>
-                                    Perfis
+                                    Grupo
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>

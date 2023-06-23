@@ -20,8 +20,8 @@
                         <td><b>Cnpj: </b> {{ $colaborador->cnpj }}</td>
                     </tr>
                     <tr>
-                        <td><b>Cargo: </b> {{ $colaborador->empresa->nome }}</td>
-                        <td><b>Empresa: </b> {{ $colaborador->cargo->nome }}</td>
+                        <td><b> Empresa:</b> {{ $colaborador->empresa->nome }}</td>
+                        <td><b>Cargo: </b> {{ $colaborador->cargo->nome }}</td>
                         <td></td>
                     </tr>
                 </tbody>

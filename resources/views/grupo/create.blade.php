@@ -8,11 +8,11 @@
                         @csrf
                         <div class="card-body">
                             <div class="form-group">
-                                <label>Nome Perfil</label>
+                                <label>Nome:</label>
                                 <input type="text" name="nome" class="form-control" placeholder="perfil">
                             </div>
                             <div class="form-group">
-                                <label>Descrição</label>
+                                <label>Descrição:</label>
                                 <input type="text" name="descricao" class="form-control" placeholder="Breve descrição">
                             </div>
                         </div>

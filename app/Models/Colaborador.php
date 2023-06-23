@@ -11,6 +11,19 @@ class Colaborador extends Model
 
     protected $table = "colaboradores";
 
+    protected $fillable = [
+        'nome',
+        'sobrenome',
+        'empresa_id',
+        'cargo_id',
+        'email',
+        'rg',
+        'cpf',
+        'cnpj',
+        'foto',
+    ];
+
+
     public function empresa()
     {
         return $this->BelongsTo(Empresa::class);
@@ -19,11 +32,5 @@ class Colaborador extends Model
     public function cargo()
     {
         return $this->BelongsTo(Cargo::class);
-    }
-
-    //tem um 
-    public function usuario()
-    {
-        return $this->hasOne(Usuario::class);
     }
 }

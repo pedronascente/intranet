@@ -44,10 +44,7 @@
         </div>
         <div class="card-footer ">
             <div class="row">
-                <div class="col-sm-12 col-md-5">
-                    <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
-                        Mostrando 1 à 10 de 57 entradas</div>
-                </div>
+
                 <div class="col-sm-12 col-md-7">
                     {!! $collection->links() !!}
                 </div>

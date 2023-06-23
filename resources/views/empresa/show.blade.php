@@ -5,21 +5,49 @@
             <h3 class="card-title">Detalhes</h3>
         </div>
         <div class="card-body">
-            <div>
-                <table class="table table-sm">
-                    <tbody>
+
+            <table class="table table-sm">
+                <tbody>
+                    <tr>
+                        <td colspan="2"><b>ID :</b> {{ $empresa->id }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Nome :</b> {{ $empresa->nome }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>CNPJ :</b> {{ $empresa->cnpj }}</td>
+                    </tr>
+                </tbody>
+                @if ($empresa->colaboradores->count() >= 1)
+                    <tfooter>
                         <tr>
-                            <td colspan="2"><b>ID :</b> {{ $empresa->id }}</td>
+                            <td>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Colaboradores</th>
+                                            <th style="width: 40px">Visualizar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($empresa->colaboradores as $colaborador)
+                                            <tr>
+                                                <td>{{ $colaborador->nome }}</td>
+                                                <td>
+                                                    <a href="/colaborador/{{ $colaborador->id }}"
+                                                        class="btn  btn-xs btn-default" title="Visualizar">
+                                                        <i class="fas fa-solid fa-eye  "></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </td>
                         </tr>
-                        <tr>
-                            <td><b>Nome :</b> {{ $empresa->nome }}</td>
-                        </tr>
-                        <tr>
-                            <td><b>CNPJ :</b> {{ $empresa->cnpj }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                    </tfooter>
+                @endif
+            </table>
         </div>
         <div class="card-footer">
             <div class="btn-group ">

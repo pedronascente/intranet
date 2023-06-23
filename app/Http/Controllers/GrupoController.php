@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Modulo;
+use App\Models\Grupo;
 use App\Models\Permissao;
 
 class GrupoController extends Controller
 {
     public function index()
     {
-        return view('grupo.index');
+        $collection = Grupo::orderBy('id', 'desc')->paginate(6);
+        return view('grupo.index', ['collections' => $collection]);
     }
 
     public function create()
@@ -25,7 +27,20 @@ class GrupoController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->all());
+
+        if ($this->validarFormulario($request)) {
+            return redirect()
+                ->back()
+                ->withInput($request->all());
+        } else {
+            $grupo = new Grupo();
+            $grupo->nome = $request->nome;
+            $grupo->descricao = $request->descricao;
+            $grupo->save();
+            return redirect()
+                ->action('App\Http\Controllers\GrupoController@index')
+                ->with('status', "Registrado com sucesso!");
+        }
     }
 
     public function edit($id)
@@ -36,5 +51,20 @@ class GrupoController extends Controller
     public function desativar($id)
     {
         dd($id);
+    }
+
+    private function validarFormulario(Request $request)
+    {
+        $request->validate(
+            [
+                'nome' => 'required|max:190|min:3',
+                'descricao' => 'required',
+            ],
+            [
+                'grupo.nome' => 'Campo obrigatório.',
+                'grupo.descricao' => 'Campo obrigatório.',
+
+            ]
+        );
     }
 }

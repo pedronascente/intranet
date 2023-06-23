@@ -87,7 +87,8 @@ class ColaboradorController extends Controller
 
         if ($request->hasFile('foto')) {
             $destino = 'img/colaborador/' . $colaborador->foto;
-            if (File::exists($destino)) {
+
+            if ($colaborador->foto != 'dummy-round.png' && File::exists($destino)) {
                 File::delete($destino);
             }
             $colaborador->foto = $this->upload($request);
@@ -107,8 +108,10 @@ class ColaboradorController extends Controller
         //redireciona para lista , com a mensagem para usuario.
 
         $colaborador = Colaborador::findOrFail($id);
+
         $destino = 'img/colaborador/' . $colaborador->foto;
-        if (File::exists($destino)) {
+
+        if ($colaborador->foto != 'dummy-round.png' && File::exists($destino)) {
             File::delete($destino);
         }
 
