@@ -1,51 +1,45 @@
 @extends('layouts.app')
 @section('content')
-    <div class="card col-md-5">
-        <div class="card-header  text-center">
+    <div class="card col-md-12">
+        <div class="card-header  ">
+
             <h3><img src="https://assets.plugcrm.net/assets/2.0/dummy-round-352479a0a86fd5b4720729bcfa3e3834646e1b5a7a9d4d7c86ff789f67844718.png"
                     alt="" width="100"></h3>
         </div>
         <div class="card-body p-0">
             <table class="table table-sm table-striped">
                 <tbody>
+
                     <tr>
-                        <td><b>Nome: </b> Pedro jarrim</td>
+                        <td><b>status : </b>{{ $user->ativo }} </td>
+                    </tr>
+
+                    <tr>
+                        <td><b>Nome:</b> {{ $user->name }}</td>
                     </tr>
                     <tr>
-                        <td><b>Email: </b> email@bol.com</td>
+                        <td><b>Email: </b> {{ $user->email }}</td>
                     </tr>
                     <tr>
-                        <td><b>RG:</b> 888888888</td>
-                    </tr>
-                    <tr>
-                        <td><b>CPF: </b> 888.888.888.95</td>
-                    </tr>
-                    <tr>
-                        <td><b>CNPJ: </b> 44.444.44444-98</td>
-                    </tr>
-                    <tr>
-                        <td><b>Empresa: </b> Empresa Volpato</td>
-                    </tr>
-                    <tr>
-                        <td><b>Grupo: </b> Monitoramento</td>
-                    </tr>
-                    <tr>
-                        <td><b>Status: </b> Ativo</td>
+                        <td>
+                            <b>Perfil: </b><br>
+                            <a href="/perfil/{{ $user->grupo->id }}" class="btn btn-default" title="Voltar">
+                                {{ $user->grupo->nome }}
+                            </a>
+                        </td>
+
                     </tr>
                 </tbody>
                 <tfooter>
                     <tr>
-                        <td class="text-center">
+                        <td>
                             <div class="btn-group ">
-                                <a href="/usuario/{{ 1 }}/edit" class="btn btn-default" title="Editar">
+                                <a href="/usuario/{{ $user->id }}/edit" class="btn btn-default" title="Editar">
                                     <i class="fas fa-pencil-alt"></i>
                                 </a>
-                                <form action="{{ route('usuario.destroy', 1) }}" method="post" title="Desativar">
+                                <form action="{{ route('usuario.destroy', $user->id) }}" method="post" title="Desativar">
                                     @method('DELETE')
                                     @csrf
-                                    <button type="submit" class="btn btn-default">
-                                        <i class="fa fa-toggle-on" aria-hidden="true"></i>
-                                    </button>
                                 </form>
                                 <a href="/usuario" class="btn btn-default" title="Voltar">
                                     <i class="fa fa-reply" aria-hidden="true"></i>

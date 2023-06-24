@@ -9,7 +9,11 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label>Nome:</label>
-                                <input type="text" name="nome" class="form-control" placeholder="perfil">
+                                <input type="text" name="nome" class="form-control @error('nome') is-invalid  @enderror"
+                                    placeholder="nome" value="{{ old('nome') }}">
+                                @error('nome')
+                                    <span class=" invalid-feedback">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label>Descrição:</label>
@@ -38,7 +42,6 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-
                                         @if ($modulos)
                                             @foreach ($modulos as $item)
                                                 <tr>
@@ -46,13 +49,13 @@
                                                         <div class="custom-control custom-checkbox">
                                                             <input class="custom-control-input" type="checkbox"
                                                                 id="moduloCheckbox{{ $item->id }}"
-                                                                value="{{ $item->id }}" name="modulo_id[]">
+                                                                value="{{ $item->id }}" name="modulo[]">
                                                             <label for="moduloCheckbox{{ $item->id }}"
                                                                 class="custom-control-label"></label>
                                                         </div>
                                                     </td>
                                                     <td>{{ $item->nome }}</td>
-                                                    <td>MÓDULO BLÁ BLÁ</td>
+                                                    <td>{{ $item->descricao }}</td>
 
                                                     @if ($permissoes)
                                                         @foreach ($permissoes as $permissao)

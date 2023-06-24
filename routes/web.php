@@ -15,15 +15,24 @@ Route::resource('/colaborador', ColaboradorController::class);
 Route::resource('/empresa', EmpresaController::class);
 Route::resource('/cargo', CargoController::class);
 Route::resource('/permissao', PermissaoController::class);
+Route::resource('/perfil', GrupoController::class);
 
 Route::get('usuario/register', [RegisteredUserController::class, 'create'])->name('register');
 Route::post('register', [RegisteredUserController::class, 'store'])->name('user.store');
 Route::prefix('/usuario')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('usuario');
     Route::delete('/destroy', [UserController::class, 'destroy'])->name('usuario.destroy');
+    Route::get('/{id}', [UserController::class, 'show'])->name('usuario.show');
 });
 
-Route::resource('/perfil', GrupoController::class);
+
+
+
+
+
+
+
+
 Route::resource('/modulo', ModuloController::class);
 Route::get('/perfil/desativar/{id}', [GrupoController::class, 'desativar']);
 Route::resource('/', LoginController::class);

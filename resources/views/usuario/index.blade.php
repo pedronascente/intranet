@@ -52,9 +52,7 @@
                                             title="Desativar">
                                             @method('DELETE')
                                             @csrf
-                                            <button type="submit" class="btn btn-default">
-                                                <i class="fa fa-toggle-on" aria-hidden="true"></i>
-                                            </button>
+
                                         </form>
                                         <a href="usuario/{{ $item->id }}" class="btn btn-default" title="Visualizar">
                                             <i class="fas fa-solid fa-eye"></i>

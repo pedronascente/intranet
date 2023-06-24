@@ -19,4 +19,10 @@ class UserController extends Controller
             ->action('App\Http\Controllers\UsuarioController@index')
             ->with('status', "Inativado com sucesso!");
     }
+
+    public function show($id)
+    {
+        $user = User::with('grupo')->findOrFail($id);
+        return view('usuario.show', ['user' => $user]);
+    }
 }
