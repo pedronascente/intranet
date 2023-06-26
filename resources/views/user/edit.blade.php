@@ -1,17 +1,20 @@
 @extends('layouts.app')
 @section('content')
     <div class="card card-primary">
-        <form action="{{ route('user.store') }}" method="POST">
+        <form action="{{ route('user.update', $user->id) }}" method="POST">
             @csrf
+            @method('PUT')
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label>Ativo:</label>
+                            <label>Ativo: </label>
                             <select name="ativo" class="custom-select">
-                                <option value="on" @if (old('ativo') == 'on') selected @endif>
+                                <option value="on" @if ($user->ativo == 'on') selected @endif
+                                    @if (old('ativo') == 'on') selected @endif>
                                     Sim</option>
-                                <option value="off" @if (old('ativo') == 'off') selected @endif>
+                                <option value="off" @if ($user->ativo == 'off') selected @endif
+                                    @if (old('ativo') == 'off') selected @endif>
                                     Não</option>
                             </select>
                         </div>
@@ -22,7 +25,7 @@
                         <div class="form-group">
                             <label>Usuário:</label>
                             <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
-                                placeholder="name" value="{{ old('name') }}">
+                                placeholder="name" value="{{ old('name') }} {{ $user->name }}">
                             @error('name')
                                 <span class=" invalid-feedback">{{ $message }}</span>
                             @enderror
@@ -69,7 +72,7 @@
                         <div class="form-group">
                             <label>Email:</label>
                             <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
-                                placeholder="email" value="{{ old('email') }}">
+                                placeholder="email" value="{{ old('email') }} {{ $user->email }}">
                             @error('email')
                                 <span class=" invalid-feedback">{{ $message }}</span>
                             @enderror
@@ -84,7 +87,8 @@
                                 <option value="">Selecione...</option>
                                 @if ($grupos)
                                     @foreach ($grupos as $item)
-                                        <option value="{{ $item->id }}"
+                                        <option value="{{ $item->id }} "
+                                            @if ($user->grupo->id == $item->id) selected @endif
                                             @if (old('grupo')) selected @endif>
                                             {{ $item->nome }}</option>
                                     @endforeach

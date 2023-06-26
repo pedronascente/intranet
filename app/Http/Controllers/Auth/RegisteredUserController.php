@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Grupo;
-use App\Providers\RouteServiceProvider;
+//use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -36,6 +36,7 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'ativo' => ['required', 'string'],
+            'grupo' => ['required'],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password_confirmation' => ['required'],
@@ -55,11 +56,14 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'ativo' => $request->ativo,
-            'grupo_id' => $request->grupo_id,
+            'grupo_id' => $request->grupo,
             'password' => Hash::make($request->password),
         ]);
         event(new Registered($user));
         Auth::login($user);
-        return redirect(route('usuario'));
+        return redirect()
+            ->action('App\Http\Controllers\UserController@index')
+
+            ->with('status', "Registrado com sucesso!");
     }
 }

@@ -3,8 +3,8 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
-                <a href="{{ route('empresa.create') }}" class="btn btn-block bg-gradient-primary btn-sm">
-                    Novo
+                <a href="{{ route('empresa.create') }}" class="btn btn-block bg-gradient-primary btn-md">
+                    Novo registro
                 </a>
             </h3>
         </div>
@@ -14,7 +14,7 @@
                     <tr>
                         <th>Empresa</th>
                         <th>Cnpj</th>
-                        <th width="5%" class="text-center">Permissões</th>
+                        <th width="10%" class="text-center">Permissões</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -24,20 +24,22 @@
                                 <td>{{ $item->nome }}</td>
                                 <td>{{ $item->cnpj }}</td>
                                 <td>
-                                    <div class="btn-group float-right">
-                                        <a href="/empresa/{{ $item->id }}/edit" class="btn btn-sm btn-default">
-                                            <i class="fas fa-pencil-alt"></i>
+                                    <div class=" float-right">
+                                        <a href="/empresa/{{ $item->id }}/edit" class="btn btn-md btn-primary">
+                                            <i class="fas fa-pencil-alt"></i> Editar
                                         </a>
-                                        <form action="{{ route('empresa.destroy', $item->id) }}" method="post">
+                                        <a href="empresa/{{ $item->id }}" class="btn  btn-md btn-warning">
+                                            <i class="fas fa-solid fa-eye"></i> Visualizar
+                                        </a>
+                                        <form action="{{ route('empresa.destroy', $item->id) }}" method="post"
+                                            style="display: inline">
                                             @method('DELETE')
                                             @csrf
-                                            <button type="submit" class="btn  btn-sm btn-default">
-                                                <i class="fas fa-times"></i>
+                                            <button type="submit" class="btn  btn-md btn-danger">
+                                                <i class="fas fa-times"></i> Deletar
                                             </button>
                                         </form>
-                                        <a href="empresa/{{ $item->id }}" class="btn  btn-sm btn-default">
-                                            <i class="fas fa-solid fa-eye"></i>
-                                        </a>
+
                                     </div>
                                 </td>
                             </tr>

@@ -17,21 +17,15 @@ Route::resource('/cargo', CargoController::class);
 Route::resource('/permissao', PermissaoController::class);
 Route::resource('/perfil', GrupoController::class);
 
-Route::get('usuario/register', [RegisteredUserController::class, 'create'])->name('register');
-Route::post('register', [RegisteredUserController::class, 'store'])->name('user.store');
-Route::prefix('/usuario')->group(function () {
-    Route::get('/', [UserController::class, 'index'])->name('usuario');
-    Route::delete('/destroy', [UserController::class, 'destroy'])->name('usuario.destroy');
-    Route::get('/{id}', [UserController::class, 'show'])->name('usuario.show');
+Route::prefix('/user')->group(function () {
+    Route::get('/', [UserController::class, 'index']);
+    Route::get('/register', [RegisteredUserController::class, 'create'])->name('user.register');
+    Route::post('/register', [RegisteredUserController::class, 'store'])->name('user.store');
+    Route::get('/{id}', [UserController::class, 'show'])->name('user.show');
+    Route::get('/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
+    Route::put('/update/{id}', [UserController::class, 'update'])->name('user.update');
+    Route::delete('/destroy', [UserController::class, 'destroy'])->name('user.destroy');
 });
-
-
-
-
-
-
-
-
 
 Route::resource('/modulo', ModuloController::class);
 Route::get('/perfil/desativar/{id}', [GrupoController::class, 'desativar']);

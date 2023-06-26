@@ -3,8 +3,8 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
-                <a href="{{ route('cargo.create') }}" class="btn btn-block bg-gradient-primary btn-sm">
-                    Novo
+                <a href="{{ route('cargo.create') }}" class="btn btn-block bg-gradient-primary btn-md">
+                    Novo registro
                 </a>
             </h3>
         </div>
@@ -22,15 +22,16 @@
                             <tr>
                                 <td>{{ $item->nome }}</td>
                                 <td>
-                                    <div class="btn-group float-right">
-                                        <a href="/cargo/{{ $item->id }}/edit" class="btn btn-sm btn-default">
-                                            <i class="fas fa-pencil-alt"></i>
+                                    <div class="float-right">
+                                        <a href="/cargo/{{ $item->id }}/edit" class="btn btn-md btn-primary">
+                                            <i class="fas fa-pencil-alt"></i> Editar
                                         </a>
-                                        <form action="{{ route('cargo.destroy', $item->id) }}" method="post">
+                                        <form action="{{ route('cargo.destroy', $item->id) }}" method="post"
+                                            style="display: inline">
                                             @method('DELETE')
                                             @csrf
-                                            <button type="submit" class="btn  btn-sm btn-default">
-                                                <i class="fas fa-times"></i>
+                                            <button type="submit" class="btn  btn-md btn-danger">
+                                                <i class="fas fa-times"></i> Excluir
                                             </button>
                                         </form>
 

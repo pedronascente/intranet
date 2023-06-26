@@ -27,8 +27,7 @@
                                             <tr>
                                                 <td>
 
-                                                    <a href="/usuario/{{ $user->id }}" class="btn btn-default"
-                                                        title="Voltar">
+                                                    <a href="/user/{{ $user->id }}" class="btn btn-default" title="Voltar">
                                                         <b> Nome:</b> {{ $user->name }}
                                                     </a>
                                                     <ul>
@@ -76,10 +75,3 @@
         </div>
     </div>
 @endsection
-<!--
-
-<a href="/usuario/{{ $user->id }}" class="btn  btn-xs btn-default"
-                                                        title="Visualizar">
-                                                        <i class="fas fa-solid fa-eye  "></i>
-                                                    </a>
--->

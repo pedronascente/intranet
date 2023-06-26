@@ -16,6 +16,7 @@ class Colaborador extends Model
         'sobrenome',
         'empresa_id',
         'cargo_id',
+        'user_id',
         'email',
         'rg',
         'cpf',
@@ -32,5 +33,9 @@ class Colaborador extends Model
     public function cargo()
     {
         return $this->BelongsTo(Cargo::class);
+    }
+    public function User()
+    {
+        return $this->BelongsTo(User::class);
     }
 }

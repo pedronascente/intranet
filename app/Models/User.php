@@ -40,6 +40,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function colaborador()
+    {
+        return $this->hasOne(Colaborador::class);
+    }
+
     public function grupo()
     {
         return $this->belongsTo(Grupo::class, 'grupo_id', 'id');

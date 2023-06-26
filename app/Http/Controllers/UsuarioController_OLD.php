@@ -24,7 +24,7 @@ class UsuarioController extends Controller
         $usuario = Usuario::findOrFail($id);
         $collection_grupo = Grupo::all();
         if ($usuario) {
-            return view('usuario.edit', [
+            return view('user.edit', [
                 'usuario' => $usuario,
                 'collection_grupo' => $collection_grupo,
             ]);

@@ -120,9 +120,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <input type="submit" class="btn btn-primary" value="Editar">
-                </div>
+            </div>
+            <div class="card-footer">
+                <input type="submit" class="btn btn-primary" value="Salvar">
+            </div>
         </form>
     </div>
 @endsection

@@ -24,9 +24,10 @@
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
                 </div>
-                <div class="card-footer">
-                    <input type="submit" class="btn btn-primary" value="Salvar">
-                </div>
+            </div>
+            <div class="card-footer">
+                <input type="submit" class="btn btn-primary" value="Salvar">
+            </div>
         </form>
     </div>
 @endsection
