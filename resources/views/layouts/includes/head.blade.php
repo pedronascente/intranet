@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Intranet | {{ ucfirst(Request::segment(1)) }}</title>
+    <title>{{ ucfirst(Request::segment(1)) }}</title>
     <link rel="shortcut icon" href="{{ asset('dist/img/favicon96x96.png') }}">
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"

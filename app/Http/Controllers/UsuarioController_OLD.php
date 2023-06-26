@@ -9,51 +9,9 @@ use App\Models\Grupo;
 
 class UsuarioController extends Controller
 {
-    public function index()
-    {
-        $collections  =  Usuario::with(['colaborador'])->get();
 
-        return view('usuario.index', ['collections' => $collections]);
-    }
 
-    public function create()
-    {
-        return view('usuario.create');
-    }
 
-    public function store(Request $request)
-    {
-        /*
-         * a) Validar.
-         * b) Instanciar Objeto.
-         * c) Salvar na base.
-         * d) Criar mensagens de status.
-         * e) Redirecionar para pagina de listagem de usuário.
-        */
-
-        //dd($request->all());
-        #a:
-        if ($this->validarFormulario($request)) {
-            return redirect()
-                ->back()
-                ->withInput($request->all());
-        } else {
-            #b: 
-            $usuario = new Usuario();
-            $usuario->ativo = $request->ativo;
-            $usuario->usuario = $request->usuario;
-            $usuario->password = $request->password;
-            $usuario->email = $request->email;
-            $usuario->colaborador_id = $request->colaborador_id;
-            $usuario->grupo_id = $request->grupo_id;
-
-            $usuario->save();
-            # d: and e:
-            return redirect()
-                ->action('App\Http\Controllers\UsuarioController@index')
-                ->with('status', "Registrado com sucesso!");
-        }
-    }
 
     public function show($id)
     {
@@ -66,7 +24,7 @@ class UsuarioController extends Controller
         $usuario = Usuario::findOrFail($id);
         $collection_grupo = Grupo::all();
         if ($usuario) {
-            return view('usuario.edit', [
+            return view('user.edit', [
                 'usuario' => $usuario,
                 'collection_grupo' => $collection_grupo,
             ]);

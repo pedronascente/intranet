@@ -20,10 +20,15 @@ class PermissaoController extends Controller
 
     public function store(Request $request)
     {
-        $this->validarFormulario($request); //Válidar Formulário.
-        $permissao = new Permissao(); //Instânciar objeto.
+        $this->validarFormulario($request);
+        if ($this->validar_duplicidade($request)) {
+            return redirect()
+                ->action('App\Http\Controllers\PermissaoController@index')
+                ->with('warning', "já existe permissão com este nome!");
+        }
+        $permissao = new Permissao();
         $permissao->nome = $request->nome;
-        $permissao->save(); //persistir dados.
+        $permissao->save();
 
         return redirect()
             ->action('App\Http\Controllers\PermissaoController@index')
@@ -60,11 +65,19 @@ class PermissaoController extends Controller
     {
         $request->validate(
             [
-                'nome' => 'required|max:190|min:2',
+                'nome' => 'required|max:190',
             ],
             [
                 'nome.required' => 'Campo obrigatório.',
             ]
         );
+    }
+
+    private function validar_duplicidade(Request $request)
+    {
+        $duplicado = Permissao::where('nome', $request->nome)
+            ->get()->count();
+
+        return $duplicado;
     }
 }

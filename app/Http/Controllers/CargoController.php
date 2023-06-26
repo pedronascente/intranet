@@ -20,20 +20,19 @@ class CargoController extends Controller
 
     public function store(Request $request)
     {
-        if ($this->validarFormulario($request)) {
-            return redirect()
-                ->back()
-                ->withInput($request->all());
-        } else {
-
-            $cargo = new Cargo();
-            $cargo->nome = $request->nome;
-            $cargo->save();
-
+        $this->validarFormulario($request);
+        if ($this->validar_duplicidade($request)) {
             return redirect()
                 ->action('App\Http\Controllers\CargoController@index')
-                ->with('status', "Registrado com sucesso!");
+                ->with('warning', "já existe um cargo com este nome!");
         }
+        $cargo = new Cargo();
+        $cargo->nome = $request->nome;
+        $cargo->save();
+
+        return redirect()
+            ->action('App\Http\Controllers\CargoController@index')
+            ->with('status', "Registrado com sucesso!");
     }
 
     public function edit($id)
@@ -57,7 +56,18 @@ class CargoController extends Controller
 
     public function destroy($id)
     {
-        dd($id);
+        $c = Cargo::findOrFail($id);
+        $colaboradores =  $c->colaboradores->count();
+        if ($colaboradores >= 1) {
+            return redirect()
+                ->action('App\Http\Controllers\CargoController@index')
+                ->with('warning', "Este cargo tem colaborador associado, por tanto não pode ser excluida.");
+        }
+
+        $c->delete();
+        return redirect()
+            ->action('App\Http\Controllers\CargoController@index')
+            ->with('status', "Registro Excluido!");
     }
 
     private function validarFormulario(Request $request)
@@ -70,5 +80,13 @@ class CargoController extends Controller
                 'nome.required' => 'Campo obrigatório.',
             ]
         );
+    }
+
+    private function validar_duplicidade(Request $request)
+    {
+        $duplicado = Cargo::where('nome', $request->nome)
+            ->get()->count();
+
+        return $duplicado;
     }
 }

@@ -24,7 +24,7 @@ class EmpresaController extends Controller
         if ($this->validar_duplicidade($request)) {
             return redirect()
                 ->action('App\Http\Controllers\EmpresaController@index')
-                ->with('warning', "Registro já está cadastrado!");
+                ->with('warning', "já existe uma empresa com este nome, ou cnpj!");
         }
         $empresa = new Empresa(); //Instânciar objeto.
         $empresa->nome = $request->nome;
@@ -53,7 +53,7 @@ class EmpresaController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->validarFormulario($request); //Válidar Formulário.
+        $this->validarFormulario($request);
         $empresa = Empresa::findOrFail($id);
         $empresa->nome = $request->nome;
         $empresa->cnpj = $request->cnpj;
@@ -63,14 +63,12 @@ class EmpresaController extends Controller
 
     public function destroy($id)
     {
-        $empresa = Empresa::findOrFail($id);
-        $colaboradores =  $empresa->colaboradores->count();
-        if ($colaboradores >= 1) {
+        $empresa = Empresa::with('colaboradores')->findOrFail($id);
+        if ($empresa->colaboradores->count() >= 1) {
             return redirect()
                 ->action('App\Http\Controllers\EmpresaController@index')
                 ->with('warning', "Esta empresa tem colaborador associado, por tanto não pode ser excluida.");
         }
-
         $empresa->delete();
         return redirect()
             ->action('App\Http\Controllers\EmpresaController@index')

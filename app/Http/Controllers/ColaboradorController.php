@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cargo;
 use App\Models\Empresa;
+use App\Models\User;
 use App\Models\Colaborador;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -87,7 +88,8 @@ class ColaboradorController extends Controller
 
         if ($request->hasFile('foto')) {
             $destino = 'img/colaborador/' . $colaborador->foto;
-            if (File::exists($destino)) {
+
+            if ($colaborador->foto != 'dummy-round.png' && File::exists($destino)) {
                 File::delete($destino);
             }
             $colaborador->foto = $this->upload($request);
@@ -99,21 +101,31 @@ class ColaboradorController extends Controller
 
     public function destroy($id)
     {
-        //Buscar objeto na base de dados.
-        //mapeia onde o arquivo esta armazenado.
-        //verifica se existe um arquivo armazenado com o nome recuperado na base de dados.
-        //caso existir deletar o arquivo.
-        //delete o regostro na base de dados.
-        //redireciona para lista , com a mensagem para usuario.
-
-        $colaborador = Colaborador::findOrFail($id);
+        $colaborador = Colaborador::with('user')->findOrFail($id);
+        if ($colaborador->user) {
+            return redirect()
+                ->action('App\Http\Controllers\ColaboradorController@index')
+                ->with('warning', "Este colaborador tem um usuario associado, por tanto não pode ser excluida.");
+        }
         $destino = 'img/colaborador/' . $colaborador->foto;
-        if (File::exists($destino)) {
+        if ($colaborador->foto != 'dummy-round.png' && File::exists($destino)) {
             File::delete($destino);
         }
-
         $colaborador->delete();
-        return redirect('colaborador')->with('status', 'Registro Excluido com sucesso'); //retorna resultado.
+        return redirect('colaborador')->with('status', 'Registro Excluido com sucesso');
+    }
+
+    private function upload(Request $request)
+    {
+        //Verifica se informou o arquivo  e se é valido. 
+        if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
+            $requestImagem = $request->foto;
+            $extension = $requestImagem->extension();
+            $imagemName = md5($requestImagem->getClientOriginalName() . strtotime('now')) . '.' . $extension;
+            $requestImagem->move(public_path('img/colaborador'), $imagemName);
+            return $imagemName;
+        }
+        return false;
     }
 
     private function validarFormulario(Request $request)
@@ -138,18 +150,5 @@ class ColaboradorController extends Controller
                 'cargo_id.required' => 'Campo obrigatório.',
             ]
         );
-    }
-
-    private function upload(Request $request)
-    {
-        //Verifica se informou o arquivo  e se é valido. 
-        if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
-            $requestImagem = $request->foto;
-            $extension = $requestImagem->extension();
-            $imagemName = md5($requestImagem->getClientOriginalName() . strtotime('now')) . '.' . $extension;
-            $requestImagem->move(public_path('img/colaborador'), $imagemName);
-            return $imagemName;
-        }
-        return false;
     }
 }

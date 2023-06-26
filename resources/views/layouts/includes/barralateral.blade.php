@@ -22,7 +22,7 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
                 <li @if (Request::segment(1) == 'perfil' ||
-                        Request::segment(1) == 'usuario' ||
+                        Request::segment(1) == 'user' ||
                         Request::segment(1) == 'empresa' ||
                         Request::segment(1) == 'cargo' ||
                         Request::segment(1) == 'colaborador' ||
@@ -31,7 +31,7 @@
 
                     <a href="#"
                         @if (Request::segment(1) == 'perfil' ||
-                                Request::segment(1) == 'usuario' ||
+                                Request::segment(1) == 'user' ||
                                 Request::segment(1) == 'empresa' ||
                                 Request::segment(1) == 'cargo' ||
                                 Request::segment(1) == 'colaborador' ||
@@ -47,7 +47,7 @@
                                 @if (Request::segment(1) == 'modulo' || Request::segment(1) == 'permissao' || Request::segment(1) == 'perfil') class="nav-link active"  @else   class="nav-link" @endif>
                                 <i class="nav-icon far fa-user"></i>
                                 <p>
-                                    Perfis
+                                    Grupo
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
@@ -111,9 +111,9 @@
                             </ul>
                         </li>
                         <li
-                            @if (Request::segment(1) == 'usuario' || Request::segment(1) == 'cartao') class="nav-item  menu-open"  @else   class="nav-item" @endif>
+                            @if (Request::segment(1) == 'user' || Request::segment(1) == 'cartao') class="nav-item  menu-open"  @else   class="nav-item" @endif>
                             <a href="#"
-                                @if (Request::segment(1) == 'usuario' || Request::segment(1) == 'cartao') class="nav-link active"  @else   class="nav-link" @endif>
+                                @if (Request::segment(1) == 'user' || Request::segment(1) == 'cartao') class="nav-link active"  @else   class="nav-link" @endif>
                                 <i class="nav-icon far fa-user"></i>
                                 <p>
                                     Usuário
@@ -122,8 +122,8 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="/usuario"
-                                        @if (Request::segment(1) == 'usuario') class="nav-link active"  @else   class="nav-link" @endif>
+                                    <a href="/user"
+                                        @if (Request::segment(1) == 'user') class="nav-link active"  @else   class="nav-link" @endif>
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>usuário</p>
                                     </a>

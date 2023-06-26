@@ -3,8 +3,8 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
-                <a href="{{ route('perfil.create') }}" class="btn btn-block bg-gradient-primary btn-sm">
-                    Novo
+                <a href="{{ route('user.register') }}" class="btn btn-block bg-gradient-primary btn-md">
+                    Novo registro
                 </a>
             </h3>
             <div class="card-tools">
@@ -22,9 +22,10 @@
             <table class="table table-hover text-nowrap  table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Perfil</th>
-                        <th>Descrição</th>
+                        <th width="5%">#</th>
+                        <th width="30%">Usuário</th>
+                        <th width="30%">Perfil</th>
+                        <th width="5%"> Ativo</th>
                         <th width="5%" class="text-center">Permissões</th>
                     </tr>
                 </thead>
@@ -33,20 +34,27 @@
                         @foreach ($collections as $item)
                             <tr>
                                 <td>{{ $item->id }}</td>
-                                <td>{{ $item->nome }}</td>
-                                <td>{{ $item->descricao }}</td>
+                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->grupo->nome }}</td>
                                 <td>
-                                    <div class="btn-group float-right">
-                                        <form action="{{ route('perfil.destroy', $item->id) }}" method="post"
-                                            title="Excluir">
+                                    @if ($item->ativo == 'on')
+                                        Sim
+                                    @else
+                                        Não
+                                    @endif
+                                </td>
+                                <td>
+                                    <div class="float-right">
+                                        <a href="/user/{{ $item->id }}/edit" class="btn btn-primary" title="Editar">
+                                            <i class="fas fa-pencil-alt"></i> Editar
+                                        </a>
+                                        <form action="{{ route('user.destroy', $item->id) }}" method="post"
+                                            title="Desativar" style="display:inline">
                                             @method('DELETE')
                                             @csrf
-                                            <button type="submit" class="btn btn-default">
-                                                <i class="fas fa-times" aria-hidden="true"></i>
-                                            </button>
                                         </form>
-                                        <a href="perfil/{{ $item->id }}" class="btn btn-default" title="Visualizar">
-                                            <i class="fas fa-solid fa-eye"></i>
+                                        <a href="user/{{ $item->id }}" class="btn btn-warning" title="Visualizar">
+                                            <i class="fas fa-solid fa-eye"></i> Visualizar
                                         </a>
                                     </div>
                                 </td>
@@ -55,12 +63,6 @@
                     @endif
                 </tbody>
             </table>
-        </div>
-        <div class="card-footer">
-            <div class="row">
-
-
-            </div>
         </div>
     </div>
 @endsection
