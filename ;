@@ -1,0 +1,238 @@
+[33mcommit d5cbd6823243a576ffeb6026f7bf641ccfcfe8c4[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Merge: c7709af df6b217
+Author: intranet volpato <intranet@Volpato.local>
+Date:   Mon Jun 26 19:02:00 2023 -0300
+
+    Merge branch 'main' of https://github.com/pedronascente/intranet
+
+[33mcommit df6b217280f167b05e2d04335c21aa0d96971551[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Mon Jun 26 18:59:39 2023 -0300
+
+    foi refatorado front end da aplicação, e add cadastro e edição de usuario
+
+[33mcommit 238ca647518c731c938ec7c4347985267e324348[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Fri Jun 23 22:41:56 2023 -0300
+
+    foi add iniciado a implementacao do relacionamento das tabelas grupo e modulos n:n
+
+[33mcommit c6c79b393822ef0c608fccf0f1d684eb7fff6e81[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Fri Jun 23 20:31:06 2023 -0300
+
+    as migrations foram modificadas, e o cadastro de usuario foi implementado
+
+[33mcommit c7709af2a4bcdc3aa2a41dc255f65be3eefa5511[m
+Merge: 9549b5b 674a7d2
+Author: intranet volpato <intranet@Volpato.local>
+Date:   Mon Jun 19 17:33:16 2023 -0300
+
+    Merge branch 'main' of https://github.com/pedronascente/intranet
+
+[33mcommit 674a7d2dd7feacb48d519aba09ef330f38ac6176[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Fri Jun 16 19:44:24 2023 -0300
+
+    foi add regras de validações no modulo empresa
+
+[33mcommit 575b02d5b35ba531d16160951e78b19cd97a46ff[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Wed Jun 14 20:29:49 2023 -0300
+
+    modificaçoes no modulo de grupo
+
+[33mcommit 9549b5bae03b48f7b2b80e56e3990d10c6cb4918[m
+Merge: b1943f4 e73f34e
+Author: intranet volpato <intranet@Volpato.local>
+Date:   Fri Jun 9 17:28:57 2023 -0300
+
+    Merge branch 'main' of https://github.com/pedronascente/intranet
+
+[33mcommit e73f34e29f04813c41a737cf765bbd3d4a798c27[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Fri Jun 9 17:28:22 2023 -0300
+
+    agora sexta
+
+[33mcommit b1943f43b381cc6b9785cff65cc7c53e9beff06e[m
+Merge: 78d3b08 cc9db0d
+Author: intranet volpato <intranet@Volpato.local>
+Date:   Fri Jun 9 17:21:04 2023 -0300
+
+    Merge branch 'main' of https://github.com/pedronascente/intranet
+    eefeff
+
+[33mcommit cc9db0d57cd337d6dfcbd5070e80e92ae5ff8809[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Fri Jun 9 17:20:09 2023 -0300
+
+    implementacao do crud usuario
+
+[33mcommit 78d3b08a9324cac2f208159674754c762ca111db[m
+Merge: ea856db 00ef780
+Author: intranet volpato <intranet@Volpato.local>
+Date:   Tue Jun 6 19:47:41 2023 -0300
+
+    Merge branch 'main' of https://github.com/pedronascente/intranet
+
+[33mcommit ea856db14d4977ca8663befd90458842c5104466[m
+Author: intranet volpato <intranet@Volpato.local>
+Date:   Tue Jun 6 19:47:33 2023 -0300
+
+    img colaborador
+
+[33mcommit 00ef78085de84ac8217ae538dd86afa85d468a4b[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Tue Jun 6 19:45:41 2023 -0300
+
+    foi addicionado pagina authtoken
+
+[33mcommit 7ef6c7a6056a8d73d37f0183fb336c51a464e723[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Tue Jun 6 18:29:23 2023 -0300
+
+    implementação do modulo permissao
+
+[33mcommit 0649d89ffbd9af739037e4f86fd46b017546cb36[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Tue Jun 6 16:27:21 2023 -0300
+
+    deletado img colaborador
+
+[33mcommit 48c5382bac996482e8b7180c347a69c4f1916202[m
+Merge: 5507963 cf346f8
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Tue Jun 6 16:22:48 2023 -0300
+
+    Merge branch 'main' of https://github.com/pedronascente/intranet
+    atualizacao do modulo colaborador
+
+[33mcommit 550796328510bb2841c0ebc62bc82f7a49a12567[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Tue Jun 6 15:53:42 2023 -0300
+
+    Implementado upload de imagens no modulo de colaborador
+
+[33mcommit cf346f83b731f0442e605e068bc130b259282bd6[m
+Merge: 36277c3 ccb3d1e
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Mon Jun 5 20:27:05 2023 -0300
+
+    Merge pull request #1 from pedronascente/usuario
+    
+    Usuario
+
+[33mcommit ccb3d1ee4f61329bbe13d9e7ca5b309544ddb63d[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Mon Jun 5 20:23:39 2023 -0300
+
+    update-05-06
+
+[33mcommit 22846a02fd20db43cfd976f7a99f1fc909cfbe74[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Mon Jun 5 17:09:47 2023 -0300
+
+    atualizacoes
+
+[33mcommit 1a7c8e25873588703897edfe1b2277b56fe7f8c5[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Thu Jun 1 20:55:02 2023 -0300
+
+    up
+
+[33mcommit 280c968f23451260da5e21216b6950c778d58b6b[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Thu Jun 1 13:38:09 2023 -0300
+
+    inicializando crud do modulo usuario
+
+[33mcommit 36277c31f81722dc8f9d34fdf13bfd4102c530ea[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Fri May 26 19:08:13 2023 -0300
+
+    Foi modificado as controllers dos modulos empresa,modulo
+
+[33mcommit 2205062c0f5a89373201995cf93e2d89dc1c2c2e[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Fri May 26 11:18:19 2023 -0300
+
+    correção no btn editar do arquivo show.blade.php
+
+[33mcommit 63b919bac2cfe6aedceea390e0ab1c0acdb3719f[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Thu May 25 20:30:09 2023 -0300
+
+    modificado arquivo AppServiceProvider
+
+[33mcommit f88359c4a79f660d76812525ff2954e96ee0efdc[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Thu May 25 20:13:01 2023 -0300
+
+    finalizado o crud backend do modulo empresa
+
+[33mcommit 95358b9320828915329eb4f7b3f95971e6185f13[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Wed May 24 18:01:49 2023 -0300
+
+    Foi add um novo modulo
+
+[33mcommit d40426f7d23ed74213efbfe6fe36d01174714fec[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Wed May 24 16:14:42 2023 -0300
+
+    modificações no modulo de uauario
+
+[33mcommit 44e563edf8a934f4590f1027e50f5932445bc484[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Tue May 23 17:43:33 2023 -0300
+
+    Finalizado crud - parte da view
+
+[33mcommit 40876321b65d5ddd076da61d1a2ffa207c883f1e[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Mon May 22 18:30:57 2023 -0300
+
+    inicializando crud
+
+[33mcommit bea78c31d1d440cecfd9f86fd8ec91bf0c7e6c8e[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Fri May 19 11:44:32 2023 -0300
+
+    foi modificado as paginas barralateral.blade.php e a pagina head.blade.php
+
+[33mcommit a6d1f0e014550992ae388bbd9bf6d0f298e654dc[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Thu May 18 16:49:10 2023 -0300
+
+    foi refatorado a barra lateral e add alguns modulos de exemplo
+
+[33mcommit ecf8d48867424af1a7ce3454583c72c8a2fea7a0[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Thu May 18 13:54:34 2023 -0300
+
+    novas atualizacoes
+
+[33mcommit 1f3d526a6dd2492db839720e56fe62cc995d20ad[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Wed May 17 17:55:31 2023 -0300
+
+    neste commit foi add os controllers
+
+[33mcommit f1552de318e75d5c6040dd5b050b1b03c6d4f37b[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Mon May 15 16:34:14 2023 -0300
+
+    FOI ALTERADO IMAGEM DA PAGINA DE LOGIN
+
+[33mcommit ac7caff7bd3d2620f2c9e6e4e0c6995c3f809a55[m
+Author: Pedro Nascente <nascente3d@hotmail.com>
+Date:   Mon May 15 15:38:29 2023 -0300
+
+    FOI ADD LOGO NA BARRA LATERAL , E O FAVICO
+
+[33mcommit 07b182fb9550ceae5f6b7505531368d4d94095d9[m
+Author: intranet volpato <intranet@Volpato.local>
+Date:   Mon May 15 15:02:02 2023 -0300
+
+    primeiro commit
