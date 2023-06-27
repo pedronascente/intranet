@@ -59,8 +59,8 @@ class GrupoController extends Controller
     }
     public function show($id)
     {
-        $grupo = Grupo::findOrFail($id);
-        return view('grupo.show', ['grupo' => $grupo]);
+        $perfil = Grupo::findOrFail($id);
+        return view('grupo.show', ['perfil' => $perfil]);
     }
 
     public function edit($id)

@@ -1,77 +1,110 @@
 @extends('layouts.app')
 @section('content')
-    <div class="card card-primary card-outline">
+    <div class="card">
+        <div class="card-body p-0">
+            <table class="table table-md table-striped">
+                <tr>
+                    <td><b>DADOS: </td>
+                </tr>
+            </table>
 
-        <div class="card-body">
-
-            <table class="table table-sm">
+            <table class="table table-md">
                 <tbody>
-
                     <tr>
-                        <td><b>Nome :</b> {{ $grupo->nome }}</td>
-                        <td><b>ID :</b> {{ $grupo->id }}</td>
+                        <td><b>Código :</b> {{ $perfil->id }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Perfil:</b> {{ $perfil->nome }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Descrição: </b> {{ $perfil->descricao }}</td>
                     </tr>
                 </tbody>
-                @if ($grupo->users->count() >= 1)
-                    <tfooter>
-                        <tr>
-                            <td colspan="2">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Usuario(s):</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($grupo->users as $K => $user)
-                                            <tr>
-                                                <td>
-
-                                                    <a href="/user/{{ $user->id }}" class="btn btn-default" title="Voltar">
-                                                        <b> Nome:</b> {{ $user->name }}
-                                                    </a>
-                                                    <ul>
-                                                        <li><b>Modulos:</b>
-                                                            <ul>
-                                                                <li>MODULO-00{{ $K }}
-                                                                    <ul>
-                                                                        <li>
-                                                                            <b>Permissões:</b>
-                                                                            <ul>
-                                                                                <li>editar</li>
-                                                                                <li>excluir</li>
-                                                                                <li>criar</li>
-                                                                            </ul>
-                                                                        </li>
-                                                                    </ul>
-                                                                </li>
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
-                    </tfooter>
-                @endif
             </table>
+            <table class="table table-md table-striped">
+                <tr>
+                    <td><b>USUÁRIO(S): </td>
+                </tr>
+            </table>
+            <table class="table table-md">
+                <tbody>
+                    <tr>
+                        <td>Usuario xpto 001</td>
+                        <td class="text-right">
+                            <a href="user/1" class="btn btn-warning" title="Visualizar">
+                                <i class="fas fa-solid fa-eye"></i> Visualizar
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Usuario xpto 001</td>
+                        <td class="text-right">
+                            <a href="user/1" class="btn btn-warning" title="Visualizar">
+                                <i class="fas fa-solid fa-eye"></i> Visualizar
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Usuario xpto 001</td>
+                        <td class="text-right">
+                            <a href="user/1" class="btn btn-warning" title="Visualizar">
+                                <i class="fas fa-solid fa-eye"></i> Visualizar
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-md table-striped">
+                <tr>
+                    <td><b>MÓDULOS(S): </td>
+                </tr>
+            </table>
+
+            <table class="table table-md ">
+                @for ($i = 3; $i < 10; $i++)
+                    <tr>
+                        <td>
+                            <table class="table table-sm table-striped">
+                                <tr>
+                                    <td colspan="2">
+                                        <b>RH XPTO000{{ $i }}</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <ul>
+                                            <li><b>Permissões</b>
+                                                <ul>
+                                                    <li>Editar</li>
+                                                    <li>Excluir</li>
+                                                    <li>Visualizar</li>
+                                                    <li>Criar</li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                @endfor
+            </table>
+
+
         </div>
         <div class="card-footer">
-            <div class="btn-group ">
-                <form action="/perfil/{{ $grupo->id }}" method="post">
-                    @csrf()
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-sm btn-default">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </form>
-                <a href="/perfil" class="btn  btn-sm btn-default" title="Voltar">
-                    <i class="fa fa-reply" aria-hidden="true"></i>
-                </a>
-            </div>
+            <a href="/perfil" class="btn   btn-warning" title="Voltar">
+                <i class="fa fa-reply" aria-hidden="true"></i> Voltar
+            </a>
+            <form action="/perfil/{{ $perfil->id }}" method="post" style="display:inline">
+                @csrf()
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-times"></i> Excluir
+                </button>
+            </form>
+
         </div>
     </div>
 @endsection
