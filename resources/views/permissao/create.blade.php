@@ -7,7 +7,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Nome</label>
+                            <label>Nome:</label>
                             <input type="text" name="nome" class="form-control  @error('nome') is-invalid  @enderror"
                                 placeholder="nome">
                             @error('nome')
@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary">Salvar</button>
+                <button type="submit" class="btn bg-gradient-success">Salvar</button>
             </div>
         </form>
     </div>
