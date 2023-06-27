@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-7">
+                    <div class="col-md-8">
                         <div class="form-group">
                             <label>Senha:</label>
                             <input type="text" name="password"
@@ -53,7 +53,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-4">
                         <div class="alert alert-warning alert-dismissible">
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                             <h5><i class="icon fas fa-exclamation-triangle"></i>Dicas para uma boa senha!</h5>
