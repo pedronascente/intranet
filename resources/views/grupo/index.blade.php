@@ -3,8 +3,8 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
-                <a href="{{ route('perfil.create') }}" class="btn btn-block bg-gradient-primary btn-sm">
-                    Novo
+                <a href="{{ route('perfil.create') }}" class="btn btn-block bg-gradient-primary ">
+                    Novo registro
                 </a>
             </h3>
             <div class="card-tools">
@@ -36,17 +36,18 @@
                                 <td>{{ $item->nome }}</td>
                                 <td>{{ $item->descricao }}</td>
                                 <td>
-                                    <div class="btn-group float-right">
+                                    <div class="float-right">
                                         <form action="{{ route('perfil.destroy', $item->id) }}" method="post"
-                                            title="Excluir">
+                                            title="Excluir" style="display: inline">
                                             @method('DELETE')
                                             @csrf
-                                            <button type="submit" class="btn btn-default">
-                                                <i class="fas fa-times" aria-hidden="true"></i>
+                                            <button type="submit" class="btn bg-gradient-danger">
+                                                <i class="fas fa-times" aria-hidden="true"></i> Excluir
                                             </button>
                                         </form>
-                                        <a href="perfil/{{ $item->id }}" class="btn btn-default" title="Visualizar">
-                                            <i class="fas fa-solid fa-eye"></i>
+                                        <a href="perfil/{{ $item->id }}" class="btn bg-gradient-warning"
+                                            title="Visualizar">
+                                            <i class="fas fa-solid fa-eye"></i> Visualizar
                                         </a>
                                     </div>
                                 </td>
