@@ -11,6 +11,7 @@ use App\Http\Controllers\PermissaoController;
 use App\Http\Controllers\LoginController;
 use \App\Http\Controllers\Auth\RegisteredUserController;
 
+
 Route::resource('/colaborador', ColaboradorController::class);
 Route::resource('/empresa', EmpresaController::class);
 Route::resource('/cargo', CargoController::class);

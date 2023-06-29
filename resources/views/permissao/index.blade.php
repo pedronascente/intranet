@@ -3,8 +3,8 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
-                <a href="{{ route('permissao.create') }}" class="btn btn-block bg-gradient-primary" title="Novo registro">
-                    Novo registro
+                <a href="{{ route('permissao.create') }}" class="btn btn-info btn-block " title="Adicionar nova permissão">
+                    Adicionar nova permissão
                 </a>
             </h3>
         </div>
@@ -21,21 +21,21 @@
                         @foreach ($collection as $item)
                             <tr>
                                 <td>{{ $item->nome }}</td>
-                                <td>
-                                    <div class="float-right">
-                                        <a href="/permissao/{{ $item->id }}/edit" class="btn bg-gradient-primary"
-                                            title="Editar">
-                                            <i class="fas fa-pencil-alt"></i> Editar
+                                <td class="text-center">
+                                    <a href="/permissao/{{ $item->id }}/edit" title="Editar"
+                                        style="padding-right: 10px">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="{{ route('permissao.destroy', $item->id) }}" method="post"
+                                        style="display: inline" title="Excluir">
+                                        @method('DELETE')
+                                        @csrf
+                                        <a href="{{ route('modulo.destroy', $item->id) }}"
+                                            onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                            <i class="fas fa-trash"></i>
                                         </a>
-                                        <form action="{{ route('permissao.destroy', $item->id) }}" method="post"
-                                            style="display: inline">
-                                            @method('DELETE')
-                                            @csrf
-                                            <button type="submit" class="btn bg-gradient-danger" title="Excluir">
-                                                <i class="fas fa-trash"></i> Excluir
-                                            </button>
-                                        </form>
-                                    </div>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach

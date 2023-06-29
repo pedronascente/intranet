@@ -3,8 +3,8 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
-                <a href="{{ route('perfil.create') }}" class="btn btn-block bg-gradient-primary ">
-                    Novo registro
+                <a href="{{ route('perfil.create') }}" class="btn btn-info btn-block ">
+                    Adicionar novo perfil
                 </a>
             </h3>
             <div class="card-tools">
@@ -35,21 +35,20 @@
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->nome }}</td>
                                 <td>{{ $item->descricao }}</td>
-                                <td>
-                                    <div class="float-right">
-                                        <form action="{{ route('perfil.destroy', $item->id) }}" method="post"
-                                            title="Excluir" style="display: inline">
-                                            @method('DELETE')
-                                            @csrf
-                                            <button type="submit" class="btn bg-gradient-danger">
-                                                <i class="fas fa-trash" aria-hidden="true"></i> Excluir
-                                            </button>
-                                        </form>
-                                        <a href="perfil/{{ $item->id }}" class="btn bg-gradient-warning"
-                                            title="Visualizar">
-                                            <i class="fas fa-solid fa-eye"></i> Visualizar
+                                <td class="text-center">
+                                    <a href="perfil/{{ $item->id }}" title="Visualizar" style="padding-right:10px">
+                                        <i class="fas fa-solid fa-eye"></i>
+                                    </a>
+                                    <form action="{{ route('perfil.destroy', $item->id) }}" method="post"
+                                        style="display: inline; padding-right: 10px" title="Excluir">
+                                        @method('DELETE')
+                                        @csrf
+                                        <a href="{{ route('perfil.destroy', $item->id) }}"
+                                            onclick="event.preventDefault();
+                                            this.closest('form').submit();">
+                                            <i class="fas fa-trash"></i>
                                         </a>
-                                    </div>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach

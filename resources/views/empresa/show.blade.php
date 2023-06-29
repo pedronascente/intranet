@@ -44,8 +44,8 @@
                         <a href="/empresa" class="btn  btn-md btn-default" title="Voltar">
                             <i class="fa fa-reply" aria-hidden="true"></i> Voltar
                         </a>
-                        <a href="/empresa/{{ $empresa->id }}/edit" class="btn btn-md btn-primary">
-                            <i class="fas fa-pencil-alt"></i> Editar
+                        <a href="/empresa/{{ $empresa->id }}/edit" title="Editar">
+                            <i class="fas fa-edit"></i>
                         </a>
                         <form action="/empresa/{{ $empresa->id }}" method="post" style="display: inline">
                             @csrf()

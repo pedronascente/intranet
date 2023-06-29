@@ -3,8 +3,8 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
-                <a href="{{ route('user.register') }}" class="btn btn-block bg-gradient-primary btn-md">
-                    Novo registro
+                <a href="{{ route('user.register') }}" class="btn btn-info btn-block " title=" Adicionar novo usuário">
+                    Adicionar novo usuário
                 </a>
             </h3>
             <div class="card-tools">
@@ -43,20 +43,18 @@
                                         Não
                                     @endif
                                 </td>
-                                <td>
-                                    <div class="float-right">
-                                        <a href="/user/{{ $item->id }}/edit" class="btn btn-primary" title="Editar">
-                                            <i class="fas fa-pencil-alt"></i> Editar
-                                        </a>
-                                        <form action="{{ route('user.destroy', $item->id) }}" method="post"
-                                            title="Desativar" style="display:inline">
-                                            @method('DELETE')
-                                            @csrf
-                                        </form>
-                                        <a href="user/{{ $item->id }}" class="btn btn-warning" title="Visualizar">
-                                            <i class="fas fa-solid fa-eye"></i> Visualizar
-                                        </a>
-                                    </div>
+                                <td class="text-center">
+                                    <a href="/user/{{ $item->id }}/edit" title="Editar" style="padding-right: 10px">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="{{ route('user.destroy', $item->id) }}" method="post" title="Desativar"
+                                        style="display:inline">
+                                        @method('DELETE')
+                                        @csrf
+                                    </form>
+                                    <a href="user/{{ $item->id }}" title="Visualizar">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach

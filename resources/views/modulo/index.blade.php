@@ -3,8 +3,8 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
-                <a href="{{ route('modulo.create') }}" class="btn btn-block bg-gradient-primary ">
-                    Novo registro
+                <a href="{{ route('modulo.create') }}" class="btn btn-info btn-block ">
+                    Adicionar novo modulo
                 </a>
             </h3>
         </div>
@@ -14,7 +14,7 @@
                     <tr>
                         <th>Módulo</th>
                         <th>Descrição</th>
-                        <th width="5%" class="text-center">Permissões</th>
+                        <th width="10%" class="text-center">Permissões</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -23,19 +23,20 @@
                             <td>{{ $item->nome }}</td>
                             <td>{{ $item->descricao }}</td>
                             <td>
-                                <div class="float-right">
-                                    <a href="/modulo/{{ $item->id }}/edit" class="btn bg-gradient-primary">
-                                        <i class="fas fa-pencil-alt"></i> Editar
+                                <div class="text-center">
+                                    <a href="/modulo/{{ $item->id }}/edit" title="Editar" style="padding-right: 10px">
+                                        <i class="fas fa-edit"></i>
                                     </a>
                                     <form action="{{ route('modulo.destroy', $item->id) }}" method="post"
-                                        style="display: inline">
+                                        style="display: inline" title="Excluir">
                                         @method('DELETE')
                                         @csrf
-                                        <button type="submit" class="btn bg-gradient-danger">
-                                            <i class="fas fa-trash"></i> Excluir
-                                        </button>
+                                        <a href="{{ route('modulo.destroy', $item->id) }}"
+                                            onclick="event.preventDefault();
+                                            this.closest('form').submit();">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
                                     </form>
-
                                 </div>
                             </td>
                         </tr>

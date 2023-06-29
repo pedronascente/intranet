@@ -68,10 +68,12 @@
                 <table class="table table-md ">
                     <tbody>
                         <tr>
-                            <td><a href="/colaborador/{{ $colaborador->id }}/edit" class="btn btn-md btn-success"
-                                    title="Editar">
-                                    <i class="fas fa-user"></i> Associar Usuário
-                                </a></td>
+                            <td>
+                                <a href="/colaborador/{{ $colaborador->id }}/edit" class="btn btn-info  "
+                                    title="Associar usuário">
+                                    Associar um usuário
+                                </a>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -80,19 +82,22 @@
                 <tbody>
                     <tr>
                         <td>
-                            <a href="/colaborador" class="btn btn-md btn-default" title="Voltar">
-                                <i class="fa fa-reply"></i> Voltar
+                            <a href="/colaborador" class="btn btn-md " title="Voltar">
+                                <i class="fa fa-reply"></i>
                             </a>
-                            <a href="/colaborador/{{ $colaborador->id }}/edit" class="btn btn-md btn-primary"
+                            <a href="/colaborador/{{ $colaborador->id }}/edit" c style="padding-right: 10px"
                                 title="Editar">
-                                <i class="fas fa-pencil-alt"></i> Editar
+                                <i class="fas fa-edit"></i>
                             </a>
-                            <form action="/colaborador/{{ $colaborador->id }}" method="post" style="display: inline">
-                                @csrf()
+                            <form action="{{ route('colaborador.destroy', $colaborador->id) }}" method="post"
+                                style="display: inline" title="Excluir">
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-md btn-danger">
-                                    <i class="fas fa-trash"></i> Excluir
-                                </button>
+                                @csrf
+                                <a href="{{ route('colaborador.destroy', $colaborador->id) }}"
+                                    onclick="event.preventDefault();
+                                            this.closest('form').submit();">
+                                    <i class="fas fa-trash"></i>
+                                </a>
                             </form>
                         </td>
                     </tr>

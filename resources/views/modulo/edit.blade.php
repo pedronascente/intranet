@@ -24,7 +24,9 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <button type="submit" class="btn bg-gradient-success">Salvar</button>
+                    <button type="submit" class="btn bg-gradient-primary">
+                        <i class="fas fa-save" aria-hidden="true"></i>
+                        Salvar</button>
                 </div>
             </form>
         </div>

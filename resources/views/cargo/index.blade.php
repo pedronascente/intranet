@@ -3,8 +3,8 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
-                <a href="{{ route('cargo.create') }}" class="btn btn-block bg-gradient-primary btn-md">
-                    Novo registro
+                <a href="{{ route('cargo.create') }}" class="btn btn-info btn-block ">
+                    Adicionar novo modulo
                 </a>
             </h3>
         </div>
@@ -21,20 +21,22 @@
                         @foreach ($collection as $item)
                             <tr>
                                 <td>{{ $item->nome }}</td>
-                                <td>
+                                <td class="text-center">
                                     <div class="float-right">
-                                        <a href="/cargo/{{ $item->id }}/edit" class="btn btn-md btn-primary">
-                                            <i class="fas fa-pencil-alt"></i> Editar
+                                        <a href="/cargo/{{ $item->id }}/edit" title="Editar"
+                                            style="padding-right: 10px">
+                                            <i class="fas fa-edit"></i>
                                         </a>
                                         <form action="{{ route('cargo.destroy', $item->id) }}" method="post"
-                                            style="display: inline">
+                                            style="display: inline ;padding-right: 10px" title="Excluir">
                                             @method('DELETE')
                                             @csrf
-                                            <button type="submit" class="btn  btn-md btn-danger">
-                                                <i class="fas fa-trash"></i> Excluir
-                                            </button>
+                                            <a href="{{ route('cargo.destroy', $item->id) }}"
+                                                onclick="event.preventDefault();
+                                            this.closest('form').submit();">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
                                         </form>
-
                                     </div>
                                 </td>
                             </tr>

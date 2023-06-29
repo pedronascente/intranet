@@ -5,7 +5,7 @@
             @csrf
             <div class="card-body">
                 <div class="form-group">
-                    <label>Nome</label>
+                    <label>Nome:</label>
                     <input type="text" name="nome" class="form-control  @error('nome') is-invalid  @enderror"
                         placeholder="nome">
                     @error('nome')
@@ -13,7 +13,7 @@
                     @enderror
                 </div>
                 <div class="form-group">
-                    <label>Descrição</label>
+                    <label>Descrição:</label>
                     <input type="text" name="descricao" class="form-control  @error('descricao') is-invalid  @enderror"
                         placeholder="Escreva uma Descrição">
                     @error('descricao')
@@ -22,7 +22,9 @@
                 </div>
             </div>
             <div class="card-footer">
-                <button type="submit" class="btn bg-gradient-success">Salvar</button>
+                <button type="submit" class="btn bg-gradient-primary">
+                    <i class="fas fa-save" aria-hidden="true"></i>
+                    Salvar</button>
             </div>
         </form>
     </div>

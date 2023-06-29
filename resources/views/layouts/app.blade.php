@@ -17,20 +17,21 @@
         @include('layouts.includes.barralateral')
 
         <div class="content-wrapper">
-
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1 class="m-0">{{ ucfirst(Request::segment(1)) }}</h1>
-                        </div>
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                        <div class="col-sm-12">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="#">
+                                        @if (Request::segment(1) == 'modulo' || Request::segment(1) == 'permissao' || Request::segment(1) == 'perfil')
+                                            Configurações
+                                        @endif
+                                    </a>
+                                </li>
                                 @if (Request::segment(1))
                                     <li class="breadcrumb-item active">{{ Request::segment(1) }}</li>
                                 @endif
-
                             </ol>
                         </div>
                     </div>

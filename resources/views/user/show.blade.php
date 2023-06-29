@@ -68,18 +68,25 @@
             @endif
         </div>
         <div class="card-footer">
-            <a href="/user" class="btn btn-warning" title="Voltar">
-                <i class="fa fa-reply" aria-hidden="true"></i> Voltar
+            <a href="/user" title="Voltar" style="padding-right: 10px">
+                <i class="fa fa-reply" aria-hidden="true"></i>
             </a>
-            <a href="/user/{{ $user->id }}/edit" class="btn btn-primary" title="Editar">
-                <i class="fas fa-pencil-alt"></i> Editar
+
+
+            <a href="/user/{{ $user->id }}/edit" title="Editar" style="padding-right: 10px">
+                <i class="fas fa-edit"></i>
             </a>
-            <form action="{{ route('user.destroy', $user->id) }}" method="post" style="display: inline">
-                @csrf()
+
+
+            <form action="{{ route('user.destroy', $user->id) }}" method="post"
+                style="display: inline;style="padding-right: 10px"" title="Excluir">
                 @method('DELETE')
-                <button type="submit" class="btn btn-md btn-danger">
-                    <i class="fas fa-times"></i> Excluir
-                </button>
+                @csrf
+                <a href="{{ route('user.destroy', $user->id) }}"
+                    onclick="event.preventDefault();
+                                            this.closest('form').submit();">
+                    <i class="fas fa-trash"></i>
+                </a>
             </form>
         </div>
     </div>

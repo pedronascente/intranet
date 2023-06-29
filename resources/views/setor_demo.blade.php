@@ -35,7 +35,30 @@
                         <td>sim</td>
                         <td>
                             <div class="btn-group float-right">
-                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
+                                <button type="button" class="btn btn-default"><i class="fas fa-edit"></i></button>
+                                <button type="button" class="btn btn-default"><i class="fas fa-trash"></i></button>
+                                <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>183</td>
+                        <td>Fulano de tall</td>
+                        <td>sim</td>
+                        <td>
+                            <div class=" float-right">
+                                
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>183</td>
+                        <td>Fulano de tall</td>
+                        <td>sim</td>
+                        <td>
+                            <div class="btn-group float-right">
+                                <button type="button" class="btn btn-default"><i
+                                        class="fas fa-pencil-square-o"></i></button>
                                 <button type="button" class="btn btn-default"><i class="fas fa-trash"></i></button>
                                 <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
                             </div>
@@ -47,7 +70,8 @@
                         <td>sim</td>
                         <td>
                             <div class="btn-group float-right">
-                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
+                                <button type="button" class="btn btn-default"><i
+                                        class="fas fa-pencil-square-o"></i></button>
                                 <button type="button" class="btn btn-default"><i class="fas fa-trash"></i></button>
                                 <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
                             </div>
@@ -59,31 +83,8 @@
                         <td>sim</td>
                         <td>
                             <div class="btn-group float-right">
-                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-trash"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>183</td>
-                        <td>Fulano de tall</td>
-                        <td>sim</td>
-                        <td>
-                            <div class="btn-group float-right">
-                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-trash"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>183</td>
-                        <td>Fulano de tall</td>
-                        <td>sim</td>
-                        <td>
-                            <div class="btn-group float-right">
-                                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
+                                <button type="button" class="btn btn-default"><i
+                                        class="fas fa-pencil-square-o"></i></button>
                                 <button type="button" class="btn btn-default"><i class="fas fa-trash"></i></button>
                                 <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
                             </div>

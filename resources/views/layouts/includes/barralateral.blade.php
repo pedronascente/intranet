@@ -47,7 +47,6 @@
                                 @if (Request::segment(1) == 'modulo' || Request::segment(1) == 'permissao' || Request::segment(1) == 'perfil') class="nav-link active"  @else   class="nav-link" @endif>
                                 <i class="nav-icon fa fa-cog" aria-hidden="true"></i>
                                 <p>
-
                                     Configurações
                                 </p>
                             </a>

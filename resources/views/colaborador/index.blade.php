@@ -3,8 +3,8 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
-                <a href="{{ route('colaborador.create') }}" class="btn btn-block bg-gradient-primary btn-md">
-                    Novo registro
+                <a href="{{ route('colaborador.create') }}" class="btn btn-info btn-block ">
+                    Adicionar novo colaborador
                 </a>
             </h3>
         </div>
@@ -32,26 +32,27 @@
                                 <td>{{ $item->nome }} {{ $item->sobrenome }}</td>
                                 <td>{{ $item->empresa->nome }}</td>
                                 <td>{{ $item->cargo->nome }}</td>
-                                <td>
-                                    <div class=" float-right">
-                                        <a href="/colaborador/{{ $item->id }}/edit" class="btn btn-md btn-primary"
-                                            title="Editar">
-                                            <i class="fas fa-pencil-alt"></i> Editar
-                                        </a>
+                                <td class="text-center">
+                                    <a href="/colaborador/{{ $item->id }}/edit" title="Editar"
+                                        style="padding-right: 10px">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
 
-                                        <a href="/colaborador/{{ $item->id }}" class="btn  btn-md btn-warning"
-                                            title="Visualizar">
-                                            <i class="fas fa-solid fa-eye"></i> Visualizar
+                                    <a href="/colaborador/{{ $item->id }}" title="Visualizar"
+                                        style="padding-right: 10px">
+                                        <i class="fas  fa-eye"></i>
+                                    </a>
+
+                                    <form action="{{ route('colaborador.destroy', $item->id) }}" method="post"
+                                        style="display: inline" title="Excluir">
+                                        @method('DELETE')
+                                        @csrf
+                                        <a href="{{ route('colaborador.destroy', $item->id) }}"
+                                            onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                            <i class="fas fa-trash"></i>
                                         </a>
-                                        <form action="{{ route('colaborador.destroy', $item->id) }}" method="post"
-                                            style="display: inline">
-                                            @method('DELETE')
-                                            @csrf
-                                            <button type="submit" class="btn  btn-md btn-danger" title="Excluir">
-                                                <i class="fas fa-trash"></i> Excluir
-                                            </button>
-                                        </form>
-                                    </div>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
@@ -59,6 +60,5 @@
                 </tbody>
             </table>
         </div>
-
     </div>
 @endsection

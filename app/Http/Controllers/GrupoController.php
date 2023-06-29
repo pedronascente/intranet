@@ -12,14 +12,14 @@ class GrupoController extends Controller
     public function index()
     {
         $collection = Grupo::orderBy('id', 'desc')->paginate(6);
-        return view('grupo.index', ['collections' => $collection]);
+        return view('perfil.index', ['collections' => $collection]);
     }
 
     public function create()
     {
         $modulos =  Modulo::all();
         $permissoes =  Permissao::all();
-        return view('grupo.create', [
+        return view('perfil.create', [
             'modulos' => $modulos,
             'permissoes' => $permissoes,
         ]);
@@ -60,12 +60,12 @@ class GrupoController extends Controller
     public function show($id)
     {
         $perfil = Grupo::findOrFail($id);
-        return view('grupo.show', ['perfil' => $perfil]);
+        return view('perfil.show', ['perfil' => $perfil]);
     }
 
     public function edit($id)
     {
-        return view('grupo.edit');
+        return view('perfil.edit');
     }
 
     public function destroy($id)
