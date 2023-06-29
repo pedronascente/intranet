@@ -32,7 +32,7 @@
                                             @method('DELETE')
                                             @csrf
                                             <button type="submit" class="btn bg-gradient-danger" title="Excluir">
-                                                <i class="fas fa-times"></i> Excluir
+                                                <i class="fas fa-trash"></i> Excluir
                                             </button>
                                         </form>
                                     </div>

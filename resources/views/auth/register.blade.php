@@ -79,7 +79,7 @@
                 <div class="row">
                     <div class="col-md-5">
                         <div class="form-group">
-                            <label>Grupo:</label>
+                            <label>Perfil:</label>
                             <select name="grupo" class="custom-select @error('grupo') is-invalid @enderror">
                                 <option value="">Selecione...</option>
                                 @if ($grupos)

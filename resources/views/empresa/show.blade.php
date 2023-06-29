@@ -51,7 +51,7 @@
                             @csrf()
                             @method('DELETE')
                             <button type="submit" class="btn btn-md btn-danger">
-                                <i class="fas fa-times"></i> Deletar
+                                <i class="fas fa-trash"></i> Deletar
                             </button>
                         </form>
                     </td>

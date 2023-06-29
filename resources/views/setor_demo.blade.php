@@ -36,7 +36,7 @@
                         <td>
                             <div class="btn-group float-right">
                                 <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
+                                <button type="button" class="btn btn-default"><i class="fas fa-trash"></i></button>
                                 <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
                             </div>
                         </td>
@@ -48,7 +48,7 @@
                         <td>
                             <div class="btn-group float-right">
                                 <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
+                                <button type="button" class="btn btn-default"><i class="fas fa-trash"></i></button>
                                 <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
                             </div>
                         </td>
@@ -60,7 +60,7 @@
                         <td>
                             <div class="btn-group float-right">
                                 <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
+                                <button type="button" class="btn btn-default"><i class="fas fa-trash"></i></button>
                                 <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
                             </div>
                         </td>
@@ -72,7 +72,7 @@
                         <td>
                             <div class="btn-group float-right">
                                 <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
+                                <button type="button" class="btn btn-default"><i class="fas fa-trash"></i></button>
                                 <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
                             </div>
                         </td>
@@ -84,7 +84,7 @@
                         <td>
                             <div class="btn-group float-right">
                                 <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i></button>
-                                <button type="button" class="btn btn-default"><i class="fas fa-times"></i></button>
+                                <button type="button" class="btn btn-default"><i class="fas fa-trash"></i></button>
                                 <button type="button" class="btn btn-default"><i class="fas fa-solid fa-eye"></i></button>
                             </div>
                         </td>

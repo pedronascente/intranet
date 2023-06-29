@@ -42,7 +42,7 @@
                                             @method('DELETE')
                                             @csrf
                                             <button type="submit" class="btn bg-gradient-danger">
-                                                <i class="fas fa-times" aria-hidden="true"></i> Excluir
+                                                <i class="fas fa-trash" aria-hidden="true"></i> Excluir
                                             </button>
                                         </form>
                                         <a href="perfil/{{ $item->id }}" class="btn bg-gradient-warning"
