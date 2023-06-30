@@ -1,14 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\GrupoController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CargoController;
+use App\Http\Controllers\GrupoController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\CartaoController;
 use App\Http\Controllers\ModuloController;
 use App\Http\Controllers\EmpresaController;
-use App\Http\Controllers\CargoController;
-use App\Http\Controllers\ColaboradorController;
 use App\Http\Controllers\PermissaoController;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ColaboradorController;
 use \App\Http\Controllers\Auth\RegisteredUserController;
 
 
@@ -20,6 +21,7 @@ Route::prefix('/settings')->group(
         Route::resource('/permissao', PermissaoController::class);
         Route::resource('/perfil', GrupoController::class);
         Route::resource('/modulo', ModuloController::class);
+        Route::resource('/cartao', CartaoController::class);
 
         Route::get('/perfil/desativar/{id}', [GrupoController::class, 'desativar']);
 

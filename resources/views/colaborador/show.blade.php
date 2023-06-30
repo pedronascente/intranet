@@ -83,7 +83,10 @@
                 <tbody>
                     <tr>
                         <td>
-                            <a href="{{ route('colaborador.index') }}" class="btn btn-md" title="Voltar">
+
+
+
+                            <a href="{{ route('colaborador.index') }}" title="Voltar" style="padding-right: 10px">
                                 <i class="fa fa-reply"></i>
                             </a>
                             <a href="{{ route('colaborador.edit', $colaborador->id) }}" style="padding-right: 10px"

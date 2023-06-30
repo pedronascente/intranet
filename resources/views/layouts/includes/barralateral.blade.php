@@ -48,7 +48,8 @@
                         Request::segment(2) == 'empresa' ||
                         Request::segment(2) == 'cargo' ||
                         Request::segment(2) == 'colaborador' ||
-                        Request::segment(2) == 'user') class="nav-item  menu-open"  @else   class="nav-item" @endif>
+                        Request::segment(2) == 'user' ||
+                        Request::segment(2) == 'cartao') class="nav-item  menu-open"  @else   class="nav-item" @endif>
                     <a href="#" class="nav-link">
                         <i class="nav-icon fa fa-cog" aria-hidden="true"></i>
                         <p>
@@ -98,13 +99,13 @@
                         <li class="nav-item">
                             <a href="/settings/user"
                                 @if (Request::segment(2) == 'user') class="nav-link active"  @else   class="nav-link" @endif>
-                                <p>usuário</p>
+                                <p>Usuário</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="/settings/cartao"
                                 @if (Request::segment(2) == 'cartao') class="nav-link active"  @else   class="nav-link" @endif>
-                                <p>Cartão de Acesso (Token)</p>
+                                <p>Cartão Token</p>
                             </a>
                         </li>
                     </ul>
