@@ -20,7 +20,6 @@
                                 <input type="text" name="descricao" class="form-control" placeholder="Breve descrição">
                             </div>
                         </div>
-
                         <div class="card">
                             <div class="card-body table-responsive p-0">
                                 <table class="table table-hover  table-striped">
@@ -56,7 +55,6 @@
                                                     </td>
                                                     <td>{{ $item->nome }}</td>
                                                     <td>{{ $item->descricao }}</td>
-
                                                     @if ($permissoes)
                                                         @foreach ($permissoes as $permissao)
                                                             <td class="text-center">
