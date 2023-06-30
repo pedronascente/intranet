@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="card card-primary">
-        <form action="{{ route('empresa.store') }}" method="POST" name="Formulario-Empresa">
+        <form action="{{ route('empresa.store') }}" method="POST" name="Formulario-Empresa-create">
             @csrf
             <div class="card-body">
                 <div class="form-group">
@@ -23,7 +23,7 @@
                     @enderror
                 </div>
             </div>
-             <div class="card-footer">
+            <div class="card-footer">
                 <button type="submit" class="btn bg-gradient-primary">
                     <i class="fas fa-save" aria-hidden="true"></i>
                     Salvar</button>

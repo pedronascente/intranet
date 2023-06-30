@@ -24,11 +24,12 @@
                                 <td>{{ $item->nome }}</td>
                                 <td>{{ $item->cnpj }}</td>
                                 <td class="text-center">
-
-                                    <a href="/empresa/{{ $item->id }}/edit" title="Editar" style="padding-right: 10px">
+                                    <a href="{{ route('empresa.edit', $item->id) }}" title="Editar"
+                                        style="padding-right: 10px">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a href="empresa/{{ $item->id }}" title="visualizar" style="padding-right: 10px">
+                                    <a href="{{ route('empresa.show', $item->id) }}" title="visualizar"
+                                        style="padding-right: 10px">
                                         <i class="fas fa-solid fa-eye"></i>
                                     </a>
                                     <form action="{{ route('empresa.destroy', $item->id) }}" method="post"
@@ -41,7 +42,6 @@
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     </form>
-
                                 </td>
                             </tr>
                         @endforeach

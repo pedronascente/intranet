@@ -23,14 +23,12 @@
                         <div class="col-sm-12">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item">
-                                    <a href="#">
-                                        @if (Request::segment(1) == 'modulo' || Request::segment(1) == 'permissao' || Request::segment(1) == 'perfil')
-                                            Configurações
-                                        @endif
-                                    </a>
+                                    @if (Request::segment(1) == 'settings')
+                                        Configurações
+                                    @endif
                                 </li>
-                                @if (Request::segment(1))
-                                    <li class="breadcrumb-item active">{{ Request::segment(1) }}</li>
+                                @if (Request::segment(2))
+                                    <li class="breadcrumb-item active">{{ Request::segment(2) }}</li>
                                 @endif
                             </ol>
                         </div>

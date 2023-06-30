@@ -13,7 +13,7 @@
                 <thead>
                     <tr>
                         <th>Cargo</th>
-                        <th width="5%" class="text-center">Permissões</th>
+                        <th width="10%" class="text-center">Permissões</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -22,22 +22,20 @@
                             <tr>
                                 <td>{{ $item->nome }}</td>
                                 <td class="text-center">
-                                    <div class="float-right">
-                                        <a href="/cargo/{{ $item->id }}/edit" title="Editar"
-                                            style="padding-right: 10px">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <form action="{{ route('cargo.destroy', $item->id) }}" method="post"
-                                            style="display: inline ;padding-right: 10px" title="Excluir">
-                                            @method('DELETE')
-                                            @csrf
-                                            <a href="{{ route('cargo.destroy', $item->id) }}"
-                                                onclick="event.preventDefault();
+                                    <a href="{{ route('cargo.edit', $item->id) }}" title="Editar"
+                                        style="padding-right: 10px">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="{{ route('cargo.destroy', $item->id) }}" method="post"
+                                        style="display: inline ;" title="Excluir">
+                                        @method('DELETE')
+                                        @csrf
+                                        <a href="{{ route('cargo.destroy', $item->id) }}"
+                                            onclick="event.preventDefault();
                                             this.closest('form').submit();">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
-                                        </form>
-                                    </div>
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
@@ -48,11 +46,8 @@
         @if (@isset($collection))
             <div class="card-footer">
                 <div class="row">
-
                     <div class="col-sm-12 col-md-7">
-
                         {!! $collection->links() !!}
-
                     </div>
                 </div>
             </div>

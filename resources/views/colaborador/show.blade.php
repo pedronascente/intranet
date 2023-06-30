@@ -69,7 +69,8 @@
                     <tbody>
                         <tr>
                             <td>
-                                <a href="/colaborador/{{ $colaborador->id }}/edit" class="btn btn-info  "
+                                <p>Nenhum usuário associado!</p>
+                                <a href="{{ route('colaborador.edit', $colaborador->id) }}" class="btn btn-info"
                                     title="Associar usuário">
                                     Associar um usuário
                                 </a>
@@ -82,10 +83,10 @@
                 <tbody>
                     <tr>
                         <td>
-                            <a href="/colaborador" class="btn btn-md " title="Voltar">
+                            <a href="{{ route('colaborador.index') }}" class="btn btn-md" title="Voltar">
                                 <i class="fa fa-reply"></i>
                             </a>
-                            <a href="/colaborador/{{ $colaborador->id }}/edit" c style="padding-right: 10px"
+                            <a href="{{ route('colaborador.edit', $colaborador->id) }}" style="padding-right: 10px"
                                 title="Editar">
                                 <i class="fas fa-edit"></i>
                             </a>

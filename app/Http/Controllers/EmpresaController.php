@@ -47,7 +47,9 @@ class EmpresaController extends Controller
         if ($empresa) {
             return view('empresa.edit', ['empresa' => $empresa]);
         } else {
-            return redirect('empresa/')->with('error', 'Registro não existe!'); //retorna resultado.
+            return redirect()
+                ->action('App\Http\Controllers\EmpresaController@index')
+                ->with('error', "Registro não existe!");
         }
     }
 
@@ -58,7 +60,9 @@ class EmpresaController extends Controller
         $empresa->nome = $request->nome;
         $empresa->cnpj = $request->cnpj;
         $empresa->update();
-        return redirect('empresa')->with('status', 'Registro Atualizado!'); //retorna resultado.
+        return redirect()
+            ->action('App\Http\Controllers\EmpresaController@index')
+            ->with('status', "Registro Atualizado!");
     }
 
     public function destroy($id)

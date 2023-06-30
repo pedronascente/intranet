@@ -41,18 +41,19 @@
             <table class="table table-md">
                 <tr>
                     <td>
-                        <a href="/empresa" class="btn  btn-md btn-default" title="Voltar">
-                            <i class="fa fa-reply" aria-hidden="true"></i> Voltar
-                        </a>
-                        <a href="/empresa/{{ $empresa->id }}/edit" title="Editar">
+                        <a href="{{ route('empresa.edit', $empresa->id) }}" title="Editar" style="padding-right: 10px">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <form action="/empresa/{{ $empresa->id }}" method="post" style="display: inline">
-                            @csrf()
+
+                        <form action="{{ route('empresa.destroy', $empresa->id) }}" method="post" style="display: inline ;"
+                            title="Excluir">
                             @method('DELETE')
-                            <button type="submit" class="btn btn-md btn-danger">
-                                <i class="fas fa-trash"></i> Deletar
-                            </button>
+                            @csrf
+                            <a href="{{ route('empresa.destroy', $empresa->id) }}"
+                                onclick="event.preventDefault();
+                                            this.closest('form').submit();">
+                                <i class="fas fa-trash"></i>
+                            </a>
                         </form>
                     </td>
                 </tr>

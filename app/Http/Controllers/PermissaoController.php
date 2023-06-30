@@ -41,24 +41,30 @@ class PermissaoController extends Controller
         if ($permissao) {
             return view('permissao.edit', ['permissao' => $permissao]);
         } else {
-            return redirect('permissao/')->with('error', 'Registro não existe!'); //retorna resultado.
+            return redirect()
+                ->action('App\Http\Controllers\PermissaoController@index')
+                ->with('error', "RRegistro não existe!");
         }
     }
 
     public function update(Request $request, $id)
     {
-        $this->validarFormulario($request); //Válidar Formulário.
+        $this->validarFormulario($request);
         $permissao = Permissao::findOrFail($id);
         $permissao->nome = $request->nome;
         $permissao->update();
-        return redirect('permissao')->with('status', 'Registro Atualizado!'); //retorna resultado.
+        return redirect()
+            ->action('App\Http\Controllers\PermissaoController@index')
+            ->with('status', "Registro Atualizado!");
     }
 
     public function destroy($id)
     {
         $empresa = Permissao::findOrFail($id);
         $empresa->delete();
-        return redirect('permissao')->with('status', 'Registro Excluido!'); //retorna resultado.
+        return redirect()
+            ->action('App\Http\Controllers\PermissaoController@index')
+            ->with('status', "Registro Excluido!");
     }
 
     private function validarFormulario(Request $request)
@@ -77,7 +83,6 @@ class PermissaoController extends Controller
     {
         $duplicado = Permissao::where('nome', $request->nome)
             ->get()->count();
-
         return $duplicado;
     }
 }

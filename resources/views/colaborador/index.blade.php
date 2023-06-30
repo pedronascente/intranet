@@ -24,7 +24,7 @@
                         @foreach ($collection as $item)
                             <tr>
                                 <td>
-                                    <a href="/colaborador/{{ $item->id }}" title="Visualizar">
+                                    <a href="{{ route('colaborador.show', $item->id) }}" title="Visualizar">
                                         <img src="{{ asset('img/colaborador/' . $item->foto . '') }}"
                                             alt="{{ $item->nome }}" width="35" class="rounded-circle">
                                     </a>
@@ -33,16 +33,14 @@
                                 <td>{{ $item->empresa->nome }}</td>
                                 <td>{{ $item->cargo->nome }}</td>
                                 <td class="text-center">
-                                    <a href="/colaborador/{{ $item->id }}/edit" title="Editar"
+                                    <a href="{{ route('colaborador.edit', $item->id) }}" title="Editar"
                                         style="padding-right: 10px">
                                         <i class="fas fa-edit"></i>
                                     </a>
-
-                                    <a href="/colaborador/{{ $item->id }}" title="Visualizar"
+                                    <a href="{{ route('colaborador.show', $item->id) }}" title="Visualizar"
                                         style="padding-right: 10px">
                                         <i class="fas  fa-eye"></i>
                                     </a>
-
                                     <form action="{{ route('colaborador.destroy', $item->id) }}" method="post"
                                         style="display: inline" title="Excluir">
                                         @method('DELETE')

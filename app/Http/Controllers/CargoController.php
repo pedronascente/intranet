@@ -51,7 +51,9 @@ class CargoController extends Controller
         $cargo = Cargo::findOrFail($id);
         $cargo->nome = $request->nome;
         $cargo->update();
-        return redirect('cargo')->with('status', 'Registro Atualizado!'); //retorna resultado.
+        return redirect()
+            ->action('App\Http\Controllers\CargoController@index')
+            ->with('status', "Registro Atualizado!");
     }
 
     public function destroy($id)

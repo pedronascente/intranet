@@ -22,7 +22,7 @@
                             <tr>
                                 <td>{{ $item->nome }}</td>
                                 <td class="text-center">
-                                    <a href="/permissao/{{ $item->id }}/edit" title="Editar"
+                                    <a href="{{ route('permissao.edit', $item->id) }}" title="Editar"
                                         style="padding-right: 10px">
                                         <i class="fas fa-edit"></i>
                                     </a>

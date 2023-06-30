@@ -66,7 +66,6 @@ class ColaboradorController extends Controller
         $colaboraodor = Colaborador::findOrFail($id);
         $empresas = Empresa::orderBy('id', 'desc')->get();
         $cargos = Cargo::orderBy('id', 'desc')->get();
-
         return view('colaborador.edit', [
             'colaborador' => $colaboraodor,
             'empresas' => $empresas,
@@ -85,18 +84,17 @@ class ColaboradorController extends Controller
         $colaborador->cnpj = $request->cnpj;
         $colaborador->cargo_id = $request->cargo_id;
         $colaborador->empresa_id = $request->empresa_id;
-
         if ($request->hasFile('foto')) {
             $destino = 'img/colaborador/' . $colaborador->foto;
-
             if ($colaborador->foto != 'dummy-round.png' && File::exists($destino)) {
                 File::delete($destino);
             }
             $colaborador->foto = $this->upload($request);
         }
-
         $colaborador->update();
-        return redirect('colaborador')->with('status', 'Registro Atualizado!'); //retorna resultado.
+        return redirect()
+            ->action('App\Http\Controllers\ColaboradorController@index')
+            ->with('status', "Registro Atualizado!");
     }
 
     public function destroy($id)
@@ -112,12 +110,13 @@ class ColaboradorController extends Controller
             File::delete($destino);
         }
         $colaborador->delete();
-        return redirect('colaborador')->with('status', 'Registro Excluido com sucesso');
+        return redirect()
+            ->action('App\Http\Controllers\ColaboradorController@index')
+            ->with('status', "Registro Excluido!");
     }
 
     private function upload(Request $request)
     {
-        //Verifica se informou o arquivo  e se é valido. 
         if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
             $requestImagem = $request->foto;
             $extension = $requestImagem->extension();

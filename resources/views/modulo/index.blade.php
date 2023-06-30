@@ -24,7 +24,8 @@
                             <td>{{ $item->descricao }}</td>
                             <td>
                                 <div class="text-center">
-                                    <a href="/modulo/{{ $item->id }}/edit" title="Editar" style="padding-right: 10px">
+                                    <a href="{{ route('modulo.edit', $item->id) }}" title="Editar"
+                                        style="padding-right: 10px">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <form action="{{ route('modulo.destroy', $item->id) }}" method="post"
@@ -46,7 +47,6 @@
         </div>
         <div class="card-footer ">
             <div class="row">
-
                 <div class="col-sm-12 col-md-7">
                     {!! $collection->links() !!}
                 </div>

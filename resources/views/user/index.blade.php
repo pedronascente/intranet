@@ -44,7 +44,8 @@
                                     @endif
                                 </td>
                                 <td class="text-center">
-                                    <a href="/user/{{ $item->id }}/edit" title="Editar" style="padding-right: 10px">
+                                    <a href="{{ route('user.edit', $item->id) }}" title="Editar"
+                                        style="padding-right: 10px">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <form action="{{ route('user.destroy', $item->id) }}" method="post" title="Desativar"

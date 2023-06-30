@@ -58,26 +58,24 @@
                 <table class="table table-md ">
                     <tbody>
                         <tr>
-                            <td><a href="/colaborador/{{ $user->id }}/edit" class="btn btn-md btn-success"
-                                    title="Editar">
-                                    <i class="fas fa-user"></i> Associar Colaborador
-                                </a></td>
+                            <td>
+                                <p>Nenhum colaborador associado!</p>
+                                <a href="/colaborador/{{ $user->id }}/edit" class="btn btn-info " title="Editar">
+                                    Associar um colaborador
+                                </a>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             @endif
         </div>
         <div class="card-footer">
-            <a href="/user" title="Voltar" style="padding-right: 10px">
+            <a href="{{ route('user.index') }}" title="Voltar" style="padding-right: 10px">
                 <i class="fa fa-reply" aria-hidden="true"></i>
             </a>
-
-
-            <a href="/user/{{ $user->id }}/edit" title="Editar" style="padding-right: 10px">
+            <a href="{{ route('user.edit', $user->id) }}" title="Editar" style="padding-right: 10px">
                 <i class="fas fa-edit"></i>
             </a>
-
-
             <form action="{{ route('user.destroy', $user->id) }}" method="post"
                 style="display: inline;style="padding-right: 10px"" title="Excluir">
                 @method('DELETE')

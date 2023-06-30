@@ -18,7 +18,6 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $grupos = Grupo::orderBy('id', 'desc')->get();
-
         return view('user.edit', [
             'user' => $user,
             'grupos' => $grupos

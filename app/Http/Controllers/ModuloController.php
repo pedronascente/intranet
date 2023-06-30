@@ -20,11 +20,11 @@ class ModuloController extends Controller
 
     public function store(Request $request)
     {
-        $this->validarFormulario($request); //Válidar Formulario.
-        $modulo = new Modulo; //Instânciar objeto.
+        $this->validarFormulario($request);
+        $modulo = new Modulo;
         $modulo->nome = $request->nome;
         $modulo->descricao = $request->descricao;
-        $modulo->save(); //persistir dados.
+        $modulo->save();
         return redirect()
             ->action('App\Http\Controllers\ModuloController@index')
             ->with('status', "Registrado com sucesso!");
@@ -38,29 +38,35 @@ class ModuloController extends Controller
 
     public function edit($id)
     {
-        $modelo = Modulo::findOrFail($id); //retornar modulo na base mysql.
+        $modelo = Modulo::findOrFail($id);
         if ($modelo) {
             return view('modulo.edit', ['modulo' => $modelo]);
         } else {
-            return redirect('modulo/')->with('error', 'Registro não existe!'); //retorna resultado.
+            return redirect()
+                ->action('App\Http\Controllers\ModuloController@index')
+                ->with('error', 'Registro não existe!');
         }
     }
 
     public function update(Request $request, $id)
     {
-        $this->validarFormulario($request); //Válidar Formulário.
-        $modulo = Modulo::findOrFail($id); //Recuperar modulo da base de dados.
+        $this->validarFormulario($request);
+        $modulo = Modulo::findOrFail($id);
         $modulo->nome = $request->nome;
         $modulo->descricao = $request->descricao;
         $modulo->update();
-        return redirect('/modulo')->with('status', 'Registro Atualizado!'); //retorna resultado.
+        return redirect()
+            ->action('App\Http\Controllers\ModuloController@index')
+            ->with('status', "Registro Atualizado!");
     }
 
     public function destroy($id)
     {
         $modulo = Modulo::findOrFail($id);
         $modulo->delete();
-        return redirect('modulo')->with('status', 'Registro Excluido!'); //retorna resultado.
+        return redirect()
+            ->action('App\Http\Controllers\ModuloController@index')
+            ->with('status', "Registro Excluido!");
     }
 
     private function validarFormulario(Request $request)
