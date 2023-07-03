@@ -30,9 +30,6 @@
                     <tr>
                         <td><b>Usuário:</b> {{ $user->name }}</td>
                     </tr>
-                    <tr>
-                        <td><b>Email: </b> {{ $user->email }}</td>
-                    </tr>
                 </tbody>
             </table>
 

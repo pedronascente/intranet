@@ -52,12 +52,6 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
         ];
 
-        if ($usuario->email != $request->email) {
-            $regras = array_merge($regras, [
-                'email' => ['email', 'max:255', 'unique:users'],
-            ]);
-        }
-
         if (!is_null($request->password) || !is_null($request->password_confirmation)) {
             $regras = array_merge($regras, [
                 'password_confirmation' => ['required'],
