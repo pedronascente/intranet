@@ -34,7 +34,7 @@ class Colaborador extends Model
     {
         return $this->BelongsTo(Cargo::class);
     }
-    public function User()
+    public function user()
     {
         return $this->BelongsTo(User::class);
     }

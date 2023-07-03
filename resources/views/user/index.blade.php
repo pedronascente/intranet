@@ -3,7 +3,7 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
-                <a href="{{ route('user.register') }}" class="btn btn-info btn-block " title=" Adicionar novo usuário">
+                <a href="{{ route('user.create') }}" class="btn btn-info btn-block " title=" Adicionar novo usuário">
                     Adicionar novo usuário
                 </a>
             </h3>

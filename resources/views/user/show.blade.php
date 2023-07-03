@@ -35,7 +35,7 @@
 
             <table class="table table-md table-striped">
                 <tr>
-                    <td><b>COLABORADOR ASSOCIADO: </td>
+                    <td><b>COLABORADOR: </td>
                 </tr>
             </table>
 
@@ -43,12 +43,23 @@
                 <table class="table table-md ">
                     <tbody>
                         <tr>
-                            <td><b>Nome: </b> {{ $user->colaborador->nome }}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Cpf: </b> {{ $user->colaborador->cpf }}</td>
-                        </tr>
+                            <td><b>Nome: </b> {{ $user->colaborador->nome }} {{ $user->colaborador->sobrenome }}</td>
 
+                            <td><b>Cpf: </b> {{ $user->colaborador->cpf }}</td>
+
+                            <td class="text-right">
+                                <form action="{{ route('destroy.associacao.user', $user->colaborador->id) }}" method="post"
+                                    style="display: inline;" title="Excluir">
+                                    @method('DELETE')
+                                    @csrf
+                                    <a href="{{ route('destroy.associacao.user', $user->colaborador->id) }}"
+                                        onclick="event.preventDefault();
+                                            this.closest('form').submit();"
+                                        style="color:red">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </form>
+                            </td>
                     </tbody>
                 </table>
             @else
@@ -56,9 +67,14 @@
                     <tbody>
                         <tr>
                             <td>
-                                <p>Nenhum colaborador associado!</p>
-                                <a href="/colaborador/{{ $user->id }}/edit" class="btn btn-info " title="Editar">
-                                    Associar um colaborador
+                                <div class="alert alert-warning alert-dismissible">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <p> <i class="icon fas fa-exclamation-triangle"></i>
+                                        Nenhuma associação foi encontrado!</p>
+                                </div>
+                                <a href="{{ route('user.associar', $user->id) }}" class="btn btn-info"
+                                    title="Associar usuário">
+                                    Associar
                                 </a>
                             </td>
                         </tr>

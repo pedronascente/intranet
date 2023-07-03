@@ -97,6 +97,35 @@ class ColaboradorController extends Controller
             ->with('status', "Registro Atualizado!");
     }
 
+    public function createAssociar($id)
+    {
+        $colaboraodor = Colaborador::findOrFail($id);
+        //retornar todos os usuarios que ainda não estão relacionados.
+        $users = User::with('colaborador')->get();
+        return view('colaborador.associar', [
+            'colaborador' => $colaboraodor,
+            'users' => $users,
+        ]);
+    }
+
+    public function updateAssociar(Request $request, $id)
+    {
+        $colaborador = Colaborador::findOrFail($id);
+        $colaborador->user_id = $request->user_id;
+        $colaborador->update();
+        return redirect(route('colaborador.show', $colaborador->id))
+            ->with('status', "Usuário Foi associado com sucesso!");
+    }
+    
+    public function destroyAssociacao($id)
+    {
+        $colaborador = Colaborador::findOrFail($id);
+        $colaborador->user_id = null;
+        $colaborador->update();
+        return redirect(route('colaborador.show', $colaborador->id))
+            ->with('status', "Usuário Foi desassociado com sucesso!");
+    }
+
     public function destroy($id)
     {
         $colaborador = Colaborador::with('user')->findOrFail($id);
@@ -114,7 +143,6 @@ class ColaboradorController extends Controller
             ->action('App\Http\Controllers\ColaboradorController@index')
             ->with('status', "Registro Excluido!");
     }
-
     private function upload(Request $request)
     {
         if ($request->hasFile('foto') && $request->file('foto')->isValid()) {

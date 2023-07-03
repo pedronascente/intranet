@@ -54,13 +54,28 @@
                 <table class="table table-md ">
                     <tbody>
                         <tr>
-                            <td><b>Status: </b> {{ $colaborador->user->ativo }}</td>
-                        </tr>
-                        <tr>
                             <td><b>Nome: </b> {{ $colaborador->user->name }}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Email: </b> {{ $colaborador->user->email }}</td>
+                            <td>
+                                <b>Status: </b>
+                                @if ($colaborador->user->ativo == 'on')
+                                    Ativo
+                                @else
+                                    Inativo
+                                @endif
+                            </td>
+                            <td class="text-right">
+                                <form action="{{ route('destroy.associacao.colaborador', $colaborador->id) }}"
+                                    method="post" style="display: inline;" title="Excluir">
+                                    @method('DELETE')
+                                    @csrf
+                                    <a href="{{ route('destroy.associacao.colaborador', $colaborador->id) }}"
+                                        onclick="event.preventDefault();
+                                            this.closest('form').submit();"
+                                        style="color:red">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </form>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -69,11 +84,16 @@
                     <tbody>
                         <tr>
                             <td>
-                                <p>Nenhum usuário associado!</p>
-                                <a href="{{ route('colaborador.edit', $colaborador->id) }}" class="btn btn-info"
-                                    title="Associar usuário">
-                                    Associar um usuário
+                                <div class="alert alert-warning alert-dismissible">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <p> <i class="icon fas fa-exclamation-triangle"></i>
+                                        Nenhuma associação foi encontrada!</p>
+                                </div>
+                                <a href="{{ route('create_associar', $colaborador->id) }}" class="btn btn-info"
+                                    title="Associar colaborador">
+                                    Associar
                                 </a>
+
                             </td>
                         </tr>
                     </tbody>
@@ -83,9 +103,6 @@
                 <tbody>
                     <tr>
                         <td>
-
-
-
                             <a href="{{ route('colaborador.index') }}" title="Voltar" style="padding-right: 10px">
                                 <i class="fa fa-reply"></i>
                             </a>

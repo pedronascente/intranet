@@ -16,7 +16,7 @@ class RegisteredUserController extends Controller
     public function create()
     {
         $grupos = Grupo::all();
-        return view('user.register', ['grupos' => $grupos]);
+        return view('auth.register', ['grupos' => $grupos]);
     }
 
     public function store(Request $request)
@@ -25,6 +25,7 @@ class RegisteredUserController extends Controller
             'ativo' => ['required', 'string'],
             'grupo' => ['required'],
             'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password_confirmation' => ['required'],
             'password' => [
                 'required',
@@ -40,6 +41,7 @@ class RegisteredUserController extends Controller
 
         $user = User::create([
             'name' => $request->name,
+            'email' => $request->email,
             'ativo' => $request->ativo,
             'grupo_id' => $request->grupo,
             'password' => Hash::make($request->password),

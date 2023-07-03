@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Colaborador;
 use App\Models\User;
 use App\Models\Grupo;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -12,6 +17,44 @@ class UserController extends Controller
     {
         $collections  =  User::with('grupo')->get();
         return view('user.index', ['collections' => $collections]);
+    }
+
+    public function create()
+    {
+        $grupos = Grupo::all();
+        return view('user.register', ['grupos' => $grupos]);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'ativo' => ['required', 'string'],
+            'grupo' => ['required'],
+            'name' => ['required', 'string', 'max:255'],
+            'password_confirmation' => ['required'],
+            'password' => [
+                'required',
+                'confirmed',
+                'string',
+                'min:6',              // deve ter pelo menos 6 caracteres
+                'regex:/[a-z]/',      // deve conter pelo menos uma letra minúscula
+                'regex:/[A-Z]/',      // deve conter pelo menos uma letra maiúscula
+                'regex:/[0-9]/',      // deve conter pelo menos um dígito
+                'regex:/[@$!%*#?&]/', // deve conter um caractere especial
+            ],
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'ativo' => $request->ativo,
+            'grupo_id' => $request->grupo,
+            'password' => Hash::make($request->password),
+        ]);
+        event(new Registered($user));
+        Auth::login($user);
+        return redirect()
+            ->action('App\Http\Controllers\UserController@index')
+            ->with('status', "Registrado com sucesso!");
     }
 
     public function edit($id)
@@ -68,5 +111,33 @@ class UserController extends Controller
             ]);
         }
         $request->validate($regras);
+    }
+
+    public function createAssociar($id)
+    {
+        $user = User::findOrFail($id);
+        $colaboradores = Colaborador::where('user_id', null)->get();
+        return view('user.associar', ['user' => $user, 'colabordores' => $colaboradores]);
+    }
+
+    public function updateAssociar(Request $request, $id)
+    {
+
+        $colaborador = Colaborador::findOrFail($request->colaborador_id);
+        $colaborador->user_id = $id;
+        $colaborador->update();
+        return redirect(route('user.show', $id))
+            ->with('status', "Colaborador associado com sucesso!");
+    }
+
+    public function destroyAssociacao($id)
+    {
+        $colaborador = Colaborador::findOrFail($id);
+
+        $id_user = $colaborador->user->id;
+        $colaborador->user_id = null;
+        $colaborador->update();
+        return redirect(route('user.show', $id_user))
+            ->with('status', "Usuário Foi desassociado com sucesso!");
     }
 }
