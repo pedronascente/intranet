@@ -9,18 +9,22 @@
             </table>
             <table class="table table-md">
                 <tr>
-                    <td><b>Status :</b> Ativo</td>
+                    <td> <b> Cartão :</b> 001</td>
+                    <td class="text-right"><b>Status :</b> Ativo</td>
                 </tr>
+            </table>
+            <table class="table table-md table-striped">
                 <tr>
-                    <th width="8%"><b> Cartão :</b> 001</td>
+                    <td><b>USUÁRIO:</td>
                 </tr>
+            </table>
+            <table class="table table-md">
                 <tr>
-                    <td><b>Usuário :</b> Pedro jardim</td>
+                    <td><b>Nome :</b> Fulano de tal</td>
                 </tr>
-
             </table>
 
-            <table class="table table-md table-striped text">
+            <table class="table table-md table-striped text-center">
                 <tr>
                     <td> <b>TOKENS</b> </td>
                 </tr>

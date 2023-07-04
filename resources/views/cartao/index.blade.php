@@ -19,39 +19,34 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>001</td>
-                        <td>pedro.jardim</td>
-                        <td>Ativo</td>
-                        <td class="text-center">
-                            <a href="{{ route('cartao.show', 1) }}" title="visualizar" style="padding-right: 10px">
-                                <i class="fas fa-solid fa-eye"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>002</td>
-                        <td>mario.dias</td>
-                        <td>Inativo</td>
-                        <td class="text-center">
-                            <a href="{{ route('cartao.show', 1) }}" title="visualizar" style="padding-right: 10px">
-                                <i class="fas fa-solid fa-eye"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>003</td>
-                        <td>juliano.joaquim</td>
-                        <td>Ativo</td>
-                        <td class="text-center">
-                            <a href="{{ route('cartao.show', 1) }}" title="visualizar" style="padding-right: 10px">
-                                <i class="fas fa-solid fa-eye"></i>
-                            </a>
-                        </td>
-                    </tr>
+                    @if ($cartoes)
+                        @foreach ($cartoes as $cartao)
+                            <tr>
+                                <td>{{ $cartao->id }}</td>
+                                <td>
+                                    @if ($cartao->user)
+                                        {{ $cartao->user->name }}
+                                    @endif
+
+                                </td>
+                                <td>
+                                    @if ($cartao->status == 'on')
+                                        Ativo
+                                    @else
+                                        Inativo
+                                    @endif
+                                </td>
+                                <td class="text-center">
+                                    <a href="{{ route('cartao.show', $cartao->id) }}" title="visualizar"
+                                        style="padding-right: 10px">
+                                        <i class="fas fa-solid fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
-
     </div>
 @endsection

@@ -14,8 +14,11 @@ class CreateCartao extends Migration
     public function up()
     {
         Schema::create('cartoes', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
+            $table->char('status', 5);
             $table->timestamps();
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

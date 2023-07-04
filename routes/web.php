@@ -10,7 +10,6 @@ use App\Http\Controllers\ModuloController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\PermissaoController;
 use App\Http\Controllers\ColaboradorController;
-use \App\Http\Controllers\Auth\RegisteredUserController;
 
 Route::prefix('/settings')->group(
     function () {

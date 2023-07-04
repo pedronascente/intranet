@@ -116,7 +116,7 @@ class ColaboradorController extends Controller
         return redirect(route('colaborador.show', $colaborador->id))
             ->with('status', "Usuário Foi associado com sucesso!");
     }
-    
+
     public function destroyAssociacao($id)
     {
         $colaborador = Colaborador::findOrFail($id);

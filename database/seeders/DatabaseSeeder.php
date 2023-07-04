@@ -3,16 +3,22 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\Cargo;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     *
-     * @return void
-     */
+
     public function run()
     {
         // \App\Models\User::factory(10)->create();
+        $this->call([
+            EmpresaSeeder::class,
+            CargoSeeder::class,
+            ModuloSeeder::class,
+            PermissaoSeeder::class,
+            GrupoSeeder::class,
+            UserSeeder::class,
+            ColaboradorSeeder::class,
+        ]);
     }
 }

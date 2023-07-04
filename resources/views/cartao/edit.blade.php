@@ -1,40 +1,38 @@
 @extends('layouts.app')
 @section('content')
     <div class="card card-primary">
-        <form action="{{ route('empresa.store') }}" method="POST" name="Formulario-Empresa-create">
+        <form action="{{ route('cartao.update', 3) }}" method="POST" name="formulario-cartao-update">
             @csrf
+            @method('PUT')
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-2">
-                        <div class="form-group">
-                            <label for="exampleSelectRounded0">Status :</label>
-                            <select class="custom-select rounded-0" id="exampleSelectRounded0">
-                                <option> Ativo</option>
-                                <option> Inativo</option>
+                        <div class="form-group @error('status') is-invalid   @enderror">
+                            <label>Status :</label>
+                            <select name="status"class="custom-select rounded-0">
+                                <option value="on" seleted> Ativo</option>
+                                <option value="off"> Inativo</option>
                             </select>
+                            @error('status')
+                                <span class=" invalid-feedback">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
-                            <label for="exampleSelectRounded0">Usuário:</label>
-                            <select class="custom-select rounded-0" id="exampleSelectRounded0">
-                                <option>Value 1</option>
-                                <option>Value 2</option>
-                                <option>Value 3</option>
+                            <label>Usuário:</label>
+                            <select name="user_id" class="custom-select @error('user_id') is-invalid @enderror">
+                                <option value="">...</option>
+                                @foreach ($users as $item)
+                                    <option value="{{ $item->id }}" @if (old('user_id') == $item->id) selected @endif>
+                                        {{ $item->name }}</option>
+                                @endforeach
                             </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                <label class="form-check-label" for="exampleCheck1"><i class="fas fa-sync-alt"></i> Reset
-                                    Token </label>
-                            </div>
+                            @error('user_id')
+                                <span class=" invalid-feedback">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                 </div>
