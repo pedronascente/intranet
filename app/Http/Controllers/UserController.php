@@ -15,7 +15,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $collections  =  User::with('grupo')->get();
+        $collections  =  User::with('grupo')->orderBy('id', 'desc')->paginate(8);
         return view('user.index', ['collections' => $collections]);
     }
 

@@ -10,8 +10,8 @@ class CartaoController extends Controller
 {
     public function index()
     {
-        $cartoes =  Cartao::with('user')->get();
-        return view('cartao.index', ['cartoes' => $cartoes]);
+        $collections  =  Cartao::with('user')->orderBy('id', 'desc')->paginate(8);
+        return view('cartao.index', ['collections' => $collections]);
     }
 
     public function create()
@@ -28,20 +28,16 @@ class CartaoController extends Controller
                 'user_id' => 'required',
             ],
             [
-
                 'status.required' => 'Campo obrigatório.',
                 'user_id.required' => 'Campo obrigatório.',
             ]
         );
-
         $user = User::findOrFail($request->user_id);
-
         $user->cartao()->create([
             'status' => $request->status,
             'user_id' => $request->user_id,
         ]);
 
-        //$cartao->
         return redirect()
             ->action('App\Http\Controllers\CartaoController@index')
             ->with('status', "Registrado com sucesso!");

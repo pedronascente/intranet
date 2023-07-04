@@ -22,7 +22,6 @@
             <table class="table table-hover text-nowrap  table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Perfil</th>
                         <th>Descrição</th>
                         <th width="5%" class="text-center">Permissões</th>
@@ -32,7 +31,6 @@
                     @if ($collections)
                         @foreach ($collections as $item)
                             <tr>
-                                <td>{{ $item->id }}</td>
                                 <td>{{ $item->nome }}</td>
                                 <td>{{ $item->descricao }}</td>
                                 <td class="text-center">

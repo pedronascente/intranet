@@ -43,14 +43,14 @@
                 </tbody>
             </table>
         </div>
-        @if (@isset($collection))
-            <div class="card-footer">
+        <div class="card-footer">
+            @if (@isset($collection))
                 <div class="row">
                     <div class="col-sm-12 col-md-7">
                         {!! $collection->links() !!}
                     </div>
                 </div>
-            </div>
-        @endif
+            @endif
+        </div>
     </div>
 @endsection

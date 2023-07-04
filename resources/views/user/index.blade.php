@@ -23,9 +23,9 @@
                 <thead>
                     <tr>
                         <th width="5%">#</th>
-                        <th width="30%">Usuário</th>
+                        <th width="15%">Usuário</th>
                         <th width="30%">Perfil</th>
-                        <th width="5%"> Ativo</th>
+                        <th width="5%"> Status</th>
                         <th width="5%" class="text-center">Permissões</th>
                     </tr>
                 </thead>
@@ -38,9 +38,9 @@
                                 <td>{{ $item->grupo->nome }}</td>
                                 <td>
                                     @if ($item->ativo == 'on')
-                                        Sim
+                                        Ativo
                                     @else
-                                        Não
+                                        Inativo
                                     @endif
                                 </td>
                                 <td class="text-center">
@@ -62,6 +62,15 @@
                     @endif
                 </tbody>
             </table>
+        </div>
+        <div class="card-footer">
+            @if (@isset($collections))
+                <div class="row">
+                    <div class="col-sm-12 col-md-12">
+                        {!! $collections->links() !!}
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
 @endsection

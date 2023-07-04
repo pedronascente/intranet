@@ -19,8 +19,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if ($cartoes)
-                        @foreach ($cartoes as $cartao)
+                    @if ($collections)
+                        @foreach ($collections as $cartao)
                             <tr>
                                 <td>{{ $cartao->id }}</td>
                                 <td>
@@ -47,6 +47,15 @@
                     @endif
                 </tbody>
             </table>
+        </div>
+        <div class="card-footer">
+            @if (@isset($collections))
+                <div class="row">
+                    <div class="col-sm-12 col-md-12">
+                        {!! $collections->links() !!}
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
 @endsection

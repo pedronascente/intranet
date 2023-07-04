@@ -13,7 +13,7 @@
                 <thead>
                     <tr>
                         <th width="5%">Foto</th>
-                        <th>Nome</th>
+                        <th width="15%">Nome</th>
                         <th>Empresa</th>
                         <th>Cargo</th>
                         <th width="10%" class="text-center">Permissões</th>
@@ -57,6 +57,15 @@
                     @endif
                 </tbody>
             </table>
+        </div>
+        <div class="card-footer">
+            @if (@isset($collection))
+                <div class="row">
+                    <div class="col-sm-12 col-md-7">
+                        {!! $collection->links() !!}
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
 @endsection

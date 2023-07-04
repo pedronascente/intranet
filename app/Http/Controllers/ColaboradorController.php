@@ -13,7 +13,7 @@ class ColaboradorController extends Controller
 {
     public function index()
     {
-        $collection = Colaborador::orderBy('id', 'desc')->paginate(6);
+        $collection = Colaborador::orderBy('id', 'desc')->paginate(10);
         return view('colaborador.index', ['collection' => $collection]);
     }
 
@@ -131,8 +131,8 @@ class ColaboradorController extends Controller
         $colaborador = Colaborador::with('user')->findOrFail($id);
         if ($colaborador->user) {
             return redirect()
-                ->action('App\Http\Controllers\ColaboradorController@index')
-                ->with('warning', "Este colaborador tem um usuario associado, por tanto não pode ser excluida.");
+                ->action('App\Http\Controllers\ColaboradorController@show', $id)
+                ->with('warning', "Este colaborador tem Usuário associado, por tanto não pode ser excluida.");
         }
         $destino = 'img/colaborador/' . $colaborador->foto;
         if ($colaborador->foto != 'dummy-round.png' && File::exists($destino)) {
