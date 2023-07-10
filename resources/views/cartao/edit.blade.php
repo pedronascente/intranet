@@ -26,13 +26,25 @@
                             <select name="user_id" class="custom-select @error('user_id') is-invalid @enderror">
                                 <option value="">...</option>
                                 @foreach ($users as $item)
-                                    <option value="{{ $item->id }}" @if (old('user_id') == $item->id) selected @endif>
-                                        {{ $item->name }}</option>
+                                    <option value="{{ $item['id'] }}" @if (old('user_id') == $item['id']) selected @endif>
+                                        {{ $item['name'] }}</option>
                                 @endforeach
                             </select>
                             @error('user_id')
                                 <span class=" invalid-feedback">{{ $message }}</span>
                             @enderror
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="alert alert-info alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            clique abaixo para resetar todos os tokens deste cartao!
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                            <label class="form-check-label" for="exampleCheck1">Reset Token</label>
                         </div>
                     </div>
                 </div>

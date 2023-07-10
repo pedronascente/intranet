@@ -9,11 +9,18 @@ class Cartao extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'status',
+        'status', 'nome', 'user_id'
     ];
+
     protected $table = 'cartoes';
+
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function tekens()
+    {
+        return $this->hasMany(Token::class);
     }
 }

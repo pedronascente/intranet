@@ -25,8 +25,8 @@
                             <select name="user_id" class="custom-select @error('user_id') is-invalid @enderror">
                                 <option value="">...</option>
                                 @foreach ($users as $item)
-                                    <option value="{{ $item->id }}" @if (old('user_id') == $item->id) selected @endif>
-                                        {{ $item->name }}</option>
+                                    <option value="{{ $item['id'] }}" @if (old('user_id') == $item['id']) selected @endif>
+                                        {{ $item['name'] }}</option>
                                 @endforeach
                             </select>
                             @error('user_id')

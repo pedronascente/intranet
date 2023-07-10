@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCartao extends Migration
+class CreateTokensTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateCartao extends Migration
      */
     public function up()
     {
-        Schema::create('cartoes', function (Blueprint $table) {
+        Schema::create('tokens', function (Blueprint $table) {
             $table->increments('id');
-            $table->char('status', 5);
-            $table->string('nome', 100);
+            $table->text('token');
+            $table->integer('posicao');
             $table->timestamps();
-            $table->integer('user_id')->unsigned()->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('cartao_id')->unsigned();
+            $table->foreign('cartao_id')->references('id')->on('cartoes');
         });
     }
 
@@ -30,6 +30,6 @@ class CreateCartao extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cartoes');
+        Schema::dropIfExists('tokens');
     }
 }

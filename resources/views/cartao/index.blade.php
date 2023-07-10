@@ -12,9 +12,9 @@
             <table class="table table-hover text-nowrap table-striped">
                 <thead>
                     <tr>
-                        <th width="5%">Cartão</th>
+                        <th width="10%">Cartão</th>
                         <th>Usuário</th>
-                        <th>Status</th>
+                        <th width="8%">Status</th>
                         <th width="5%" class="text-center">Permissões</th>
                     </tr>
                 </thead>
@@ -22,12 +22,11 @@
                     @if ($collections)
                         @foreach ($collections as $cartao)
                             <tr>
-                                <td>{{ $cartao->id }}</td>
+                                <td>{{ $cartao->nome }}</td>
                                 <td>
                                     @if ($cartao->user)
                                         {{ $cartao->user->name }}
                                     @endif
-
                                 </td>
                                 <td>
                                     @if ($cartao->status == 'on')
