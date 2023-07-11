@@ -1,8 +1,12 @@
 @extends('layouts.app')
 @section('content')
-    <div class="card card-primary">
+    <div class="card card-default">
+        <div class="card-header">
+            <h4>Adicionar novo Cartão</h4>
+        </div>
         <form action="{{ route('cartao.store') }}" method="POST" name="Formulario-cartao-create">
             @csrf
+
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-2">

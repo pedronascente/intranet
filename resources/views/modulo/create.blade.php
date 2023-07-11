@@ -1,6 +1,9 @@
 @extends('layouts.app')
 @section('content')
-    <div class="card card-primary">
+    <div class="card card-default">
+        <div class="card-header">
+            <h4>Adicionar novo Módulo</h4>
+        </div>
         <form action="{{ route('modulo.store') }}" method="POST" name="Formulario-modulo-create">
             @csrf
             <div class="card-body">
@@ -14,8 +17,8 @@
                 </div>
                 <div class="form-group">
                     <label>Descrição:</label>
-                    <input type="text" name="descricao" class="form-control  @error('descricao') is-invalid  @enderror"
-                        placeholder="Escreva uma Descrição">
+                    <textarea type="text" name="descricao" rows="5" class="form-control  @error('descricao') is-invalid  @enderror"
+                        placeholder="Escreva uma Descrição"></textarea>
                     @error('descricao')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror

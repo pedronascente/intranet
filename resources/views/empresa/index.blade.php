@@ -12,9 +12,9 @@
             <table class="table table-hover text-nowrap table-striped">
                 <thead>
                     <tr>
-                        <th>Empresa</th>
-                        <th>Cnpj</th>
-                        <th width="20%" class="text-center">Permissões</th>
+                        <th width="70%">Empresa</th>
+                        <th width="10%">Cnpj</th>
+                        <th width="10%" class="text-center">Permissões</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -27,10 +27,6 @@
                                     <a href="{{ route('empresa.edit', $item->id) }}" title="Editar"
                                         style="padding-right: 10px">
                                         <i class="fas fa-edit"></i>
-                                    </a>
-                                    <a href="{{ route('empresa.show', $item->id) }}" title="visualizar"
-                                        style="padding-right: 10px">
-                                        <i class="fas fa-solid fa-eye"></i>
                                     </a>
                                     <form action="{{ route('empresa.destroy', $item->id) }}" method="post"
                                         style="display: inline ;" title="Excluir">

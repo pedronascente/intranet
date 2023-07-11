@@ -1,11 +1,14 @@
 @extends('layouts.app')
 @section('content')
-    <div class="card card-primary">
+    <div class="card card-default">
+        <div class="card-header">
+            <h4>Adicionar nova Permissão</h4>
+        </div>
         <form action="{{ route('permissao.store') }}" method="POST" name="Formulario-permissao-create">
             @csrf
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group">
                             <label>Nome:</label>
                             <input type="text" name="nome" class="form-control  @error('nome') is-invalid  @enderror"

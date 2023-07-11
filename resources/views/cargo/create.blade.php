@@ -1,6 +1,9 @@
 @extends('layouts.app')
 @section('content')
-    <div class="card card-primary">
+    <div class="card card-default">
+        <div class="card-header">
+            <h4>Adicionar novo Cargo</h4>
+        </div>
         <form action="{{ route('cargo.store') }}" method="POST">
             @csrf
             <div class="card-body">

@@ -1,6 +1,9 @@
 @extends('layouts.app')
 @section('content')
-    <div class="card card-primary">
+    <div class="card card-default">
+        <div class="card-header">
+            <h4>Adicionar nova Empresa</h4>
+        </div>
         <form action="{{ route('empresa.store') }}" method="POST" name="Formulario-Empresa-create">
             @csrf
             <div class="card-body">

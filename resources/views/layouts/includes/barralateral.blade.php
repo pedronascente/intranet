@@ -131,28 +131,28 @@
                             <a href="/setor01"
                                 @if (Request::segment(1) == 'setor01') class="nav-link active"  @else   class="nav-link" @endif>
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Stor XYZ-01</p>
+                                <p>RH</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="/setor02"
                                 @if (Request::segment(1) == 'setor02') class="nav-link active"  @else   class="nav-link" @endif>
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Stor XYZ-02</p>
+                                <p>Rastreameto</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="/setor03"
                                 @if (Request::segment(1) == 'setor03') class="nav-link active"  @else   class="nav-link" @endif>
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Stor XYZ-03</p>
+                                <p>Portario</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="/setor04"
                                 @if (Request::segment(1) == 'setor04') class="nav-link active"  @else   class="nav-link" @endif>
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Stor XYZ-04</p>
+                                <p>Alarme</p>
                             </a>
                         </li>
                     </ul>
