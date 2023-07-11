@@ -21,27 +21,7 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
-                <!--
-                        <li @if (Request::segment(2) == 'perfil' ||
-                                Request::segment(2) == 'user' ||
-                                Request::segment(2) == 'empresa' ||
-                                Request::segment(2) == 'cargo' ||
-                                Request::segment(2) == 'colaborador' ||
-                                Request::segment(2) == 'permissao' ||
-                                Request::segment(2) == 'modulo') class="nav-item menu-open"  @else  class="nav-item" @endif>
 
-                        <a href="#"
-                        @if (Request::segment(2) == 'perfil' ||
-                                Request::segment(2) == 'user' ||
-                                Request::segment(2) == 'empresa' ||
-                                Request::segment(2) == 'cargo' ||
-                                Request::segment(2) == 'colaborador' ||
-                                Request::segment(2) == 'permissao' ||
-                                Request::segment(2) == 'modulo') class="nav-link active"  @else   class="nav-link" @endif>
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>Admin <i class="right fas fa-angle-left"></i></p>
-                        </a>
-                -->
                 <li @if (Request::segment(2) == 'modulo' ||
                         Request::segment(2) == 'permissao' ||
                         Request::segment(2) == 'perfil' ||
