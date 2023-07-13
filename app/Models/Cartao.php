@@ -9,7 +9,7 @@ class Cartao extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'status', 'nome', 'user_id'
+        'status', 'nome', 'user_id', 'qtdToken'
     ];
 
     protected $table = 'cartoes';
@@ -19,7 +19,7 @@ class Cartao extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function tekens()
+    public function tokens()
     {
         return $this->hasMany(Token::class);
     }

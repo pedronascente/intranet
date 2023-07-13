@@ -22,7 +22,6 @@
             <table class="table table-hover text-nowrap  table-striped">
                 <thead>
                     <tr>
-                        <th width="5%">#</th>
                         <th width="15%">Usuário</th>
                         <th width="30%">Perfil</th>
                         <th width="5%"> Status</th>
@@ -33,7 +32,6 @@
                     @if ($collections)
                         @foreach ($collections as $item)
                             <tr>
-                                <td>{{ $item->id }}</td>
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->grupo->nome }}</td>
                                 <td>
@@ -44,18 +42,15 @@
                                     @endif
                                 </td>
                                 <td class="text-center">
+                                    <a href="user/{{ $item->id }}" title="Visualizar" style="padding-right: 10px">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
                                     <a href="{{ route('user.edit', $item->id) }}" title="Editar"
                                         style="padding-right: 10px">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <form action="{{ route('user.destroy', $item->id) }}" method="post" title="Desativar"
-                                        style="display:inline">
-                                        @method('DELETE')
-                                        @csrf
-                                    </form>
-                                    <a href="user/{{ $item->id }}" title="Visualizar">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
+
+
                                 </td>
                             </tr>
                         @endforeach

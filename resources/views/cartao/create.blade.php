@@ -4,9 +4,8 @@
         <div class="card-header">
             <h4>Adicionar novo Cartão</h4>
         </div>
-        <form action="{{ route('cartao.store') }}" method="POST" name="Formulario-cartao-create">
+        <form action="{{ route('cartao.store') }}" method="POST" name="formulario-cartao-create">
             @csrf
-
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-2">
@@ -39,11 +38,30 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>QTD. de Tokens:</label>
+                            <select name="qtdToken" class="custom-select @error('qtdToken') is-invalid @enderror">
+                                <option value="">...</option>
+                                @for ($i = 1; $i <= 40; $i++)
+                                    <option value="{{ $i }}" @if (old('qtdToken') == $i) selected @endif>
+                                        {{ $i }}
+                                    </option>
+                                @endfor
+                            </select>
+                            @error('qtdToken')
+                                <span class=" invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="card-footer">
                 <button type="submit" class="btn bg-gradient-primary">
                     <i class="fas fa-save" aria-hidden="true"></i>
-                    Salvar</button>
+                    Salvar
+                </button>
             </div>
         </form>
     </div>

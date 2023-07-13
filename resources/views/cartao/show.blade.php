@@ -19,7 +19,11 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2"><b>Usuário :</b> {{ $cartao->user->name }}</td>
+                    <td colspan="2"><b>Usuário :</b>
+                        <a href="/settings/user/{{ $cartao->user->id }}" title="Visualizar" style="padding-right: 10px">
+                            {{ $cartao->user->name }}
+                        </a>
+                    </td>
                 </tr>
                 <table class="table table-bordered ">
                     <thead>
@@ -27,8 +31,8 @@
                         <th width="10%" class="text-center">Posição</th>
                     </thead>
                     <tbody>
-                        @if ($cartao->tekens)
-                            @foreach ($cartao->tekens as $item)
+                        @if ($cartao->tokens)
+                            @foreach ($cartao->tokens as $item)
                                 <tr>
                                     <td>{{ $item->token }}</td>
                                     <td class="text-center">{{ $item->posicao }}</td>
@@ -43,20 +47,20 @@
                             <a href="{{ route('cartao.index') }}" title="Voltar" style="padding-right: 10px">
                                 <i class="fa fa-reply" aria-hidden="true"></i>
                             </a>
-                            <a href="{{ route('cartao.edit', 1) }}" title="Editar" style="padding-right: 10px">
+                            <a href="{{ route('cartao.edit', $cartao->id) }}" title="Editar" style="padding-right: 10px">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <form action="{{ route('cartao.destroy', 1) }}" method="post" style="display: inline ;"
-                                title="Excluir">
+                            <form action="{{ route('cartao.destroy', $cartao->id) }}" method="post"
+                                style="display: inline ;" title="Excluir">
                                 @method('DELETE')
                                 @csrf
-                                <a href="{{ route('cartao.destroy', 1) }}"
+                                <a href="{{ route('cartao.destroy', $cartao->id) }}"
                                     onclick="event.preventDefault();
                                             this.closest('form').submit();">
                                     <i class="fas fa-trash"></i>
                                 </a>
                             </form>
-                            <a href="{{ route('cartao.edit', 1) }}" title="Voltar" style="padding-right: 10px">
+                            <a href="{{ route('cartao.edit', $cartao->id) }}" title="Voltar" style="padding-right: 10px">
                                 <i class="fa fa-refresh" aria-hidden="true"></i>
                             </a>
                         </td>

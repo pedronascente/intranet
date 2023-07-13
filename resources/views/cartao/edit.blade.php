@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="card card-primary">
-        <form action="{{ route('cartao.update', 3) }}" method="POST" name="formulario-cartao-update">
+        <form action="{{ route('cartao.update', $cartao->id) }}" method="POST" name="formulario-cartao-update">
             @csrf
             @method('PUT')
             <div class="card-body">
@@ -10,8 +10,8 @@
                         <div class="form-group @error('status') is-invalid   @enderror">
                             <label>Status :</label>
                             <select name="status"class="custom-select rounded-0">
-                                <option value="on" seleted> Ativo</option>
-                                <option value="off"> Inativo</option>
+                                <option value="on" @if ($cartao->status == 'on') selected @endif> Ativo</option>
+                                <option value="off" @if ($cartao->status == 'off') selected @endif> Inativo</option>
                             </select>
                             @error('status')
                                 <span class=" invalid-feedback">{{ $message }}</span>
@@ -23,14 +23,23 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label>Usuário:</label>
-                            <select name="user_id" class="custom-select @error('user_id') is-invalid @enderror">
+                            <input type="text" value="{{ $cartao->user->name }}" class="form-control" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>QTD. de Tokens:</label>
+                            <select name="qtdToken" class="custom-select @error('qtdToken') is-invalid @enderror">
                                 <option value="">...</option>
-                                @foreach ($users as $item)
-                                    <option value="{{ $item['id'] }}" @if (old('user_id') == $item['id']) selected @endif>
-                                        {{ $item['name'] }}</option>
-                                @endforeach
+                                @for ($i = 1; $i <= 40; $i++)
+                                    <option value="{{ $i }}" @if (old('qtdToken') == $i) selected @endif  @if ($cartao->qtdToken == $i) selected @endif >
+                                        {{ $i }}
+                                    </option>
+                                @endfor
                             </select>
-                            @error('user_id')
+                            @error('qtdToken')
                                 <span class=" invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
@@ -38,13 +47,10 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4">
-                        <div class="alert alert-info alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                            clique abaixo para resetar todos os tokens deste cartao!
-                        </div>
                         <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                            <label class="form-check-label" for="exampleCheck1">Reset Token</label>
+                            <input type="checkbox" name="resetToken" class="form-check-input" id="resetToken"
+                                value="on">
+                            <label class="form-check-label" for="resetToken">Resetar Token</label>
                         </div>
                     </div>
                 </div>

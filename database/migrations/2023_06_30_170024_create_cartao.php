@@ -17,6 +17,7 @@ class CreateCartao extends Migration
             $table->increments('id');
             $table->char('status', 5);
             $table->string('nome', 100);
+            $table->integer('qtdToken');
             $table->timestamps();
             $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users');

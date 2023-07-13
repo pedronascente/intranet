@@ -40,6 +40,25 @@
                                         style="padding-right: 10px">
                                         <i class="fas fa-solid fa-eye"></i>
                                     </a>
+
+                                    <a href="{{ route('cartao.edit', $cartao->id) }}" title="Editar"
+                                        style="padding-right: 10px">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="{{ route('cartao.destroy', $cartao->id) }}" method="post"
+                                        style="display: inline ;" title="Excluir">
+                                        @method('DELETE')
+                                        @csrf
+                                        <a href="{{ route('cartao.destroy', $cartao->id) }}"
+                                            onclick="event.preventDefault();
+                                            this.closest('form').submit();">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </form>
+                                    <a href="{{ route('cartao.edit', $cartao->id) }}" title="Voltar"
+                                        style="padding-right: 10px">
+                                        <i class="fa fa-refresh" aria-hidden="true"></i>
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach
