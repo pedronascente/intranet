@@ -82,9 +82,7 @@ class CartaoController extends Controller
     public function destroy($id)
     {
         $cartao = Cartao::findOrfail($id);
-        $cartao->tokens()->delete();
         $cartao->delete();
-
         return redirect()
             ->action('App\Http\Controllers\CartaoController@index')
             ->with('status', "Excluido com sucesso!");
