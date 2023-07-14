@@ -21,6 +21,7 @@ class CreateCartao extends Migration
             $table->timestamps();
             $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users');
+            $table->engine = 'InnoDB';
         });
     }
 

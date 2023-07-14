@@ -13,6 +13,7 @@ class CreateEmpresasTable extends Migration
             $table->string('nome')->unique();
             $table->string('cnpj', 20)->unique();
             $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
 

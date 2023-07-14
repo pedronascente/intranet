@@ -13,6 +13,7 @@ class CreateModulosTable extends Migration
             $table->string('nome');
             $table->string('descricao');
             $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
     /**

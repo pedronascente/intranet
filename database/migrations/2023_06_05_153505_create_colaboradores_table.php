@@ -10,16 +10,6 @@ class CreateColaboradoresTable extends Migration
     {
         Schema::create('colaboradores', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('empresa_id')->unsigned();
-            $table->foreign('empresa_id')->references('id')->on('empresas');
-
-            $table->integer('cargo_id')->unsigned();
-            $table->foreign('cargo_id')->references('id')->on('cargos');
-
-
-            $table->integer('user_id')->unsigned()->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
-
             $table->string('nome');
             $table->string('sobrenome');
             $table->string('email');
@@ -28,6 +18,13 @@ class CreateColaboradoresTable extends Migration
             $table->char('cnpj', 20)->nullable();
             $table->text('foto')->nullable();
             $table->timestamps();
+            $table->integer('empresa_id')->unsigned();
+            $table->foreign('empresa_id')->references('id')->on('empresas');
+            $table->integer('cargo_id')->unsigned();
+            $table->foreign('cargo_id')->references('id')->on('cargos');
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->engine = 'InnoDB';
         });
     }
 
