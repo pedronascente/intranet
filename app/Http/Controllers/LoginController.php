@@ -15,12 +15,12 @@ class LoginController extends Controller
 
     public function index()
     {
-        return view('login.index', ['mensagem' =>   $this->messagem]);
+        return view('login.passo_01', ['mensagem' =>   $this->messagem]);
     }
 
     public function create_token()
     {
-        return view('login.authtoken', ['mensagem' => $this->messagem]);
+        return view('login.passo_02', ['mensagem' => $this->messagem]);
     }
 
     public function recuperarSenha()

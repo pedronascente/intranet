@@ -22,19 +22,18 @@ Route::prefix('/settings')->group(
         Route::resource('/colaborador', ColaboradorController::class);
         Route::resource('/user', UserController::class);
         Route::get('/perfil/desativar/{id}', [GrupoController::class, 'desativar']);
-
-        Route::prefix('/associar/user')->group(
-            function () {
-                Route::get('/{id}', [UserController::class, 'createAssociar'])->name('user.associar');
-                Route::put('/{id}', [UserController::class, 'updateAssociar'])->name('user.updateassociar');
-                Route::delete('/{id}', [UserController::class, 'destroyAssociacao'])->name('destroy.associacao.user');
-            }
-        );
         Route::prefix('/associar/colaborador')->group(
             function () {
+                Route::get('/{id}', [UserController::class, 'createAssociar'])->name('user.associar');
+                Route::put('/{id}', [UserController::class, 'associarColaborador'])->name('user.updateassociar');
+                Route::delete('/{id}', [UserController::class, 'desassociarColaborador'])->name('destroy.associacao.user');
+            }
+        );
+        Route::prefix('/associar/usuario')->group(
+            function () {
                 Route::get('/{id}', [ColaboradorController::class, 'createAssociar'])->name('create_associar');
-                Route::put('/{id}', [ColaboradorController::class, 'updateAssociar'])->name('update_associar');
-                Route::delete('/{id}', [ColaboradorController::class, 'destroyAssociacao'])->name('destroy.associacao.colaborador');
+                Route::put('/{id}', [ColaboradorController::class, 'associarUsuario'])->name('update_associar');
+                Route::delete('/{id}', [ColaboradorController::class, 'desassociarUsuario'])->name('destroy.associacao.colaborador');
             }
         );
     }

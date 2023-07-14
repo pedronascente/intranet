@@ -74,9 +74,9 @@ class CartaoController extends Controller
     }
 
     /**
-     * Responsavel por excluir um cartao
+     * Responsavel por excluir um cartão.
      *
-     * @param [integer] $id
+     * @param [Integer] $id
      * @return void
      */
     public function destroy($id)

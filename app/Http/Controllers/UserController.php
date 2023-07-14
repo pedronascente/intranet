@@ -25,25 +25,15 @@ class UserController extends Controller
         return view('user.register', ['grupos' => $grupos]);
     }
 
+    /**
+     * Responsavel por salvar os dados na base
+     *
+     * @param Request $request
+     * @return void
+     */
     public function store(Request $request)
     {
-        $request->validate([
-            'ativo' => ['required', 'string'],
-            'grupo' => ['required'],
-            'name' => ['required', 'string', 'max:255'],
-            'password_confirmation' => ['required'],
-            'password' => [
-                'required',
-                'confirmed',
-                'string',
-                'min:6',              // deve ter pelo menos 6 caracteres
-                'regex:/[a-z]/',      // deve conter pelo menos uma letra minúscula
-                'regex:/[A-Z]/',      // deve conter pelo menos uma letra maiúscula
-                'regex:/[0-9]/',      // deve conter pelo menos um dígito
-                'regex:/[@$!%*#?&]/', // deve conter um caractere especial
-            ],
-        ]);
-
+        $this->validarFormulario($request, 'store');
         $user = User::create([
             'name' => $request->name,
             'ativo' => $request->ativo,
@@ -67,19 +57,44 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * Responsável por Atualizar usuário
+     *
+     * @param Request $request
+     * @param [integer] $id
+     * @return void
+     */
     public function update(Request $request, $id)
     {
         $usuario = User::with('grupo')->findOrFail($id);
-        $this->validarFormulario($request, $usuario);
-        echo 'usuario atualizado!';
+        $grupo = Grupo::findOrFail($request->grupo);
+        $this->validarFormulario($request, 'update');
+        $usuario->ativo = $request->ativo;
+        $usuario->name = $request->name;
+        $usuario->grupo()->associate($grupo)->update();
+        return redirect()
+            ->action('App\Http\Controllers\UserController@show', $usuario->id)
+            ->with('status', "Atualizado com sucesso!");
     }
 
+    /**
+     * Responsável por mostrar detalhes do usuário
+     *
+     * @param [Integer] $id
+     * @return void
+     */
     public function show($id)
     {
         $user = User::with('grupo', 'colaborador')->findOrFail($id);
         return view('user.show', ['user' => $user]);
     }
 
+    /**
+     * Responsável por Excluir usuário
+     *
+     * @param [Integer] $id
+     * @return void
+     */
     public function destroy($id)
     {
         return redirect()
@@ -87,32 +102,66 @@ class UserController extends Controller
             ->with('status', "Inativado com sucesso!");
     }
 
-    private function validarFormulario(Request $request, $usuario)
+    /**
+     * Responsavel por validar formulario
+     *
+     * @param Request $request
+     * @param [object] $usuario
+     * @return void
+     */
+    private function validarFormulario(Request $request, $tipo)
     {
-        $regras =  [
-            'ativo' => ['required', 'string'],
-            'grupo' => ['required'],
-            'name' => ['required', 'string', 'max:255'],
-        ];
-
-        if (!is_null($request->password) || !is_null($request->password_confirmation)) {
-            $regras = array_merge($regras, [
-                'password_confirmation' => ['required'],
-                'password' => [
-                    'required',
-                    'confirmed',
-                    'string',
-                    'min:6',              // deve ter pelo menos 6 caracteres
-                    'regex:/[a-z]/',      // deve conter pelo menos uma letra minúscula
-                    'regex:/[A-Z]/',      // deve conter pelo menos uma letra maiúscula
-                    'regex:/[0-9]/',      // deve conter pelo menos um dígito
-                    'regex:/[@$!%*#?&]/', // deve conter um caractere especial
-                ],
-            ]);
+        switch ($tipo) {
+            case 'store':
+                $request->validate([
+                    'ativo' => ['required', 'string'],
+                    'grupo' => ['required'],
+                    'name' => ['required', 'string', 'max:255'],
+                    'password_confirmation' => ['required'],
+                    'password' => [
+                        'required',
+                        'confirmed',
+                        'string',
+                        'min:6',              // deve ter pelo menos 6 caracteres
+                        'regex:/[a-z]/',      // deve conter pelo menos uma letra minúscula
+                        'regex:/[A-Z]/',      // deve conter pelo menos uma letra maiúscula
+                        'regex:/[0-9]/',      // deve conter pelo menos um dígito
+                        'regex:/[@$!%*#?&]/', // deve conter um caractere especial
+                    ],
+                ]);
+                break;
+            case 'update':
+                $regras =  [
+                    'ativo' => ['required', 'string'],
+                    'grupo' => ['required'],
+                    'name' => ['required', 'string', 'max:255'],
+                ];
+                if (!is_null($request->password) || !is_null($request->password_confirmation)) {
+                    $regras = array_merge($regras, [
+                        'password_confirmation' => ['required'],
+                        'password' => [
+                            'required',
+                            'confirmed',
+                            'string',
+                            'min:6',              // deve ter pelo menos 6 caracteres
+                            'regex:/[a-z]/',      // deve conter pelo menos uma letra minúscula
+                            'regex:/[A-Z]/',      // deve conter pelo menos uma letra maiúscula
+                            'regex:/[0-9]/',      // deve conter pelo menos um dígito
+                            'regex:/[@$!%*#?&]/', // deve conter um caractere especial
+                        ],
+                    ]);
+                }
+                $request->validate($regras);
+                break;
         }
-        $request->validate($regras);
     }
 
+    /**
+     * Responsavel por mostar formulario de associação
+     *
+     * @param [Integer] $id
+     * @return void
+     */
     public function createAssociar($id)
     {
         $user = User::findOrFail($id);
@@ -120,24 +169,34 @@ class UserController extends Controller
         return view('user.associar', ['user' => $user, 'colabordores' => $colaboradores]);
     }
 
-    public function updateAssociar(Request $request, $id)
+    /**
+     * Responsavel por associar um colaborador
+     *
+     * @param Request $request
+     * @param [Integer] $id
+     * @return void
+     */
+    public function associarColaborador(Request $request, $id)
     {
-
+        $user = User::findOrFail($id);
         $colaborador = Colaborador::findOrFail($request->colaborador_id);
-        $colaborador->user_id = $id;
-        $colaborador->update();
+        $colaborador->user()->associate($user)->update();
         return redirect(route('user.show', $id))
             ->with('status', "Colaborador associado com sucesso!");
     }
 
-    public function destroyAssociacao($id)
+    /**
+     * Responasvel por disassociar um colaborador
+     *
+     * @param [Integer] $id
+     * @return void
+     */
+    public function desassociarColaborador($id)
     {
-        $colaborador = Colaborador::findOrFail($id);
-
-        $id_user = $colaborador->user->id;
-        $colaborador->user_id = null;
-        $colaborador->update();
-        return redirect(route('user.show', $id_user))
+        $colaborador = Colaborador::with('user')->findOrFail($id);
+        $user = User::findOrFail($colaborador->user_id);
+        $colaborador->user()->disassociate($user)->save();
+        return redirect(route('user.show', $user->id))
             ->with('status', "Usuário Foi desassociado com sucesso!");
     }
 }

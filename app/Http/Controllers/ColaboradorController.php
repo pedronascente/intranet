@@ -27,6 +27,12 @@ class ColaboradorController extends Controller
         ]);
     }
 
+    /**
+     * Responsável por salvar o colaborador na base de dados.
+     *
+     * @param Request $request
+     * @return void
+     */
     public function store(Request $request)
     {
         if ($this->validarFormulario($request)) {
@@ -35,14 +41,16 @@ class ColaboradorController extends Controller
                 ->withInput($request->all());
         } else {
             $colaborador = new Colaborador();
+            $cargo = Cargo::findOrFail($request->cargo_id);
+            $empresa = Empresa::findOrFail($request->empresa_id);
             $colaborador->nome = $request->nome;
             $colaborador->sobrenome = $request->sobrenome;
             $colaborador->email = $request->email;
             $colaborador->rg = $request->rg;
             $colaborador->cpf = $request->cpf;
             $colaborador->cnpj = $request->cnpj;
-            $colaborador->cargo_id = $request->cargo_id;
-            $colaborador->empresa_id = $request->empresa_id;
+            $colaborador->cargo()->associate($cargo);
+            $colaborador->empresa()->associate($empresa);
             if ($foto = $this->upload($request)) {
                 $colaborador->foto = $foto;
             } else {
@@ -73,17 +81,26 @@ class ColaboradorController extends Controller
         ]);
     }
 
+    /**
+     * Responsável por atualizar os dados do colaborador
+     *
+     * @param Request $request
+     * @param [Integer] $id
+     * @return void
+     */
     public function update(Request $request, $id)
     {
-        $colaborador = Colaborador::findOrFail($id);
+        $colaborador = Colaborador::with('cargo', 'empresa')->findOrFail($id);
+        $cargo = Cargo::findOrFail($request->cargo_id);
+        $empresa = Empresa::findOrFail($request->empresa_id);
         $colaborador->nome = $request->nome;
         $colaborador->sobrenome = $request->sobrenome;
         $colaborador->email = $request->email;
         $colaborador->rg = $request->rg;
         $colaborador->cpf = $request->cpf;
         $colaborador->cnpj = $request->cnpj;
-        $colaborador->cargo_id = $request->cargo_id;
-        $colaborador->empresa_id = $request->empresa_id;
+        $colaborador->cargo()->associate($cargo);
+        $colaborador->empresa()->associate($empresa);
         if ($request->hasFile('foto')) {
             $destino = 'img/colaborador/' . $colaborador->foto;
             if ($colaborador->foto != 'dummy-round.png' && File::exists($destino)) {
@@ -108,24 +125,44 @@ class ColaboradorController extends Controller
         ]);
     }
 
-    public function updateAssociar(Request $request, $id)
+    /**
+     * Responsável por associar um usuario 
+     *
+     * @param Request $request
+     * @param [Integer] $id
+     * @return void
+     */
+    public function associarUsuario(Request $request, $id)
     {
-        $colaborador = Colaborador::findOrFail($id);
-        $colaborador->user_id = $request->user_id;
+        $colaborador = Colaborador::with('user')->findOrFail($id);
+        $user = User::findOrFail($request->user_id);
+        $colaborador->user()->associate($user);
         $colaborador->update();
         return redirect(route('colaborador.show', $colaborador->id))
             ->with('status', "Usuário Foi associado com sucesso!");
     }
 
-    public function destroyAssociacao($id)
+    /**
+     * Responsavel por disassociar um usuário
+     *
+     * @param [type] $id
+     * @return void
+     */
+    public function desassociarUsuario($id)
     {
-        $colaborador = Colaborador::findOrFail($id);
-        $colaborador->user_id = null;
-        $colaborador->update();
+        $colaborador = Colaborador::with('user')->findOrFail($id);
+        $user = User::findOrFail($colaborador->user_id);
+        $colaborador->user()->disassociate($user)->save();
         return redirect(route('colaborador.show', $colaborador->id))
             ->with('status', "Usuário Foi desassociado com sucesso!");
     }
 
+    /**
+     * Responsável por excluir registro
+     *
+     * @param Request $request
+     * @return void
+     */
     public function destroy($id)
     {
         $colaborador = Colaborador::with('user')->findOrFail($id);
@@ -143,6 +180,13 @@ class ColaboradorController extends Controller
             ->action('App\Http\Controllers\ColaboradorController@index')
             ->with('status', "Registro Excluido!");
     }
+
+    /**
+     * Responsável por fazer upload da Imagem do colabortador
+     *
+     * @param Request $request
+     * @return void
+     */
     private function upload(Request $request)
     {
         if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
@@ -155,6 +199,12 @@ class ColaboradorController extends Controller
         return false;
     }
 
+    /**
+     * Responsável por validar formulário
+     *
+     * @param Request $request
+     * @return void
+     */
     private function validarFormulario(Request $request)
     {
         $request->validate(
