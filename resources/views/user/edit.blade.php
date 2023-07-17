@@ -65,7 +65,7 @@
                         <div class="form-group">
                             <label>Usuário:</label>
                             <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
-                                placeholder="nome" value="{{ old('name') }} {{ $user->name }}">
+                                placeholder="nome" value="{{ $user->name }}">
                             @error('name')
                                 <span class=" invalid-feedback">{{ $message }}</span>
                             @enderror

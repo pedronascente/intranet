@@ -39,12 +39,20 @@ Route::prefix('/settings')->group(
     }
 );
 
-Route::resource('/', LoginController::class);
-Route::prefix('/login')->group(function () {
-    Route::get('/auth-token', [LoginController::class, 'create_token']);
-    Route::get('/esqueci-minha-senha', [LoginController::class, 'recuperarSenha']);
-    Route::get('/recuperar-cartao-token', [LoginController::class, 'recuperarCartao']);
-});
+Route::get('/', [LoginController::class, 'showForm'])->name('login');
+Route::get('/login', [LoginController::class, 'showForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::get('/token', [LoginController::class, 'showFormToken'])->name('token')->middleware('auth');
+
+/*
+    Route::prefix('/login')->group(function () {
+        Route::get('/', [LoginController::class, 'index'])->name('login');
+        
+        Route::get('/esqueci-minha-senha', [LoginController::class, 'recuperarSenha']);
+        Route::get('/recuperar-cartao-token', [LoginController::class, 'recuperarCartao']);
+    });
+*/
+
 
 Route::get('/home', function () {
     return view('home'); //

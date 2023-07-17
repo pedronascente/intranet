@@ -71,6 +71,9 @@ class UserController extends Controller
         $this->validarFormulario($request, 'update');
         $usuario->ativo = $request->ativo;
         $usuario->name = $request->name;
+        if (empty(!$request->password)) {
+            $usuario->password = Hash::make($request->password);
+        }
         $usuario->grupo()->associate($grupo)->update();
         return redirect()
             ->action('App\Http\Controllers\UserController@show', $usuario->id)
