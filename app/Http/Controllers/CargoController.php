@@ -10,7 +10,7 @@ class CargoController extends Controller
     public function index()
     {
         $empresas = Cargo::orderBy('id', 'desc')->paginate(6);
-        return view('cargo.index', ['collection' => $empresas]);
+        return view('settings.cargo.index', ['collection' => $empresas]);
     }
 
     public function create()
@@ -39,7 +39,7 @@ class CargoController extends Controller
     {
         $cargo = Cargo::findOrFail($id);
         if ($cargo) {
-            return view('cargo.edit', ['cargo' => $cargo]);
+            return view('settings.cargo.edit', ['cargo' => $cargo]);
         } else {
             return redirect('cargo/')->with('error', 'Registro não existe!'); //retorna resultado.
         }

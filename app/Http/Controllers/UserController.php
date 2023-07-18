@@ -169,11 +169,11 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $colaboradores = Colaborador::where('user_id', null)->get();
-        return view('user.associar', ['user' => $user, 'colabordores' => $colaboradores]);
+        return view('settings.user.associar', ['user' => $user, 'colabordores' => $colaboradores]);
     }
 
     /**
-     * Responsavel por associar um colaborador
+     * Associar Colaborador
      *
      * @param Request $request
      * @param [Integer] $id
@@ -184,12 +184,12 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $colaborador = Colaborador::findOrFail($request->colaborador_id);
         $colaborador->user()->associate($user)->update();
-        return redirect(route('user.show', $id))
+        return redirect(route('settings.user.show', $id))
             ->with('status', "Colaborador associado com sucesso!");
     }
 
     /**
-     * Responasvel por disassociar um colaborador
+     * Disassociar Colaborador
      *
      * @param [Integer] $id
      * @return void
@@ -199,7 +199,7 @@ class UserController extends Controller
         $colaborador = Colaborador::with('user')->findOrFail($id);
         $user = User::findOrFail($colaborador->user_id);
         $colaborador->user()->disassociate($user)->save();
-        return redirect(route('user.show', $user->id))
+        return redirect(route('settings.user.show', $user->id))
             ->with('status', "Usuário Foi desassociado com sucesso!");
     }
 }

@@ -10,12 +10,12 @@ class PermissaoController extends Controller
     public function index()
     {
         $collection = Permissao::orderBy('id', 'desc')->paginate(6);
-        return view('permissao.index', ['collection' => $collection]);
+        return view('settings.permissao.index', ['collection' => $collection]);
     }
 
     public function create()
     {
-        return view('permissao.create');
+        return view('settings.permissao.create');
     }
 
     public function store(Request $request)
@@ -39,7 +39,7 @@ class PermissaoController extends Controller
     {
         $permissao = Permissao::findOrFail($id);
         if ($permissao) {
-            return view('permissao.edit', ['permissao' => $permissao]);
+            return view('settings.permissao.edit', ['permissao' => $permissao]);
         } else {
             return redirect()
                 ->action('App\Http\Controllers\PermissaoController@index')

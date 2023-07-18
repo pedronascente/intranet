@@ -10,12 +10,12 @@ class EmpresaController extends Controller
     public function index()
     {
         $empresas = Empresa::orderBy('id', 'desc')->paginate(6);
-        return view('empresa.index', ['collection' => $empresas]);
+        return view('settings.empresa.index', ['collection' => $empresas]);
     }
 
     public function create()
     {
-        return view('empresa.create');
+        return view('settings.empresa.create');
     }
 
     public function store(Request $request)
@@ -38,14 +38,14 @@ class EmpresaController extends Controller
     public function show($id)
     {
         $empresa = Empresa::find($id);
-        return view('empresa.show', ['empresa' => $empresa]);
+        return view('settings.empresa.show', ['empresa' => $empresa]);
     }
 
     public function edit($id)
     {
         $empresa = Empresa::findOrFail($id);
         if ($empresa) {
-            return view('empresa.edit', ['empresa' => $empresa]);
+            return view('settings.empresa.edit', ['empresa' => $empresa]);
         } else {
             return redirect()
                 ->action('App\Http\Controllers\EmpresaController@index')

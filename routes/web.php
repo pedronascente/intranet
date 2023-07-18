@@ -5,9 +5,11 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CargoController;
 use App\Http\Controllers\GrupoController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\TokenController;
 use App\Http\Controllers\CartaoController;
 use App\Http\Controllers\ModuloController;
 use App\Http\Controllers\EmpresaController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PermissaoController;
 use App\Http\Controllers\ColaboradorController;
 
@@ -39,10 +41,11 @@ Route::prefix('/settings')->group(
     }
 );
 
-Route::get('/', [LoginController::class, 'showForm'])->name('login');
-Route::get('/login', [LoginController::class, 'showForm'])->name('login');
+Route::get('/', [LoginController::class, 'showForm'])->name('login.form');
+Route::get('/login', [LoginController::class, 'showForm'])->name('login.form');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
-Route::get('/token', [LoginController::class, 'showFormToken'])->name('token')->middleware('auth');
+Route::get('/token', [TokenController::class, 'create'])->name('token.create')->middleware('auth');
+Route::post('/token', [TokenController::class, 'store'])->name('token.store')->middleware('auth');
 
 /*
     Route::prefix('/login')->group(function () {
@@ -54,9 +57,7 @@ Route::get('/token', [LoginController::class, 'showFormToken'])->name('token')->
 */
 
 
-Route::get('/home', function () {
-    return view('home'); //
-});
+Route::get('/home', [DashboardController::class, 'index'])->name('home.index')->middleware('auth');
 
 Route::get('/setor01', function () {
     return view('setor_demo');

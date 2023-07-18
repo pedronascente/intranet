@@ -10,12 +10,12 @@ class ModuloController extends Controller
     public function index()
     {
         $modulos = Modulo::orderBy('id', 'desc')->paginate(6);
-        return view('modulo.index', ['collection' => $modulos]);
+        return view('settings.modulo.index', ['collection' => $modulos]);
     }
 
     public function create()
     {
-        return view('modulo.create');
+        return view('settings.modulo.create');
     }
 
     public function store(Request $request)
@@ -33,7 +33,7 @@ class ModuloController extends Controller
     public function show($id)
     {
         $modulo = Modulo::find($id);
-        return view('modulo.show', ['modulo' => $modulo]);
+        return view('settings.modulo.show', ['modulo' => $modulo]);
     }
 
     public function edit($id)

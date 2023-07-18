@@ -12,14 +12,14 @@ class CartaoController extends Controller
     public function index()
     {
         $collections  =  Cartao::with('user')->orderBy('id', 'desc')->paginate(8);
-        return view('cartao.index', ['collections' => $collections]);
+        return view('settings.cartao.index', ['collections' => $collections]);
     }
 
     public function create()
     {
         $users = $this->getUserSemCartao();
         if (!empty($users)) {
-            return view('cartao.create', ['users' => $users]);
+            return view('settings.cartao.create', ['users' => $users]);
         } else {
             return redirect()
                 ->action('App\Http\Controllers\CartaoController@index')
@@ -50,13 +50,13 @@ class CartaoController extends Controller
     public function show($id)
     {
         $cartao = Cartao::with('user', 'tokens')->findOrFail($id);
-        return view('cartao.show', ['cartao' => $cartao]);
+        return view('settings.cartao.show', ['cartao' => $cartao]);
     }
 
     public function edit($id)
     {
         $cartao = Cartao::with('user')->findOrFail($id);
-        return view('cartao.edit', ['cartao' => $cartao]);
+        return view('settings.cartao.edit', ['cartao' => $cartao]);
     }
 
     public function update(Request $request, $id)

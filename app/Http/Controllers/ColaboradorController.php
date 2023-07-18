@@ -14,7 +14,7 @@ class ColaboradorController extends Controller
     public function index()
     {
         $collection = Colaborador::orderBy('id', 'desc')->paginate(10);
-        return view('colaborador.index', ['collection' => $collection]);
+        return view('settings.colaborador.index', ['collection' => $collection]);
     }
 
     public function create()
@@ -66,7 +66,7 @@ class ColaboradorController extends Controller
     public function show($id)
     {
         $c = Colaborador::findOrFail($id);
-        return view('colaborador.show', ['colaborador' => $c]);
+        return view('settings.colaborador.show', ['colaborador' => $c]);
     }
 
     public function edit($id)
@@ -74,7 +74,7 @@ class ColaboradorController extends Controller
         $colaboraodor = Colaborador::findOrFail($id);
         $empresas = Empresa::orderBy('id', 'desc')->get();
         $cargos = Cargo::orderBy('id', 'desc')->get();
-        return view('colaborador.edit', [
+        return view('settings.colaborador.edit', [
             'colaborador' => $colaboraodor,
             'empresas' => $empresas,
             'cargos' => $cargos,
@@ -119,7 +119,7 @@ class ColaboradorController extends Controller
         $colaboraodor = Colaborador::findOrFail($id);
         //retornar todos os usuarios que ainda não estão relacionados.
         $users = User::with('colaborador')->get();
-        return view('colaborador.associar', [
+        return view('settings.colaborador.associar', [
             'colaborador' => $colaboraodor,
             'users' => $users,
         ]);
@@ -138,7 +138,7 @@ class ColaboradorController extends Controller
         $user = User::findOrFail($request->user_id);
         $colaborador->user()->associate($user);
         $colaborador->update();
-        return redirect(route('colaborador.show', $colaborador->id))
+        return redirect(route('settings.colaborador.show', $colaborador->id))
             ->with('status', "Usuário Foi associado com sucesso!");
     }
 
@@ -153,7 +153,7 @@ class ColaboradorController extends Controller
         $colaborador = Colaborador::with('user')->findOrFail($id);
         $user = User::findOrFail($colaborador->user_id);
         $colaborador->user()->disassociate($user)->save();
-        return redirect(route('colaborador.show', $colaborador->id))
+        return redirect(route('settings.colaborador.show', $colaborador->id))
             ->with('status', "Usuário Foi desassociado com sucesso!");
     }
 

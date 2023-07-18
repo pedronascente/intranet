@@ -3,7 +3,6 @@
     <div class="login-logo">
         <img src="{{ asset('/dist/img/intraNet.png') }}" class=" mr-3 " style="width:200px">
     </div>
-
     <div class="card">
         <div class="card-body login-card-body">
             <p class="login-box-msg">{{ $mensagem }}, para iniciar insira seus <b>dados</b>.</p>
@@ -43,9 +42,6 @@
                     </div>
                 </div>
             </form>
-            <p class="mb-1">
-
-            </p>
         </div>
     </div>
     <div class="row mt-5 text-center">
