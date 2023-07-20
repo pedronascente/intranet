@@ -56,7 +56,6 @@ Route::post('/token', [TokenController::class, 'store'])->name('token.store')->m
     });
 */
 
-
 Route::get('/home', [DashboardController::class, 'index'])->name('home.index')->middleware('auth');
 
 Route::get('/setor01', function () {

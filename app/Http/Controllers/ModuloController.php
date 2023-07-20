@@ -40,7 +40,7 @@ class ModuloController extends Controller
     {
         $modelo = Modulo::findOrFail($id);
         if ($modelo) {
-            return view('modulo.edit', ['modulo' => $modelo]);
+            return view('settings.modulo.edit', ['modulo' => $modelo]);
         } else {
             return redirect()
                 ->action('App\Http\Controllers\ModuloController@index')

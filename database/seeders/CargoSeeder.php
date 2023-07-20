@@ -16,5 +16,6 @@ class CargoSeeder extends Seeder
         DB::table('cargos')->insert(['nome' => 'Programador PHP Pleno']);
         DB::table('cargos')->insert(['nome' => 'Programador PHP Senior']);
         DB::table('cargos')->insert(['nome' => 'Gerente de Projetos Senior']);
+        DB::table('cargos')->insert(['nome' => 'Gerente de TI']);
     }
 }

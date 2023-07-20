@@ -21,7 +21,7 @@ class ColaboradorController extends Controller
     {
         $empresas = Empresa::orderBy('id', 'desc')->get();
         $cargos = Cargo::orderBy('id', 'desc')->get();
-        return view('colaborador.create', [
+        return view('settings.colaborador.create', [
             'empresas' => $empresas,
             'cargos' => $cargos,
         ]);
@@ -138,7 +138,7 @@ class ColaboradorController extends Controller
         $user = User::findOrFail($request->user_id);
         $colaborador->user()->associate($user);
         $colaborador->update();
-        return redirect(route('settings.colaborador.show', $colaborador->id))
+        return redirect(route('colaborador.show', $colaborador->id))
             ->with('status', "Usuário Foi associado com sucesso!");
     }
 
@@ -153,7 +153,7 @@ class ColaboradorController extends Controller
         $colaborador = Colaborador::with('user')->findOrFail($id);
         $user = User::findOrFail($colaborador->user_id);
         $colaborador->user()->disassociate($user)->save();
-        return redirect(route('settings.colaborador.show', $colaborador->id))
+        return redirect(route('colaborador.show', $colaborador->id))
             ->with('status', "Usuário Foi desassociado com sucesso!");
     }
 

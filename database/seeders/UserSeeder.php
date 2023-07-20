@@ -83,10 +83,10 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
         DB::table('users')->insert([
-            'name' => Str::random(10),
+            'name' => 'admin',
             'ativo' => 'on',
             'grupo_id' => 2,
-            'password' => Hash::make('password'),
+            'password' => Hash::make('Admin@188'),
             'remember_token' => Str::random(10)
         ]);
     }

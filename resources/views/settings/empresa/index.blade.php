@@ -14,7 +14,7 @@
                     <tr>
                         <th width="70%">Empresa</th>
                         <th width="10%">Cnpj</th>
-                        <th width="10%" class="text-center">Permissões</th>
+                        <th width="5%" class="text-center">Permissões</th>
                     </tr>
                 </thead>
                 <tbody>

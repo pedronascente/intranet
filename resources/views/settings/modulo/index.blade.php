@@ -14,7 +14,7 @@
                     <tr>
                         <th>Módulo</th>
                         <th>Descrição</th>
-                        <th width="10%" class="text-center">Permissões</th>
+                        <th width="5%" class="text-center">Permissões</th>
                     </tr>
                 </thead>
                 <tbody>

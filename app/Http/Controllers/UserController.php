@@ -16,13 +16,13 @@ class UserController extends Controller
     public function index()
     {
         $collections  =  User::with('grupo')->orderBy('id', 'desc')->paginate(8);
-        return view('user.index', ['collections' => $collections]);
+        return view('settings.user.index', ['collections' => $collections]);
     }
 
     public function create()
     {
         $grupos = Grupo::all();
-        return view('user.register', ['grupos' => $grupos]);
+        return view('settings.user.register', ['grupos' => $grupos]);
     }
 
     /**
@@ -51,7 +51,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $grupos = Grupo::orderBy('id', 'desc')->get();
-        return view('user.edit', [
+        return view('settings.user.edit', [
             'user' => $user,
             'grupos' => $grupos
         ]);
@@ -88,8 +88,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::with('grupo', 'colaborador')->findOrFail($id);
-        return view('user.show', ['user' => $user]);
+        $user = User::with('grupo', 'colaborador', 'cartao')->findOrFail($id);
+        return view('settings.user.show', ['user' => $user]);
     }
 
     /**
@@ -184,7 +184,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $colaborador = Colaborador::findOrFail($request->colaborador_id);
         $colaborador->user()->associate($user)->update();
-        return redirect(route('settings.user.show', $id))
+        return redirect(route('user.show', $id))
             ->with('status', "Colaborador associado com sucesso!");
     }
 
@@ -199,7 +199,7 @@ class UserController extends Controller
         $colaborador = Colaborador::with('user')->findOrFail($id);
         $user = User::findOrFail($colaborador->user_id);
         $colaborador->user()->disassociate($user)->save();
-        return redirect(route('settings.user.show', $user->id))
+        return redirect(route('user.show', $user->id))
             ->with('status', "Usuário Foi desassociado com sucesso!");
     }
 }

@@ -12,14 +12,14 @@ class GrupoController extends Controller
     public function index()
     {
         $collection = Grupo::orderBy('id', 'desc')->paginate(6);
-        return view('perfil.index', ['collections' => $collection]);
+        return view('settings.perfil.index', ['collections' => $collection]);
     }
 
     public function create()
     {
         $modulos =  Modulo::all();
         $permissoes =  Permissao::all();
-        return view('perfil.create', [
+        return view('settings.perfil.create', [
             'modulos' => $modulos,
             'permissoes' => $permissoes,
         ]);
@@ -33,13 +33,9 @@ class GrupoController extends Controller
                 ->action('App\Http\Controllers\GrupoController@index')
                 ->with('warning', "Já existe um Perfil com este nome");
         }
-
-        //  dd($request->all());
-
         $grupo = new Grupo();
         $grupo->nome = $request->nome;
         $grupo->descricao = $request->descricao;
-
 
         if ($request->modulo) {
             foreach ($request->modulo as  $value) {
@@ -49,9 +45,6 @@ class GrupoController extends Controller
                 ]);
             }
         }
-
-
-
         $grupo->save();
         return redirect()
             ->action('App\Http\Controllers\GrupoController@index')
@@ -60,12 +53,12 @@ class GrupoController extends Controller
     public function show($id)
     {
         $perfil = Grupo::findOrFail($id);
-        return view('perfil.show', ['perfil' => $perfil]);
+        return view('settings.perfil.show', ['perfil' => $perfil]);
     }
 
     public function edit($id)
     {
-        return view('perfil.edit');
+        return view('settings.perfil.edit');
     }
 
     public function destroy($id)

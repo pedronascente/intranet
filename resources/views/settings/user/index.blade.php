@@ -22,9 +22,8 @@
             <table class="table table-hover text-nowrap  table-striped">
                 <thead>
                     <tr>
-                        <th width="15%">Usuário</th>
-                        <th width="30%">Perfil</th>
-                        <th width="5%"> Status</th>
+                        <th width="50%">Usuário</th>
+                        <th width="45%"> Status</th>
                         <th width="5%" class="text-center">Permissões</th>
                     </tr>
                 </thead>
@@ -33,7 +32,6 @@
                         @foreach ($collections as $item)
                             <tr>
                                 <td>{{ $item->name }}</td>
-                                <td>{{ $item->grupo->nome }}</td>
                                 <td>
                                     @if ($item->ativo == 'on')
                                         Ativo
@@ -49,8 +47,6 @@
                                         style="padding-right: 10px">
                                         <i class="fas fa-edit"></i>
                                     </a>
-
-
                                 </td>
                             </tr>
                         @endforeach

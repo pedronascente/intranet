@@ -13,13 +13,14 @@
         <div class="card-body p-0">
             <table class="table table-md table-striped">
                 <tr>
-                    <td><b>DADOS: </td>
+                    <td><b>USUÁRIO</td>
                 </tr>
             </table>
             <table class="table table-md">
                 <tbody>
                     <tr>
-                        <td><b>Status : </b>
+                        <td><b>Nome:</b> {{ $user->name }}</td>
+                        <td width="10%"><b>Status : </b>
                             @if ($user->ativo == 'on')
                                 Ativo
                             @else
@@ -27,27 +28,20 @@
                             @endif
                         </td>
                     </tr>
-                    <tr>
-                        <td><b>Usuário:</b> {{ $user->name }}</td>
-                    </tr>
                 </tbody>
             </table>
-
             <table class="table table-md table-striped">
                 <tr>
                     <td><b>COLABORADOR: </td>
                 </tr>
             </table>
-
             @if ($user->colaborador)
                 <table class="table table-md ">
                     <tbody>
                         <tr>
                             <td><b>Nome: </b> {{ $user->colaborador->nome }} {{ $user->colaborador->sobrenome }}</td>
-
                             <td><b>Cpf: </b> {{ $user->colaborador->cpf }}</td>
-
-                            <td class="text-right">
+                            <td wight="5%">
                                 <form action="{{ route('destroy.associacao.user', $user->colaborador->id) }}" method="post"
                                     style="display: inline;" title="Excluir">
                                     @method('DELETE')
@@ -70,7 +64,8 @@
                                 <div class="alert alert-warning alert-dismissible">
                                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                                     <p> <i class="icon fas fa-exclamation-triangle"></i>
-                                        Nenhuma associação foi encontrado!</p>
+                                        Nenhuma associação foi encontrado!
+                                    </p>
                                 </div>
                                 <a href="{{ route('user.associar', $user->id) }}" class="btn btn-info"
                                     title="Associar usuário">
@@ -81,6 +76,50 @@
                     </tbody>
                 </table>
             @endif
+
+            @if ($user->cartao)
+                <table class="table table-md table-striped">
+                    <tr>
+                        <td colspan="2"><b>CARTÃO: </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="{{ route('cartao.show', $user->cartao->id) }}" title="visualizar cartão"
+                                style="padding-right: 10px">
+                                {{ $user->cartao->nome }}
+                            </a>
+                        </td>
+                        <td width="10%"><b>Status:</b>
+                            @if ($user->cartao->status == 'on')
+                                Ativo
+                            @else
+                                Inativo
+                            @endif
+                        </td>
+                    </tr>
+                </table>
+            @else
+                <table class="table table-md ">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="alert alert-warning alert-dismissible">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <p> <i class="icon fas fa-exclamation-triangle"></i>
+                                        Nenhuma associação foi encontrado!
+                                    </p>
+                                </div>
+                                <a href="{{ route('user.associar', $user->id) }}" class="btn btn-info"
+                                    title="Associar usuário">
+                                    Associar
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            @endif
+
+
         </div>
         <div class="card-footer">
             <a href="{{ route('user.index') }}" title="Voltar" style="padding-right: 10px">

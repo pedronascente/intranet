@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
             GrupoSeeder::class,
             UserSeeder::class,
             ColaboradorSeeder::class,
+            CartaoSeeder::class,
+            TokenSeeder::class,
         ]);
     }
 }

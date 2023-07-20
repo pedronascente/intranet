@@ -4,12 +4,17 @@
         <div class="card-body p-0">
             <table class="table table-md table-striped">
                 <tr>
-                    <td><b>DADOS:</td>
+                    <td><b>CARTÃO</td>
                 </tr>
             </table>
             <table class="table table-md">
                 <tr>
-                    <td> <b> Cartão :</b> {{ $cartao->nome }}</td>
+                    <td> <b> Nome :</b> {{ $cartao->nome }}</td>
+                    <td><b>Usuário :</b>
+                        <a href="/settings/user/{{ $cartao->user->id }}" title="Visualizar" style="padding-right: 10px">
+                            {{ $cartao->user->name }}
+                        </a>
+                    </td>
                     <td class="text-right"><b>Status :</b>
                         @if ($cartao->status == 'on')
                             ATIVO
@@ -18,13 +23,7 @@
                         @endif
                     </td>
                 </tr>
-                <tr>
-                    <td colspan="2"><b>Usuário :</b>
-                        <a href="/settings/user/{{ $cartao->user->id }}" title="Visualizar" style="padding-right: 10px">
-                            {{ $cartao->user->name }}
-                        </a>
-                    </td>
-                </tr>
+
                 <table class="table table-bordered ">
                     <thead>
                         <th width="10%">Token</th>
