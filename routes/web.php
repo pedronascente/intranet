@@ -21,6 +21,7 @@ Route::prefix('/settings')->group(
         Route::resource('/perfil', GrupoController::class);
         Route::resource('/modulo', ModuloController::class);
         Route::resource('/cartao', CartaoController::class);
+        Route::get('/cartao/registrar/user/{id}', [CartaoController::class, 'registrarCartaoUsuario'])->name('cartao.registar');
         Route::resource('/colaborador', ColaboradorController::class);
         Route::resource('/user', UserController::class);
         Route::get('/perfil/desativar/{id}', [GrupoController::class, 'desativar']);
@@ -44,18 +45,9 @@ Route::prefix('/settings')->group(
 Route::get('/', [LoginController::class, 'showForm'])->name('login.form');
 Route::get('/login', [LoginController::class, 'showForm'])->name('login.form');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::get('/logout', [LoginController::class, 'logout'])->name('login.sair');
 Route::get('/token', [TokenController::class, 'create'])->name('token.create')->middleware('auth');
 Route::post('/token', [TokenController::class, 'store'])->name('token.store')->middleware('auth');
-
-/*
-    Route::prefix('/login')->group(function () {
-        Route::get('/', [LoginController::class, 'index'])->name('login');
-        
-        Route::get('/esqueci-minha-senha', [LoginController::class, 'recuperarSenha']);
-        Route::get('/recuperar-cartao-token', [LoginController::class, 'recuperarCartao']);
-    });
-*/
-
 Route::get('/home', [DashboardController::class, 'index'])->name('home.index')->middleware('auth');
 
 Route::get('/setor01', function () {

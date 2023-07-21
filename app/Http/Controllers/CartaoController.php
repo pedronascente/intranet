@@ -88,6 +88,23 @@ class CartaoController extends Controller
             ->with('status', "Excluido com sucesso!");
     }
 
+    public function registrarCartaoUsuario($usuario)
+    {
+        $user = User::findOrFail($usuario);
+        $user->cartao()->create([
+            'status' => 'on',
+            'user_id' => $usuario,
+            'nome' => "CARTAO-" . $usuario,
+            'qtdToken' => 40,
+        ]);
+
+        $cartao = Cartao::findOrFail($user->cartao->id);
+        Token::gerarToken($cartao);
+        return redirect()
+            ->action('App\Http\Controllers\UserController@show', $usuario)
+            ->with('status', "Cartão Registrado com sucesso!");
+    }
+
     private function validarFormulario(Request $request)
     {
         $request->validate(

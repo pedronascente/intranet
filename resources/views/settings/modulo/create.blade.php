@@ -10,7 +10,7 @@
                 <div class="form-group">
                     <label>Nome:</label>
                     <input type="text" name="nome" class="form-control  @error('nome') is-invalid  @enderror"
-                        placeholder="nome">
+                        placeholder="nome" value="{{ old('nome') }}">
                     @error('nome')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
@@ -18,7 +18,7 @@
                 <div class="form-group">
                     <label>Descrição:</label>
                     <textarea type="text" name="descricao" rows="5" class="form-control  @error('descricao') is-invalid  @enderror"
-                        placeholder="Escreva uma Descrição"></textarea>
+                        placeholder="Escreva uma Descrição">{{ old('descricao') }}</textarea>
                     @error('descricao')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
