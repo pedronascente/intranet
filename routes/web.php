@@ -50,6 +50,16 @@ Route::get('/token', [TokenController::class, 'create'])->name('token.create')->
 Route::post('/token', [TokenController::class, 'store'])->name('token.store')->middleware('auth');
 Route::get('/home', [DashboardController::class, 'index'])->name('home.index')->middleware('auth');
 
+
+
+Route::get('/cartao/posicao', [CartaoController::class, 'getPosicaoDoCartaoToken']);
+
+
+
+
+
+
+
 Route::get('/setor01', function () {
     return view('setor_demo');
 });

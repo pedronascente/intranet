@@ -5,12 +5,15 @@
     </div>
     <div class="card">
         <div class="card-body login-card-body">
-            <p class="login-box-msg">{{ $mensagem }}, para continuar insira seu Token</p>
+            <p class="login-box-msg">{{ $mensagem }}, para continuar insira seu Token
+            <div id="timer" class="text-center"></div>
+            <div id="result" class="text-center"></div>
+            </p>
             <form action="{{ route('token.create') }}" method="post">
                 @csrf
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" value="POSIÇÃO : {{ $posicaoDoToken }}" disabled="true">
-                    <input type="hidden" name="posicaoDoToken" value="{{ $posicaoDoToken }}">
+                    <input type="text" id="posicaoDoToken" class="form-control" value="Posição : " disabled="true">
+                    <input type="hidden" id="posicaoDoTokenHidden" name="posicaoDoToken" value="">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-address-card"></span>
@@ -26,9 +29,6 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-8">
-                        <a href="/login/recuperar-cartao-token">Perdi meu Cartão Token</a>
-                    </div>
                     <div class="col-4">
                         <button type="submit" class="btn btn-primary btn-block">Entrar</button>
                     </div>
@@ -36,4 +36,37 @@
             </form>
         </div>
     </div>
+    <script type="text/javascript">
+        function startTimer(duration, display) {
+            getPosicaoDoCartaoToken()
+            var timer = duration,
+                minutes, seconds;
+            setInterval(function() {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+                display.textContent = minutes + ':' + seconds;
+                console.log(seconds);
+                if (--timer < 0) {
+                    timer = duration;
+                    getPosicaoDoCartaoToken()
+                }
+            }, 1000);
+        }
+
+        function getPosicaoDoCartaoToken() {
+            $.get("/cartao/posicao", function(data) {
+                console.log(data);
+                $("#posicaoDoToken").val('Posição:' + data);
+                $("#posicaoDoTokenHidden").val(data);
+            });
+        }
+
+        window.onload = function() {
+            var duration = 60 * 2; //Conversão para segundos
+            let display = document.querySelector('#timer'); //Elemeto para exibir o timer
+            startTimer(duration, display) //Inicia a função.
+        }
+    </script>
 @endsection

@@ -90,8 +90,6 @@
                     </tr>
                 @endfor
             </table>
-
-
         </div>
         <div class="card-footer">
             <a href="/perfil" class="btn   btn-warning" title="Voltar">

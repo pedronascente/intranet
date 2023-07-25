@@ -105,6 +105,12 @@ class CartaoController extends Controller
             ->with('status', "Cartão Registrado com sucesso!");
     }
 
+    public function getPosicaoDoCartaoToken(Request $request)
+    {
+        $posicaoDoToken = rand(1, $request->session('cartaoToken')->get('cartaoToken')->qtdToken);
+        return $posicaoDoToken;
+    }
+
     private function validarFormulario(Request $request)
     {
         $request->validate(

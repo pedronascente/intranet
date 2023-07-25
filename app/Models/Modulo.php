@@ -13,11 +13,4 @@ class Modulo extends Model
         'nome',
         'descricao',
     ];
-
-    /*
-    public function grupos()
-    {
-        return $this->belongsToMany(Grupo::class, 'grupo_modulo');
-    }
-   */
 }

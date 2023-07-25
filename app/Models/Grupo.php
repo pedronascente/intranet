@@ -18,11 +18,4 @@ class Grupo extends Model
     {
         return $this->hasMany(User::class);
     }
-
-    /*
-    public function modulos()
-    {
-        return $this->belongsToMany(Modulo::class, 'grupo_modulo', 'modulo_id', 'id');
-    }
-    */
 }
