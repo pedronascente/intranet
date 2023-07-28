@@ -2,7 +2,7 @@
 @section('content')
     <div class="card card-default">
         <div class="card-header">
-            <h4>Adicionar novo Colaborador</h4>
+            <h4>Novo</h4>
         </div>
         <form action="{{ route('colaborador.store') }}" method="POST" enctype="multipart/form-data"
             name="Formulario-Colaborador-create">

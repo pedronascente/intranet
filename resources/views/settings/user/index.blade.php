@@ -4,7 +4,7 @@
         <div class="card-header">
             <h3 class="card-title">
                 <a href="{{ route('user.create') }}" class="btn btn-info btn-block " title=" Adicionar novo usuário">
-                    Adicionar novo usuário
+                    Novo
                 </a>
             </h3>
             <div class="card-tools">
@@ -33,7 +33,7 @@
                             <tr>
                                 <td>{{ $item->name }}</td>
                                 <td>
-                                    @if ($item->ativo == 'on')
+                                    @if ($item->status == 'on')
                                         Ativo
                                     @else
                                         Inativo

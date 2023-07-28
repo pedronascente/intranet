@@ -4,7 +4,7 @@
         <div class="card-header">
             <h3 class="card-title">
                 <a href="{{ route('permissao.create') }}" class="btn btn-info btn-block " title="Adicionar nova permissão">
-                    Adicionar nova permissão
+                    Novo
                 </a>
             </h3>
         </div>

@@ -64,7 +64,7 @@
         }
 
         window.onload = function() {
-            var duration = 60 * 2; //Conversão para segundos
+            var duration = 60 * 1; //Conversão para segundos
             let display = document.querySelector('#timer'); //Elemeto para exibir o timer
             startTimer(duration, display) //Inicia a função.
         }

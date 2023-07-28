@@ -3,14 +3,18 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="card card-primary">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Novo</h4>
+                    </div>
                     <form action="{{ route('perfil.store') }}" method="post">
                         @csrf
                         <div class="card-body">
                             <div class="form-group">
                                 <label>Nome:</label>
-                                <input type="text" name="nome" class="form-control @error('nome') is-invalid  @enderror"
-                                    placeholder="nome" value="{{ old('nome') }}">
+                                <input type="text" name="nome"
+                                    class="form-control @error('nome') is-invalid  @enderror" placeholder="nome"
+                                    value="{{ old('nome') }}">
                                 @error('nome')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror

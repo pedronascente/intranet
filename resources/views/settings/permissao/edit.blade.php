@@ -2,7 +2,7 @@
 @section('content')
     <div class="card card-default">
         <div class="card-header">
-            <h4>Editar Permissão</h4>
+            <h4>Editar</h4>
         </div>
         <form action="{{ route('permissao.update', $permissao->id) }}" method="POST" name="Formulario-permissao-edit">
             @csrf

@@ -32,6 +32,9 @@ class LoginController extends Controller
             'name.required' => 'O campo usuario é obrigatório!',
             'password.required' => 'O campo senha é obrigatório!',
         ]);
+
+        $credenciais['status'] = 'on';
+
         if (Auth::attempt($credenciais)) {
             $request->session()->regenerate();
             $usuarioLogado = $request->user();

@@ -1,6 +1,9 @@
 @extends('layouts.app')
 @section('content')
-    <div class="card card-primary">
+    <div class="card">
+        <div class="card-header">
+            <h4>Editar</h4>
+        </div>
         <form action="{{ route('cargo.update', $cargo->id) }}" method="POST">
             @csrf
             @method('PUT')

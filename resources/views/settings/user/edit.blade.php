@@ -2,9 +2,8 @@
 @section('content')
     <div class="card card-default">
         <div class="card-header">
-            <h4>Editar Usuário</h4>
+            <h4>Editar</h4>
         </div>
-
         <form action="{{ route('user.update', $user->id) }}" method="POST">
             @csrf
             @method('PUT')
@@ -27,14 +26,14 @@
                 <div class="row">
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label>Ativo: </label>
-                            <select name="ativo" class="custom-select">
-                                <option value="on" @if ($user->ativo == 'on') selected @endif
-                                    @if (old('ativo') == 'on') selected @endif>
-                                    Sim</option>
-                                <option value="off" @if ($user->ativo == 'off') selected @endif
-                                    @if (old('ativo') == 'off') selected @endif>
-                                    Não</option>
+                            <label>Status: </label>
+                            <select name="status" class="custom-select">
+                                <option value="on" @if ($user->status == 'on') selected @endif
+                                    @if (old('status') == 'on') selected @endif>
+                                    Ativo</option>
+                                <option value="off" @if ($user->status == 'off') selected @endif
+                                    @if (old('status') == 'off') selected @endif>
+                                    Inativo</option>
                             </select>
                         </div>
                     </div>

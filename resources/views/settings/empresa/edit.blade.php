@@ -2,7 +2,7 @@
 @section('content')
     <div class="card card-default">
         <div class="card-header">
-            <h4>Editar Empresa</h4>
+            <h4>Editar</h4>
         </div>
         <form action="{{ route('empresa.update', $empresa->id) }}" method="POST">
             @csrf

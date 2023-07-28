@@ -114,14 +114,26 @@ class ColaboradorController extends Controller
             ->with('status', "Registro Atualizado!");
     }
 
+    /**
+     * Retorna todos os usuarios que não tem colaborador registrado
+     *
+     * @param [type] $id
+     * @return void
+     */
     public function createAssociar($id)
     {
+        $userList = null;
         $colaboraodor = Colaborador::findOrFail($id);
-        //retornar todos os usuarios que ainda não estão relacionados.
         $users = User::with('colaborador')->get();
+        foreach ($users as $user) {
+            if (!$user->colaborador) {
+                $userList[] = $user;
+            }
+        }
+
         return view('settings.colaborador.associar', [
             'colaborador' => $colaboraodor,
-            'users' => $users,
+            'users' => $userList,
         ]);
     }
 

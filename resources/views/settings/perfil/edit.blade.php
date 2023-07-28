@@ -3,8 +3,10 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="card card-primary">
-
+                <div class="card-header">
+                    <h4>Editar</h4>
+                </div>
+                <div class="card">
                     <form action="/perfil">
                         <div class="card-body">
                             <div class="form-group">

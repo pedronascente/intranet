@@ -25,7 +25,7 @@
                         <td><b>Usuário: </b><br> {{ $colaborador->user->name }}</td>
                         <td>
                             <b>Status: </b><br>
-                            @if ($colaborador->user->ativo == 'on')
+                            @if ($colaborador->user->status == 'on')
                                 Ativo
                             @else
                                 Inativo
@@ -39,8 +39,7 @@
                                 @csrf
                                 <a href="{{ route('destroy.associacao.colaborador', $colaborador->id) }}"
                                     onclick="event.preventDefault();
-                                            this.closest('form').submit();"
-                                    style="color:red">
+                                            this.closest('form').submit();">
                                     <i class="fas fa-trash"></i>
                                 </a>
                             </form>
@@ -49,25 +48,16 @@
                 @else
                     <tr>
                         <td colspan="3">
-                            <div class="alert alert-warning alert-dismissible">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                <p> <i class="icon fas fa-exclamation-triangle"></i>
-                                    Nenhuma associação foi encontrada!</p>
-                            </div>
                             <a href="{{ route('create_associar', $colaborador->id) }}" class="btn btn-info"
                                 title="Associar Usuário">
                                 Associar Usuário
                             </a>
-
                         </td>
                     </tr>
                 @endif
             </table>
         </div>
         <div class="card-footer">
-            <a href="{{ route('colaborador.index') }}" title="Voltar" style="padding-right: 10px">
-                <i class="fa fa-reply"></i>
-            </a>
             <a href="{{ route('colaborador.edit', $colaborador->id) }}" style="padding-right: 10px" title="Editar">
                 <i class="fas fa-edit"></i>
             </a>
@@ -77,11 +67,13 @@
                 @csrf
                 <a href="{{ route('colaborador.destroy', $colaborador->id) }}"
                     onclick="event.preventDefault();
-                                            this.closest('form').submit();"
-                    style="color:red">
+                                            this.closest('form').submit();">
                     <i class="fas fa-trash"></i>
                 </a>
             </form>
+            <a href="{{ route('colaborador.index') }}" title="Voltar" style="padding-right: 10px">
+                <i class="fa fa-reply"></i>
+            </a>
         </div>
     </div>
 @endsection

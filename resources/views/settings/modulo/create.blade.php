@@ -2,7 +2,7 @@
 @section('content')
     <div class="card card-default">
         <div class="card-header">
-            <h4>Adicionar novo Módulo</h4>
+            <h4>Novo</h4>
         </div>
         <form action="{{ route('modulo.store') }}" method="POST" name="Formulario-modulo-create">
             @csrf

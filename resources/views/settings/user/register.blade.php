@@ -2,7 +2,7 @@
 @section('content')
     <div class="card card-default">
         <div class="card-header">
-            <h4>Adicionar novo Usuário</h4>
+            <h4>Novo</h4>
         </div>
         <form action="{{ route('user.store') }}" method="POST">
             @csrf
@@ -25,11 +25,11 @@
                 <div class="row">
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label>Ativo:</label>
-                            <select name="ativo" class="custom-select">
-                                <option value="on" @if (old('ativo') == 'on') selected @endif>
+                            <label>Status:</label>
+                            <select name="status" class="custom-select">
+                                <option value="on" @if (old('status') == 'on') selected @endif>
                                     Sim</option>
-                                <option value="off" @if (old('ativo') == 'off') selected @endif>
+                                <option value="off" @if (old('status') == 'off') selected @endif>
                                     Não</option>
                             </select>
                         </div>

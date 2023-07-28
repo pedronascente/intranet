@@ -43,9 +43,7 @@
                 <table class="table table-md">
                     <tr>
                         <td>
-                            <a href="{{ route('cartao.index') }}" title="Voltar" style="padding-right: 10px">
-                                <i class="fa fa-reply" aria-hidden="true"></i>
-                            </a>
+
                             <a href="{{ route('cartao.edit', $cartao->id) }}" title="Editar" style="padding-right: 10px">
                                 <i class="fas fa-edit"></i>
                             </a>
@@ -61,6 +59,9 @@
                             </form>
                             <a href="{{ route('cartao.edit', $cartao->id) }}" title="Voltar" style="padding-right: 10px">
                                 <i class="fa fa-refresh" aria-hidden="true"></i>
+                            </a>
+                            <a href="{{ route('cartao.index') }}" title="Voltar" style="padding-right: 10px">
+                                <i class="fa fa-reply" aria-hidden="true"></i>
                             </a>
                         </td>
                     </tr>

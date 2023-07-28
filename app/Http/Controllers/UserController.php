@@ -36,7 +36,7 @@ class UserController extends Controller
         $this->validarFormulario($request, 'store');
         $user = User::create([
             'name' => $request->name,
-            'ativo' => $request->ativo,
+            'status' => $request->status,
             'grupo_id' => $request->grupo,
             'password' => Hash::make($request->password),
         ]);
@@ -69,7 +69,7 @@ class UserController extends Controller
         $usuario = User::with('grupo')->findOrFail($id);
         $grupo = Grupo::findOrFail($request->grupo);
         $this->validarFormulario($request, 'update');
-        $usuario->ativo = $request->ativo;
+        $usuario->status = $request->status;
         $usuario->name = $request->name;
         if (empty(!$request->password)) {
             $usuario->password = Hash::make($request->password);
@@ -117,7 +117,7 @@ class UserController extends Controller
         switch ($tipo) {
             case 'store':
                 $request->validate([
-                    'ativo' => ['required', 'string'],
+                    'status' => ['required', 'string'],
                     'grupo' => ['required'],
                     'name' => ['required', 'string', 'max:255'],
                     'password_confirmation' => ['required'],
@@ -135,7 +135,7 @@ class UserController extends Controller
                 break;
             case 'update':
                 $regras =  [
-                    'ativo' => ['required', 'string'],
+                    'status' => ['required', 'string'],
                     'grupo' => ['required'],
                     'name' => ['required', 'string', 'max:255'],
                 ];

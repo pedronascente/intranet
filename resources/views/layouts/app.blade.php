@@ -17,11 +17,18 @@
         @include('layouts.includes.barralateral')
 
         <div class="content-wrapper">
-            <div class="content-header">
+            <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
-                        <div class="col-sm-12">
-                            <ol class="breadcrumb">
+                        <div class="col-sm-6">
+                            <h1>
+                                @if (Request::segment(2))
+                                    {{ Str::title(Request::segment(2)) }}
+                                @endif
+                            </h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item">
                                     @if (Request::segment(1) == 'settings')
                                         Configurações
@@ -33,8 +40,8 @@
                             </ol>
                         </div>
                     </div>
-                </div>
-            </div>
+                </div><!-- /.container-fluid -->
+            </section>
             <section class="content">
                 <div class="container-fluid">
                     <div class="row">

@@ -4,7 +4,7 @@
         <div class="card-header">
             <h3 class="card-title">
                 <a href="{{ route('cartao.create') }}" class="btn btn-info btn-block ">
-                    Adicionar novo cartão
+                  Novo
                 </a>
             </h3>
         </div>

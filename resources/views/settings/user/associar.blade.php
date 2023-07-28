@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="card card-primary">
+    <div class="card">
         <form action="{{ route('user.updateassociar', $user->id) }}" method="POST" name="formularuio-associar-colaborador">
             @csrf
             @method('PUT')

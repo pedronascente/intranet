@@ -16,7 +16,7 @@
                     <tr>
                         <td width="90%"> <b>Usuário:</b><br> {{ $user->name }}</td>
                         <td><b>Status : </b><br>
-                            @if ($user->ativo == 'on')
+                            @if ($user->status == 'on')
                                 Ativo
                             @else
                                 Inativo
@@ -50,15 +50,9 @@
                         @else
                         <tr>
                             <td colspan="2">
-                                <div class="alert alert-warning alert-dismissible">
-                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                    <p> <i class="icon fas fa-exclamation-triangle"></i>
-                                        Nenhum colaborador foi encontrado!
-                                    </p>
-                                </div>
                                 <a href="{{ route('user.associar', $user->id) }}" class="btn btn-info"
                                     title="Associar usuário">
-                                    Registrar Colaborador
+                                    Associar Colaborador
                                 </a>
                             </td>
                         </tr>
@@ -101,10 +95,7 @@
             </table>
         </div>
         <div class="card-footer">
-            <a href="{{ route('user.index') }}" title="Voltar" style="padding-right: 10px">
-                <i class="fa fa-reply" aria-hidden="true"></i>
-            </a>
-            <a href="{{ route('user.edit', $user->id) }}" title="Editar" style="padding-right: 10px">
+            <a href="{{ route('user.edit', $user->id) }}" title="Editar">
                 <i class="fas fa-edit"></i>
             </a>
             <form action="{{ route('user.destroy', $user->id) }}" method="post"
@@ -117,6 +108,9 @@
                     <i class="fas fa-trash"></i>
                 </a>
             </form>
+            <a href="{{ route('user.index') }}" title="Voltar" style="padding-right: 10px">
+                <i class="fa fa-reply" aria-hidden="true"></i>
+            </a>
         </div>
     </div>
 @endsection

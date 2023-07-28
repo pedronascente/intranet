@@ -2,7 +2,7 @@
 @section('content')
     <div class="card card-default">
         <div class="card-header">
-            <h4>Editar Módulo</h4>
+            <h4>Editar</h4>
         </div>
         <form action="{{ route('modulo.update', $modulo->id) }}" method="POST" name="Formulario-modulo-edit">
             @csrf

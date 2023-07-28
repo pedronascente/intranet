@@ -4,7 +4,7 @@
         <div class="card-header">
             <h3 class="card-title">
                 <a href="{{ route('perfil.create') }}" class="btn btn-info btn-block ">
-                    Adicionar novo perfil
+                    Novo
                 </a>
             </h3>
             <div class="card-tools">
