@@ -15,77 +15,77 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'name' => Str::random(10),
             'status' => 'on',
-            'grupo_id' => 4,
+            'perfil_id' => 4,
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10)
         ]);
         DB::table('users')->insert([
             'name' => Str::random(10),
             'status' => 'on',
-            'grupo_id' => 7,
+            'perfil_id' => 7,
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10)
         ]);
         DB::table('users')->insert([
             'name' => Str::random(10),
             'status' => 'on',
-            'grupo_id' => 8,
+            'perfil_id' => 8,
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10)
         ]);
         DB::table('users')->insert([
             'name' => Str::random(10),
             'status' => 'on',
-            'grupo_id' => 7,
+            'perfil_id' => 7,
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10)
         ]);
         DB::table('users')->insert([
             'name' => Str::random(10),
             'status' => 'on',
-            'grupo_id' => 6,
+            'perfil_id' => 6,
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10)
         ]);
         DB::table('users')->insert([
             'name' => Str::random(10),
             'status' => 'on',
-            'grupo_id' => 5,
+            'perfil_id' => 5,
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10)
         ]);
         DB::table('users')->insert([
             'name' => Str::random(10),
             'status' => 'on',
-            'grupo_id' => 4,
+            'perfil_id' => 4,
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10)
         ]);
         DB::table('users')->insert([
             'name' => Str::random(10),
             'status' => 'on',
-            'grupo_id' => 3,
+            'perfil_id' => 3,
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10)
         ]);
         DB::table('users')->insert([
             'name' => Str::random(10),
             'status' => 'on',
-            'grupo_id' => 1,
+            'perfil_id' => 1,
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10)
         ]);
         DB::table('users')->insert([
             'name' => Str::random(10),
             'status' => 'on',
-            'grupo_id' => 2,
+            'perfil_id' => 2,
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10)
         ]);
         DB::table('users')->insert([
             'name' => 'admin',
             'status' => 'on',
-            'grupo_id' => 2,
+            'perfil_id' => 2,
             'password' => Hash::make('Admin@188'),
             'remember_token' => Str::random(10)
         ]);

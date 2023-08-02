@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddGrupoIdToUsersTable extends Migration
+class AddPerfilIdToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,8 @@ class AddGrupoIdToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('grupo_id')->unsigned();
-            $table->foreign('grupo_id')->references('id')->on('grupos');
+            $table->integer('perfil_id')->unsigned();
+            $table->foreign('perfil_id')->references('id')->on('perfis');
         });
     }
 
@@ -27,8 +27,8 @@ class AddGrupoIdToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('grupo_id')->unsigned();
-            $table->foreign('grupo_id')->references('id')->on('grupos');
+            $table->integer('perfil_id')->unsigned();
+            $table->foreign('perfil_id')->references('id')->on('perfis');
         });
     }
 }

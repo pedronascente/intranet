@@ -12,5 +12,21 @@ class Permissao extends Model
     protected $fillable = [
         'nome',
     ];
-    protected $table = 'Permissoes';
+
+    protected $table = 'permissoes';
+
+    public function modulos()
+    {
+        return $this->belongsToMany(Modulo::class);
+    }
+
+    public function perfils()
+    {
+        return $this->belongsToMany(
+            Perfil::class,
+            'modulo_perfil',
+            'perfil_id',
+            'id'
+        );
+    }
 }

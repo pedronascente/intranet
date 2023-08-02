@@ -34,8 +34,8 @@
                                 <td>{{ $item->nome }}</td>
                                 <td>{{ $item->descricao }}</td>
                                 <td class="text-center">
-                                    <a href="perfil/{{ $item->id }}" title="Visualizar" style="padding-right:10px">
-                                        <i class="fas fa-solid fa-eye"></i>
+                                    <a href="perfil/{{ $item->id }}/edit" title="Editar" style="padding-right: 10px">
+                                        <i class="fas fa-edit"></i>
                                     </a>
                                     <form action="{{ route('perfil.destroy', $item->id) }}" method="post"
                                         style="display: inline; padding-right: 10px" title="Excluir">

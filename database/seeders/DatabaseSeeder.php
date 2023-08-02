@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
             CargoSeeder::class,
             ModuloSeeder::class,
             PermissaoSeeder::class,
-            GrupoSeeder::class,
+            PerfilSeeder::class,
             UserSeeder::class,
             ColaboradorSeeder::class,
             CartaoSeeder::class,

@@ -21,7 +21,12 @@
                             </div>
                             <div class="form-group">
                                 <label>Descrição:</label>
-                                <input type="text" name="descricao" class="form-control" placeholder="Breve descrição">
+                                <input type="text" name="descricao"
+                                    class="form-control @error('descricao') is-invalid  @enderror"
+                                    placeholder="Breve descrição" value="{{ old('descricao') }}">
+                                @error('descricao')
+                                    <span class=" invalid-feedback">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="card">
@@ -46,26 +51,26 @@
                                     </thead>
                                     <tbody>
                                         @if ($modulos)
-                                            @foreach ($modulos as $item)
+                                            @foreach ($modulos as $modulo)
                                                 <tr>
                                                     <td class="text-center">
                                                         <div class="custom-control custom-checkbox">
                                                             <input class="custom-control-input" type="checkbox"
-                                                                id="moduloCheckbox{{ $item->id }}"
-                                                                value="{{ $item->id }}" name="modulo[]">
-                                                            <label for="moduloCheckbox{{ $item->id }}"
+                                                                id="moduloCheckbox{{ $modulo->id }}"
+                                                                value="{{ $modulo->id }}" name="modulos[]">
+                                                            <label for="moduloCheckbox{{ $modulo->id }}"
                                                                 class="custom-control-label"></label>
                                                         </div>
                                                     </td>
-                                                    <td>{{ $item->nome }}</td>
-                                                    <td>{{ $item->descricao }}</td>
+                                                    <td>{{ $modulo->nome }}</td>
+                                                    <td>{{ $modulo->descricao }}</td>
                                                     @if ($permissoes)
                                                         @foreach ($permissoes as $permissao)
                                                             <td class="text-center">
                                                                 <div class="custom-control custom-checkbox">
                                                                     <input class="" type="checkbox"
                                                                         value="{{ $permissao->id }}"
-                                                                        name="permissoes[{{ $item->nome }}][]permissao[]">
+                                                                        name="permissoes[{{ $modulo->id }}][]permissao[]">
                                                                 </div>
                                                             </td>
                                                         @endforeach

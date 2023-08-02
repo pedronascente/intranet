@@ -42,18 +42,18 @@
                     <div class="col-md-5">
                         <div class="form-group">
                             <label>Perfil:</label>
-                            <select name="grupo" class="custom-select @error('grupo') is-invalid @enderror">
+                            <select name="perfil" class="custom-select @error('perfil') is-invalid @enderror">
                                 <option value="">Selecione...</option>
-                                @if ($grupos)
-                                    @foreach ($grupos as $item)
+                                @if ($perfis)
+                                    @foreach ($perfis as $item)
                                         <option value="{{ $item->id }} "
-                                            @if ($user->grupo->id == $item->id) selected @endif
-                                            @if (old('grupo')) selected @endif>
+                                            @if ($user->perfil->id == $item->id) selected @endif
+                                            @if (old('perfil')) selected @endif>
                                             {{ $item->nome }}</option>
                                     @endforeach
                                 @endif
                             </select>
-                            @error('grupo')
+                            @error('perfil')
                                 <span class=" invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>

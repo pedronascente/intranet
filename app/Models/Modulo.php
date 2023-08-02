@@ -13,4 +13,14 @@ class Modulo extends Model
         'nome',
         'descricao',
     ];
+
+    public function perfis()
+    {
+        return $this->belongsToMany(Perfil::class);
+    }
+
+    public function permissoes()
+    {
+        return $this->belongsToMany(Permissao::class);
+    }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Colaborador;
 use App\Models\User;
-use App\Models\Grupo;
+use App\Models\Perfil;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,14 +15,14 @@ class UserController extends Controller
 {
     public function index()
     {
-        $collections  =  User::with('grupo')->orderBy('id', 'desc')->paginate(8);
+        $collections  =  User::with('perfil')->orderBy('id', 'desc')->paginate(8);
         return view('settings.user.index', ['collections' => $collections]);
     }
 
     public function create()
     {
-        $grupos = Grupo::all();
-        return view('settings.user.register', ['grupos' => $grupos]);
+        $perfis = Perfil::all();
+        return view('settings.user.register', ['perfis' => $perfis]);
     }
 
     /**
@@ -37,7 +37,7 @@ class UserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'status' => $request->status,
-            'grupo_id' => $request->grupo,
+            'perfil_id' => $request->perfil,
             'password' => Hash::make($request->password),
         ]);
         event(new Registered($user));
@@ -50,10 +50,10 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        $grupos = Grupo::orderBy('id', 'desc')->get();
+        $perfis = Perfil::orderBy('id', 'desc')->get();
         return view('settings.user.edit', [
             'user' => $user,
-            'grupos' => $grupos
+            'perfis' => $perfis
         ]);
     }
 
@@ -66,15 +66,15 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $usuario = User::with('grupo')->findOrFail($id);
-        $grupo = Grupo::findOrFail($request->grupo);
+        $usuario = User::with('perfil')->findOrFail($id);
+        $perfil = Perfil::findOrFail($request->perfil);
         $this->validarFormulario($request, 'update');
         $usuario->status = $request->status;
         $usuario->name = $request->name;
         if (empty(!$request->password)) {
             $usuario->password = Hash::make($request->password);
         }
-        $usuario->grupo()->associate($grupo)->update();
+        $usuario->perfil()->associate($perfil)->update();
         return redirect()
             ->action('App\Http\Controllers\UserController@show', $usuario->id)
             ->with('status', "Atualizado com sucesso!");
@@ -88,7 +88,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::with('grupo', 'colaborador', 'cartao')->findOrFail($id);
+        $user = User::with('perfil', 'colaborador', 'cartao')->findOrFail($id);
         return view('settings.user.show', ['user' => $user]);
     }
 
@@ -118,7 +118,7 @@ class UserController extends Controller
             case 'store':
                 $request->validate([
                     'status' => ['required', 'string'],
-                    'grupo' => ['required'],
+                    'perfil' => ['required'],
                     'name' => ['required', 'string', 'max:255'],
                     'password_confirmation' => ['required'],
                     'password' => [
@@ -136,7 +136,7 @@ class UserController extends Controller
             case 'update':
                 $regras =  [
                     'status' => ['required', 'string'],
-                    'grupo' => ['required'],
+                    'perfil' => ['required'],
                     'name' => ['required', 'string', 'max:255'],
                 ];
                 if (!is_null($request->password) || !is_null($request->password_confirmation)) {

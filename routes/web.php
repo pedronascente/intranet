@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CargoController;
-use App\Http\Controllers\GrupoController;
+use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TokenController;
 use App\Http\Controllers\CartaoController;
@@ -18,13 +18,13 @@ Route::prefix('/settings')->group(
         Route::resource('/empresa', EmpresaController::class);
         Route::resource('/cargo', CargoController::class);
         Route::resource('/permissao', PermissaoController::class);
-        Route::resource('/perfil', GrupoController::class);
+        Route::resource('/perfil', PerfilController::class);
         Route::resource('/modulo', ModuloController::class);
         Route::resource('/cartao', CartaoController::class);
         Route::get('/cartao/registrar/user/{id}', [CartaoController::class, 'registrarCartaoUsuario'])->name('cartao.registar');
         Route::resource('/colaborador', ColaboradorController::class);
         Route::resource('/user', UserController::class);
-        Route::get('/perfil/desativar/{id}', [GrupoController::class, 'desativar']);
+        Route::get('/perfil/desativar/{id}', [PerfilController::class, 'desativar']);
         Route::prefix('/associar/colaborador')->group(
             function () {
                 Route::get('/{id}', [UserController::class, 'createAssociar'])->name('user.associar');

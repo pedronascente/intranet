@@ -17,7 +17,7 @@ class User extends Authenticatable
         'name',
         'password',
         'status',
-        'grupo_id',
+        'perfil_id',
     ];
 
     /**
@@ -35,9 +35,9 @@ class User extends Authenticatable
         return $this->hasOne(Colaborador::class);
     }
 
-    public function grupo()
+    public function perfil()
     {
-        return $this->belongsTo(Grupo::class, 'grupo_id', 'id');
+        return $this->belongsTo(Perfil::class, 'perfil_id', 'id');
     }
 
     public function cartao()

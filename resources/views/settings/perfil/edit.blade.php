@@ -3,102 +3,98 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="card-header">
-                    <h4>Editar</h4>
-                </div>
                 <div class="card">
-                    <form action="/perfil">
+                    <div class="card-header">
+                        <h4>Editar</h4>
+                    </div>
+                    <form action="{{ route('perfil.store') }}" method="post">
+                        @csrf
                         <div class="card-body">
                             <div class="form-group">
-                                <label>Nome Perfil</label>
-                                <input type="text" name="nome" class="form-control" placeholder="perfil">
+                                <label>Nome:</label>
+                                <input type="text" name="nome" class="form-control" value="{{ $perfil->nome }}">
                             </div>
                             <div class="form-group">
-                                <label>Descrição</label>
-                                <input type="text" name="descricao" class="form-control" placeholder="Breve descrição">
+                                <label>Descrição:</label>
+                                <input type="text" name="descricao" class="form-control"
+                                    value="{{ $perfil->descricao }}">
                             </div>
                         </div>
-
                         <div class="card">
                             <div class="card-body table-responsive p-0">
                                 <table class="table table-hover  table-striped">
                                     <thead>
                                         <tr>
                                             <th colspan="3"></th>
-                                            <th width="5%" colspan="4" class="text-center">Permissões Gerais</th>
+                                            <th width="5%" colspan="{{ count($permissoes) }}" class="text-center">
+                                                Permissões Gerais
+                                            </th>
                                         </tr>
                                         <tr>
                                             <th>Permissões</th>
                                             <th>Modulo</th>
                                             <th>Descrição</th>
-                                            <th class="text-center">Visualizar</th>
-                                            <th class="text-center">Editar</th>
-                                            <th class="text-center">Criar</th>
-                                            <th class="text-center">Exluir</th>
+                                            @if ($permissoes)
+                                                @foreach ($permissoes as $permissao)
+                                                    <th class="text-center">{{ $permissao->nome }}</th>
+                                                @endforeach
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @for ($i = 0; $i < 8; $i++)
-                                            <tr>
-                                                <td class="text-center">
-                                                    <div
-                                                        class="custom-control
-                                                    custom-checkbox">
-                                                        <input class="custom-control-input" type="checkbox"
-                                                            id="moduloCheckbox{{ $i }}" value="on">
-                                                        <label for="moduloCheckbox{{ $i }}"
-                                                            class="custom-control-label"></label>
-                                                    </div>
-                                                </td>
-                                                <td>Acionamento VTR</td>
-                                                <td>MÓDULO BLÁ BLÁ</td>
-                                                <td class="text-center">
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input class="custom-control-input" type="checkbox"
-                                                            id="visualizarCheckbox{{ $i }}" value="on">
-                                                        <label for="visualizarCheckbox{{ $i }}"
-                                                            class="custom-control-label"></label>
-                                                    </div>
-                                                </td>
-                                                <td class="text-center">
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input class="custom-control-input" type="checkbox"
-                                                            id="editarCheckbox{{ $i }}" value="on">
-                                                        <label for="editarCheckbox{{ $i }}"
-                                                            class="custom-control-label"></label>
-                                                    </div>
-                                                </td>
-                                                <td class="text-center">
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input class="custom-control-input" type="checkbox"
-                                                            id="criarCheckbox{{ $i }}" value="on">
-                                                        <label for="criarCheckbox{{ $i }}"
-                                                            class="custom-control-label"></label>
-                                                    </div>
-                                                </td>
-                                                <td class="text-center">
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input class="custom-control-input" type="checkbox"
-                                                            id="excluirCheckbox{{ $i }}" value="on">
-                                                        <label for="excluirCheckbox{{ $i }}"
-                                                            class="custom-control-label"></label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endfor
-                                    </tbody>
-                                </table>
+                                        @if ($modulos)
+                                            @foreach ($modulos as $k => $modulo)
+                                                <tr>
+                                                    <td class="text-center">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input class="custom-control-input" type="checkbox"
+                                                                id="moduloCheckbox{{ $modulo->id }}"
+                                                                value="{{ $modulo->id }}" name="modulos[]"
+                                                                @if (in_array($modulo->id, $listModulos)) checked @endif>
+                                                            <label for="moduloCheckbox{{ $modulo->id }}"
+                                                                class="custom-control-label"></label>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        {{ $modulo->nome }}
+                                                    </td>
+                                                    <td>{{ $modulo->descricao }}</td>
+                                                    @if ($permissoes)
+                                                        @foreach ($permissoes as $permissao)
+                                                            <td class="text-center">
+                                                                <div class="custom-control custom-checkbox">
+                                                                    <input class="" type="checkbox"
+                                                                        value="{{ $permissao->id }}"
+                                                                        name="permissoes[{{ $modulo->id }}][]permissao[]"
+                                                                        @if (array_key_exists($modulo->id, $listArraypermissoes)) @foreach ($listArraypermissoes as $modusssslo => $ssss)
+                                                                                @if ($modusssslo == $modulo->id)
+                                                                                    @foreach ($ssss as $item)
+                                                                                        @if ($item->permissao_id == $permissao->id)
+                                                                                            checked @endif
+                                                                        @endforeach
+                                                        @endif
+                                                    @endforeach
+                                            @endif>
                             </div>
+                            </td>
+                            @endforeach
+                            @endif
+                            </tr>
+                            @endforeach
+                            @endif
+                            </tbody>
+                            </table>
                         </div>
-                        <div class="card-footer">
-                            <button type="submit" class="btn bg-gradient-primary">
-                                <i class="fas fa-save" aria-hidden="true"></i>
-                                Salvar
-                            </button>
-                        </div>
-                    </form>
                 </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn bg-gradient-primary">
+                        <i class="fas fa-save" aria-hidden="true"></i>
+                        Salvar
+                    </button>
+                </div>
+                </form>
             </div>
         </div>
+    </div>
     </div>
 @endsection

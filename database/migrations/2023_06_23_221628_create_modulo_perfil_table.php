@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGrupoModuloTable extends Migration
+class CreateModuloPerfilTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateGrupoModuloTable extends Migration
      */
     public function up()
     {
-        Schema::create('grupo_modulo', function (Blueprint $table) {
-            $table->integer('grupo_id')->unsigned();
-            $table->foreign('grupo_id')->references('id')->on('grupos');
+        Schema::create('modulo_perfil', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('perfil_id')->unsigned();
+            $table->foreign('perfil_id')->references('id')->on('perfis')->onDelete('cascade');
             $table->integer('modulo_id')->unsigned();
-            $table->foreign('modulo_id')->references('id')->on('modulos');
+            $table->foreign('modulo_id')->references('id')->on('modulos')->onDelete('cascade');
             $table->timestamps();
             $table->engine = 'InnoDB';
         });
@@ -30,6 +31,6 @@ class CreateGrupoModuloTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('grupo_modulo');
+        Schema::dropIfExists('modulo_perfil');
     }
 }
