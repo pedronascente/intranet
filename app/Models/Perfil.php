@@ -21,11 +21,6 @@ class Perfil extends Model
         return $this->hasMany(User::class);
     }
 
-    public function permissoes()
-    {
-        return $this->belongsToMany(Permissao::class, 'modulo_perfil', 'perfil_id', 'id');
-    }
-
     public function modulos()
     {
         return $this->belongsToMany(Modulo::class);

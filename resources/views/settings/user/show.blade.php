@@ -77,13 +77,7 @@
                     @else
                         <tr>
                             <td colspan="2">
-                                <div class="alert alert-warning alert-dismissible">
-                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                    <p>
-                                        <i class="icon fas fa-exclamation-triangle"></i>
-                                        Usuário não possui cartão Token.
-                                    </p>
-                                </div>
+
                                 <a href="{{ route('cartao.registar', $user->id) }}" class="btn btn-info"
                                     title="Criar Cartão">
                                     Registrar Cartão Token

@@ -15,28 +15,28 @@ use App\Http\Controllers\ColaboradorController;
 
 Route::prefix('/settings')->group(
     function () {
-        Route::resource('/empresa', EmpresaController::class);
-        Route::resource('/cargo', CargoController::class);
-        Route::resource('/permissao', PermissaoController::class);
-        Route::resource('/perfil', PerfilController::class);
-        Route::resource('/modulo', ModuloController::class);
-        Route::resource('/cartao', CartaoController::class);
-        Route::get('/cartao/registrar/user/{id}', [CartaoController::class, 'registrarCartaoUsuario'])->name('cartao.registar');
-        Route::resource('/colaborador', ColaboradorController::class);
-        Route::resource('/user', UserController::class);
-        Route::get('/perfil/desativar/{id}', [PerfilController::class, 'desativar']);
+        Route::resource('/empresa', EmpresaController::class)->middleware('auth');
+        Route::resource('/cargo', CargoController::class)->middleware('auth');
+        Route::resource('/permissao', PermissaoController::class)->middleware('auth');
+        Route::resource('/perfil', PerfilController::class)->middleware('auth');
+        Route::resource('/modulo', ModuloController::class)->middleware('auth');
+        Route::resource('/cartao', CartaoController::class)->middleware('auth');
+        Route::get('/cartao/registrar/user/{id}', [CartaoController::class, 'registrarCartaoUsuario'])->name('cartao.registar')->middleware('auth');
+        Route::resource('/colaborador', ColaboradorController::class)->middleware('auth');
+        Route::resource('/user', UserController::class)->middleware('auth');
+        Route::get('/perfil/desativar/{id}', [PerfilController::class, 'desativar'])->middleware('auth');
         Route::prefix('/associar/colaborador')->group(
             function () {
-                Route::get('/{id}', [UserController::class, 'createAssociar'])->name('user.associar');
-                Route::put('/{id}', [UserController::class, 'associarColaborador'])->name('user.updateassociar');
-                Route::delete('/{id}', [UserController::class, 'desassociarColaborador'])->name('destroy.associacao.user');
+                Route::get('/{id}', [UserController::class, 'createAssociar'])->name('user.associar')->middleware('auth');
+                Route::put('/{id}', [UserController::class, 'associarColaborador'])->name('user.updateassociar')->middleware('auth');
+                Route::delete('/{id}', [UserController::class, 'desassociarColaborador'])->name('destroy.associacao.user')->middleware('auth');
             }
         );
         Route::prefix('/associar/usuario')->group(
             function () {
-                Route::get('/{id}', [ColaboradorController::class, 'createAssociar'])->name('create_associar');
-                Route::put('/{id}', [ColaboradorController::class, 'associarUsuario'])->name('update_associar');
-                Route::delete('/{id}', [ColaboradorController::class, 'desassociarUsuario'])->name('destroy.associacao.colaborador');
+                Route::get('/{id}', [ColaboradorController::class, 'createAssociar'])->name('create_associar')->middleware('auth');
+                Route::put('/{id}', [ColaboradorController::class, 'associarUsuario'])->name('update_associar')->middleware('auth');
+                Route::delete('/{id}', [ColaboradorController::class, 'desassociarUsuario'])->name('destroy.associacao.colaborador')->middleware('auth');
             }
         );
     }
@@ -50,12 +50,7 @@ Route::get('/token', [TokenController::class, 'create'])->name('token.create')->
 Route::post('/token', [TokenController::class, 'store'])->name('token.store')->middleware('auth');
 Route::get('/home', [DashboardController::class, 'index'])->name('home.index')->middleware('auth');
 
-
-
-Route::get('/cartao/posicao', [CartaoController::class, 'getPosicaoDoCartaoToken']);
-
-
-
+Route::get('/cartao/posicao', [CartaoController::class, 'getPosicaoDoCartaoToken'])->middleware('auth');
 
 
 

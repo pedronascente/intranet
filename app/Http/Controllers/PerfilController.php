@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Modulo;
-use App\Models\ModuloPerfil;
 use App\Models\Perfil;
 use App\Models\Permissao;
-
+use App\Models\ModuloPermissao;
+use Illuminate\Http\Request;
 
 class PerfilController extends Controller
 {
@@ -30,7 +29,7 @@ class PerfilController extends Controller
     public function store(Request $request)
     {
         $this->validarFormulario($request);
-        if ($this->validar_duplicidade($request)) {
+        if ($this->verificarDuplicidadeDePerfil($request)) {
             return redirect()
                 ->action('App\Http\Controllers\PerfilController@create')
                 ->with('warning', "Já existe um Perfil com este nome");
@@ -73,24 +72,53 @@ class PerfilController extends Controller
 
     public function edit($id)
     {
-        $modulos =  Modulo::all();
-        $permissoes =  Permissao::all();
+        $listArrayModulos = [];
+        $modulos = Modulo::all();
+        $permissoes = Permissao::all();
         $perfil = Perfil::with('modulos')->findOrFail($id);
         $listArraypermissoes  = Perfil::getPermissoes($id)->toArray();
         foreach ($perfil->modulos as  $value) {
-            $listModulos[] = $value->id;
+            $listArrayModulos[] = $value->id;
         }
         return view('settings.perfil.edit', [
             'modulos' => $modulos,
             'permissoes' => $permissoes,
             'perfil' => $perfil,
-            'listModulos' =>  $listModulos,
+            'listArrayModulos' => $listArrayModulos,
             'listArraypermissoes' =>  $listArraypermissoes,
         ]);
     }
 
-    public function update()
+    public function update(Request $request, $id)
     {
+        $perfil = Perfil::with('modulos')->findOrFail($id);
+        $perfil->nome = $request->nome;
+        $perfil->descricao = $request->descricao;
+        $perfil->update();
+        if ($request->modulos) {
+            foreach ($perfil->modulos as $moduloRelacionado) {
+                $perfil->modulos()->detach($moduloRelacionado);
+            }
+            foreach ($request->modulos as $m) {
+                $perfil->modulos()->attach($m);
+            }
+        }
+        if ($request->permissoes) {
+            ModuloPermissao::deletePermissoes($id);
+        }
+        foreach ($request->modulos as $m) {
+            if (array_key_exists($m, $request->permissoes)) {
+                foreach ($request->permissoes as $keymodulo => $permissao) {
+                    if ($keymodulo == $m) {
+                        $objeModulo = Modulo::findOrFail($m);
+                        $objeModulo->permissoes()->attach($permissao, ['perfil_id' => $perfil->id]);
+                    }
+                }
+            }
+        }
+        return redirect()
+            ->action('App\Http\Controllers\PerfilController@edit', $id)
+            ->with('status', "Registro Atualizado!");
     }
 
     public function destroy($id)
@@ -102,7 +130,6 @@ class PerfilController extends Controller
                 ->action('App\Http\Controllers\PerfilController@index')
                 ->with('warning', "Este Perfil tem usuario(s) associado(s), por tanto não pode ser excluida.");
         }
-
         $perfil->delete();
         return redirect()
             ->action('App\Http\Controllers\PerfilController@index')
@@ -123,10 +150,9 @@ class PerfilController extends Controller
         );
     }
 
-    private function validar_duplicidade(Request $request)
+    private function verificarDuplicidadeDePerfil(Request $request)
     {
-        $duplicado = Perfil::where('nome', $request->nome)
+        return Perfil::where('nome', $request->nome)
             ->get()->count();
-        return $duplicado;
     }
 }

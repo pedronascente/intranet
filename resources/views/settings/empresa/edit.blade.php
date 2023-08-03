@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="card card-default">
+    <div class="card">
         <div class="card-header">
             <h4>Editar</h4>
         </div>
@@ -39,7 +39,8 @@
             <div class="card-footer">
                 <button type="submit" class="btn bg-gradient-primary">
                     <i class="fas fa-save" aria-hidden="true"></i>
-                    Salvar</button>
+                    Salvar
+                </button>
             </div>
         </form>
     </div>

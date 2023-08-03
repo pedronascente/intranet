@@ -19,14 +19,4 @@ class Permissao extends Model
     {
         return $this->belongsToMany(Modulo::class);
     }
-
-    public function perfils()
-    {
-        return $this->belongsToMany(
-            Perfil::class,
-            'modulo_perfil',
-            'perfil_id',
-            'id'
-        );
-    }
 }

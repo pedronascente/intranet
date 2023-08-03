@@ -21,15 +21,15 @@ class EmpresaController extends Controller
     public function store(Request $request)
     {
         $this->validarFormulario($request);
-        if ($this->validar_duplicidade($request)) {
+        if ($this->verificarDuplicidade($request)) {
             return redirect()
                 ->action('App\Http\Controllers\EmpresaController@index')
                 ->with('warning', "já existe uma empresa com este nome, ou cnpj!");
         }
-        $empresa = new Empresa(); //Instânciar objeto.
+        $empresa = new Empresa();
         $empresa->nome = $request->nome;
         $empresa->cnpj = $request->cnpj;
-        $empresa->save(); //persistir dados.
+        $empresa->save();
         return redirect()
             ->action('App\Http\Controllers\EmpresaController@index')
             ->with('status', "Registrado com sucesso!");
@@ -93,12 +93,11 @@ class EmpresaController extends Controller
         );
     }
 
-    private function validar_duplicidade(Request $request)
+    private function verificarDuplicidade(Request $request)
     {
         $duplicado = Empresa::where('nome', $request->nome)
             ->orWhere('cnpj', $request->cnpj)
             ->get()->count();
-
         return $duplicado;
     }
 }

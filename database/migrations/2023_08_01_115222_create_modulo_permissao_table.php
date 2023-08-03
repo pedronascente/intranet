@@ -15,8 +15,7 @@ class CreateModuloPermissaoTable extends Migration
     {
         Schema::create('modulo_permissao', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('perfil_id')->unsigned();
-            $table->foreign('perfil_id')->references('id')->on('perfis')->onDelete('cascade');
+            $table->integer('perfil_id');
             $table->integer('modulo_id')->unsigned();
             $table->foreign('modulo_id')->references('id')->on('modulos')->onDelete('cascade');
             $table->integer('permissao_id')->unsigned();
