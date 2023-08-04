@@ -123,17 +123,17 @@ class PerfilController extends Controller
 
     public function destroy($id)
     {
-        $perfil = Perfil::findOrFail($id);
-        $usuarios =  $perfil->users->count();
-        if ($usuarios >= 1) {
+        $perfil = Perfil::with('user')->findOrFail($id);
+        if ($perfil->user) {
             return redirect()
                 ->action('App\Http\Controllers\PerfilController@index')
                 ->with('warning', "Este Perfil tem usuario(s) associado(s), por tanto não pode ser excluida.");
+        } else {
+            $perfil->delete();
+            return redirect()
+                ->action('App\Http\Controllers\PerfilController@index')
+                ->with('status', "Registro Excluido!");
         }
-        $perfil->delete();
-        return redirect()
-            ->action('App\Http\Controllers\PerfilController@index')
-            ->with('status', "Registro Excluido!");
     }
 
     private function validarFormulario(Request $request)

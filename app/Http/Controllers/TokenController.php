@@ -8,7 +8,6 @@ use App\Http\Controllers\Help\FormatarDataController;
 
 class TokenController extends Controller
 {
-
     /**
      * Show the form for creating a new resource.
      *
@@ -16,7 +15,8 @@ class TokenController extends Controller
      */
     public function create(Request $request)
     {
-        $posicaoDoToken = rand(1, $request->session('cartaoToken')->get('cartaoToken')->qtdToken);
+        $qtd = $request->session()->get('cartaoToken')['dados']['qtdToken'];
+        $posicaoDoToken = rand(1, $qtd);
         return view('login.passo_02', [
             'mensagem' => FormatarDataController::formatarData(),
             'posicaoDoToken' => $posicaoDoToken
@@ -33,10 +33,10 @@ class TokenController extends Controller
     {
         $cartaoToken =  $request->session()->get('cartaoToken');
         $validar = 0;
-        foreach ($cartaoToken->tokens as  $value) {
+        foreach ($cartaoToken['tokens'] as  $value) {
             if (
-                $request->posicaoDoToken == $value->posicao &&
-                $request->token == $value->token
+                $request->posicaoDoToken == $value['posicao'] &&
+                $request->token == $value['token']
             ) {
                 $validar = 1;
                 break;

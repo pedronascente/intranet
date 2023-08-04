@@ -16,9 +16,9 @@ class Perfil extends Model
     ];
     protected $table = "perfis";
 
-    public function users()
+    public function user()
     {
-        return $this->hasMany(User::class);
+        return $this->hasOne(User::class);
     }
 
     public function modulos()

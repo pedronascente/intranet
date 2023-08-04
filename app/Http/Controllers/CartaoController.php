@@ -107,7 +107,8 @@ class CartaoController extends Controller
 
     public function getPosicaoDoCartaoToken(Request $request)
     {
-        $posicaoDoToken = rand(1, $request->session('cartaoToken')->get('cartaoToken')->qtdToken);
+        $qtd = $request->session()->get('cartaoToken')['dados']['qtdToken'];
+        $posicaoDoToken = rand(1, $qtd);
         return $posicaoDoToken;
     }
 

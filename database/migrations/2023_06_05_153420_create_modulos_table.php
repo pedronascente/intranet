@@ -11,6 +11,7 @@ class CreateModulosTable extends Migration
         Schema::create('modulos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nome');
+            $table->string('rota');
             $table->string('descricao');
             $table->timestamps();
             $table->engine = 'InnoDB';

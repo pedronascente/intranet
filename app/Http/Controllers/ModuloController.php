@@ -23,6 +23,7 @@ class ModuloController extends Controller
         $this->validarFormulario($request);
         $modulo = new Modulo;
         $modulo->nome = $request->nome;
+        $modulo->rota = $request->rota;
         $modulo->descricao = $request->descricao;
         $modulo->save();
         return redirect()
@@ -53,6 +54,7 @@ class ModuloController extends Controller
         $this->validarFormulario($request);
         $modulo = Modulo::findOrFail($id);
         $modulo->nome = $request->nome;
+        $modulo->rota = $request->rota;
         $modulo->descricao = $request->descricao;
         $modulo->update();
         return redirect()
@@ -74,10 +76,12 @@ class ModuloController extends Controller
         $request->validate(
             [
                 'nome' => 'required|max:190|min:2',
+                'rota' => 'required|max:190|min:2',
                 'descricao' => 'required|max:190|min:5',
             ],
             [
                 'nome.required' => 'Campo obrigatório.',
+                'rota.required' => 'Campo obrigatório.',
                 'descricao.required' => 'Campo obrigatório.',
             ]
         );

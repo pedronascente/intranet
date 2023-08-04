@@ -37,7 +37,7 @@ class User extends Authenticatable
 
     public function perfil()
     {
-        return $this->belongsTo(Perfil::class, 'perfil_id', 'id');
+        return $this->belongsTo(Perfil::class);
     }
 
     public function cartao()

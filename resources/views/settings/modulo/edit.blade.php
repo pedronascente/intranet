@@ -16,7 +16,14 @@
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
                 </div>
-
+                <div class="form-group">
+                    <label>Rota:</label>
+                    <input type="text" name="rota" class="form-control @error('rota') is-invalid  @enderror"
+                        placeholder="http://" value="{{ $modulo->rota }}">
+                    @error('nome')
+                        <span class=" invalid-feedback">{{ $message }}</span>
+                    @enderror
+                </div>
                 <div class="form-group">
                     <label>Descrição:</label>
                     <textarea type="text" name="descricao" rows="5" class="form-control  @error('descricao') is-invalid  @enderror"
