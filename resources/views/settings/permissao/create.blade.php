@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.iframe')
 @section('content')
     <div class="card card-default">
         <div class="card-header">

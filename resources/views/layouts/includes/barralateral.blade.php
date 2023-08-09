@@ -1,6 +1,6 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="/home" class="brand-link">
+    <a href="/dashboard" class="brand-link">
         <img src="{{ asset('/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image  " style="opacity: .8">
         <span class="brand-text font-weight-light">Intranet</span>
     </a>
@@ -9,8 +9,13 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{{ asset('/img/colaborador/dummy-round.png') }}" class="img-circle elevation-2"
-                    alt="User Image">
+                @if (Auth::check() && Auth::user()->colaborador)
+                    <img src="{{ asset('/img/colaborador/' . Auth::user()->colaborador->foto . '') }}"
+                        class="img-circle elevation-2" alt="User Image">
+                @else
+                    <img src="{{ asset('/img/colaborador/dummy-round.png') }}" class="img-circle elevation-2"
+                        alt="User Image">
+                @endif
             </div>
             <div class="info">
                 <a href="#" class="d-block">
@@ -20,7 +25,6 @@
                 </a>
             </div>
         </div>
-
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
@@ -41,22 +45,22 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        @foreach (session()->get('perfil')['modulos'] as $item)
-                            <li class="nav-item">
-                                <a href="{{ $item['rota'] }}"
-                                    @if (Request::segment(2) == $item['nome']) class="nav-link active"  @else   class="nav-link" @endif>
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p> {{ $item['nome'] }}</p>
-                                </a>
-                            </li>
-                        @endforeach
-
-
-
-
+                        @if (session()->get('perfil'))
+                            @foreach (session()->get('perfil')['modulos'] as $item)
+                                <li class="nav-item">
+                                    <a href="{{ $item['rota'] }}"
+                                        @if (Request::segment(2) == $item['nome']) class="nav-link active"  @else   class="nav-link" @endif>
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p> {{ $item['nome'] }}</p>
+                                    </a>
+                                </li>
+                            @endforeach
+                        @endif
                     </ul>
                 </li>
                 </li>
+                <!--
+                
                 <li @if (Request::segment(1) == 'setor01' ||
                         Request::segment(1) == 'setor02' ||
                         Request::segment(1) == 'setor03' ||
@@ -101,8 +105,9 @@
                                 <p>Alarme</p>
                             </a>
                         </li>
-                    </ul>
-                </li>
+                -->
+            </ul>
+            </li>
             </ul>
         </nav>
     </div>

@@ -9,12 +9,22 @@ use App\Models\Token;
 
 class CartaoController extends Controller
 {
+    /**
+     * Mostrar lista dos cartões criados.
+     *
+     * @return void
+     */
     public function index()
     {
         $collections  =  Cartao::with('user')->orderBy('id', 'desc')->paginate(8);
         return view('settings.cartao.index', ['collections' => $collections]);
     }
 
+    /**
+     * Mostrar o formulário para criar um novo recurso.
+     *
+     * @return void
+     */
     public function create()
     {
         $users = $this->getUserSemCartao();
@@ -27,6 +37,12 @@ class CartaoController extends Controller
         }
     }
 
+    /**
+     *  Armazene um recurso recém-criado no armazenamento.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
         $this->validarFormulario($request);
@@ -47,18 +63,36 @@ class CartaoController extends Controller
             ->with('status', "Registrado com sucesso!");
     }
 
+    /**
+     * Mosatrar Detalhes do cartão. 
+     *
+     * @param [type] $id
+     * @return void
+     */
     public function show($id)
     {
         $cartao = Cartao::with('user', 'tokens')->findOrFail($id);
         return view('settings.cartao.show', ['cartao' => $cartao]);
     }
 
+    /**
+     * Mostrar formulario para edição.
+     *
+     * @param [type] $id
+     * @return void
+     */
     public function edit($id)
     {
         $cartao = Cartao::with('user')->findOrFail($id);
         return view('settings.cartao.edit', ['cartao' => $cartao]);
     }
-
+    /**
+     * Atualizar cartão.
+     *
+     * @param Request $request
+     * @param [type] $id
+     * @return void
+     */
     public function update(Request $request, $id)
     {
         $cartao = Cartao::with('user', 'tokens')->findOrFail($id);
@@ -74,7 +108,7 @@ class CartaoController extends Controller
     }
 
     /**
-     * Responsavel por excluir um cartão.
+     * Excluir cartão.
      *
      * @param [Integer] $id
      * @return void
@@ -105,13 +139,12 @@ class CartaoController extends Controller
             ->with('status', "Cartão Registrado com sucesso!");
     }
 
-    public function getPosicaoDoCartaoToken(Request $request)
-    {
-        $qtd = $request->session()->get('cartaoToken')['dados']['qtdToken'];
-        $posicaoDoToken = rand(1, $qtd);
-        return $posicaoDoToken;
-    }
-
+    /**
+     * Válidar formulário.
+     *
+     * @param Request $request
+     * @return void
+     */
     private function validarFormulario(Request $request)
     {
         $request->validate(
@@ -128,6 +161,11 @@ class CartaoController extends Controller
         );
     }
 
+    /**
+     * Retornar lista dos usuários sem cartão.
+     *
+     * @return void
+     */
     private function getUserSemCartao()
     {
         $array_users = [];
@@ -141,5 +179,18 @@ class CartaoController extends Controller
             }
         }
         return $array_users;
+    }
+
+    /**
+     * Api
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function getPosicaoDoTokenNoCartao(Request $request)
+    {
+        $qtd = Token::getCartaoDoUsuarioLogado($request);
+        $posicaoDoToken = rand(1, $qtd->qtdToken);
+        return $posicaoDoToken;
     }
 }

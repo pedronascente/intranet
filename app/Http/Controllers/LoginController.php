@@ -12,6 +12,12 @@ use App\Http\Controllers\Help\FormatarDataController;
 
 class LoginController extends Controller
 {
+    /**
+     *  Mostrar formulario pro usuário fazer login.
+     *
+     * @param Request $request
+     * @return void
+     */
     public function showForm(Request $request)
     {
         $messagem = FormatarDataController::formatarData();
@@ -38,27 +44,12 @@ class LoginController extends Controller
             $request->session()->regenerate();
             $usuarioLogado = $request->user();
             $usuarioDB = User::with('cartao', 'perfil')->findOrFail($usuarioLogado->id);
-            if ($usuarioDB->cartao) {
-                $this->criarSessaoCartao($request, $usuarioDB->cartao->id);
-            } else {
+            if (!$usuarioDB->cartao) {
                 $this->logout($request);
                 return redirect()->back()->with('error', 'Você não possui um Cartão Token válido.');
             }
+
             $this->criarSessaoPerfil($request, $usuarioDB->perfil->id);
-
-            /*
-dd(
-                $request->session()->all(),
-                $request->user(),
-
-            );
-
-*/
-
-
-
-
-
             return redirect()
                 ->action('App\Http\Controllers\TokenController@create');
         } else {
@@ -66,9 +57,8 @@ dd(
         }
     }
 
-
     /**
-     * Log the user out of the application.
+     * Desconectar o usuário do aplicativo.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -79,35 +69,6 @@ dd(
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/');
-    }
-
-    public function recuperarSenha()
-    {
-        echo 'Descreva nos requisitos como será este processo de recuperação de senha';
-    }
-
-    public function recuperarCartao()
-    {
-        echo 'Descreva nos requisitos como será este processo de recuperação de cartao';
-    }
-
-    private function criarSessaoCartao($request, $id)
-    {
-        $cartao = Cartao::with('tokens')->findOrFail($id);
-        $sesscaoCartao['dados'] = [
-            "id" => $cartao->id,
-            "status" => $cartao->status,
-            "nome" => $cartao->nome,
-            "qtdToken" => $cartao->qtdToken,
-            "user_id" => $cartao->user_id,
-        ];
-        foreach ($cartao->tokens as  $token) {
-            $sesscaoCartao['tokens'][] = [
-                "token" => $token->token,
-                "posicao" => $token->posicao
-            ];
-        }
-        $request->session()->put('cartaoToken', $sesscaoCartao);
     }
 
     private function criarSessaoPerfil($request, $id)
@@ -126,6 +87,19 @@ dd(
                 ];
             }
         }
+
+        $perfilObj = new Perfil();
+        $sessaoPerfil['permissoes']  = $perfilObj->getPermissoes($id);
         $request->session()->put('perfil', $sessaoPerfil);
+    }
+
+    public function recuperarSenha()
+    {
+        echo 'Descreva nos requisitos como será este processo de recuperação de senha';
+    }
+
+    public function recuperarCartao()
+    {
+        echo 'Descreva nos requisitos como será este processo de recuperação de cartao';
     }
 }

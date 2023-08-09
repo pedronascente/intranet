@@ -1,77 +1,81 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\CargoController;
-use App\Http\Controllers\PerfilController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\TokenController;
 use App\Http\Controllers\CartaoController;
-use App\Http\Controllers\ModuloController;
-use App\Http\Controllers\EmpresaController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\PermissaoController;
 use App\Http\Controllers\ColaboradorController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EmpresaController;
+use App\Http\Controllers\PerfilController;
+use App\Http\Controllers\PermissaoController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ModuloController;
+use App\Http\Controllers\TokenController;
+use App\Http\Controllers\UserController;
 
-Route::prefix('/settings')->group(
-    function () {
+Route::redirect('/', '/dashboard', 301);
 
-        Route::resource('/empresa', EmpresaController::class)->middleware('auth', 'verificarAcessoRota');
-        Route::resource('/cargo', CargoController::class)->middleware('auth', 'verificarAcessoRota');
-        Route::resource('/permissao', PermissaoController::class)->middleware('auth', 'verificarAcessoRota');
-        Route::resource('/perfil', PerfilController::class)->middleware('auth', 'verificarAcessoRota');
-        Route::resource('/modulo', ModuloController::class)->middleware('auth', 'verificarAcessoRota');
-        Route::resource('/cartao', CartaoController::class)->middleware('auth', 'verificarAcessoRota');
-        Route::get('/cartao/registrar/user/{id}', [CartaoController::class, 'registrarCartaoUsuario'])->name('cartao.registar')->middleware('auth', 'verificarAcessoRota');
-        Route::resource('/colaborador', ColaboradorController::class)->middleware('auth', 'verificarAcessoRota');
-        Route::resource('/user', UserController::class)->middleware('auth', 'verificarAcessoRota');
-        Route::get('/perfil/desativar/{id}', [PerfilController::class, 'desativar'])->middleware('auth', 'verificarAcessoRota');
-        Route::prefix('/associar/colaborador')->group(
-            function () {
-                Route::get('/{id}', [UserController::class, 'createAssociar'])->name('user.associar')->middleware('auth', 'verificarAcessoRota');
-                Route::put('/{id}', [UserController::class, 'associarColaborador'])->name('user.updateassociar')->middleware('auth', 'verificarAcessoRota');
-                Route::delete('/{id}', [UserController::class, 'desassociarColaborador'])->name('destroy.associacao.user')->middleware('auth', 'verificarAcessoRota');
-            }
-        );
-        Route::prefix('/associar/usuario')->group(
-            function () {
-                Route::get('/{id}', [ColaboradorController::class, 'createAssociar'])->name('create_associar')->middleware('auth', 'verificarAcessoRota');
-                Route::put('/{id}', [ColaboradorController::class, 'associarUsuario'])->name('update_associar')->middleware('auth', 'verificarAcessoRota');
-                Route::delete('/{id}', [ColaboradorController::class, 'desassociarUsuario'])->name('destroy.associacao.colaborador')->middleware('auth', 'verificarAcessoRota');
-            }
-        );
-    }
-);
-
-Route::get('/', [LoginController::class, 'showForm'])->name('login.form');
-Route::get('/login', [LoginController::class, 'showForm'])->name('login.form');
-Route::post('/login', [LoginController::class, 'login'])->name('login');
-Route::get('/logout', [LoginController::class, 'logout'])->name('login.sair');
-Route::get('/token', [TokenController::class, 'create'])->name('token.create')->middleware('auth');
-Route::post('/token', [TokenController::class, 'store'])->name('token.store')->middleware('auth');
-Route::get('/home', [DashboardController::class, 'index'])->name('home.index')->middleware('auth');
-
-Route::get('/cartao/posicao', [CartaoController::class, 'getPosicaoDoCartaoToken'])->middleware('auth');
-
-
-
-
-Route::get('/setor01', function () {
-    return view('setor_demo');
+Route::prefix('/login')->group(function () {
+    Route::get('/', [LoginController::class, 'showForm'])->name('login.form');
+    Route::post('/', [LoginController::class, 'login'])->name('login');
+    Route::get('/logout', [LoginController::class, 'logout'])->name('login.sair');
 });
 
-Route::get('/setor02', function () {
-    return view('setor_demo');
+Route::prefix('/token')->group(function () {
+    Route::get('/', [TokenController::class, 'create'])->name('token.create')->middleware('auth');
+    Route::post('/', [TokenController::class, 'store'])->name('token.store')->middleware('auth');
 });
 
-Route::get('/setor03', function () {
-    return view('setor_demo');
+Route::middleware(['auth', 'verificarToken'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+    Route::prefix('/settings')->group(
+        function () {
+            Route::resource('/cargo', CargoController::class)->middleware(['auth', 'verificarToken']);
+            Route::prefix('/cartao')->group(
+                function () {
+                    Route::get('/', [CartaoController::class, 'index'])->name('cartao.index');
+                    Route::get('/create', [CartaoController::class, 'create'])->name('cartao.create');
+                    Route::get('/{id}', [CartaoController::class, 'show'])->name('cartao.show');
+                    Route::get('/{id}/edit', [CartaoController::class, 'edit'])->name('cartao.edit');
+                    Route::put('/{id}', [CartaoController::class, 'update'])->name('cartao.update');
+                    Route::post('/', [CartaoController::class, 'store'])->name('cartao.store');
+                    Route::delete('/{id}', [CartaoController::class, 'destroy'])->name('cartao.destroy');
+                    Route::get('/registrar/user/{id}', [CartaoController::class, 'registrarCartaoUsuario'])->name('cartao.registar');
+                }
+            );
+            Route::prefix('/associar/colaborador')->group(
+                function () {
+                    Route::get('/{id}', [UserController::class, 'createAssociar'])->name('user.associar');
+                    Route::put('/{id}', [UserController::class, 'associarColaborador'])->name('user.updateassociar');
+                    Route::delete('/{id}', [UserController::class, 'desassociarColaborador'])->name('destroy.associacao.user');
+                }
+            );
+            Route::prefix('/associar/usuario')->group(
+                function () {
+                    Route::get('/{id}', [ColaboradorController::class, 'createAssociar'])->name('create_associar');
+                    Route::put('/{id}', [ColaboradorController::class, 'associarUsuario'])->name('update_associar');
+                    Route::delete('/{id}', [ColaboradorController::class, 'desassociarUsuario'])->name('destroy.associacao.colaborador');
+                }
+            );
+            Route::prefix('/perfil')->group(function () {
+                Route::get('/desativar/{id}', [PerfilController::class, 'desativar']);
+                Route::get('/', [PerfilController::class, 'index'])->name('perfil.index');
+                Route::get('/create', [PerfilController::class, 'create'])->name('perfil.create');
+                Route::get('/{id}', [PerfilController::class, 'show'])->name('perfil.show');
+                Route::get('/{id}/edit', [PerfilController::class, 'edit'])->name('perfil.edit');
+                Route::put('/{id}', [PerfilController::class, 'update'])->name('perfil.update');
+                Route::post('/', [PerfilController::class, 'store'])->name('perfil.store');
+                Route::post('/{id}', [PerfilController::class, 'destroy'])->name('perfil.destroy');
+            });
+
+            Route::resource('/colaborador', ColaboradorController::class);
+            Route::resource('/empresa', EmpresaController::class);
+            Route::resource('/permissao', PermissaoController::class);
+            Route::resource('/modulo', ModuloController::class);
+            Route::resource('/user', UserController::class);
+        }
+    );
 });
 
-Route::get('/setor04', function () {
-    return view('setor_demo');
-});
 
-Route::get('/cartao', function () {
-    echo 'cartao';
-});
+Route::get('/cartao/posicao', [CartaoController::class, 'getPosicaoDoTokenNoCartao'])->middleware('auth');

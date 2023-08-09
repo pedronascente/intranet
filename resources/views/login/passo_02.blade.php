@@ -9,7 +9,7 @@
             <div id="timer" class="text-center"></div>
             <div id="result" class="text-center"></div>
             </p>
-            <form action="{{ route('token.create') }}" method="post">
+            <form action="{{ route('token.store') }}" method="post">
                 @csrf
                 <div class="input-group mb-3">
                     <input type="text" id="posicaoDoToken" class="form-control" value="Posição : " disabled="true">
@@ -38,7 +38,7 @@
     </div>
     <script type="text/javascript">
         function startTimer(duration, display) {
-            getPosicaoDoCartaoToken()
+            getPosicaoDoTokenNoCartao()
             var timer = duration,
                 minutes, seconds;
             setInterval(function() {
@@ -50,12 +50,12 @@
                 console.log(seconds);
                 if (--timer < 0) {
                     timer = duration;
-                    getPosicaoDoCartaoToken()
+                    getPosicaoDoTokenNoCartao()
                 }
             }, 1000);
         }
 
-        function getPosicaoDoCartaoToken() {
+        function getPosicaoDoTokenNoCartao() {
             $.get("/cartao/posicao", function(data) {
                 console.log(data);
                 $("#posicaoDoToken").val('Posição:' + data);

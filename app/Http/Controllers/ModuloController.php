@@ -9,7 +9,7 @@ class ModuloController extends Controller
 {
     public function index()
     {
-        $modulos = Modulo::orderBy('id', 'desc')->paginate(6);
+        $modulos = Modulo::orderBy('id', 'desc')->paginate(10);
         return view('settings.modulo.index', ['collection' => $modulos]);
     }
 

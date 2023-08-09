@@ -16,10 +16,9 @@ class ControlarAcessoDasRotas
      */
     public function handle(Request $request, Closure $next)
     {
-
-
-
-
+        if (!$request->session()->exists('cartaoToken')) {
+            return redirect('token');
+        }
 
         return $next($request);
     }

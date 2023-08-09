@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class CargoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $empresas = Cargo::orderBy('id', 'desc')->paginate(6);
         return view('settings.cargo.index', ['collection' => $empresas]);

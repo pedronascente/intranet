@@ -2,21 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cartao;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Help\FormatarDataController;
+use App\Models\Token;
 
 class TokenController extends Controller
 {
     /**
-     * Show the form for creating a new resource.
+     * Mostra um formulario para criar um novo recurso.
      *
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request)
     {
-        $qtd = $request->session()->get('cartaoToken')['dados']['qtdToken'];
-        $posicaoDoToken = rand(1, $qtd);
+        $qtd = Token::getCartaoDoUsuarioLogado($request);
+        $posicaoDoToken = rand(1, $qtd->qtdToken);
         return view('login.passo_02', [
             'mensagem' => FormatarDataController::formatarData(),
             'posicaoDoToken' => $posicaoDoToken
@@ -24,30 +26,46 @@ class TokenController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     *  Armazene um recurso recém-criado no armazenamento.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $cartaoToken =  $request->session()->get('cartaoToken');
-        $validar = 0;
-        foreach ($cartaoToken['tokens'] as  $value) {
-            if (
-                $request->posicaoDoToken == $value['posicao'] &&
-                $request->token == $value['token']
-            ) {
-                $validar = 1;
-                break;
-            }
-        }
-        if ($validar) {
-            return redirect('/home');
+        if (Token::validarToken($request)) {
+            $request->session()->put('cartaoToken', true);
+            return redirect('/dashboard');
         } else {
+            $request->session()->forget('cartaoToken');
             return redirect()
                 ->action('App\Http\Controllers\TokenController@create')
                 ->with('error', "Digite um token válido!");
         }
     }
+
+
+
+
+
+    /*
+    private function criarSessaoTokenValido($request, $id)
+    {
+        $cartao = Cartao::with('tokens')->findOrFail($id);
+        $sesscaoCartao['dados'] = [
+            "id" => $cartao->id,
+            "status" => $cartao->status,
+            "nome" => $cartao->nome,
+            "qtdToken" => $cartao->qtdToken,
+            "user_id" => $cartao->user_id,
+        ];
+        foreach ($cartao->tokens as  $token) {
+            $sesscaoCartao['tokens'][] = [
+                "token" => $token->token,
+                "posicao" => $token->posicao
+            ];
+        }
+        $request->session()->put('cartaoToken', $sesscaoCartao);
+    }
+    */
 }

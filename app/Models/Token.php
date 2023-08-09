@@ -32,4 +32,23 @@ class Token extends Model
             $t->cartao()->associate($cartao)->save();
         }
     }
+
+    public static function validarToken($request)
+    {
+        $arrayListTokens = self::getCartaoDoUsuarioLogado($request);
+        foreach ($arrayListTokens->tokens as  $value) {
+            if ($value->posicao == $request->posicaoDoToken && $value->token == $request->token) {
+                return true;
+                break;
+            }
+        }
+    }
+
+    public static function getCartaoDoUsuarioLogado($request)
+    {
+        $arrayListTokens = Cartao::with('tokens')
+            ->where('user_id', $request->user()->id)
+            ->first();
+        return  $arrayListTokens;
+    }
 }

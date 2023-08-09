@@ -1,85 +1,55 @@
 @include('layouts.includes.head')
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed" data-panel-auto-height-mode="height">
     <div class="wrapper">
-
-        <!-- Preloader -->
-        <!--div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="{{ asset('/dist/img/AdminLTELogo.png') }}" alt="AdminLTELogo" height="60"
-                width="60">
-        </div-->
-
         <!-- Navbar -->
         @include('layouts.includes.navbar')
-        <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
         @include('layouts.includes.barralateral')
 
-        <div class="content-wrapper">
-            <section class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1>
-                                @if (Request::segment(2))
-                                    {{ Str::title(Request::segment(2)) }}
-                                @endif
-                            </h1>
-                        </div>
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item">
-                                    @if (Request::segment(1) == 'settings')
-                                        Configurações
-                                    @endif
-                                </li>
-                                @if (Request::segment(2))
-                                    <li class="breadcrumb-item active">{{ Request::segment(2) }}</li>
-                                @endif
-                            </ol>
-                        </div>
-                    </div>
-                </div><!-- /.container-fluid -->
-            </section>
-            <section class="content">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-12">
-                            @if (session('status'))
-                                <div class="alert alert-success alert-dismissible">
-                                    <button type="button" class="close" data-dismiss="alert"
-                                        aria-hidden="true">×</button>
-                                    <h5><i class="icon fas fa-check"></i> Alerta!</h5>
-                                    {{ session('status') }}
-                                </div>
-                            @elseif (session('error'))
-                                <div class="alert alert-danger alert-dismissible">
-                                    <button type="button" class="close" data-dismiss="alert"
-                                        aria-hidden="true">×</button>
-                                    <h5><i class="icon fas fa-ban"></i> Alert!</h5>
-                                    {{ session('error') }}
-                                </div>
-                            @elseif (session('warning'))
-                                <div class="alert alert-warning alert-dismissible">
-                                    <button type="button" class="close" data-dismiss="alert"
-                                        aria-hidden="true">×</button>
-                                    <h5><i class="icon fas fa-exclamation-triangle"></i> Alerta!</h5>
-                                    {{ session('warning') }}
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            @yield('content')
-                        </div>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper iframe-mode" data-widget="iframe" data-loading-screen="750">
+            <div class="nav navbar navbar-expand navbar-white navbar-light border-bottom p-0">
+                <div class="nav-item dropdown">
+                    <a class="nav-link bg-danger dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                        aria-haspopup="true" aria-expanded="false">Close</a>
+                    <div class="dropdown-menu mt-0">
+                        <a class="dropdown-item" href="#" data-widget="iframe-close" data-type="all">Close
+                            All</a>
+                        <a class="dropdown-item" href="#" data-widget="iframe-close" data-type="all-other">Close
+                            All Other</a>
                     </div>
                 </div>
-            </section>
+                <a class="nav-link bg-light" href="#" data-widget="iframe-scrollleft"><i
+                        class="fas fa-angle-double-left"></i></a>
+                <ul class="navbar-nav overflow-hidden" role="tablist"></ul>
+                <a class="nav-link bg-light" href="#" data-widget="iframe-scrollright"><i
+                        class="fas fa-angle-double-right"></i></a>
+                <a class="nav-link bg-light" href="#" data-widget="iframe-fullscreen"><i
+                        class="fas fa-expand"></i></a>
+            </div>
+            <div class="tab-content">
+                <div class="tab-empty">
+                    <h2 class="display-4">
+                        Nenhuma aba selecionada!</h2>
+                </div>
+                <div class="tab-loading">
+                    <div>
+                        <h2 class="display-4">carregando <i class="fa fa-sync fa-spin"></i></h2>
+                    </div>
+                </div>
+            </div>
         </div>
-        @include('layouts.includes.footer')
+
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
     </div>
+    <!-- ./wrapper -->
     @include('layouts.includes.scripts')
 
 </body>
