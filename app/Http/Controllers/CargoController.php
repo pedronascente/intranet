@@ -7,10 +7,14 @@ use Illuminate\Http\Request;
 
 class CargoController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $empresas = Cargo::orderBy('id', 'desc')->paginate(6);
-        return view('settings.cargo.index', ['collection' => $empresas]);
+        return view(
+            'settings.cargo.index',
+            [
+                'collection' => Cargo::orderBy('id', 'desc')->paginate(6)
+            ]
+        );
     }
 
     public function create()
@@ -56,20 +60,27 @@ class CargoController extends Controller
             ->with('status', "Registro Atualizado!");
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        $c = Cargo::findOrFail($id);
-        $colaboradores =  $c->colaboradores->count();
-        if ($colaboradores >= 1) {
+        $c = Cargo::findOrFail($request->id);
+
+        if ($c) {
+            $colaboradores =  $c->colaboradores->count();
+            if ($colaboradores >= 1) {
+                return redirect()
+                    ->action('App\Http\Controllers\CargoController@index')
+                    ->with('warning', "Este cargo tem colaborador associado, por tanto não pode ser excluida.");
+            }
+
+            $c->delete();
             return redirect()
                 ->action('App\Http\Controllers\CargoController@index')
-                ->with('warning', "Este cargo tem colaborador associado, por tanto não pode ser excluida.");
+                ->with('status', "Registro Excluido!");
+        } else {
+            return redirect()
+                ->action('App\Http\Controllers\CargoController@index')
+                ->with('warning', "Registro não encontrado.");
         }
-
-        $c->delete();
-        return redirect()
-            ->action('App\Http\Controllers\CargoController@index')
-            ->with('status', "Registro Excluido!");
     }
 
     private function validarFormulario(Request $request)

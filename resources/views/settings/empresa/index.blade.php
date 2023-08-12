@@ -2,9 +2,9 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">
-                <a href="{{ route('empresa.create') }}" class="btn btn-info btn-block ">
-                    Novo
+            <h3>
+                <a href="{{ route('empresa.create') }}" class="btn btn-primary  btn-block ">
+                    <i class="fas fa-solid fa-plus"></i> Cadastrar
                 </a>
             </h3>
         </div>
@@ -12,8 +12,8 @@
             <table class="table table-hover text-nowrap table-striped">
                 <thead>
                     <tr>
-                        <th width="70%">Empresa</th>
-                        <th width="10%">Cnpj</th>
+                        <th>Empresa</th>
+                        <th>Cnpj</th>
                         <th width="5%" class="text-center">Permissões</th>
                     </tr>
                 </thead>
@@ -24,20 +24,13 @@
                                 <td>{{ $item->nome }}</td>
                                 <td>{{ $item->cnpj }}</td>
                                 <td class="text-center">
-                                    <a href="{{ route('empresa.edit', $item->id) }}" title="Editar"
-                                        style="padding-right: 10px">
+                                    <a href="{{ route('empresa.edit', $item->id) }}" title="Editar" class="btn btn-primary">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <form action="{{ route('empresa.destroy', $item->id) }}" method="post"
-                                        style="display: inline ;" title="Excluir">
-                                        @method('DELETE')
-                                        @csrf
-                                        <a href="{{ route('empresa.destroy', $item->id) }}"
-                                            onclick="event.preventDefault();
-                                            this.closest('form').submit();">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
-                                    </form>
+                                    <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal"
+                                        data-target="#deleteModal" data-id="{{ $item->id }}">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach
@@ -53,4 +46,5 @@
             </div>
         </div>
     </div>
+    <x-ui.modalDelete modulo="empresa" />
 @endsection

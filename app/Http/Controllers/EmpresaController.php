@@ -9,8 +9,12 @@ class EmpresaController extends Controller
 {
     public function index()
     {
-        $empresas = Empresa::orderBy('id', 'desc')->paginate(6);
-        return view('settings.empresa.index', ['collection' => $empresas]);
+        return view(
+            'settings.empresa.index',
+            [
+                'collection' => Empresa::orderBy('id', 'desc')->paginate(6)
+            ]
+        );
     }
 
     public function create()
@@ -65,9 +69,9 @@ class EmpresaController extends Controller
             ->with('status', "Registro Atualizado!");
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        $empresa = Empresa::with('colaboradores')->findOrFail($id);
+        $empresa = Empresa::with('colaboradores')->findOrFail($request->id);
         if ($empresa->colaboradores->count() >= 1) {
             return redirect()
                 ->action('App\Http\Controllers\EmpresaController@index')

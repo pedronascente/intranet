@@ -9,6 +9,7 @@ use App\Models\Token;
 
 class CartaoController extends Controller
 {
+
     /**
      * Mostrar lista dos cartões criados.
      *
@@ -16,8 +17,12 @@ class CartaoController extends Controller
      */
     public function index()
     {
-        $collections  =  Cartao::with('user')->orderBy('id', 'desc')->paginate(8);
-        return view('settings.cartao.index', ['collections' => $collections]);
+        return view(
+            'settings.cartao.index',
+            [
+                'collections' => Cartao::with('user')->orderBy('id', 'desc')->paginate(8)
+            ]
+        );
     }
 
     /**

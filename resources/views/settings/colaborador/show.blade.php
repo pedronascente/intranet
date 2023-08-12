@@ -32,14 +32,15 @@
                             @endif
                         </td>
                         <td>
-                            <b>Opções:</b><br>
+                            <b>AÇÃO</b><br>
                             <form action="{{ route('destroy.associacao.colaborador', $colaborador->id) }}" method="post"
                                 style="display: inline;" title="Desassociar usuário">
                                 @method('DELETE')
                                 @csrf
                                 <a href="{{ route('destroy.associacao.colaborador', $colaborador->id) }}"
                                     onclick="event.preventDefault();
-                                            this.closest('form').submit();">
+                                            this.closest('form').submit();"
+                                    class="btn btn-danger">
                                     <i class="fas fa-trash"></i>
                                 </a>
                             </form>
@@ -58,21 +59,11 @@
             </table>
         </div>
         <div class="card-footer">
-            <a href="{{ route('colaborador.edit', $colaborador->id) }}" style="padding-right: 10px" title="Editar">
-                <i class="fas fa-edit"></i>
-            </a>
-            <form action="{{ route('colaborador.destroy', $colaborador->id) }}" method="post" style="display: inline"
-                title="Excluir">
-                @method('DELETE')
-                @csrf
-                <a href="{{ route('colaborador.destroy', $colaborador->id) }}"
-                    onclick="event.preventDefault();
-                                            this.closest('form').submit();">
-                    <i class="fas fa-trash"></i>
-                </a>
-            </form>
-            <a href="{{ route('colaborador.index') }}" title="Voltar" style="padding-right: 10px">
+            <a href="{{ route('colaborador.index') }}" title="Voltar" class="btn btn-warning">
                 <i class="fa fa-reply"></i>
+            </a>
+            <a href="{{ route('colaborador.edit', $colaborador->id) }}" title="Editar" class="btn btn-primary">
+                <i class="fas fa-edit"></i>
             </a>
         </div>
     </div>

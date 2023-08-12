@@ -62,9 +62,9 @@ class ModuloController extends Controller
             ->with('status', "Registro Atualizado!");
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        $modulo = Modulo::findOrFail($id);
+        $modulo = Modulo::findOrFail($request->id);
         $modulo->delete();
         return redirect()
             ->action('App\Http\Controllers\ModuloController@index')

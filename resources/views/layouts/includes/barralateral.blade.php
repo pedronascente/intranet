@@ -58,56 +58,6 @@
                         @endif
                     </ul>
                 </li>
-                </li>
-                <!--
-                
-                <li @if (Request::segment(1) == 'setor01' ||
-                        Request::segment(1) == 'setor02' ||
-                        Request::segment(1) == 'setor03' ||
-                        Request::segment(1) == 'setor04') class="nav-item  menu-open"  @else   class="nav-item" @endif>
-                    <a href="#"
-                        @if (Request::segment(1) == 'setor01' ||
-                                Request::segment(1) == 'setor02' ||
-                                Request::segment(1) == 'setor03' ||
-                                Request::segment(1) == 'setor04') class="nav-link active"  @else   class="nav-link" @endif>
-                        <i class="nav-icon fas fa-edit"></i>
-                        <p>
-                            Menu
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="/setor01"
-                                @if (Request::segment(1) == 'setor01') class="nav-link active"  @else   class="nav-link" @endif>
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>RH</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/setor02"
-                                @if (Request::segment(1) == 'setor02') class="nav-link active"  @else   class="nav-link" @endif>
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Rastreameto</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/setor03"
-                                @if (Request::segment(1) == 'setor03') class="nav-link active"  @else   class="nav-link" @endif>
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Portario</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/setor04"
-                                @if (Request::segment(1) == 'setor04') class="nav-link active"  @else   class="nav-link" @endif>
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Alarme</p>
-                            </a>
-                        </li>
-                -->
-            </ul>
-            </li>
             </ul>
         </nav>
     </div>

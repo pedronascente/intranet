@@ -11,10 +11,23 @@ use Illuminate\Support\Facades\File;
 
 class ColaboradorController extends Controller
 {
+    private $rotaModalDelete;
+
+    public function __construct()
+    {
+        $this->rotaModalDelete = route('colaborador.destroy', 1);
+    }
+
     public function index()
     {
         $collection = Colaborador::orderBy('id', 'desc')->paginate(10);
-        return view('settings.colaborador.index', ['collection' => $collection]);
+        return view(
+            'settings.colaborador.index',
+            [
+                'collection' => $collection,
+                'rotaModalDelete' => $this->rotaModalDelete
+            ]
+        );
     }
 
     public function create()
@@ -175,12 +188,12 @@ class ColaboradorController extends Controller
      * @param Request $request
      * @return void
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        $colaborador = Colaborador::with('user')->findOrFail($id);
+        $colaborador = Colaborador::with('user')->findOrFail($request->id);
         if ($colaborador->user) {
             return redirect()
-                ->action('App\Http\Controllers\ColaboradorController@show', $id)
+                ->action('App\Http\Controllers\ColaboradorController@show', $request->id)
                 ->with('warning', "Este colaborador tem Usuário associado, por tanto não pode ser excluida.");
         }
         $destino = 'img/colaborador/' . $colaborador->foto;

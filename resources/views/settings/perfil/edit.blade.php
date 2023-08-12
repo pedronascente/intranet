@@ -1,9 +1,6 @@
 @extends('layouts.iframe')
 @section('content')
     <div class="card">
-        <div class="card-header">
-            <h4>Editar</h4>
-        </div>
         <form action="{{ route('perfil.update', $perfil->id) }}" method="POST">
             @csrf
             @method('PUT')

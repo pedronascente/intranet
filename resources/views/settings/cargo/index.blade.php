@@ -2,7 +2,7 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">
+            <h3>
                 <a href="{{ route('cargo.create') }}" class="btn btn-primary btn-block ">
                     <i class="fas fa-solid fa-plus"></i> Cadastrar
                 </a>
@@ -18,15 +18,15 @@
                 </thead>
                 <tbody>
                     @if (@isset($collection))
-                        @foreach ($collection as $item)
+                        @foreach ($collection as $cargo)
                             <tr>
-                                <td>{{ $item->nome }}</td>
+                                <td>{{ $cargo->nome }}</td>
                                 <td class="text-center">
-                                    <a href="{{ route('cargo.edit', $item->id) }}" class="btn btn-primary" title="Editar">
+                                    <a href="{{ route('cargo.edit', $cargo->id) }}" class="btn btn-primary" title="Editar">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a href="#" class="btn btn-danger" data-toggle="modal"
-                                        data-target="#exampleModal">
+                                    <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal"
+                                        data-target="#deleteModal" data-id="{{ $cargo->id }}">
                                         <i class="fas fa-trash"></i>
                                     </a>
                                 </td>
@@ -46,36 +46,5 @@
             @endif
         </div>
     </div>
-
-
-    <script>
-        $(function() {
-            $('#myModal').on('shown.bs.modal', function() {
-                $('#myInput').trigger('focus')
-            })
-        });
-    </script>
-
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Confirmação</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body text-center">
-                    Confirma a exclusão do registro?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger">Deletar</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <x-ui.modalDelete modulo="cargo" />
 @endsection

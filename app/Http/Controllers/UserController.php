@@ -15,8 +15,12 @@ class UserController extends Controller
 {
     public function index()
     {
-        $collections  =  User::with('perfil')->orderBy('id', 'desc')->paginate(8);
-        return view('settings.user.index', ['collections' => $collections]);
+        return view(
+            'settings.user.index',
+            [
+                'collections' => User::with('perfil')->orderBy('id', 'desc')->paginate(8)
+            ]
+        );
     }
 
     public function create()
@@ -88,8 +92,12 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::with('perfil', 'colaborador', 'cartao')->findOrFail($id);
-        return view('settings.user.show', ['user' => $user]);
+        return view(
+            'settings.user.show',
+            [
+                'user' => User::with('perfil', 'colaborador', 'cartao')->findOrFail($id)
+            ]
+        );
     }
 
     /**
@@ -98,8 +106,10 @@ class UserController extends Controller
      * @param [Integer] $id
      * @return void
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
+        dd($request, $id);
+
         return redirect()
             ->action('App\Http\Controllers\UserController@index')
             ->with('status', "Inativado com sucesso!");

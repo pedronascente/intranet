@@ -1,9 +1,6 @@
 @extends('layouts.iframe')
 @section('content')
     <div class="card">
-        <div class="card-header">
-            <h4>Novo</h4>
-        </div>
         <form action="{{ route('perfil.store') }}" method="post">
             @csrf
             <div class="card-body">

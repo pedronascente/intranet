@@ -12,8 +12,12 @@ class PerfilController extends Controller
 {
     public function index()
     {
-        $collection = Perfil::orderBy('id', 'desc')->paginate(6);
-        return view('settings.perfil.index', ['collections' => $collection]);
+        return view(
+            'settings.perfil.index',
+            [
+                'collections' => Perfil::orderBy('id', 'desc')->paginate(6)
+            ]
+        );
     }
 
     public function create()
@@ -121,9 +125,10 @@ class PerfilController extends Controller
             ->with('status', "Registro Atualizado!");
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        $perfil = Perfil::with('user')->findOrFail($id);
+
+        $perfil = Perfil::with('user')->findOrFail($request->id);
         if ($perfil->user) {
             return redirect()
                 ->action('App\Http\Controllers\PerfilController@index')

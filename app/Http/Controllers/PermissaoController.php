@@ -58,9 +58,9 @@ class PermissaoController extends Controller
             ->with('status', "Registro Atualizado!");
     }
 
-    public function destroy($id)
+    public  function destroy(Request $request, $id)
     {
-        $empresa = Permissao::findOrFail($id);
+        $empresa = Permissao::findOrFail($request->id);
         $empresa->delete();
         return redirect()
             ->action('App\Http\Controllers\PermissaoController@index')

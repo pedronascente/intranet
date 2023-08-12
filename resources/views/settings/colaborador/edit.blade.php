@@ -1,9 +1,7 @@
 @extends('layouts.iframe')
 @section('content')
     <div class="card ">
-        <div class="card-header">
-            <h4>Editar</h4>
-        </div>
+
         <form action="{{ route('colaborador.update', $colaborador->id) }}" method="POST" enctype="multipart/form-data"
             name="Formulario-Colaborador-update">
             @csrf
@@ -127,7 +125,7 @@
             <div class="card-footer">
                 <button type="submit" class="btn bg-gradient-primary">
                     <i class="fas fa-save" aria-hidden="true"></i>
-                    Salvar
+                    Editar
                 </button>
             </div>
         </form>

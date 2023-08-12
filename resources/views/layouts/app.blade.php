@@ -1,24 +1,25 @@
 @include('layouts.includes.head')
 
-<body class="hold-transition sidebar-mini layout-fixed" data-panel-auto-height-mode="height">
+<body class="hold-transition sidebar-mini " data-panel-auto-height-mode="height">
     <div class="wrapper">
         <!-- Navbar -->
         @include('layouts.includes.navbar')
 
-        <!-- Main Sidebar Container -->
         @include('layouts.includes.barralateral')
 
         <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper iframe-mode" data-widget="iframe" data-loading-screen="750">
+        <div class="content-wrapper iframe-mode" data-widget="iframe" data-loading-screen="800">
+            <!-- Main Sidebar Container -->
+
             <div class="nav navbar navbar-expand navbar-white navbar-light border-bottom p-0">
                 <div class="nav-item dropdown">
                     <a class="nav-link bg-danger dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-                        aria-haspopup="true" aria-expanded="false">Close</a>
+                        aria-haspopup="true" aria-expanded="false">Fechar</a>
                     <div class="dropdown-menu mt-0">
-                        <a class="dropdown-item" href="#" data-widget="iframe-close" data-type="all">Close
-                            All</a>
-                        <a class="dropdown-item" href="#" data-widget="iframe-close" data-type="all-other">Close
-                            All Other</a>
+                        <a class="dropdown-item" href="#" data-widget="iframe-close" data-type="all">
+                            Todos</a>
+                        <a class="dropdown-item" href="#" data-widget="iframe-close" data-type="all-other">
+                            Todos os outros</a>
                     </div>
                 </div>
                 <a class="nav-link bg-light" href="#" data-widget="iframe-scrollleft"><i
@@ -42,12 +43,6 @@
             </div>
         </div>
 
-
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
-        </aside>
-        <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
     @include('layouts.includes.scripts')

@@ -65,7 +65,7 @@ Route::middleware(['auth', 'verificarToken'])->group(function () {
                 Route::get('/{id}/edit', [PerfilController::class, 'edit'])->name('perfil.edit');
                 Route::put('/{id}', [PerfilController::class, 'update'])->name('perfil.update');
                 Route::post('/', [PerfilController::class, 'store'])->name('perfil.store');
-                Route::post('/{id}', [PerfilController::class, 'destroy'])->name('perfil.destroy');
+                Route::delete('/{id}', [PerfilController::class, 'destroy'])->name('perfil.destroy');
             });
 
             Route::resource('/colaborador', ColaboradorController::class);

@@ -1,9 +1,6 @@
 @extends('layouts.iframe')
 @section('content')
     <div class="card card-default">
-        <div class="card-header">
-            <h4>Editar</h4>
-        </div>
         <form action="{{ route('permissao.update', $permissao->id) }}" method="POST" name="Formulario-permissao-edit">
             @csrf
             @method('PUT')
@@ -20,7 +17,7 @@
             <div class="card-footer">
                 <button type="submit" class="btn bg-gradient-primary">
                     <i class="fas fa-save" aria-hidden="true"></i>
-                    Salvar</button>
+                    Editar</button>
             </div>
         </form>
     </div>

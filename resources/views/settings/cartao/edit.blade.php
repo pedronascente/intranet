@@ -1,9 +1,6 @@
 @extends('layouts.iframe')
 @section('content')
-    <div class="card ">
-        <div class="card-header">
-            <h4>Editar</h4>
-        </div>
+    <div class="card">
         <form action="{{ route('cartao.update', $cartao->id) }}" method="POST" name="formulario-cartao-update">
             @csrf
             @method('PUT')
@@ -63,7 +60,7 @@
             <div class="card-footer">
                 <button type="submit" class="btn bg-gradient-primary">
                     <i class="fas fa-save" aria-hidden="true"></i>
-                    Salvar</button>
+                    Editar</button>
             </div>
         </form>
     </div>

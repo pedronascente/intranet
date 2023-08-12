@@ -2,21 +2,11 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">
-                <a href="{{ route('perfil.create') }}" class="btn btn-info btn-block ">
-                    Novo
+            <h3>
+                <a href="{{ route('perfil.create') }}" class="btn btn-primary btn-block ">
+                    <i class="fas fa-solid fa-plus"></i> Cadastrar
                 </a>
             </h3>
-            <div class="card-tools">
-                <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="table_search" class="form-control float-right" placeholder="Pesquisar">
-                    <div class="input-group-append">
-                        <button type="submit" class="btn btn-default">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="card-body table-responsive p-0">
             <table class="table table-hover text-nowrap  table-striped">
@@ -34,19 +24,13 @@
                                 <td>{{ $item->nome }}</td>
                                 <td>{{ $item->descricao }}</td>
                                 <td class="text-center">
-                                    <a href="perfil/{{ $item->id }}/edit" title="Editar" style="padding-right: 10px">
+                                    <a href="{{ route('perfil.edit', $item->id) }}" class="btn btn-primary" title="Editar">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <form action="{{ route('perfil.destroy', $item->id) }}" method="post"
-                                        style="display: inline; padding-right: 10px" title="Excluir">
-                                        @method('DELETE')
-                                        @csrf
-                                        <a href="{{ route('perfil.destroy', $item->id) }}"
-                                            onclick="event.preventDefault();
-                                            this.closest('form').submit();">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
-                                    </form>
+                                    <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal"
+                                        data-target="#deleteModal" data-id="{{ $item->id }}">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach
@@ -54,11 +38,6 @@
                 </tbody>
             </table>
         </div>
-        <div class="card-footer">
-            <div class="row">
-
-
-            </div>
-        </div>
     </div>
+    <x-ui.modalDelete modulo="perfil" />
 @endsection
