@@ -11,21 +11,13 @@ use Illuminate\Support\Facades\File;
 
 class ColaboradorController extends Controller
 {
-    private $rotaModalDelete;
-
-    public function __construct()
-    {
-        $this->rotaModalDelete = route('colaborador.destroy', 1);
-    }
-
     public function index()
     {
         $collection = Colaborador::orderBy('id', 'desc')->paginate(10);
         return view(
             'settings.colaborador.index',
             [
-                'collection' => $collection,
-                'rotaModalDelete' => $this->rotaModalDelete
+                'collection' => $collection
             ]
         );
     }
@@ -236,11 +228,16 @@ class ColaboradorController extends Controller
             [
                 'nome' => 'required|max:191|min:5',
                 'sobrenome' => 'required|max:191|min:5',
-                'email' => 'required|email',
+                'email' => 'required|email|unique:colaboradores,email',
                 'rg' => 'required|max:15',
-                'cpf' => 'required|max:14',
+                'cpf' => 'required|max:14|unique:colaboradores,cpf',
                 'empresa_id' => 'required',
                 'cargo_id' => 'required',
+                'foto' => [
+                    'nullable',
+                    'image',
+                    'max:1024'
+                ],
             ],
             [
                 'nome.required' => 'Campo obrigatório.',

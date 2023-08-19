@@ -13,7 +13,6 @@ use App\Http\Controllers\ModuloController;
 use App\Http\Controllers\TokenController;
 use App\Http\Controllers\UserController;
 
-Route::redirect('/', '/dashboard', 301);
 
 Route::prefix('/login')->group(function () {
     Route::get('/', [LoginController::class, 'showForm'])->name('login.form');
@@ -26,11 +25,18 @@ Route::prefix('/token')->group(function () {
     Route::post('/', [TokenController::class, 'store'])->name('token.store')->middleware('auth');
 });
 
-Route::middleware(['auth', 'verificarToken'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+Route::middleware(['auth', 'verificarToken'])->group(
+    function () {
+        Route::redirect('/', '/dashboard', 301);
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+    }
+);
+
+Route::middleware(['auth', 'verificarToken', 'verificarModulos'])->group(function () {
+
     Route::prefix('/settings')->group(
         function () {
-            Route::resource('/cargo', CargoController::class)->middleware(['auth', 'verificarToken']);
+            Route::resource('/cargo', CargoController::class);
             Route::prefix('/cartao')->group(
                 function () {
                     Route::get('/', [CartaoController::class, 'index'])->name('cartao.index');

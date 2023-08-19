@@ -1,4 +1,4 @@
-@extends('layouts.iframe')
+@extends('layouts.app')
 @section('content')
     <div class="card">
         <form action="{{ route('cartao.update', $cartao->id) }}" method="POST" name="formulario-cartao-update">

@@ -87,12 +87,14 @@ class EmpresaController extends Controller
     {
         $request->validate(
             [
-                'nome' => 'required|max:190|min:2',
-                'cnpj' => 'required|max:20',
+                'nome' => 'required|max:190|min:5|unique:empresas,nome',
+                'cnpj' => 'required|max:20|unique:empresas,cnpj',
             ],
             [
                 'nome.required' => 'Campo obrigatório.',
-                'cnpj.required' => 'Campo obrigatório.'
+                'cnpj.required' => 'Campo obrigatório.',
+                'nome.unique' => 'Esta empresa já está sendo utilizado.',
+                'cnpj.unique' => 'Esta cnpj já está sendo utilizado.',
             ]
         );
     }

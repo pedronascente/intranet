@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class CargoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         return view(
             'settings.cargo.index',

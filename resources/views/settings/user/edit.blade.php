@@ -1,25 +1,11 @@
-@extends('layouts.iframe')
+@extends('layouts.app')
 @section('content')
     <div class="card card-default">
         <form action="{{ route('user.update', $user->id) }}" method="POST">
             @csrf
             @method('PUT')
             <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="alert alert-info alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                            <h5><i class="icon fas fa-exclamation-triangle"></i>Dicas para uma boa senha!</h5>
-                            <ul>
-                                <li>deve ter pelo menos 6 caracteres: [ min:6 ]</li>
-                                <li>deve conter pelo menos uma letra minúscula: [a-z]</li>
-                                <li>deve conter pelo menos uma letra maiúscula: [A-Z]</li>
-                                <li>deve conter pelo menos um dígito: [0-9]</li>
-                                <li>deve conter um caractere especial:[@$!%*#?&]</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+
                 <div class="row">
                     <div class="col-md-2">
                         <div class="form-group">
@@ -94,8 +80,9 @@
                         </div>
                     </div>
                 </div>
-
+                <x-ui.panel-dica-boa-senha />
             </div>
+
             <div class="card-footer">
                 <button type="submit" class="btn bg-gradient-primary">
                     <i class="fas fa-save" aria-hidden="true"></i>

@@ -9,6 +9,11 @@ class Empresa extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'nome',
+        'cnpj'
+    ];
+
     public function colaboradores()
     {
         return $this->hasMany(Colaborador::class);

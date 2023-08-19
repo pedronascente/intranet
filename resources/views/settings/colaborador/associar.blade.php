@@ -1,4 +1,4 @@
-@extends('layouts.iframe')
+@extends('layouts.app')
 @section('content')
     <div class="card">
         <form action="{{ route('update_associar', $colaborador->id) }}" method="POST">

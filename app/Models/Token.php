@@ -9,6 +9,12 @@ class Token extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'token',
+        'posicao',
+        'cartao_id',
+    ];
+
     public function cartao()
     {
         return $this->belongsTo(Cartao::class);

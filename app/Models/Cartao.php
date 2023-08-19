@@ -8,8 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Cartao extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-        'status', 'nome', 'user_id', 'qtdToken'
+        'status',
+        'nome',
+        'qtdToken',
+        'user_id'
     ];
 
     protected $table = 'cartoes';

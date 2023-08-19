@@ -1,4 +1,4 @@
-@extends('layouts.iframe')
+@extends('layouts.app')
 @section('content')
     <div class="card card-default">
         <form action="{{ route('colaborador.store') }}" method="POST" enctype="multipart/form-data"
@@ -112,10 +112,14 @@
                 <div class="row">
                     <div class="col-md-5">
                         <div class="form-group">
-                            <label for="customFile">Fotso</label>
+                            <label for="customFile">Foto</label>
                             <div class="custom-file">
-                                <input type="file" name="foto" class="custom-file-input" id="customFile">
+                                <input type="file" name="foto" class="custom-file-input" id="customFile"
+                                    class=" @error('foto') is-invalid @enderror" value="{{ old('foto') }}">
                                 <label class="custom-file-label" for="customFile"></label>
+                                @error('foto')
+                                    <span class=" invalid-feedback">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     </div>

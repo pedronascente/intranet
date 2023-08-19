@@ -1,4 +1,4 @@
-@extends('layouts.iframe')
+@extends('layouts.app')
 @section('content')
     <div class="card card-default">
         <form action="{{ route('permissao.store') }}" method="POST" name="Formulario-permissao-create">

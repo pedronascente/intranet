@@ -10,7 +10,7 @@ class CreateperfisTable extends Migration
     {
         Schema::create('perfis', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nome');
+            $table->string('nome')->unique();
             $table->text('descricao');
             $table->timestamps();
             $table->engine = 'InnoDB';

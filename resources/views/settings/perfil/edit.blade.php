@@ -1,4 +1,4 @@
-@extends('layouts.iframe')
+@extends('layouts.app')
 @section('content')
     <div class="card">
         <form action="{{ route('perfil.update', $perfil->id) }}" method="POST">
