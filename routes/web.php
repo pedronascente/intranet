@@ -33,7 +33,6 @@ Route::middleware(['auth', 'verificarToken'])->group(
 );
 
 Route::middleware(['auth', 'verificarToken', 'verificarModulos'])->group(function () {
-
     Route::prefix('/settings')->group(
         function () {
             Route::resource('/cargo', CargoController::class);

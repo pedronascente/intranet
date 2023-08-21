@@ -38,10 +38,10 @@
                                         class="btn btn-primary">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal"
+                                    <!--a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal"
                                         data-target="#deleteModal" data-id="{{ $cartao->id }}">
                                         <i class="fas fa-trash"></i>
-                                    </a>
+                                    </a-->
                                 </td>
                             </tr>
                         @endforeach

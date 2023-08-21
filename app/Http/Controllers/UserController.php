@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\Colaborador;
 use App\Models\User;
+use App\Models\Cartao;
 use App\Models\Perfil;
-use Illuminate\Auth\Events\Registered;
+use App\Models\Colaborador;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
 
 class UserController extends Controller
 {
@@ -102,17 +103,22 @@ class UserController extends Controller
 
     /**
      * Responsável por Excluir usuário
-     *
+     *0
      * @param [Integer] $id
      * @return void
      */
     public function destroy(Request $request, $id)
     {
-        dd($request, $id);
-
+        $usuario = User::with('colaborador', 'cartao')->findOrFail($request->id);
+        if (!empty($usuario->colaborador)) {
+            return redirect()
+                ->action('App\Http\Controllers\UserController@index')
+                ->with('warning', "Não foi possivel escluir!, Este usuario está sendo associado a um colaborador.");
+        }
+        $usuario->delete();
         return redirect()
             ->action('App\Http\Controllers\UserController@index')
-            ->with('status', "Inativado com sucesso!");
+            ->with('status', "Registro excluido com sucesso!");
     }
 
     /**
