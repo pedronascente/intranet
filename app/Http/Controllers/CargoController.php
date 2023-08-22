@@ -19,7 +19,16 @@ class CargoController extends Controller
 
     public function create()
     {
-        return view('settings.cargo.create');
+        if (session()->get('perfil')) {
+            foreach (session()->get('perfil')['permissoes'][1] as $item) {
+                if ($item->nome == 'Criar') {
+                    return view('settings.cargo.create');
+                    break;
+                }
+            }
+        }
+        return redirect()
+            ->action('App\Http\Controllers\CargoController@index');
     }
 
     public function store(Request $request)
@@ -41,12 +50,21 @@ class CargoController extends Controller
 
     public function edit($id)
     {
-        $cargo = Cargo::findOrFail($id);
-        if ($cargo) {
-            return view('settings.cargo.edit', ['cargo' => $cargo]);
-        } else {
-            return redirect('cargo/')->with('error', 'Registro não existe!'); //retorna resultado.
+        if (session()->get('perfil')) {
+            foreach (session()->get('perfil')['permissoes'][1] as $item) {
+                if ($item->nome == 'Editar') {
+                    $cargo = Cargo::findOrFail($id);
+                    if ($cargo) {
+                        return view('settings.cargo.edit', ['cargo' => $cargo]);
+                    } else {
+                        return redirect('cargo/')->with('error', 'Registro não existe!'); //retorna resultado.
+                    }
+                    break;
+                }
+            }
         }
+        return redirect()
+            ->action('App\Http\Controllers\CargoController@index');
     }
 
     public function update(Request $request, $id)

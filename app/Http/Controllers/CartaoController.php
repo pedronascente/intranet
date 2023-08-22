@@ -32,14 +32,23 @@ class CartaoController extends Controller
      */
     public function create()
     {
-        $users = $this->getUserSemCartao();
-        if (!empty($users)) {
-            return view('settings.cartao.create', ['users' => $users]);
-        } else {
-            return redirect()
-                ->action('App\Http\Controllers\CartaoController@index')
-                ->with('warning', "Nenhum usuário sem cartão foi localizado!");
+        if (session()->get('perfil')) {
+            foreach (session()->get('perfil')['permissoes'][8] as $item) {
+                if ($item->nome == 'Criar') {
+                    $users = $this->getUserSemCartao();
+                    if (!empty($users)) {
+                        return view('settings.cartao.create', ['users' => $users]);
+                    } else {
+                        return redirect()
+                            ->action('App\Http\Controllers\CartaoController@index')
+                            ->with('warning', "Nenhum usuário sem cartão foi localizado!");
+                    }
+                    break;
+                }
+            }
         }
+        return redirect()
+            ->action('App\Http\Controllers\CartaoController@index');
     }
 
     /**
@@ -76,8 +85,17 @@ class CartaoController extends Controller
      */
     public function show($id)
     {
-        $cartao = Cartao::with('user', 'tokens')->findOrFail($id);
-        return view('settings.cartao.show', ['cartao' => $cartao]);
+        if (session()->get('perfil')) {
+            foreach (session()->get('perfil')['permissoes'][8] as $item) {
+                if ($item->nome == 'Visualizar') {
+                    $cartao = Cartao::with('user', 'tokens')->findOrFail($id);
+                    return view('settings.cartao.show', ['cartao' => $cartao]);
+                    break;
+                }
+            }
+        }
+        return redirect()
+            ->action('App\Http\Controllers\CartaoController@index');
     }
 
     /**
@@ -88,8 +106,17 @@ class CartaoController extends Controller
      */
     public function edit($id)
     {
-        $cartao = Cartao::with('user')->findOrFail($id);
-        return view('settings.cartao.edit', ['cartao' => $cartao]);
+        if (session()->get('perfil')) {
+            foreach (session()->get('perfil')['permissoes'][8] as $item) {
+                if ($item->nome == 'Editar') {
+                    $cartao = Cartao::with('user')->findOrFail($id);
+                    return view('settings.cartao.edit', ['cartao' => $cartao]);
+                    break;
+                }
+            }
+        }
+        return redirect()
+            ->action('App\Http\Controllers\CartaoController@index');
     }
     /**
      * Atualizar cartão.

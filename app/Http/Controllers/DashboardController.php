@@ -8,8 +8,7 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        $request = $request->session()->all();
-        //dd($request);
+        // $request = $request->session()->all();
         return view('dashboard.index');
     }
 }

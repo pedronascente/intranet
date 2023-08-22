@@ -38,37 +38,30 @@ class PerfilController extends Controller
                 ->action('App\Http\Controllers\PerfilController@create')
                 ->with('warning', "Já existe um Perfil com este nome");
         }
-        if (!$request->modulos || !$request->permissoes) {
+
+        if (!$request->modulos) {
             return redirect()
                 ->action('App\Http\Controllers\PerfilController@create')
                 ->with('error', "Selecione pelo menos um modulo, e uma permissão para continuar.");
         }
-        //Registrar Perfil.
+
         $perfil = new Perfil();
         $perfil->nome = $request->nome;
         $perfil->descricao = $request->descricao;
         $perfil->save();
-        if ($perfil) {
-            if ($request->modulos && $request->permissoes) {
-                foreach ($request->modulos as $m) {
-                    $perfil->modulos()->attach($m);
-                }
-                foreach ($request->modulos as $m) {
-                    if (array_key_exists($m, $request->permissoes)) {
-                        foreach ($request->permissoes as $keymodulo => $permissao) {
-                            if ($keymodulo == $m) {
-                                $objeModulo = Modulo::findOrFail($m);
-                                $objeModulo->permissoes()->attach($permissao, ['perfil_id' => $perfil->id]);
-                            }
-                        }
-                    }
-                }
-            } else {
-                dd('Error: Modulo, ou permissão não foi selecionada!');
+
+        if ($request->modulos) {
+            foreach ($request->modulos as $m) {
+                $perfil->modulos()->attach($m);
             }
-        } else {
-            dd('Error: Não foi possivel registrar perfil');
         }
+
+        if ($request->permissoes) {
+            foreach ($request->permissoes as $modulo => $permissoes) {
+                $perfil->permissoes()->attach($permissoes, ['modulo_id' => $modulo]);
+            }
+        }
+
         return redirect()
             ->action('App\Http\Controllers\PerfilController@index')
             ->with('success', "Registrado com sucesso.");
@@ -79,7 +72,7 @@ class PerfilController extends Controller
         $listArrayModulos = [];
         $modulos = Modulo::all();
         $permissoes = Permissao::all();
-        $perfil = Perfil::with('modulos')->findOrFail($id);
+        $perfil = Perfil::with('modulos', 'permissoes')->findOrFail($id);
         $listArraypermissoes  = Perfil::getPermissoes($id)->toArray();
         foreach ($perfil->modulos as  $value) {
             $listArrayModulos[] = $value->id;
@@ -95,31 +88,24 @@ class PerfilController extends Controller
 
     public function update(Request $request, $id)
     {
-        $perfil = Perfil::with('modulos')->findOrFail($id);
+        $perfil = Perfil::with('modulos', 'permissoes')->findOrFail($id);
         $perfil->nome = $request->nome;
         $perfil->descricao = $request->descricao;
         $perfil->update();
+        $perfil->modulos()->detach();
+        $perfil->permissoes()->detach();
         if ($request->modulos) {
-            foreach ($perfil->modulos as $moduloRelacionado) {
-                $perfil->modulos()->detach($moduloRelacionado);
-            }
             foreach ($request->modulos as $m) {
                 $perfil->modulos()->attach($m);
             }
         }
+
         if ($request->permissoes) {
-            ModuloPermissao::deletePermissoes($id);
-        }
-        foreach ($request->modulos as $m) {
-            if (array_key_exists($m, $request->permissoes)) {
-                foreach ($request->permissoes as $keymodulo => $permissao) {
-                    if ($keymodulo == $m) {
-                        $objeModulo = Modulo::findOrFail($m);
-                        $objeModulo->permissoes()->attach($permissao, ['perfil_id' => $perfil->id]);
-                    }
-                }
+            foreach ($request->permissoes as $modulo => $permissoes) {
+                $perfil->permissoes()->attach($permissoes, ['modulo_id' => $modulo]);
             }
         }
+
         return redirect()
             ->action('App\Http\Controllers\PerfilController@edit', $id)
             ->with('status', "Registro Atualizado!");
@@ -127,7 +113,6 @@ class PerfilController extends Controller
 
     public function destroy(Request $request, $id)
     {
-
         $perfil = Perfil::with('user')->findOrFail($request->id);
         if ($perfil->user) {
             return redirect()
@@ -145,11 +130,12 @@ class PerfilController extends Controller
     {
         $request->validate(
             [
-                'nome' => 'required|max:190|min:3',
+                'nome' => 'required|max:190|unique:perfis,nome',
                 'descricao' => 'required|max:190|min:3',
             ],
             [
                 'nome.required' => 'Campo obrigatório.',
+                'nome.unique' => 'Este perfil já está sendo utilizado.',
                 'descricao.required' => 'Campo obrigatório.',
             ],
         );

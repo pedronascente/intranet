@@ -19,9 +19,4 @@ class Modulo extends Model
     {
         return $this->belongsToMany(Perfil::class);
     }
-
-    public function permissoes()
-    {
-        return $this->belongsToMany(Permissao::class);
-    }
 }

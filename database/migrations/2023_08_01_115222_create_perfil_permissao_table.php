@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateModuloPermissaoTable extends Migration
+class CreatePerfilPermissaoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateModuloPermissaoTable extends Migration
      */
     public function up()
     {
-        Schema::create('modulo_permissao', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('perfil_id');
+        Schema::create('perfil_permissao', function (Blueprint $table) {
             $table->integer('modulo_id')->unsigned();
-            $table->foreign('modulo_id')->references('id')->on('modulos')->onDelete('cascade');
+            $table->integer('perfil_id')->unsigned();
+            $table->foreign('perfil_id')->references('id')->on('perfis')->onDelete('cascade');
             $table->integer('permissao_id')->unsigned();
             $table->foreign('permissao_id')->references('id')->on('permissoes')->onDelete('cascade');
             $table->timestamps();
@@ -32,6 +31,6 @@ class CreateModuloPermissaoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('modulo_permissao');
+        Schema::dropIfExists('perfil_permissao');
     }
 }

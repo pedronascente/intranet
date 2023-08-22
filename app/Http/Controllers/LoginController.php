@@ -88,8 +88,12 @@ class LoginController extends Controller
             }
         }
 
-        $perfilObj = new Perfil();
-        $sessaoPerfil['permissoes']  = $perfilObj->getPermissoes($id);
+        $permissoes = $perfil->getPermissoes($id);
+
+        if ($permissoes) {
+            $sessaoPerfil['permissoes']  = $permissoes;
+        }
+
         $request->session()->put('perfil', $sessaoPerfil);
     }
 

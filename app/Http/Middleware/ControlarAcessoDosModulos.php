@@ -17,23 +17,26 @@ class ControlarAcessoDosModulos
      */
     public function handle(Request $request, Closure $next)
     {
-
-        $array_modulos = $request->session()->get('perfil')['modulos'];
-
-        foreach ($array_modulos as $rota) {
-            $arrayRotas[] =  $rota['rota'];
-        }
-        $url =    $request->segment(1);
-        if ($url !== '/' || $url !== 'dashboard' || $url !== 'login') {
-            $url = "/" . $request->segment(1);
-            if ($request->segment(2)) {
-                $url .= "/" . $request->segment(2);
+        $array_modulos = $request->session()->get('perfil');
+        if (isset($array_modulos['modulos'])) {
+            foreach ($array_modulos['modulos'] as $rota) {
+                $arrayRotas[] =  $rota['rota'];
             }
-            if (!in_array($url, $arrayRotas)) {
-                return redirect()
-                    ->action('App\Http\Controllers\DashboardController@index');
-                //->with('warning', "Você não tem permissão para acessar este Módulo.");
+            $url =    $request->segment(1);
+            if ($url !== '/' || $url !== 'dashboard' || $url !== 'login') {
+                $url = "/" . $request->segment(1);
+                if ($request->segment(2)) {
+                    $url .= "/" . $request->segment(2);
+                }
+                if (!in_array($url, $arrayRotas)) {
+                    return redirect()
+                        ->action('App\Http\Controllers\DashboardController@index');
+                    //->with('warning', "Você não tem permissão para acessar este Módulo.");
+                }
             }
+        } else {
+            return redirect()
+                ->action('App\Http\Controllers\DashboardController@index');
         }
         return $next($request);
     }

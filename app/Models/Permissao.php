@@ -15,8 +15,8 @@ class Permissao extends Model
 
     protected $table = 'permissoes';
 
-    public function modulos()
+    public function perfis()
     {
-        return $this->belongsToMany(Modulo::class);
+        return $this->belongsToMany(Perfil::class);
     }
 }

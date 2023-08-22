@@ -25,13 +25,17 @@ class Perfil extends Model
     {
         return $this->belongsToMany(Modulo::class);
     }
+    public function permissoes()
+    {
+        return $this->belongsToMany(Permissao::class);
+    }
 
     public static function getPermissoes($id)
     {
         $listArraypermissoes = DB::table('perfis')
-            ->join('modulo_permissao', 'perfis.id', '=', 'modulo_permissao.perfil_id')
-            ->join('permissoes', 'permissoes.id', '=', 'modulo_permissao.permissao_id')
-            ->select('modulo_id', 'modulo_permissao.permissao_id')->where('perfil_id', $id)
+            ->join('perfil_permissao', 'perfis.id', '=', 'perfil_permissao.perfil_id')
+            ->join('permissoes', 'permissoes.id', '=', 'perfil_permissao.permissao_id')
+            ->select('perfil_permissao.modulo_id', 'perfil_permissao.permissao_id', 'permissoes.nome')->where('perfil_id', $id)
             ->get()->groupBy('modulo_id');
 
         return $listArraypermissoes;
