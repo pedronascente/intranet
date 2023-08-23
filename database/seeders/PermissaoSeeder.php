@@ -13,7 +13,5 @@ class PermissaoSeeder extends Seeder
         DB::table('permissoes')->insert(['nome' => 'Excluir']);
         DB::table('permissoes')->insert(['nome' => 'Criar']);
         DB::table('permissoes')->insert(['nome' => 'Visualizar']);
-        DB::table('permissoes')->insert(['nome' => 'Associar']);
-        DB::table('permissoes')->insert(['nome' => 'Geral']);
     }
 }

@@ -10,7 +10,13 @@ class ModuloController extends Controller
     public function index()
     {
         $modulos = Modulo::orderBy('id', 'desc')->paginate(10);
-        return view('settings.modulo.index', ['collection' => $modulos]);
+        return view(
+            'settings.modulo.index',
+            [
+                'collection' => $modulos,
+                'permissoes' => $this->getPermissoes()
+            ]
+        );
     }
 
     public function create()
@@ -64,11 +70,18 @@ class ModuloController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        $modulo = Modulo::findOrFail($request->id);
-        $modulo->delete();
-        return redirect()
-            ->action('App\Http\Controllers\ModuloController@index')
-            ->with('status', "Registro Excluido!");
+        $modulo = Modulo::with('perfis')->findOrFail($request->id);
+
+        if ($modulo->perfis->count() >= 1) {
+            return redirect()
+                ->action('App\Http\Controllers\ModuloController@index')
+                ->with('warning', "Este Módulo está relacionada a um perfil, Não pode ser excluida.");
+        } else {
+            $modulo->delete();
+            return redirect()
+                ->action('App\Http\Controllers\ModuloController@index')
+                ->with('status', "Registro Excluido!");
+        }
     }
 
     private function validarFormulario(Request $request)
@@ -85,5 +98,16 @@ class ModuloController extends Controller
                 'descricao.required' => 'Campo obrigatório.',
             ]
         );
+    }
+
+    private function getPermissoes()
+    {
+        $arrayPermissoes  = isset(session()->get('perfil')['permissoes'][4]) ? session()->get('perfil')['permissoes'][4]->toArray() : null;
+        if (!empty($arrayPermissoes)) {
+            $permissoes = $arrayPermissoes;
+        } else {
+            $permissoes = null;
+        }
+        return $permissoes;
     }
 }

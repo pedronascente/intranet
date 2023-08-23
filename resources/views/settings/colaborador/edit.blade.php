@@ -8,6 +8,20 @@
             @method('PUT')
             <div class="card-body">
                 <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>ID do Usuário:</label>
+                            <input type="text" name="user_id" maxlength="190"
+                                class="form-control @error('user_id') is-invalid  @enderror" placeholder="ID"
+                                value=" {{ $colaborador->user_id }}">
+
+                            @error('user_id')
+                                <span class=" invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Nome:</label>
@@ -115,8 +129,12 @@
                         <div class="form-group">
                             <label for="customFile">Foto</label>
                             <div class="custom-file">
-                                <input type="file" name="foto" class="custom-file-input" id="customFile">
+                                <input type="file" name="foto"
+                                    class="custom-file-input @error('empresa_id') is-invalid @enderror" id="customFile">
                                 <label class="custom-file-label" for="customFile"></label>
+                                @error('foto')
+                                    <span class=" invalid-feedback">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     </div>

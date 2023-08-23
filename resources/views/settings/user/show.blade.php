@@ -30,42 +30,7 @@
                             @endif
                         </td>
                     </tr>
-                    @if ($user->colaborador)
-                        <tr>
-                            <td>
-                                <b>Colaborador</b><br>
 
-                                <a href="{{ route('colaborador.show', $user->colaborador->id) }}"
-                                    title="Visualizar Colaborador" class="btn btn-warning">
-                                    <i class="fas  fa-eye"></i>
-                                    {{ $user->colaborador->nome }}
-                                    {{ $user->colaborador->sobrenome }}
-                                </a>
-
-                                <form action="{{ route('destroy.associacao.user', $user->colaborador->id) }}" method="post"
-                                    style="display: inline;">
-                                    @method('DELETE')
-                                    @csrf
-                                    <a href="{{ route('destroy.associacao.user', $user->colaborador->id) }}"
-                                        onclick="event.preventDefault();
-                                            this.closest('form').submit();"
-                                        class="btn btn-danger" title="Remover Colaborador">
-                                        <i class="fas fa-trash"></i> Remover
-                                    </a>
-                                </form>
-                            </td>
-                        <tr>
-                        @else
-                        <tr>
-                            <td>
-                                <b>Colaborador</b><br>
-                                <a href="{{ route('user.associar', $user->id) }}" class="btn btn-primary"
-                                    title="Associar usuário">
-                                    Associar Colaborador
-                                </a>
-                            </td>
-                        </tr>
-                    @endif
                     @if ($user->cartao)
                         <tr>
                             <td>

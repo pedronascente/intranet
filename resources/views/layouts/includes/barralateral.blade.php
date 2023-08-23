@@ -56,12 +56,6 @@
                                 </li>
                             @endforeach
                         @endif
-                        <li class="nav-item">
-                            <a href="{{ route('login.sair') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p> Sair</p>
-                            </a>
-                        </li>
                     </ul>
                 </li>
             </ul>

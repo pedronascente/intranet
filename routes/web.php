@@ -48,13 +48,20 @@ Route::middleware(['auth', 'verificarToken', 'verificarModulos'])->group(functio
                     Route::get('/registrar/user/{id}', [CartaoController::class, 'registrarCartaoUsuario'])->name('cartao.registar');
                 }
             );
-            Route::prefix('/associar/colaborador')->group(
+
+
+            /*
+Route::prefix('/associar/colaborador')->group(
                 function () {
                     Route::get('/{id}', [UserController::class, 'createAssociar'])->name('user.associar');
                     Route::put('/{id}', [UserController::class, 'associarColaborador'])->name('user.updateassociar');
                     Route::delete('/{id}', [UserController::class, 'desassociarColaborador'])->name('destroy.associacao.user');
                 }
             );
+            
+*/
+
+
             Route::prefix('/associar/usuario')->group(
                 function () {
                     Route::get('/{id}', [ColaboradorController::class, 'createAssociar'])->name('create_associar');

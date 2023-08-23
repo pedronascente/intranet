@@ -1,19 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="card">
-        <div class="card-header">
-            @if (session()->get('perfil'))
-                @foreach (session()->get('perfil')['permissoes'][8] as $item)
-                    @if ($item->nome == 'Criar')
-                        <h3>
-                            <a href="{{ route('cartao.create') }}" class="btn btn-primary btn-block ">
-                                <i class="fas fa-solid fa-plus"></i> Cadastrar
-                            </a>
-                        </h3>
-                    @endif
-                @endforeach
-            @endif
-        </div>
+        <x-botao.criar rota="cartao" :permissoes="$permissoes" />
         <div class="card-body table-responsive p-0">
             <table class="table table-hover text-nowrap table-striped">
                 <thead>
@@ -36,8 +24,8 @@
                                     @endif
                                 </td>
                                 <td class="text-center">
-                                    @if (session()->get('perfil'))
-                                        @foreach (session()->get('perfil')['permissoes'][8] as $item)
+                                    @if ($permissoes)
+                                        @foreach ($permissoes as $item)
                                             @if ($item->nome == 'Editar')
                                                 <a href="{{ route('cartao.edit', $cartao->id) }}" title="Editar"
                                                     class="btn btn-primary">

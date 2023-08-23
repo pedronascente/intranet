@@ -15,19 +15,21 @@ class PerfilController extends Controller
         return view(
             'settings.perfil.index',
             [
-                'collections' => Perfil::orderBy('id', 'desc')->paginate(6)
+                'collections' => Perfil::orderBy('id', 'desc')->paginate(6),
+                'permissoes' => $this->getPermissoes()
             ]
         );
     }
 
     public function create()
     {
-        $modulos =  Modulo::all();
-        $permissoes =  Permissao::all();
-        return view('settings.perfil.create', [
-            'modulos' => $modulos,
-            'permissoes' => $permissoes,
-        ]);
+        return view(
+            'settings.perfil.create',
+            [
+                'modulos' => Modulo::all(),
+                'permissoes' => Permissao::all(),
+            ]
+        );
     }
 
     public function store(Request $request)
@@ -145,5 +147,16 @@ class PerfilController extends Controller
     {
         return Perfil::where('nome', $request->nome)
             ->get()->count();
+    }
+
+    private function getPermissoes()
+    {
+        $arrayPermissoes  = isset(session()->get('perfil')['permissoes'][6]) ? session()->get('perfil')['permissoes'][6]->toArray() : null;
+        if (!empty($arrayPermissoes)) {
+            $permissoes = $arrayPermissoes;
+        } else {
+            $permissoes = null;
+        }
+        return $permissoes;
     }
 }

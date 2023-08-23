@@ -9,8 +9,13 @@ class PermissaoController extends Controller
 {
     public function index()
     {
-        $collection = Permissao::orderBy('id', 'desc')->paginate(6);
-        return view('settings.permissao.index', ['collection' => $collection]);
+        return view(
+            'settings.permissao.index',
+            [
+                'collection' => Permissao::orderBy('id', 'desc')->paginate(6),
+                'permissoes' => $this->getPermissoes()
+            ]
+        );
     }
 
     public function create()
@@ -60,11 +65,17 @@ class PermissaoController extends Controller
 
     public  function destroy(Request $request, $id)
     {
-        $empresa = Permissao::findOrFail($request->id);
-        $empresa->delete();
-        return redirect()
-            ->action('App\Http\Controllers\PermissaoController@index')
-            ->with('status', "Registro Excluido!");
+        $permissao = Permissao::with('perfis')->findOrFail($request->id);
+        if ($permissao->perfis->count() >= 1) {
+            return redirect()
+                ->action('App\Http\Controllers\PermissaoController@index')
+                ->with('warning', "Está permissão está relacionada a um perfil, Não pode ser excluida.");
+        } else {
+            $permissao->delete();
+            return redirect()
+                ->action('App\Http\Controllers\PermissaoController@index')
+                ->with('status', "Registro Excluido!");
+        }
     }
 
     private function validarFormulario(Request $request)
@@ -84,5 +95,16 @@ class PermissaoController extends Controller
         $duplicado = Permissao::where('nome', $request->nome)
             ->get()->count();
         return $duplicado;
+    }
+
+    private function getPermissoes()
+    {
+        $arrayPermissoes  = isset(session()->get('perfil')['permissoes'][5]) ? session()->get('perfil')['permissoes'][5]->toArray() : null;
+        if (!empty($arrayPermissoes)) {
+            $permissoes = $arrayPermissoes;
+        } else {
+            $permissoes = null;
+        }
+        return $permissoes;
     }
 }

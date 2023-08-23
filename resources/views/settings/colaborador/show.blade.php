@@ -26,20 +26,13 @@
                     <tr>
                         <td colspan="3">
                             <b>Usuário </b><br>
-                            <a href="" class="btn btn-warning" title="Visualizar Usuário">
-                                <i class="fas  fa-eye"></i> {{ $colaborador->user->name }}
-                            </a>
-                            <form action="{{ route('destroy.associacao.colaborador', $colaborador->id) }}" method="post"
-                                style="display: inline;">
-                                @method('DELETE')
-                                @csrf
-                                <a href="{{ route('destroy.associacao.colaborador', $colaborador->id) }}"
-                                    onclick="event.preventDefault();
-                                            this.closest('form').submit();"
-                                    class="btn btn-danger" title="Remover usuário">
-                                    <i class="fas fa-trash"></i> Remover
-                                </a>
-                            </form>
+                            {{ $colaborador->user->name }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <b>Perfil </b><br>
+                            {{ $colaborador->user->perfil->nome }}
                         </td>
                     </tr>
                 @else

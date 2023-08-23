@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
             ColaboradorSeeder::class,
             CartaoSeeder::class,
             TokenSeeder::class,
-            ModuloPerfilSeeder::class
+            ModuloPerfilSeeder::class,
+            PerfilPermissaoSeeder::class,
         ]);
     }
 }

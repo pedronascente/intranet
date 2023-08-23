@@ -6,6 +6,20 @@
             @csrf
             <div class="card-body">
                 <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>ID do Usuário:</label>
+                            <input type="text" name="user_id" maxlength="190"
+                                class="form-control @error('user_id') is-invalid  @enderror" placeholder="ID"
+                                value="{{ old('user_id') }}">
+
+                            @error('user_id')
+                                <span class=" invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Nome:</label>

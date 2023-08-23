@@ -1,13 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="card">
-        <div class="card-header">
-            <h3>
-                <a href="{{ route('empresa.create') }}" class="btn btn-primary  btn-block ">
-                    <i class="fas fa-solid fa-plus"></i> Cadastrar
-                </a>
-            </h3>
-        </div>
+        <x-botao.criar rota="empresa" :permissoes="$permissoes" />
         <div class="card-body table-responsive p-0">
             <table class="table table-hover text-nowrap table-striped">
                 <thead>
@@ -24,13 +18,22 @@
                                 <td>{{ $item->nome }}</td>
                                 <td>{{ $item->cnpj }}</td>
                                 <td class="text-center">
-                                    <a href="{{ route('empresa.edit', $item->id) }}" title="Editar" class="btn btn-primary">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal"
-                                        data-target="#deleteModal" data-id="{{ $item->id }}">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
+                                    @if ($permissoes)
+                                        @foreach ($permissoes as $permissao)
+                                            @if ($permissao->nome == 'Editar')
+                                                <a href="{{ route('empresa.edit', $item->id) }}" title="Editar"
+                                                    class="btn btn-primary">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            @endif
+                                            @if ($permissao->nome == 'Excluir')
+                                                <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal"
+                                                    data-target="#deleteModal" data-id="{{ $item->id }}">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            @endif
+                                        @endforeach
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

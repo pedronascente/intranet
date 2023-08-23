@@ -12,7 +12,8 @@ class EmpresaController extends Controller
         return view(
             'settings.empresa.index',
             [
-                'collection' => Empresa::orderBy('id', 'desc')->paginate(6)
+                'collection' => Empresa::orderBy('id', 'desc')->paginate(6),
+                'permissoes' => $this->getPermissoes()
             ]
         );
     }
@@ -105,5 +106,16 @@ class EmpresaController extends Controller
             ->orWhere('cnpj', $request->cnpj)
             ->get()->count();
         return $duplicado;
+    }
+
+    private function getPermissoes()
+    {
+        $arrayPermissoes  = isset(session()->get('perfil')['permissoes'][3]) ? session()->get('perfil')['permissoes'][3]->toArray() : null;
+        if (!empty($arrayPermissoes)) {
+            $permissoes = $arrayPermissoes;
+        } else {
+            $permissoes = null;
+        }
+        return $permissoes;
     }
 }

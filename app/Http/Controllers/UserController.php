@@ -19,7 +19,8 @@ class UserController extends Controller
         return view(
             'settings.user.index',
             [
-                'collections' => User::with('perfil')->orderBy('id', 'desc')->paginate(8)
+                'collections' => User::with('perfil')->orderBy('id', 'desc')->paginate(8),
+                'permissoes' => $this->getPermissoes()
             ]
         );
     }
@@ -195,7 +196,9 @@ class UserController extends Controller
      * @param [Integer] $id
      * @return void
      */
-    public function associarColaborador(Request $request, $id)
+
+    /*
+public function associarColaborador(Request $request, $id)
     {
         $user = User::findOrFail($id);
         $colaborador = Colaborador::findOrFail($request->colaborador_id);
@@ -203,6 +206,8 @@ class UserController extends Controller
         return redirect(route('user.show', $id))
             ->with('status', "Colaborador associado com sucesso!");
     }
+*/
+
 
     /**
      * Disassociar Colaborador
@@ -210,6 +215,8 @@ class UserController extends Controller
      * @param [Integer] $id
      * @return void
      */
+
+    /*
     public function desassociarColaborador($id)
     {
         $colaborador = Colaborador::with('user')->findOrFail($id);
@@ -217,5 +224,17 @@ class UserController extends Controller
         $colaborador->user()->disassociate($user)->save();
         return redirect(route('user.show', $user->id))
             ->with('status', "Usuário Foi desassociado com sucesso!");
+    }
+*/
+
+    private function getPermissoes()
+    {
+        $arrayPermissoes  = isset(session()->get('perfil')['permissoes'][7]) ? session()->get('perfil')['permissoes'][7]->toArray() : null;
+        if (!empty($arrayPermissoes)) {
+            $permissoes = $arrayPermissoes;
+        } else {
+            $permissoes = null;
+        }
+        return $permissoes;
     }
 }

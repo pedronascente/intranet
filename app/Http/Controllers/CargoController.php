@@ -7,12 +7,13 @@ use Illuminate\Http\Request;
 
 class CargoController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         return view(
             'settings.cargo.index',
             [
-                'collection' => Cargo::orderBy('id', 'desc')->paginate(6)
+                'collection' => Cargo::orderBy('id', 'desc')->paginate(10),
+                'permissoes' => $this->getPermissoes()
             ]
         );
     }
@@ -119,5 +120,16 @@ class CargoController extends Controller
             ->get()->count();
 
         return $duplicado;
+    }
+
+    private function getPermissoes()
+    {
+        $arrayPermissoes  = isset(session()->get('perfil')['permissoes'][1]) ? session()->get('perfil')['permissoes'][1]->toArray() : null;
+        if (!empty($arrayPermissoes)) {
+            $permissoes = $arrayPermissoes;
+        } else {
+            $permissoes = null;
+        }
+        return $permissoes;
     }
 }

@@ -20,7 +20,8 @@ class CartaoController extends Controller
         return view(
             'settings.cartao.index',
             [
-                'collections' => Cartao::with('user')->orderBy('id', 'desc')->paginate(8)
+                'collections' => Cartao::with('user')->orderBy('id', 'desc')->paginate(8),
+                'permissoes' => $this->getPermissoes()
             ]
         );
     }
@@ -224,5 +225,16 @@ class CartaoController extends Controller
         $qtd = Token::getCartaoDoUsuarioLogado($request);
         $posicaoDoToken = rand(1, $qtd->qtdToken);
         return $posicaoDoToken;
+    }
+
+    private function getPermissoes()
+    {
+        $arrayPermissoes  = isset(session()->get('perfil')['permissoes'][8]) ? session()->get('perfil')['permissoes'][8]->toArray() : null;
+        if (!empty($arrayPermissoes)) {
+            $permissoes = $arrayPermissoes;
+        } else {
+            $permissoes = null;
+        }
+        return $permissoes;
     }
 }
