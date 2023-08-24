@@ -41,7 +41,7 @@
                                 Request::segment(2) == 'cartao') class="nav-link active"  @else   class="nav-link" @endif>
                         <i class="nav-icon fa fa-cog" aria-hidden="true"></i>
                         <p>
-                            Configurações<i class="right fas fa-angle-left"></i>
+                            Configurações <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">

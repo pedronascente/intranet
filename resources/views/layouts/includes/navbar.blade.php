@@ -11,10 +11,10 @@
                   <i class="nav-icon fa fa-cog" aria-hidden="true"></i>
               </a>
               <div class="dropdown-menu dropdown-menu-md dropdown-menu-right" style="left: inherit; right: 0px;">
-                  <a href="#" class="dropdown-item dropdown-footer">Configurações</a>
+                  <a href="{{ route('configuracoes') }}" class="dropdown-item dropdown-footer">Configurações</a>
                   <div class="dropdown-divider">
                   </div>
-                  <a href="#" class="dropdown-item dropdown-footer">Meus Dados</a>
+                  <a href="{{ route('user.profile') }}" class="dropdown-item dropdown-footer">Perfil</a>
                   <div class="dropdown-divider">
                   </div>
                   <a href="{{ route('login.sair') }}" class="dropdown-item dropdown-footer">Sair</a>

@@ -13,18 +13,15 @@ use App\Http\Controllers\ModuloController;
 use App\Http\Controllers\TokenController;
 use App\Http\Controllers\UserController;
 
-
 Route::prefix('/login')->group(function () {
     Route::get('/', [LoginController::class, 'showForm'])->name('login.form');
     Route::post('/', [LoginController::class, 'login'])->name('login');
     Route::get('/logout', [LoginController::class, 'logout'])->name('login.sair');
 });
-
 Route::prefix('/token')->group(function () {
     Route::get('/', [TokenController::class, 'create'])->name('token.create')->middleware('auth');
     Route::post('/', [TokenController::class, 'store'])->name('token.store')->middleware('auth');
 });
-
 Route::middleware(['auth', 'verificarToken'])->group(
     function () {
         Route::redirect('/', '/dashboard', 301);
@@ -32,6 +29,7 @@ Route::middleware(['auth', 'verificarToken'])->group(
     }
 );
 
+Route::get('/cartao/posicao', [CartaoController::class, 'getPosicaoDoTokenNoCartao'])->middleware('auth');
 Route::middleware(['auth', 'verificarToken', 'verificarModulos'])->group(function () {
     Route::prefix('/settings')->group(
         function () {
@@ -48,20 +46,6 @@ Route::middleware(['auth', 'verificarToken', 'verificarModulos'])->group(functio
                     Route::get('/registrar/user/{id}', [CartaoController::class, 'registrarCartaoUsuario'])->name('cartao.registar');
                 }
             );
-
-
-            /*
-Route::prefix('/associar/colaborador')->group(
-                function () {
-                    Route::get('/{id}', [UserController::class, 'createAssociar'])->name('user.associar');
-                    Route::put('/{id}', [UserController::class, 'associarColaborador'])->name('user.updateassociar');
-                    Route::delete('/{id}', [UserController::class, 'desassociarColaborador'])->name('destroy.associacao.user');
-                }
-            );
-            
-*/
-
-
             Route::prefix('/associar/usuario')->group(
                 function () {
                     Route::get('/{id}', [ColaboradorController::class, 'createAssociar'])->name('create_associar');
@@ -79,7 +63,6 @@ Route::prefix('/associar/colaborador')->group(
                 Route::post('/', [PerfilController::class, 'store'])->name('perfil.store');
                 Route::delete('/{id}', [PerfilController::class, 'destroy'])->name('perfil.destroy');
             });
-
             Route::resource('/colaborador', ColaboradorController::class);
             Route::resource('/empresa', EmpresaController::class);
             Route::resource('/permissao', PermissaoController::class);
@@ -89,5 +72,12 @@ Route::prefix('/associar/colaborador')->group(
     );
 });
 
+Route::middleware(['auth', 'verificarToken'])->group(
+    function () {
+        Route::get('/settings', function () {
+            return view('settings..index');
+        })->name('configuracoes');
+    }
+);
 
-Route::get('/cartao/posicao', [CartaoController::class, 'getPosicaoDoTokenNoCartao'])->middleware('auth');
+Route::get('/user/profile', [UserController::class, 'profile'])->name('user.profile');;

@@ -189,6 +189,51 @@ class UserController extends Controller
         return view('settings.user.associar', ['user' => $user, 'colabordores' => $colaboradores]);
     }
 
+    public function profile(Request $request)
+    {
+        #1) Recuperar o id do usuario logado
+        $id = $request->user()->id;
+        $usuario = User::with('colaborador', 'perfil', 'cartao')->findorFail($id);
+
+
+
+        #2) Recuperar os dados na base do usuario logado
+        #3) Recuperar dados das tabelas dependentes : 
+        #3.1) colaborador
+        #3.2) perfil
+        #3.3) modulos 
+        #3.4) permissões 
+        #4) cartao 
+
+        /*
+        dd(
+            [
+                'id usuario ' => $id,
+                'usuario' => $usuario,
+                'colaborador' => $usuario->colaborador,
+                'perfil' => $usuario->perfil,
+                'cartao' => $usuario->cartao,
+            ]
+        );
+        */
+
+
+        //$request->user()
+
+        return view('settings.user.profile', [
+            'id usuario ' => $id,
+            'usuario' => $usuario,
+            'colaborador' => $usuario->colaborador,
+            'perfil' => $usuario->perfil,
+            'cartao' => $usuario->cartao,
+        ]);
+    }
+
+
+
+
+
+
     /**
      * Associar Colaborador
      *
@@ -206,6 +251,7 @@ public function associarColaborador(Request $request, $id)
         return redirect(route('user.show', $id))
             ->with('status', "Colaborador associado com sucesso!");
     }
+    
 */
 
 
