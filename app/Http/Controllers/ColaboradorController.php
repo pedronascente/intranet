@@ -111,6 +111,19 @@ class ColaboradorController extends Controller
         ]);
     }
 
+    public function editProfile($id)
+    {
+        return view('profile.edit', [
+            'colaborador' => Colaborador::findOrFail($id),
+            'empresas' => $this->empresas,
+            'cargos' => $this->cargos,
+            'bases' => $this->bases,
+            'usuarios' => $this->getUsuariosSemColaborador(),
+        ]);
+    }
+
+
+
     /**
      * Responsável por atualizar os dados do colaborador
      *
@@ -146,66 +159,18 @@ class ColaboradorController extends Controller
                 $colaborador->foto = $this->upload($request);
             }
             $colaborador->update();
-            return redirect()
-                ->action('App\Http\Controllers\ColaboradorController@index')
-                ->with('status', "Registro Atualizado!");
+
+            if ($request->editProfile >= 1) {
+                return redirect()
+                    ->action('App\Http\Controllers\UserController@profile')
+                    ->with('status', "Registro Atualizado!");
+            } else {
+                return redirect()
+                    ->action('App\Http\Controllers\ColaboradorController@show', $colaborador->id)
+                    ->with('status', "Registro Atualizado!");
+            }
         }
     }
-
-    /**
-     * Retorna todos os usuarios que não tem colaborador registrado
-     *
-     * @param [type] $id
-     * @return void
-     */
-
-    /**
-         public function createAssociar($id)
-        {
-            return view('settings.colaborador.associar', [
-                'colaborador' => Colaborador::findOrFail($id),
-                'users' => $this->getUsuariosSemColaborador(),
-            ]);
-        }
-     */
-
-
-    /**
-     * Responsável por associar um usuario 
-     *
-     * @param Request $request
-     * @param [Integer] $id
-     * @return void
-     */
-
-    /*
-        public function associarUsuario(Request $request, $id)
-    {
-        $colaborador = Colaborador::with('user')->findOrFail($id);
-        $user = User::findOrFail($request->user_id);
-        $colaborador->user()->associate($user);
-        $colaborador->update();
-        return redirect(route('colaborador.show', $colaborador->id))
-            ->with('status', "Usuário Foi associado com sucesso!");
-    }
-     */
-
-    /**
-     * Responsavel por disassociar um usuário
-     *
-     * @param [type] $id
-     * @return void
-     */
-    /*
-    public function desassociarUsuario($id)
-    {
-        $colaborador = Colaborador::with('user')->findOrFail($id);
-        $user = User::findOrFail($colaborador->user_id);
-        $colaborador->user()->disassociate($user)->save();
-        return redirect(route('colaborador.show', $colaborador->id))
-            ->with('status', "Usuário Foi desassociado com sucesso!");
-    }
-    */
 
     /**
      * Responsável por excluir registro
@@ -258,7 +223,6 @@ class ColaboradorController extends Controller
     private function validarFormulario(Request $request, $colaborador = null)
     {
         if ($colaborador) {
-
             if ($request->email != $colaborador->email) {
                 $validar['email'] = 'required|email|unique:colaboradores,email';
             }
@@ -320,3 +284,59 @@ class ColaboradorController extends Controller
         return $permissoes;
     }
 }
+
+
+/**
+ * Retorna todos os usuarios que não tem colaborador registrado
+ *
+ * @param [type] $id
+ * @return void
+ */
+
+/**
+         public function createAssociar($id)
+        {
+            return view('settings.colaborador.associar', [
+                'colaborador' => Colaborador::findOrFail($id),
+                'users' => $this->getUsuariosSemColaborador(),
+            ]);
+        }
+ */
+
+
+/**
+ * Responsável por associar um usuario 
+ *
+ * @param Request $request
+ * @param [Integer] $id
+ * @return void
+ */
+
+/*
+        public function associarUsuario(Request $request, $id)
+    {
+        $colaborador = Colaborador::with('user')->findOrFail($id);
+        $user = User::findOrFail($request->user_id);
+        $colaborador->user()->associate($user);
+        $colaborador->update();
+        return redirect(route('colaborador.show', $colaborador->id))
+            ->with('status', "Usuário Foi associado com sucesso!");
+    }
+     */
+
+/**
+ * Responsavel por disassociar um usuário
+ *
+ * @param [type] $id
+ * @return void
+ */
+    /*
+    public function desassociarUsuario($id)
+    {
+        $colaborador = Colaborador::with('user')->findOrFail($id);
+        $user = User::findOrFail($colaborador->user_id);
+        $colaborador->user()->disassociate($user)->save();
+        return redirect(route('colaborador.show', $colaborador->id))
+            ->with('status', "Usuário Foi desassociado com sucesso!");
+    }
+    */

@@ -18,7 +18,7 @@
                 @endif
             </div>
             <div class="info">
-                <a href="#" class="d-block">
+                <a href="{{ route('profile') }}" class="d-block">
                     @if (Auth::check())
                         {{ Auth::user()->name }}
                     @endif

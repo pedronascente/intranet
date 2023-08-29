@@ -69,6 +69,7 @@ Route::middleware(['auth', 'verificarToken', 'verificarModulos'])->group(functio
             Route::resource('/permissao', PermissaoController::class);
             Route::resource('/modulo', ModuloController::class);
             Route::resource('/user', UserController::class);
+            Route::resource('/base', BaseController::class);
         }
     );
 });
@@ -81,5 +82,6 @@ Route::middleware(['auth', 'verificarToken'])->group(
     }
 );
 
-Route::get('/user/profile', [UserController::class, 'profile'])->name('user.profile');;
-Route::resource('/settings/base', BaseController::class);
+Route::get('profile', [UserController::class, 'profile'])->name('profile');
+Route::put('profile/security/{id}', [UserController::class, 'resetPassword'])->name('user.security');
+Route::get('profile/{id}/edit', [ColaboradorController::class, 'editProfile'])->name('user.edit.profile');

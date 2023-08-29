@@ -2,13 +2,16 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">{{ $titulo }}</h1>
+                <h1 class="m-0">
+                    {{ $titulo }}</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     @if (Request::segment(1) == 'dashboard')
                         <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-                    @else
+                    @elseif (Request::segment(1) == 'profile')
+                        <li class="breadcrumb-item"><a href="{{ route('profile') }}">Profile</a></li>
+                    @elseif (Request::segment(1) == 'settings')
                         <li class="breadcrumb-item"><a href="{{ route('configuracoes') }}">Configurações</a></li>
                     @endif
                     <li class="breadcrumb-item active">{{ $titulo }}</li>

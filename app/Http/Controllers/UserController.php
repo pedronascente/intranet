@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Cartao;
+//use App\Models\Cartao;
 use App\Models\Perfil;
-use App\Models\Colaborador;
+//use App\Models\Colaborador;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -28,15 +28,14 @@ class UserController extends Controller
     public function create()
     {
         $perfis = Perfil::all();
-        return view('settings.user.register', ['perfis' => $perfis]);
+        return view(
+            'settings.user.register',
+            [
+                'perfis' => $perfis
+            ]
+        );
     }
 
-    /**
-     * Responsavel por salvar os dados na base
-     *
-     * @param Request $request
-     * @return void
-     */
     public function store(Request $request)
     {
         $this->validarFormulario($request, 'store');
@@ -55,26 +54,20 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        $user = User::findOrFail($id);
-        $perfis = Perfil::orderBy('id', 'desc')->get();
-        return view('settings.user.edit', [
-            'user' => $user,
-            'perfis' => $perfis
-        ]);
+        return view(
+            'settings.user.edit',
+            [
+                'user' => User::findOrFail($id),
+                'perfis' => Perfil::orderBy('id', 'desc')->get()
+            ]
+        );
     }
 
-    /**
-     * Responsável por Atualizar usuário
-     *
-     * @param Request $request
-     * @param [integer] $id
-     * @return void
-     */
     public function update(Request $request, $id)
     {
+        $this->validarFormulario($request, 'update');
         $usuario = User::with('perfil')->findOrFail($id);
         $perfil = Perfil::findOrFail($request->perfil);
-        $this->validarFormulario($request, 'update');
         $usuario->status = $request->status;
         $usuario->name = $request->name;
         if (empty(!$request->password)) {
@@ -86,12 +79,6 @@ class UserController extends Controller
             ->with('status', "Atualizado com sucesso!");
     }
 
-    /**
-     * Responsável por mostrar detalhes do usuário
-     *
-     * @param [Integer] $id
-     * @return void
-     */
     public function show($id)
     {
         $usuario =  User::with('perfil', 'colaborador', 'cartao')->findOrFail($id);
@@ -104,12 +91,20 @@ class UserController extends Controller
         );
     }
 
-    /**
-     * Responsável por Excluir usuário
-     *0
-     * @param [Integer] $id
-     * @return void
-     */
+    public function profile(Request $request)
+    {
+        $id = $request->user()->id;
+        $usuario = User::with('colaborador', 'perfil', 'cartao')->findorFail($id);
+        return view('profile.index', [
+            'id usuario' => $id,
+            'usuario' => $usuario,
+            'colaborador' => $usuario->colaborador,
+            'perfil' => $usuario->perfil,
+            'cartao' => $usuario->cartao,
+            'status' => $usuario->getStatus($id),
+        ]);
+    }
+
     public function destroy(Request $request, $id)
     {
         $usuario = User::with('colaborador', 'cartao')->findOrFail($request->id);
@@ -122,6 +117,22 @@ class UserController extends Controller
         return redirect()
             ->action('App\Http\Controllers\UserController@index')
             ->with('status', "Registro excluido com sucesso!");
+    }
+
+    public function resetPassword(Request $request, $id)
+    {
+        $this->validarFormulario($request, 'resetPassword');
+        $usuario = User::findOrFail($id);
+        if (empty(!$request->password)) {
+            $usuario->password = Hash::make($request->password);
+        }
+
+        $usuario->update();
+
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
     }
 
     /**
@@ -140,16 +151,7 @@ class UserController extends Controller
                     'perfil' => ['required'],
                     'name' => ['required', 'string', 'max:255'],
                     'password_confirmation' => ['required'],
-                    'password' => [
-                        'required',
-                        'confirmed',
-                        'string',
-                        'min:6',              // deve ter pelo menos 6 caracteres
-                        'regex:/[a-z]/',      // deve conter pelo menos uma letra minúscula
-                        'regex:/[A-Z]/',      // deve conter pelo menos uma letra maiúscula
-                        'regex:/[0-9]/',      // deve conter pelo menos um dígito
-                        'regex:/[@$!%*#?&]/', // deve conter um caractere especial
-                    ],
+                    'password' => $this->getRegraPassword(),
                 ]);
                 break;
             case 'update':
@@ -161,85 +163,88 @@ class UserController extends Controller
                 if (!is_null($request->password) || !is_null($request->password_confirmation)) {
                     $regras = array_merge($regras, [
                         'password_confirmation' => ['required'],
-                        'password' => [
-                            'required',
-                            'confirmed',
-                            'string',
-                            'min:6',              // deve ter pelo menos 6 caracteres
-                            'regex:/[a-z]/',      // deve conter pelo menos uma letra minúscula
-                            'regex:/[A-Z]/',      // deve conter pelo menos uma letra maiúscula
-                            'regex:/[0-9]/',      // deve conter pelo menos um dígito
-                            'regex:/[@$!%*#?&]/', // deve conter um caractere especial
-                        ],
+                        'password' => $this->getRegraPassword(),
                     ]);
                 }
                 $request->validate($regras);
                 break;
+            case 'resetPassword':
+                $request->validate([
+                    'password_confirmation' => ['required'],
+                    'password' => $this->getRegraPassword(),
+                ]);
+                break;
         }
     }
 
-    /**
-     * Responsavel por mostar formulario de associação
-     *
-     * @param [Integer] $id
-     * @return void
-     */
+    private function getPermissoes()
+    {
+        $arrayPermissoes  = isset(session()->get('perfil')['permissoes'][7]) ? session()->get('perfil')['permissoes'][7]->toArray() : null;
+        if (!empty($arrayPermissoes)) {
+            $permissoes = $arrayPermissoes;
+        } else {
+            $permissoes = null;
+        }
+        return $permissoes;
+    }
+
+    private function getRegraPassword()
+    {
+        return [
+            'required',
+            'confirmed',
+            'string',
+            'min:6',              // deve ter pelo menos 6 caracteres
+            'regex:/[a-z]/',      // deve conter pelo menos uma letra minúscula
+            'regex:/[A-Z]/',      // deve conter pelo menos uma letra maiúscula
+            'regex:/[0-9]/',      // deve conter pelo menos um dígito
+            'regex:/[@$!%*#?&]/', // deve conter um caractere especial
+        ];
+    }
+}
+
+/**
+ * Responsavel por mostar formulario de associação
+ *
+ * @param [Integer] $id
+ * @return void
+ */
+
+/*
     public function createAssociar($id)
     {
         $user = User::findOrFail($id);
         $colaboradores = Colaborador::where('user_id', null)->get();
         return view('settings.user.associar', ['user' => $user, 'colabordores' => $colaboradores]);
     }
+*/
 
-    public function profile(Request $request)
+/**
+ * Disassociar Colaborador
+ *
+ * @param [Integer] $id
+ * @return void
+ */
+
+/*
+    public function desassociarColaborador($id)
     {
-        #1) Recuperar o id do usuario logado
-        $id = $request->user()->id;
-        $usuario = User::with('colaborador', 'perfil', 'cartao')->findorFail($id);
-        #2) Recuperar os dados na base do usuario logado
-        #3) Recuperar dados das tabelas dependentes : 
-        #3.1) colaborador
-        #3.2) perfil
-        #3.3) modulos 
-        #3.4) permissões 
-        #4) cartao 
-
-        /*
-            dd(
-                [
-                    'id usuario ' => $id,
-                    'usuario' => $usuario,
-                    'colaborador' => $usuario->colaborador,
-                    'perfil' => $usuario->perfil,
-                    'cartao' => $usuario->cartao,
-                ]
-            );
-        */
-
-        //$request->user()
-
-        return view('settings.user.profile', [
-            'id usuario' => $id,
-            'usuario' => $usuario,
-            'colaborador' => $usuario->colaborador,
-            'perfil' => $usuario->perfil,
-            'cartao' => $usuario->cartao,
-            'status' => $usuario->getStatus($id),
-        ]);
+        $colaborador = Colaborador::with('user')->findOrFail($id);
+        $user = User::findOrFail($colaborador->user_id);
+        $colaborador->user()->disassociate($user)->save();
+        return redirect(route('user.show', $user->id))
+            ->with('status', "Usuário Foi desassociado com sucesso!");
     }
+*/
 
 
-
-
-
-
-    /**
-     * Associar Colaborador
-     *
-     * @param Request $request
-     * @param [Integer] $id
-     * @return void
-     */
+/**
+ * Associar Colaborador
+ *
+ * @param Request $request
+ * @param [Integer] $id
+ * @return void
+ */
 
     /*
 public function associarColaborador(Request $request, $id)
@@ -252,34 +257,3 @@ public function associarColaborador(Request $request, $id)
     }
     
 */
-
-
-    /**
-     * Disassociar Colaborador
-     *
-     * @param [Integer] $id
-     * @return void
-     */
-
-    /*
-    public function desassociarColaborador($id)
-    {
-        $colaborador = Colaborador::with('user')->findOrFail($id);
-        $user = User::findOrFail($colaborador->user_id);
-        $colaborador->user()->disassociate($user)->save();
-        return redirect(route('user.show', $user->id))
-            ->with('status', "Usuário Foi desassociado com sucesso!");
-    }
-*/
-
-    private function getPermissoes()
-    {
-        $arrayPermissoes  = isset(session()->get('perfil')['permissoes'][7]) ? session()->get('perfil')['permissoes'][7]->toArray() : null;
-        if (!empty($arrayPermissoes)) {
-            $permissoes = $arrayPermissoes;
-        } else {
-            $permissoes = null;
-        }
-        return $permissoes;
-    }
-}

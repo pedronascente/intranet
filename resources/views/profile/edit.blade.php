@@ -2,7 +2,7 @@
 @section('content')
     <div class="card">
         <form action="{{ route('colaborador.update', $colaborador->id) }}" method="POST" enctype="multipart/form-data"
-            name="Formulario-Colaborador-update">
+            name="Formulario-update">
             @csrf
             @method('PUT')
             <div class="card-body">
@@ -151,6 +151,7 @@
                 </div>
             </div>
             <div class="card-footer">
+                <input type="hidden" name="editProfile" value="1">
                 <button type="submit" class="btn bg-gradient-primary">
                     <i class="fas fa-save" aria-hidden="true"></i>
                     Editar

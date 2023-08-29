@@ -6,6 +6,8 @@ use Illuminate\View\Component;
 
 class Titulo extends Component
 {
+    public $segmentUm;
+    public $segmentDois;
     public $titulo;
 
     /**
@@ -13,14 +15,36 @@ class Titulo extends Component
      *
      * @return void
      */
-    public function __construct($titulo)
+    public function __construct($segmentUm, $segmentDois)
     {
-        $this->getTitulo($titulo);
+        $this->segmentUm = $segmentUm;
+        $this->segmentDois = $segmentDois;
+        $this->definirSegmentacao();
+    }
+
+    public function definirSegmentacao()
+    {
+        if ($this->segmentUm  == 'settings') {
+            if ($this->segmentDois !== null) {
+                $this->titulo = $this->segmentDois;
+            } else {
+                $this->titulo = $this->segmentUm;
+            }
+        } elseif ($this->segmentUm  == 'profile') {
+            $this->titulo = $this->segmentUm;
+        } elseif ($this->segmentUm  == 'dashboard') {
+            $this->titulo = $this->segmentUm;
+        }
+
+        $this->getTitulo($this->titulo);
     }
 
     public function getTitulo($titulo)
     {
         switch ($titulo) {
+            case 'dashboard':
+                $this->titulo = "Dashboard";
+                break;
             case 'cargo':
                 $this->titulo = "Cargo";
                 break;
@@ -47,6 +71,12 @@ class Titulo extends Component
                 break;
             case 'base':
                 $this->titulo = "Base";
+                break;
+            case 'profile':
+                $this->titulo = "Meus dados";
+                break;
+            case 'settings':
+                $this->titulo = "Configurações";
                 break;
         }
     }
