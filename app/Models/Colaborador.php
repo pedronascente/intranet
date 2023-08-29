@@ -17,13 +17,14 @@ class Colaborador extends Model
         'empresa_id',
         'cargo_id',
         'user_id',
+        'base_id',
         'email',
         'rg',
         'cpf',
         'cnpj',
         'foto',
+        'ramal',
     ];
-
 
     public function empresa()
     {
@@ -34,8 +35,14 @@ class Colaborador extends Model
     {
         return $this->BelongsTo(Cargo::class);
     }
+
     public function user()
     {
         return $this->BelongsTo(User::class);
+    }
+
+    public function base()
+    {
+        return $this->BelongsTo(Base::class);
     }
 }

@@ -1,21 +1,25 @@
 @extends('layouts.app')
 @section('content')
     <div class="card card-default">
-        <form action="{{ route('colaborador.store') }}" method="POST" enctype="multipart/form-data"
-            name="Formulario-Colaborador-create">
+        <form action="{{ route('colaborador.store') }}" method="POST" enctype="multipart/form-data" name="Formulario-create">
             @csrf
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label>ID do Usuário:</label>
-                            <input type="text" name="user_id" maxlength="190"
+                            <input type="text" name="user_id" maxlength="4"
                                 class="form-control @error('user_id') is-invalid  @enderror" placeholder="ID"
                                 value="{{ old('user_id') }}">
-
                             @error('user_id')
                                 <span class=" invalid-feedback">{{ $message }}</span>
                             @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Ramal:</label>
+                            <input type="text" name="ramal" maxlength="4" class="form-control " placeholder="Ramal">
                         </div>
                     </div>
                 </div>
@@ -94,15 +98,15 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label>Cargo:</label>
-                            <select name="cargo_id" class="custom-select @error('cargo_id') is-invalid @enderror">
+                            <label>Base:</label>
+                            <select name="base_id" class="custom-select @error('base_id') is-invalid @enderror">
                                 <option value="">...</option>
-                                @foreach ($cargos as $item)
-                                    <option value="{{ $item->id }}" @if (old('cargo_id') == $item->id) selected @endif>
+                                @foreach ($bases as $item)
+                                    <option value="{{ $item->id }}" @if (old('base_id') == $item->id) selected @endif>
                                         {{ $item->nome }}</option>
                                 @endforeach
                             </select>
-                            @error('cargo_id')
+                            @error('base_id')
                                 <span class=" invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
@@ -113,11 +117,28 @@
                             <select name="empresa_id" class="custom-select @error('empresa_id') is-invalid @enderror">
                                 <option value="">...</option>
                                 @foreach ($empresas as $item)
-                                    <option value="{{ $item->id }}" @if (old('empresa_id') == $item->id) selected @endif>
+                                    <option value="{{ $item->id }}"
+                                        @if (old('empresa_id') == $item->id) selected @endif>
                                         {{ $item->nome }}</option>
                                 @endforeach
                             </select>
                             @error('empresa_id')
+                                <span class=" invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Cargo:</label>
+                            <select name="cargo_id" class="custom-select @error('cargo_id') is-invalid @enderror">
+                                <option value="">...</option>
+                                @foreach ($cargos as $item)
+                                    <option value="{{ $item->id }}"
+                                        @if (old('cargo_id') == $item->id) selected @endif>
+                                        {{ $item->nome }}</option>
+                                @endforeach
+                            </select>
+                            @error('cargo_id')
                                 <span class=" invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>

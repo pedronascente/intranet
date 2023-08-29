@@ -18,5 +18,6 @@ class ModuloSeeder extends Seeder
         DB::table('modulos')->insert(['nome' => 'Perfil',       'rota' => '/settings/perfil',      'descricao' => "Responsável por Gerenciar Perfil de usuário."]);
         DB::table('modulos')->insert(['nome' => 'Usuário',      'rota' => '/settings/user',        'descricao' => "Responsável por Gerenciar Usuario."]);
         DB::table('modulos')->insert(['nome' => 'Cartão Token', 'rota' => '/settings/cartao',      'descricao' => "Responsável por Criar cartão de acesso."]);
+        DB::table('modulos')->insert(['nome' => 'Base',         'rota' => '/settings/base',        'descricao' => "Responsável por Criar as Bases."]);
     }
 }

@@ -35,15 +35,9 @@ class CargoController extends Controller
     public function store(Request $request)
     {
         $this->validarFormulario($request);
-        if ($this->validar_duplicidade($request)) {
-            return redirect()
-                ->action('App\Http\Controllers\CargoController@index')
-                ->with('warning', "já existe um cargo com este nome!");
-        }
         $cargo = new Cargo();
         $cargo->nome = $request->nome;
         $cargo->save();
-
         return redirect()
             ->action('App\Http\Controllers\CargoController@index')
             ->with('status', "Registrado com sucesso!");
@@ -81,17 +75,14 @@ class CargoController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        $c = Cargo::findOrFail($request->id);
-
-        if ($c) {
-            $colaboradores =  $c->colaboradores->count();
-            if ($colaboradores >= 1) {
+        $cargo = Cargo::with('colaboradores')->findOrFail($request->id);
+        if ($cargo) {
+            if ($cargo->colaboradores->count() >= 1) {
                 return redirect()
                     ->action('App\Http\Controllers\CargoController@index')
                     ->with('warning', "Este cargo tem colaborador associado, por tanto não pode ser excluida.");
             }
-
-            $c->delete();
+            $cargo->delete();
             return redirect()
                 ->action('App\Http\Controllers\CargoController@index')
                 ->with('status', "Registro Excluido!");
@@ -106,20 +97,13 @@ class CargoController extends Controller
     {
         $request->validate(
             [
-                'nome' => 'required|max:190',
+                'nome' => 'required|max:190|min:2|unique:cargos,nome',
             ],
             [
                 'nome.required' => 'Campo obrigatório.',
+                'nome.unique' => 'Este nome já está sendo utilizado.',
             ]
         );
-    }
-
-    private function validar_duplicidade(Request $request)
-    {
-        $duplicado = Cargo::where('nome', $request->nome)
-            ->get()->count();
-
-        return $duplicado;
     }
 
     private function getPermissoes()

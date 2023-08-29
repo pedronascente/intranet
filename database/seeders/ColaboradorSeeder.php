@@ -11,6 +11,7 @@ class ColaboradorSeeder extends Seeder
     public function run()
     {
         DB::table('colaboradores')->insert([
+            'base_id' => 1,
             'empresa_id' => 1,
             'cargo_id' => 1,
             'user_id' => 1,
@@ -21,6 +22,7 @@ class ColaboradorSeeder extends Seeder
             'cpf' => '348.211.190/13',
             'cnpj' => '15626983000143',
             'foto' => 'dummy-round.png',
+            'ramal' => '521',
         ]);
     }
 }

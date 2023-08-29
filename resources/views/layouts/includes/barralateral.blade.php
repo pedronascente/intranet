@@ -34,6 +34,7 @@
                         @if (Request::segment(2) == 'modulo' ||
                                 Request::segment(2) == 'permissao' ||
                                 Request::segment(2) == 'perfil' ||
+                                Request::segment(2) == 'base' ||
                                 Request::segment(2) == 'empresa' ||
                                 Request::segment(2) == 'cargo' ||
                                 Request::segment(2) == 'colaborador' ||

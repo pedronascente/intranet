@@ -6,6 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateColaboradoresTable extends Migration
 {
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::create('colaboradores', function (Blueprint $table) {
@@ -17,7 +22,10 @@ class CreateColaboradoresTable extends Migration
             $table->char('cpf', 20)->nullable()->unique();
             $table->char('cnpj', 20)->nullable()->unique();
             $table->text('foto')->nullable();
+            $table->char('ramal', 4);
             $table->timestamps();
+            $table->integer('base_id')->unsigned();
+            $table->foreign('base_id')->references('id')->on('bases');
             $table->integer('empresa_id')->unsigned();
             $table->foreign('empresa_id')->references('id')->on('empresas');
             $table->integer('cargo_id')->unsigned();
@@ -28,6 +36,11 @@ class CreateColaboradoresTable extends Migration
         });
     }
 
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::dropIfExists('colaboradores');

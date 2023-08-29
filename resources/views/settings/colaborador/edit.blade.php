@@ -1,23 +1,29 @@
 @extends('layouts.app')
 @section('content')
-    <div class="card ">
-
+    <div class="card">
         <form action="{{ route('colaborador.update', $colaborador->id) }}" method="POST" enctype="multipart/form-data"
             name="Formulario-Colaborador-update">
             @csrf
             @method('PUT')
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>ID do Usuário:</label>
-                            <input type="text" name="user_id" maxlength="190"
-                                class="form-control @error('user_id') is-invalid  @enderror" placeholder="ID"
-                                value=" {{ $colaborador->user_id }}">
+                    <!--div class="col-md-3">
+                                <div class="form-group">
+                                    <label>ID do Usuário:</label>
+                                    <input type="text" name="user_id" maxlength="4"
+                                        class="form-control @error('user_id') is-invalid  @enderror" placeholder="ID"
+                                        value="{{ $colaborador->user_id }}">
 
-                            @error('user_id')
-                                <span class=" invalid-feedback">{{ $message }}</span>
-                            @enderror
+                                    @error('user_id')
+        <span class=" invalid-feedback">{{ $message }}</span>
+    @enderror
+                                </div>
+                            </div-->
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Ramal:</label>
+                            <input type="text" name="ramal" maxlength="4" class="form-control " placeholder="Ramal"
+                                value="{{ $colaborador->ramal }}">
                         </div>
                     </div>
                 </div>
@@ -95,11 +101,27 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
+                            <label>Base:</label>
+                            <select name="base_id" class="custom-select @error('base_id') is-invalid @enderror">
+                                <option value="">...</option>
+                                @foreach ($bases as $item)
+                                    <option value="{{ $item->id }}" @if ($colaborador->base->id == $item->id) selected @endif>
+                                        {{ $item->nome }}</option>
+                                @endforeach
+                            </select>
+                            @error('base_id')
+                                <span class=" invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
                             <label>Cargo:</label>
                             <select name="cargo_id" class="custom-select @error('cargo_id') is-invalid @enderror">
                                 <option value="">...</option>
                                 @foreach ($cargos as $item)
-                                    <option value="{{ $item->id }}" @if ($colaborador->cargo->id == $item->id) selected @endif>
+                                    <option value="{{ $item->id }}"
+                                        @if ($colaborador->cargo->id == $item->id) selected @endif>
                                         {{ $item->nome }}</option>
                                 @endforeach
                             </select>
@@ -114,7 +136,8 @@
                             <select name="empresa_id" class="custom-select @error('empresa_id') is-invalid @enderror">
                                 <option value="">...</option>
                                 @foreach ($empresas as $item)
-                                    <option value="{{ $item->id }}" @if ($colaborador->empresa->id == $item->id) selected @endif>
+                                    <option value="{{ $item->id }}"
+                                        @if ($colaborador->empresa->id == $item->id) selected @endif>
                                         {{ $item->nome }}</option>
                                 @endforeach
                             </select>

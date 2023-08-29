@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -46,5 +47,19 @@ class User extends Authenticatable
     public function cartao()
     {
         return $this->hasOne(Cartao::class,  'user_id', 'id');
+    }
+
+    public function getStatus($id)
+    {
+        $status =  DB::table('users')
+            ->select('status')->where('id', $id)
+            ->first();
+
+        if ($status->status == 'on') {
+            $retornar = 'Ativo';
+        } else {
+            $retornar = 'Inativo';
+        }
+        return $retornar;
     }
 }

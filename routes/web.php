@@ -12,6 +12,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ModuloController;
 use App\Http\Controllers\TokenController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BaseController;
 
 Route::prefix('/login')->group(function () {
     Route::get('/', [LoginController::class, 'showForm'])->name('login.form');
@@ -49,8 +50,8 @@ Route::middleware(['auth', 'verificarToken', 'verificarModulos'])->group(functio
             Route::prefix('/associar/usuario')->group(
                 function () {
                     Route::get('/{id}', [ColaboradorController::class, 'createAssociar'])->name('create_associar');
-                    Route::put('/{id}', [ColaboradorController::class, 'associarUsuario'])->name('update_associar');
-                    Route::delete('/{id}', [ColaboradorController::class, 'desassociarUsuario'])->name('destroy.associacao.colaborador');
+                    // Route::put('/{id}', [ColaboradorController::class, 'associarUsuario'])->name('update_associar');
+                    //Route::delete('/{id}', [ColaboradorController::class, 'desassociarUsuario'])->name('destroy.associacao.colaborador');
                 }
             );
             Route::prefix('/perfil')->group(function () {
@@ -81,3 +82,4 @@ Route::middleware(['auth', 'verificarToken'])->group(
 );
 
 Route::get('/user/profile', [UserController::class, 'profile'])->name('user.profile');;
+Route::resource('/settings/base', BaseController::class);

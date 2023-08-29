@@ -94,10 +94,12 @@ class UserController extends Controller
      */
     public function show($id)
     {
+        $usuario =  User::with('perfil', 'colaborador', 'cartao')->findOrFail($id);
         return view(
             'settings.user.show',
             [
-                'user' => User::with('perfil', 'colaborador', 'cartao')->findOrFail($id)
+                'user' => $usuario,
+                'status' => $usuario->getStatus($id),
             ]
         );
     }
@@ -194,9 +196,6 @@ class UserController extends Controller
         #1) Recuperar o id do usuario logado
         $id = $request->user()->id;
         $usuario = User::with('colaborador', 'perfil', 'cartao')->findorFail($id);
-
-
-
         #2) Recuperar os dados na base do usuario logado
         #3) Recuperar dados das tabelas dependentes : 
         #3.1) colaborador
@@ -206,26 +205,26 @@ class UserController extends Controller
         #4) cartao 
 
         /*
-        dd(
-            [
-                'id usuario ' => $id,
-                'usuario' => $usuario,
-                'colaborador' => $usuario->colaborador,
-                'perfil' => $usuario->perfil,
-                'cartao' => $usuario->cartao,
-            ]
-        );
+            dd(
+                [
+                    'id usuario ' => $id,
+                    'usuario' => $usuario,
+                    'colaborador' => $usuario->colaborador,
+                    'perfil' => $usuario->perfil,
+                    'cartao' => $usuario->cartao,
+                ]
+            );
         */
-
 
         //$request->user()
 
         return view('settings.user.profile', [
-            'id usuario ' => $id,
+            'id usuario' => $id,
             'usuario' => $usuario,
             'colaborador' => $usuario->colaborador,
             'perfil' => $usuario->perfil,
             'cartao' => $usuario->cartao,
+            'status' => $usuario->getStatus($id),
         ]);
     }
 

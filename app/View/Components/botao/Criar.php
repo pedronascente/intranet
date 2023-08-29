@@ -47,6 +47,9 @@ class Criar extends Component
             case 'cartao':
                 $this->rota = route('cartao.create');
                 break;
+            case 'base':
+                $this->rota = route('base.create');
+                break;
         }
     }
 

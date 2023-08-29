@@ -45,6 +45,9 @@ class Titulo extends Component
             case 'cartao':
                 $this->titulo = "Cartão";
                 break;
+            case 'base':
+                $this->titulo = "Base";
+                break;
         }
     }
 

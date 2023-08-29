@@ -1,59 +1,42 @@
 @extends('layouts.app')
 @section('content')
-    <div class="card">
-        <div class="card-header">
-            @if ($user->colaborador)
-                <img src="{{ asset('img/colaborador/' . $user->colaborador->foto . '') }}"
-                    alt="{{ $user->colaborador->nome }}" width="90" class="rounded-circle">
-            @else
-                <img src="{{ asset('img/colaborador/dummy-round.png') }}" alt="dummy-round.png" width="100"
-                    class="rounded-circle">
-            @endif
-        </div>
-        <div class="card-body p-0">
-            <table class="table table-md">
-                <tbody>
-                    <tr>
-                        <td> <b>Usuário</b><br> {{ $user->name }}</td>
-                    </tr>
-                    <tr>
-                        <td><b>Perfil</b><br>
-                            {{ $user->perfil->nome }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><b>Status </b><br>
-                            @if ($user->status == 'on')
-                                Ativo
-                            @else
-                                Inativo
-                            @endif
-                        </td>
-                    </tr>
+    <div class="card card-primary card-outline">
+        <div class="card-body box-profile">
+            <div class="text-center">
 
+                @if ($user->colaborador)
+                    <img src="{{ asset('img/colaborador/' . $user->colaborador->foto . '') }}"
+                        alt="{{ $user->colaborador->nome }}" width="100" class="rounded-circle">
+                @else
+                    <img src="{{ asset('img/colaborador/dummy-round.png') }}" alt="dummy-round.png" width="100"
+                        class="rounded-circle">
+                @endif
+            </div>
+            <h3 class="profile-username text-center">{{ $user->name }}</h3>
+            <ul class="list-group list-group-unbordered mb-3">
+                <li class="list-group-item">
+                    <b>Perfil</b> <a class="float-right"> {{ $user->perfil->nome }}</a>
+                </li>
+                <li class="list-group-item">
+                    <b>Status</b> <a class="float-right"> {{ $status }}</a>
+                </li>
+                <li class="list-group-item">
+                    <b>Cartão</b>
                     @if ($user->cartao)
-                        <tr>
-                            <td>
-                                <b>Cartão</b><br>
-                                <a href="{{ route('cartao.show', $user->cartao->id) }}" title="visualizar cartão"
-                                    class="btn btn-warning">
-                                    <i class="fas  fa-eye"></i> {{ $user->cartao->nome }}
-                                </a>
-                            </td>
-                        </tr>
+                        <a class="float-right btn btn-warning" href="{{ route('cartao.show', $user->cartao->id) }}"
+                            title="visualizar" class="btn btn-warning">
+                            <i class="fas  fa-eye"></i> {{ $user->cartao->nome }}
+                        </a>
                     @else
-                        <tr>
-                            <td colspan="2">
-                                <a href="{{ route('cartao.registar', $user->id) }}" class="btn btn-info"
-                                    title="Criar Cartão">
-                                    Registrar Cartão Token
-                                </a>
-                            </td>
-                        </tr>
+                        <a class="float-right btn btn-success" href="{{ route('cartao.registar', $user->id) }}"
+                            class="btn btn-info" title="Criar Cartão">
+                            Registrar Cartão Token
+                        </a>
                     @endif
-                </tbody>
-            </table>
+                </li>
+            </ul>
         </div>
+
         <div class="card-footer">
             <a href="{{ route('user.edit', $user->id) }}" title="Editar" class="btn btn-primary">
                 <i class="fas fa-edit"></i>

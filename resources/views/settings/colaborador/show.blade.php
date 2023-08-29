@@ -1,17 +1,19 @@
 @extends('layouts.app')
 @section('content')
-    <div class="card">
-        <div class="card-header">
-            <img src="{{ asset('img/colaborador/' . $colaborador->foto . '') }}" alt="{{ $colaborador->nome }}" width="100"
-                class="rounded-circle">
-        </div>
-        <div class="card-body p-0">
+    <!-- Profile Image -->
+    <div class="card card-primary card-outline">
+        <div class="card-body box-profile">
+            <div class="text-center">
+                <img src="{{ asset('img/colaborador/' . $colaborador->foto . '') }}" alt="{{ $colaborador->nome }}"
+                    width="100" class="rounded-circle">
+            </div>
+            <h3 class="profile-username text-center">{{ $colaborador->nome . ' ' . $colaborador->sobrenome }}</h3>
+            <p class="text-muted text-center">{{ $colaborador->cargo->nome }}</p>
             <table class="table table-md">
+
                 <tr>
-                    <td colspan="3"><b>Nome</b><br> {{ $colaborador->nome . ' ' . $colaborador->sobrenome }}</td>
-                </tr>
-                <tr>
-                    <td colspan="3"><b>Email</b><br> {{ $colaborador->email }}</td>
+                    <td colspan="1"><b>Ramal</b><br> {{ $colaborador->ramal }}</td>
+                    <td colspan="2"><b>Email</b><br> {{ $colaborador->email }}</td>
                 </tr>
                 <tr>
                     <td><b>Rg</b> <br>{{ $colaborador->rg }}</td>
@@ -19,8 +21,9 @@
                     <td><b>Cnpj </b> <br>{{ $colaborador->cnpj }}</td>
                 </tr>
                 <tr>
+                    <td><b>Base</b><br>{{ $colaborador->base->nome }}</td>
                     <td><b>Empresa</b><br>{{ $colaborador->empresa->nome }}</td>
-                    <td colspan="2"><b>Cargo </b><br> {{ $colaborador->cargo->nome }}</td>
+                    <td><b>Cargo </b><br> {{ $colaborador->cargo->nome }}</td>
                 </tr>
                 @if ($colaborador->user)
                     <tr>

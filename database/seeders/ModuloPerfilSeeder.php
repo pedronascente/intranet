@@ -22,5 +22,6 @@ class ModuloPerfilSeeder extends Seeder
         DB::table('modulo_perfil')->insert(['perfil_id' => 1, 'modulo_id' => 6]);
         DB::table('modulo_perfil')->insert(['perfil_id' => 1, 'modulo_id' => 7]);
         DB::table('modulo_perfil')->insert(['perfil_id' => 1, 'modulo_id' => 8]);
+        DB::table('modulo_perfil')->insert(['perfil_id' => 1, 'modulo_id' => 9]);
     }
 }
