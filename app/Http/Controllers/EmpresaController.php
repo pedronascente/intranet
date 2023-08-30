@@ -20,7 +20,12 @@ class EmpresaController extends Controller
 
     public function create()
     {
-        return view('settings.empresa.create');
+        if ($this->verificarPermissao('Criar')) {
+            return view('settings.empresa.create');
+        } else {
+            return redirect()
+                ->action('App\Http\Controllers\EmpresaController@index');
+        }
     }
 
     public function store(Request $request)
@@ -48,13 +53,16 @@ class EmpresaController extends Controller
 
     public function edit($id)
     {
-        $empresa = Empresa::findOrFail($id);
-        if ($empresa) {
-            return view('settings.empresa.edit', ['empresa' => $empresa]);
+        if ($this->verificarPermissao('Editar')) {
+            return view(
+                'settings.empresa.edit',
+                [
+                    'empresa' => Empresa::findOrFail($id)
+                ]
+            );
         } else {
             return redirect()
-                ->action('App\Http\Controllers\EmpresaController@index')
-                ->with('error', "Registro não existe!");
+                ->action('App\Http\Controllers\EmpresaController@index');
         }
     }
 
@@ -117,5 +125,25 @@ class EmpresaController extends Controller
             $permissoes = null;
         }
         return $permissoes;
+    }
+
+    private function verificarPermissao($permissao)
+    {
+        $modulo = 3;
+        $ArrayLystPermissoes = [];
+        if (session()->get('perfil')) {
+            foreach (session()->get('perfil')['permissoes'] as $item) {
+                foreach ($item as  $value) {
+                    if ($value->modulo_id == $modulo) {
+                        $ArrayLystPermissoes[] = $value->nome;
+                    };
+                }
+            }
+        }
+        if (in_array($permissao, $ArrayLystPermissoes)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -21,7 +21,12 @@ class ModuloController extends Controller
 
     public function create()
     {
-        return view('settings.modulo.create');
+        if ($this->verificarPermissao('Criar')) {
+            return view('settings.modulo.create');
+        } else {
+            return redirect()
+                ->action('App\Http\Controllers\ModuloController@index');
+        }
     }
 
     public function store(Request $request)
@@ -45,13 +50,16 @@ class ModuloController extends Controller
 
     public function edit($id)
     {
-        $modelo = Modulo::findOrFail($id);
-        if ($modelo) {
-            return view('settings.modulo.edit', ['modulo' => $modelo]);
+        if ($this->verificarPermissao('Editar')) {
+            return view(
+                'settings.modulo.edit',
+                [
+                    'modulo' => Modulo::findOrFail($id)
+                ]
+            );
         } else {
             return redirect()
-                ->action('App\Http\Controllers\ModuloController@index')
-                ->with('error', 'Registro não existe!');
+                ->action('App\Http\Controllers\ModuloController@index');
         }
     }
 
@@ -109,5 +117,25 @@ class ModuloController extends Controller
             $permissoes = null;
         }
         return $permissoes;
+    }
+
+    private function verificarPermissao($permissao)
+    {
+        $modulo = 4;
+        $ArrayLystPermissoes = [];
+        if (session()->get('perfil')) {
+            foreach (session()->get('perfil')['permissoes'] as $item) {
+                foreach ($item as  $value) {
+                    if ($value->modulo_id == $modulo) {
+                        $ArrayLystPermissoes[] = $value->nome;
+                    };
+                }
+            }
+        }
+        if (in_array($permissao, $ArrayLystPermissoes)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

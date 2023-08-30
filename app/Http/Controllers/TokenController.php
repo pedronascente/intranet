@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cartao;
+//use App\Models\Cartao;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Help\FormatarDataController;
@@ -43,10 +43,6 @@ class TokenController extends Controller
                 ->with('error', "Digite um token válido!");
         }
     }
-
-
-
-
 
     /*
     private function criarSessaoTokenValido($request, $id)

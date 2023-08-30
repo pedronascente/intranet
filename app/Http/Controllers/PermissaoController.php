@@ -20,7 +20,12 @@ class PermissaoController extends Controller
 
     public function create()
     {
-        return view('settings.permissao.create');
+        if ($this->verificarPermissao('Criar')) {
+            return view('settings.permissao.create');
+        } else {
+            return redirect()
+                ->action('App\Http\Controllers\PermissaoController@index');
+        }
     }
 
     public function store(Request $request)
@@ -42,13 +47,16 @@ class PermissaoController extends Controller
 
     public function edit($id)
     {
-        $permissao = Permissao::findOrFail($id);
-        if ($permissao) {
-            return view('settings.permissao.edit', ['permissao' => $permissao]);
+        if ($this->verificarPermissao('Editar')) {
+            return view(
+                'settings.permissao.edit',
+                [
+                    'permissao' => Permissao::findOrFail($id)
+                ]
+            );
         } else {
             return redirect()
-                ->action('App\Http\Controllers\PermissaoController@index')
-                ->with('error', "RRegistro não existe!");
+                ->action('App\Http\Controllers\PermissaoController@index');
         }
     }
 
@@ -106,5 +114,25 @@ class PermissaoController extends Controller
             $permissoes = null;
         }
         return $permissoes;
+    }
+
+    private function verificarPermissao($permissao)
+    {
+        $modulo = 5;
+        $ArrayLystPermissoes = [];
+        if (session()->get('perfil')) {
+            foreach (session()->get('perfil')['permissoes'] as $item) {
+                foreach ($item as  $value) {
+                    if ($value->modulo_id == $modulo) {
+                        $ArrayLystPermissoes[] = $value->nome;
+                    };
+                }
+            }
+        }
+        if (in_array($permissao, $ArrayLystPermissoes)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

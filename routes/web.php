@@ -27,14 +27,15 @@ Route::middleware(['auth', 'verificarToken'])->group(
     function () {
         Route::redirect('/', '/dashboard', 301);
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+        Route::get('/settings', function () {
+            return view('settings.index');
+        })->name('configuracoes');
     }
 );
 
-Route::get('/cartao/posicao', [CartaoController::class, 'getPosicaoDoTokenNoCartao'])->middleware('auth');
 Route::middleware(['auth', 'verificarToken', 'verificarModulos'])->group(function () {
     Route::prefix('/settings')->group(
         function () {
-            Route::resource('/cargo', CargoController::class);
             Route::prefix('/cartao')->group(
                 function () {
                     Route::get('/', [CartaoController::class, 'index'])->name('cartao.index');
@@ -47,6 +48,7 @@ Route::middleware(['auth', 'verificarToken', 'verificarModulos'])->group(functio
                     Route::get('/registrar/user/{id}', [CartaoController::class, 'registrarCartaoUsuario'])->name('cartao.registar');
                 }
             );
+            /*
             Route::prefix('/associar/usuario')->group(
                 function () {
                     Route::get('/{id}', [ColaboradorController::class, 'createAssociar'])->name('create_associar');
@@ -54,6 +56,7 @@ Route::middleware(['auth', 'verificarToken', 'verificarModulos'])->group(functio
                     //Route::delete('/{id}', [ColaboradorController::class, 'desassociarUsuario'])->name('destroy.associacao.colaborador');
                 }
             );
+            */
             Route::prefix('/perfil')->group(function () {
                 Route::get('/desativar/{id}', [PerfilController::class, 'desativar']);
                 Route::get('/', [PerfilController::class, 'index'])->name('perfil.index');
@@ -64,6 +67,7 @@ Route::middleware(['auth', 'verificarToken', 'verificarModulos'])->group(functio
                 Route::post('/', [PerfilController::class, 'store'])->name('perfil.store');
                 Route::delete('/{id}', [PerfilController::class, 'destroy'])->name('perfil.destroy');
             });
+            Route::resource('/cargo', CargoController::class);
             Route::resource('/colaborador', ColaboradorController::class);
             Route::resource('/empresa', EmpresaController::class);
             Route::resource('/permissao', PermissaoController::class);
@@ -74,14 +78,11 @@ Route::middleware(['auth', 'verificarToken', 'verificarModulos'])->group(functio
     );
 });
 
-Route::middleware(['auth', 'verificarToken'])->group(
-    function () {
-        Route::get('/settings', function () {
-            return view('settings..index');
-        })->name('configuracoes');
-    }
-);
 
 Route::get('profile', [UserController::class, 'profile'])->name('profile');
 Route::put('profile/security/{id}', [UserController::class, 'resetPassword'])->name('user.security');
 Route::get('profile/{id}/edit', [ColaboradorController::class, 'editProfile'])->name('user.edit.profile');
+
+
+//tens qque fazer uma api:
+Route::get('/cartao/posicao', [CartaoController::class, 'getPosicaoDoTokenNoCartao'])->middleware('auth');

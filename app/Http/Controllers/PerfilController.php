@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Modulo;
 use App\Models\Perfil;
 use App\Models\Permissao;
-use App\Models\ModuloPermissao;
 use Illuminate\Http\Request;
 
 class PerfilController extends Controller
@@ -23,13 +22,18 @@ class PerfilController extends Controller
 
     public function create()
     {
-        return view(
-            'settings.perfil.create',
-            [
-                'modulos' => Modulo::all(),
-                'permissoes' => Permissao::all(),
-            ]
-        );
+        if ($this->verificarPermissao('Criar')) {
+            return view(
+                'settings.perfil.create',
+                [
+                    'modulos' => Modulo::all(),
+                    'permissoes' => Permissao::all(),
+                ]
+            );
+        } else {
+            return redirect()
+                ->action('App\Http\Controllers\PerfilController@index');
+        }
     }
 
     public function store(Request $request)
@@ -71,21 +75,26 @@ class PerfilController extends Controller
 
     public function edit($id)
     {
-        $listArrayModulos = [];
-        $modulos = Modulo::all();
-        $permissoes = Permissao::all();
-        $perfil = Perfil::with('modulos', 'permissoes')->findOrFail($id);
-        $listArraypermissoes  = Perfil::getPermissoes($id)->toArray();
-        foreach ($perfil->modulos as  $value) {
-            $listArrayModulos[] = $value->id;
+        if ($this->verificarPermissao('Editar')) {
+            $listArrayModulos = [];
+            $modulos = Modulo::all();
+            $permissoes = Permissao::all();
+            $perfil = Perfil::with('modulos', 'permissoes')->findOrFail($id);
+            $listArraypermissoes  = Perfil::getPermissoes($id)->toArray();
+            foreach ($perfil->modulos as  $value) {
+                $listArrayModulos[] = $value->id;
+            }
+            return view('settings.perfil.edit', [
+                'modulos' => $modulos,
+                'permissoes' => $permissoes,
+                'perfil' => $perfil,
+                'listArrayModulos' => $listArrayModulos,
+                'listArraypermissoes' =>  $listArraypermissoes,
+            ]);
+        } else {
+            return redirect()
+                ->action('App\Http\Controllers\PerfilController@index');
         }
-        return view('settings.perfil.edit', [
-            'modulos' => $modulos,
-            'permissoes' => $permissoes,
-            'perfil' => $perfil,
-            'listArrayModulos' => $listArrayModulos,
-            'listArraypermissoes' =>  $listArraypermissoes,
-        ]);
     }
 
     public function update(Request $request, $id)
@@ -158,5 +167,25 @@ class PerfilController extends Controller
             $permissoes = null;
         }
         return $permissoes;
+    }
+
+    private function verificarPermissao($permissao)
+    {
+        $modulo = 6;
+        $ArrayLystPermissoes = [];
+        if (session()->get('perfil')) {
+            foreach (session()->get('perfil')['permissoes'] as $item) {
+                foreach ($item as  $value) {
+                    if ($value->modulo_id == $modulo) {
+                        $ArrayLystPermissoes[] = $value->nome;
+                    };
+                }
+            }
+        }
+        if (in_array($permissao, $ArrayLystPermissoes)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

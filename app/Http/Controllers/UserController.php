@@ -27,13 +27,17 @@ class UserController extends Controller
 
     public function create()
     {
-        $perfis = Perfil::all();
-        return view(
-            'settings.user.register',
-            [
-                'perfis' => $perfis
-            ]
-        );
+        if ($this->verificarPermissao('Criar')) {
+            return view(
+                'settings.user.register',
+                [
+                    'perfis' => Perfil::all()
+                ]
+            );
+        } else {
+            return redirect()
+                ->action('App\Http\Controllers\UserController@index');
+        }
     }
 
     public function store(Request $request)
@@ -54,13 +58,18 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        return view(
-            'settings.user.edit',
-            [
-                'user' => User::findOrFail($id),
-                'perfis' => Perfil::orderBy('id', 'desc')->get()
-            ]
-        );
+        if ($this->verificarPermissao('Editar')) {
+            return view(
+                'settings.user.edit',
+                [
+                    'user' => User::findOrFail($id),
+                    'perfis' => Perfil::orderBy('id', 'desc')->get()
+                ]
+            );
+        } else {
+            return redirect()
+                ->action('App\Http\Controllers\UserController@index');
+        }
     }
 
     public function update(Request $request, $id)
@@ -130,9 +139,7 @@ class UserController extends Controller
         if (empty(!$request->password)) {
             $usuario->password = Hash::make($request->password);
         }
-
         $usuario->update();
-
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
@@ -205,59 +212,24 @@ class UserController extends Controller
             'regex:/[@$!%*#?&]/', // deve conter um caractere especial
         ];
     }
+
+    private function verificarPermissao($permissao)
+    {
+        $modulo = 7;
+        $ArrayLystPermissoes = [];
+        if (session()->get('perfil')) {
+            foreach (session()->get('perfil')['permissoes'] as $item) {
+                foreach ($item as  $value) {
+                    if ($value->modulo_id == $modulo) {
+                        $ArrayLystPermissoes[] = $value->nome;
+                    };
+                }
+            }
+        }
+        if (in_array($permissao, $ArrayLystPermissoes)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
-
-/**
- * Responsavel por mostar formulario de associação
- *
- * @param [Integer] $id
- * @return void
- */
-
-/*
-    public function createAssociar($id)
-    {
-        $user = User::findOrFail($id);
-        $colaboradores = Colaborador::where('user_id', null)->get();
-        return view('settings.user.associar', ['user' => $user, 'colabordores' => $colaboradores]);
-    }
-*/
-
-/**
- * Disassociar Colaborador
- *
- * @param [Integer] $id
- * @return void
- */
-
-/*
-    public function desassociarColaborador($id)
-    {
-        $colaborador = Colaborador::with('user')->findOrFail($id);
-        $user = User::findOrFail($colaborador->user_id);
-        $colaborador->user()->disassociate($user)->save();
-        return redirect(route('user.show', $user->id))
-            ->with('status', "Usuário Foi desassociado com sucesso!");
-    }
-*/
-
-
-/**
- * Associar Colaborador
- *
- * @param Request $request
- * @param [Integer] $id
- * @return void
- */
-
-    /*
-public function associarColaborador(Request $request, $id)
-    {
-        $user = User::findOrFail($id);
-        $colaborador = Colaborador::findOrFail($request->colaborador_id);
-        $colaborador->user()->associate($user)->update();
-        return redirect(route('user.show', $id))
-            ->with('status', "Colaborador associado com sucesso!");
-    }
-    
-*/

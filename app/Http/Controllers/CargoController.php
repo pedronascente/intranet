@@ -20,16 +20,12 @@ class CargoController extends Controller
 
     public function create()
     {
-        if (session()->get('perfil')) {
-            foreach (session()->get('perfil')['permissoes'][1] as $item) {
-                if ($item->nome == 'Criar') {
-                    return view('settings.cargo.create');
-                    break;
-                }
-            }
+        if ($this->verificarPermissao('Criar')) {
+            return view('settings.cargo.create');
+        } else {
+            return redirect()
+                ->action('App\Http\Controllers\CargoController@index');
         }
-        return redirect()
-            ->action('App\Http\Controllers\CargoController@index');
     }
 
     public function store(Request $request)
@@ -45,21 +41,12 @@ class CargoController extends Controller
 
     public function edit($id)
     {
-        if (session()->get('perfil')) {
-            foreach (session()->get('perfil')['permissoes'][1] as $item) {
-                if ($item->nome == 'Editar') {
-                    $cargo = Cargo::findOrFail($id);
-                    if ($cargo) {
-                        return view('settings.cargo.edit', ['cargo' => $cargo]);
-                    } else {
-                        return redirect('cargo/')->with('error', 'Registro não existe!'); //retorna resultado.
-                    }
-                    break;
-                }
-            }
+        if ($this->verificarPermissao('Editar')) {
+            return view('settings.cargo.edit', ['cargo' => Cargo::findOrFail($id)]);
+        } else {
+            return redirect()
+                ->action('App\Http\Controllers\CargoController@index');
         }
-        return redirect()
-            ->action('App\Http\Controllers\CargoController@index');
     }
 
     public function update(Request $request, $id)
@@ -115,5 +102,25 @@ class CargoController extends Controller
             $permissoes = null;
         }
         return $permissoes;
+    }
+
+    private function verificarPermissao($permissao)
+    {
+        $modulo = 1;
+        $ArrayLystPermissoes = [];
+        if (session()->get('perfil')) {
+            foreach (session()->get('perfil')['permissoes'] as $item) {
+                foreach ($item as  $value) {
+                    if ($value->modulo_id == $modulo) {
+                        $ArrayLystPermissoes[] = $value->nome;
+                    };
+                }
+            }
+        }
+        if (in_array($permissao, $ArrayLystPermissoes)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

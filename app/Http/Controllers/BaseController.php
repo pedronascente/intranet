@@ -7,11 +7,6 @@ use App\Models\Base;
 
 class BaseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         return view(
@@ -30,24 +25,14 @@ class BaseController extends Controller
      */
     public function create()
     {
-        if (session()->get('perfil')) {
-            foreach (session()->get('perfil')['permissoes'][9] as $item) {
-                if ($item->nome == 'Criar') {
-                    return view('settings.base.create');
-                    break;
-                }
-            }
+        if ($this->verificarPermissao('Criar')) {
+            return view('settings.base.create');
+        } else {
+            return redirect()
+                ->action('App\Http\Controllers\BaseController@index');
         }
-        return redirect()
-            ->action('App\Http\Controllers\CargoController@index');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $this->validarFormulario($request);
@@ -59,54 +44,21 @@ class BaseController extends Controller
             ->with('status', "Registrado com sucesso!");
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        if (session()->get('perfil')) {
-            foreach (session()->get('perfil')['permissoes'][9] as $item) {
-                if ($item->nome == 'Editar') {
-                    $base = Base::findOrFail($id);
-                    if ($base) {
-                        return view(
-                            'settings.base.edit',
-                            [
-                                'base' => $base
-                            ]
-                        );
-                    } else {
-                        return redirect('base/')->with('error', 'Registro não existe!'); //retorna resultado.
-                    }
-                    break;
-                }
-            }
+        if ($this->verificarPermissao('Editar')) {
+            return view(
+                'settings.base.edit',
+                [
+                    'base' => Base::findOrFail($id)
+                ]
+            );
+        } else {
+            return redirect()
+                ->action('App\Http\Controllers\BaseController@index');
         }
-        return redirect()
-            ->action('App\Http\Controllers\BaseController@index');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $this->validarFormulario($request);
@@ -118,12 +70,6 @@ class BaseController extends Controller
             ->with('status', "Registro Atualizado!");
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Request $request, $id)
     {
         $base = Base::with('colaboradores')->findOrFail($request->id);
@@ -166,5 +112,25 @@ class BaseController extends Controller
             $permissoes = null;
         }
         return $permissoes;
+    }
+
+    private function verificarPermissao($permissao)
+    {
+        $modulo = 9;
+        $ArrayLystPermissoes = [];
+        if (session()->get('perfil')) {
+            foreach (session()->get('perfil')['permissoes'] as $item) {
+                foreach ($item as  $value) {
+                    if ($value->modulo_id == $modulo) {
+                        $ArrayLystPermissoes[] = $value->nome;
+                    };
+                }
+            }
+        }
+        if (in_array($permissao, $ArrayLystPermissoes)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

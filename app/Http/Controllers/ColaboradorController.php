@@ -36,12 +36,17 @@ class ColaboradorController extends Controller
 
     public function create()
     {
-        return view('settings.colaborador.create', [
-            'bases' => $this->bases,
-            'empresas' => $this->empresas,
-            'cargos' => $this->cargos,
-            'usuarios' => $this->getUsuariosSemColaborador(),
-        ]);
+        if ($this->verificarPermissao('Criar')) {
+            return view('settings.colaborador.create', [
+                'bases' => $this->bases,
+                'empresas' => $this->empresas,
+                'cargos' => $this->cargos,
+                'usuarios' => $this->getUsuariosSemColaborador(),
+            ]);
+        } else {
+            return redirect()
+                ->action('App\Http\Controllers\ColaboradorController@index');
+        }
     }
 
     /**
@@ -76,13 +81,11 @@ class ColaboradorController extends Controller
             $colaborador->cargo()->associate(Cargo::findOrFail($request->cargo_id));
             $colaborador->user()->associate($usuario);
             $colaborador->ramal = $request->ramal;
-
             if ($foto = $this->upload($request)) {
                 $colaborador->foto = $foto;
             } else {
                 $colaborador->foto = 'dummy-round.png';
             }
-
             $colaborador->save();
             return redirect()
                 ->action('App\Http\Controllers\ColaboradorController@index')
@@ -102,13 +105,18 @@ class ColaboradorController extends Controller
 
     public function edit($id)
     {
-        return view('settings.colaborador.edit', [
-            'colaborador' => Colaborador::findOrFail($id),
-            'empresas' => $this->empresas,
-            'cargos' => $this->cargos,
-            'bases' => $this->bases,
-            'usuarios' => $this->getUsuariosSemColaborador(),
-        ]);
+        if ($this->verificarPermissao('Editar')) {
+            return view('settings.colaborador.edit', [
+                'colaborador' => Colaborador::findOrFail($id),
+                'empresas' => $this->empresas,
+                'cargos' => $this->cargos,
+                'bases' => $this->bases,
+                'usuarios' => $this->getUsuariosSemColaborador(),
+            ]);
+        } else {
+            return redirect()
+                ->action('App\Http\Controllers\ColaboradorController@index');
+        }
     }
 
     public function editProfile($id)
@@ -121,8 +129,6 @@ class ColaboradorController extends Controller
             'usuarios' => $this->getUsuariosSemColaborador(),
         ]);
     }
-
-
 
     /**
      * Responsável por atualizar os dados do colaborador
@@ -283,60 +289,24 @@ class ColaboradorController extends Controller
         }
         return $permissoes;
     }
-}
 
-
-/**
- * Retorna todos os usuarios que não tem colaborador registrado
- *
- * @param [type] $id
- * @return void
- */
-
-/**
-         public function createAssociar($id)
-        {
-            return view('settings.colaborador.associar', [
-                'colaborador' => Colaborador::findOrFail($id),
-                'users' => $this->getUsuariosSemColaborador(),
-            ]);
+    private function verificarPermissao($permissao)
+    {
+        $modulo = 2;
+        $ArrayLystPermissoes = [];
+        if (session()->get('perfil')) {
+            foreach (session()->get('perfil')['permissoes'] as $item) {
+                foreach ($item as  $value) {
+                    if ($value->modulo_id == $modulo) {
+                        $ArrayLystPermissoes[] = $value->nome;
+                    };
+                }
+            }
         }
- */
-
-
-/**
- * Responsável por associar um usuario 
- *
- * @param Request $request
- * @param [Integer] $id
- * @return void
- */
-
-/*
-        public function associarUsuario(Request $request, $id)
-    {
-        $colaborador = Colaborador::with('user')->findOrFail($id);
-        $user = User::findOrFail($request->user_id);
-        $colaborador->user()->associate($user);
-        $colaborador->update();
-        return redirect(route('colaborador.show', $colaborador->id))
-            ->with('status', "Usuário Foi associado com sucesso!");
+        if (in_array($permissao, $ArrayLystPermissoes)) {
+            return true;
+        } else {
+            return false;
+        }
     }
-     */
-
-/**
- * Responsavel por disassociar um usuário
- *
- * @param [type] $id
- * @return void
- */
-    /*
-    public function desassociarUsuario($id)
-    {
-        $colaborador = Colaborador::with('user')->findOrFail($id);
-        $user = User::findOrFail($colaborador->user_id);
-        $colaborador->user()->disassociate($user)->save();
-        return redirect(route('colaborador.show', $colaborador->id))
-            ->with('status', "Usuário Foi desassociado com sucesso!");
-    }
-    */
+}
