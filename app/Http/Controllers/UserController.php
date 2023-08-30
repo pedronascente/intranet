@@ -93,16 +93,20 @@ class UserController extends Controller
 
     public function profile(Request $request)
     {
-        $id = $request->user()->id;
-        $usuario = User::with('colaborador', 'perfil', 'cartao')->findorFail($id);
-        return view('profile.index', [
-            'id usuario' => $id,
-            'usuario' => $usuario,
-            'colaborador' => $usuario->colaborador,
-            'perfil' => $usuario->perfil,
-            'cartao' => $usuario->cartao,
-            'status' => $usuario->getStatus($id),
-        ]);
+        if ($request->user()) {
+            $id = $request->user()->id;
+            $usuario = User::with('colaborador', 'perfil', 'cartao')->findorFail($id);
+            return view('profile.index', [
+                'id usuario' => $id,
+                'usuario' => $usuario,
+                'colaborador' => $usuario->colaborador,
+                'perfil' => $usuario->perfil,
+                'cartao' => $usuario->cartao,
+                'status' => $usuario->getStatus($id),
+            ]);
+        } else {
+            dd('usuario não localizado!');
+        }
     }
 
     public function destroy(Request $request, $id)
