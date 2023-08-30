@@ -86,3 +86,6 @@ Route::get('profile/{id}/edit', [ColaboradorController::class, 'editProfile'])->
 
 //tens qque fazer uma api:
 Route::get('/cartao/posicao', [CartaoController::class, 'getPosicaoDoTokenNoCartao'])->middleware('auth');
+Route::get('/login/reset-password', function () {
+    return view('login.recuperar_senha');
+})->name('reset-password');

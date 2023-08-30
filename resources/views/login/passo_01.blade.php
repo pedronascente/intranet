@@ -34,7 +34,7 @@
                 </div>
                 <div class="row">
                     <div class="col-8">
-                        <a href="/login/esqueci-minha-senha">Esqueci minha senha</a>
+                        <a href="/login/reset-password">Esqueci minha senha</a>
                     </div>
                     <div class="col-4">
                         <!--  <a href="/login/auth-token" class="btn btn-primary btn-block">Entrar</a>  -->
