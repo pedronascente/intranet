@@ -5,9 +5,11 @@
     </div>
     <div class="card">
         <div class="card-body login-card-body">
-            <p class="login-box-msg">{{ $mensagem }}, para continuar insira seu Token
-            <div id="timer" class="text-center"></div>
-            <div id="result" class="text-center"></div>
+            <h1>{{ $mensagem }}!</h1>
+            <p>
+                para continuar insira seu <b>Token</b>
+            </p>
+            <p class="mt-3 mb-1">
             </p>
             <form action="{{ route('token.store') }}" method="post">
                 @csrf
@@ -29,11 +31,16 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-4">
+                    <div class="col-6">
                         <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+                    </div>
+                    <div class="col-6">
+                        <div id="timer" style="font-size:25px"></div>
                     </div>
                 </div>
             </form>
+            <p class="mt-3 mb-1">
+            </p>
         </div>
     </div>
     <script type="text/javascript">
@@ -70,3 +77,8 @@
         }
     </script>
 @endsection
+
+<!--
+
+<div id="result"></div>
+-->

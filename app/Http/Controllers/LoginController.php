@@ -97,13 +97,7 @@ class LoginController extends Controller
         $request->session()->put('perfil', $sessaoPerfil);
     }
 
-    public function recuperarSenha()
-    {
-        echo 'Descreva nos requisitos como será este processo de recuperação de senha';
-    }
+   
 
-    public function recuperarCartao()
-    {
-        echo 'Descreva nos requisitos como será este processo de recuperação de cartao';
-    }
+    
 }

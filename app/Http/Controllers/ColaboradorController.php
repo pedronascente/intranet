@@ -202,6 +202,7 @@ class ColaboradorController extends Controller
             ->with('status', "Registro Excluido!");
     }
 
+
     /**
      * Responsável por fazer upload da Imagem do colabortador
      *

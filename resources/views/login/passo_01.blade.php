@@ -5,7 +5,8 @@
     </div>
     <div class="card">
         <div class="card-body login-card-body">
-            <p class="login-box-msg">{{ $mensagem }}, para iniciar insira seus <b>dados</b>.</p>
+            <h1>{{ $mensagem }}!</h1>
+            <p>para iniciar insira seus <b>dados</b>.</p>
             <form action="{{ route('login') }}" method="post">
                 @csrf
                 <div class="input-group mb-3">
@@ -34,14 +35,15 @@
                 </div>
                 <div class="row">
                     <div class="col-8">
-                        <a href="/login/reset-password">Esqueci minha senha</a>
+                        <a href="/reset-password">Esqueceu sua senha?</a>
                     </div>
                     <div class="col-4">
-                        <!--  <a href="/login/auth-token" class="btn btn-primary btn-block">Entrar</a>  -->
                         <button type="submit" class="btn btn-primary btn-block">Entrar</button>
                     </div>
                 </div>
             </form>
+            <p class="mt-3 mb-1">
+            </p>
         </div>
     </div>
     <div class="row mt-5 text-center">

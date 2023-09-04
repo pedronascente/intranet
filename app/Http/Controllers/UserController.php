@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-//use App\Models\Cartao;
 use App\Models\Perfil;
-//use App\Models\Colaborador;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Colaborador;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
@@ -29,7 +28,7 @@ class UserController extends Controller
     {
         if ($this->verificarPermissao('Criar')) {
             return view(
-                'settings.user.register',
+                'settings.user.create',
                 [
                     'perfis' => Perfil::all()
                 ]
@@ -144,6 +143,32 @@ class UserController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/');
+    }
+
+    public function resetPasswordCreate()
+    {
+        return view('settings.user.reset_password');
+    }
+
+    public function resetPasswordStore(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|email',
+        ]);
+        $email = Colaborador::where('email', $request->email)->count();
+        if ($email >= 1) {
+            return redirect()
+                ->action('App\Http\Controllers\UserController@resetPasswordResult');
+        } else {
+            return redirect()
+                ->action('App\Http\Controllers\UserController@resetPasswordCreate')
+                ->with('error', "Este email não está registrado!");
+        }
+    }
+
+    public function resetPasswordResult()
+    {
+        return view('settings.user.reset_password_result');
     }
 
     /**

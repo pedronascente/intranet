@@ -48,15 +48,6 @@ Route::middleware(['auth', 'verificarToken', 'verificarModulos'])->group(functio
                     Route::get('/registrar/user/{id}', [CartaoController::class, 'registrarCartaoUsuario'])->name('cartao.registar');
                 }
             );
-            /*
-            Route::prefix('/associar/usuario')->group(
-                function () {
-                    Route::get('/{id}', [ColaboradorController::class, 'createAssociar'])->name('create_associar');
-                    // Route::put('/{id}', [ColaboradorController::class, 'associarUsuario'])->name('update_associar');
-                    //Route::delete('/{id}', [ColaboradorController::class, 'desassociarUsuario'])->name('destroy.associacao.colaborador');
-                }
-            );
-            */
             Route::prefix('/perfil')->group(function () {
                 Route::get('/desativar/{id}', [PerfilController::class, 'desativar']);
                 Route::get('/', [PerfilController::class, 'index'])->name('perfil.index');
@@ -78,14 +69,12 @@ Route::middleware(['auth', 'verificarToken', 'verificarModulos'])->group(functio
     );
 });
 
-
 Route::get('profile', [UserController::class, 'profile'])->name('profile');
 Route::put('profile/security/{id}', [UserController::class, 'resetPassword'])->name('user.security');
 Route::get('profile/{id}/edit', [ColaboradorController::class, 'editProfile'])->name('user.edit.profile');
 
-
 //tens qque fazer uma api:
 Route::get('/cartao/posicao', [CartaoController::class, 'getPosicaoDoTokenNoCartao'])->middleware('auth');
-Route::get('/login/reset-password', function () {
-    return view('login.recuperar_senha');
-})->name('reset-password');
+Route::get('/reset-password', [UserController::class, 'resetPasswordCreate'])->name('user.reset-password');
+Route::post('/reset-password', [UserController::class, 'resetPasswordStore']);
+Route::get('/reset-result', [UserController::class, 'resetPasswordResult']);
