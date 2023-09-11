@@ -30,7 +30,7 @@ class EmpresaController extends Controller
 
     public function store(Request $request)
     {
-        $this->validarFormulario($request);
+        $this->validarFormulario($request, 'store');
         if ($this->verificarDuplicidade($request)) {
             return redirect()
                 ->action('App\Http\Controllers\EmpresaController@index')
@@ -68,7 +68,7 @@ class EmpresaController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->validarFormulario($request);
+        $this->validarFormulario($request, 'update');
         $empresa = Empresa::findOrFail($id);
         $empresa->nome = $request->nome;
         $empresa->cnpj = $request->cnpj;
@@ -92,12 +92,22 @@ class EmpresaController extends Controller
             ->with('status', "Registro Excluido!");
     }
 
-    private function validarFormulario(Request $request)
+    private function validarFormulario(Request $request, $method)
     {
+        switch ($method) {
+            case 'update':
+                $nome = 'required|max:190|min:5';
+                $cnpj = 'required|max:20|min:5';
+                break;
+            case 'store':
+                $nome = 'required|max:190|min:5|unique:empresas,nome';
+                $cnpj = 'required|max:20|unique:empresas,cnpj';
+                break;
+        }
         $request->validate(
             [
-                'nome' => 'required|max:190|min:5|unique:empresas,nome',
-                'cnpj' => 'required|max:20|unique:empresas,cnpj',
+                'nome' => $nome,
+                'cnpj' => $cnpj,
             ],
             [
                 'nome.required' => 'Campo obrigatório.',

@@ -35,6 +35,7 @@ class ModuloController extends Controller
         $modulo = new Modulo;
         $modulo->nome = $request->nome;
         $modulo->rota = $request->rota;
+        $modulo->slug = $this->getSlug($request->rota);
         $modulo->descricao = $request->descricao;
         $modulo->save();
         return redirect()
@@ -69,6 +70,7 @@ class ModuloController extends Controller
         $modulo = Modulo::findOrFail($id);
         $modulo->nome = $request->nome;
         $modulo->rota = $request->rota;
+        $modulo->slug = $this->getSlug($request->rota);
         $modulo->descricao = $request->descricao;
         $modulo->update();
         return redirect()
@@ -137,5 +139,11 @@ class ModuloController extends Controller
         } else {
             return false;
         }
+    }
+
+    private function getSlug($rota)
+    {
+        $slog = explode('/', $rota);
+        return $slog[2];
     }
 }

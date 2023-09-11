@@ -35,7 +35,7 @@ class BaseController extends Controller
 
     public function store(Request $request)
     {
-        $this->validarFormulario($request);
+        $this->validarFormulario($request, 'store');
         $base = new Base();
         $base->nome = $request->nome;
         $base->save();
@@ -61,7 +61,7 @@ class BaseController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->validarFormulario($request);
+        $this->validarFormulario($request, 'update');
         $base = Base::findOrFail($id);
         $base->nome = $request->nome;
         $base->update();
@@ -90,11 +90,19 @@ class BaseController extends Controller
         }
     }
 
-    private function validarFormulario(Request $request)
+    private function validarFormulario(Request $request, $method)
     {
+        switch ($method) {
+            case 'update':
+                $regras = 'required|max:190|min:2';
+                break;
+            case 'store':
+                $regras = 'required|max:190|min:2|unique:bases,nome';
+                break;
+        }
         $request->validate(
             [
-                'nome' => 'required|max:190|min:2|unique:bases,nome',
+                'nome' => $regras,
             ],
             [
                 'nome.required' => 'Campo obrigatório.',

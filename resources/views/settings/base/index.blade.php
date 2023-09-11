@@ -21,13 +21,13 @@
                                             @if ($item->nome == 'Editar')
                                                 <a href="{{ route('base.edit', $base->id) }}" class="btn btn-primary"
                                                     title="Editar">
-                                                    <i class="fas fa-edit"></i>
+                                                    <i class="fas fa-edit"></i> Editar
                                                 </a>
                                             @endif
                                             @if ($item->nome == 'Excluir')
                                                 <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal"
                                                     data-target="#deleteModal" data-id="{{ $base->id }}">
-                                                    <i class="fas fa-trash"></i>
+                                                    <i class="fas fa-trash"></i> Excluir
                                                 </a>
                                             @endif
                                         @endforeach

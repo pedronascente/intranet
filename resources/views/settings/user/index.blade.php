@@ -33,19 +33,19 @@
                                             @if ($permissao->nome == 'Visualizar')
                                                 <a href="{{ route('user.show', $item->id) }}" title="Visualizar"
                                                     class="btn btn-warning">
-                                                    <i class="fas  fa-eye"></i>
+                                                    <i class="fas  fa-eye"></i> Visualizar
                                                 </a>
                                             @endif
                                             @if ($permissao->nome == 'Editar')
                                                 <a href="{{ route('user.edit', $item->id) }}" class="btn btn-primary"
                                                     title="Editar">
-                                                    <i class="fas fa-edit"></i>
+                                                    <i class="fas fa-edit"></i> Editar
                                                 </a>
                                             @endif
                                             @if ($permissao->nome == 'Excluir')
                                                 <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal"
                                                     data-target="#deleteModal" data-id="{{ $item->id }}">
-                                                    <i class="fas fa-trash"></i>
+                                                    <i class="fas fa-trash"></i> Excluir
                                                 </a>
                                             @endif
                                         @endforeach

@@ -67,7 +67,7 @@ class Titulo extends Component
                 $this->titulo = "Usuário";
                 break;
             case 'cartao':
-                $this->titulo = "Cartão";
+                $this->titulo = "2FA";
                 break;
             case 'base':
                 $this->titulo = "Base";

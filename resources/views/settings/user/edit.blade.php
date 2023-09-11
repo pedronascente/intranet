@@ -5,7 +5,6 @@
             @csrf
             @method('PUT')
             <div class="card-body">
-
                 <div class="row">
                     <div class="col-md-2">
                         <div class="form-group">
@@ -82,12 +81,14 @@
                 </div>
                 <x-ui.panel-dica-boa-senha />
             </div>
-
             <div class="card-footer">
                 <button type="submit" class="btn bg-gradient-primary">
                     <i class="fas fa-save" aria-hidden="true"></i>
-                    Editar
+                    Salvar
                 </button>
+                <a href="{{ route('user.index') }}" title="Voltar" class="btn btn-danger">
+                    <i class="fa fa-reply"></i> Voltar
+                </a>
             </div>
         </form>
     </div>

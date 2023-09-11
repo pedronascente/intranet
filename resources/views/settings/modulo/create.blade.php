@@ -32,7 +32,11 @@
             <div class="card-footer">
                 <button type="submit" class="btn bg-gradient-primary">
                     <i class="fas fa-save" aria-hidden="true"></i>
-                    Salvar</button>
+                    Salvar
+                </button>
+                <a href="{{ route('modulo.index') }}" title="Voltar" class="btn btn-danger">
+                    <i class="fa fa-reply"></i> Voltar
+                </a>
             </div>
         </form>
     </div>

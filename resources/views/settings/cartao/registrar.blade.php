@@ -2,7 +2,7 @@
 @section('content')
     <div class="card card-default">
         <div class="card-header">
-            <h4>Registrar Cartão Token</h4>
+            <h4>Registrar 2FA</h4>
         </div>
         <form action="{{ route('cartao.register') }}" method="POST" name="formulario-cartao-register">
             @csrf

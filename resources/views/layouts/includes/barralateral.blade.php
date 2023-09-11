@@ -30,7 +30,7 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
                 <li class="nav-item  menu-open">
-                    <a href="#"
+                    <a href="javascript:void(0)"
                         @if (Request::segment(2) == 'modulo' ||
                                 Request::segment(2) == 'permissao' ||
                                 Request::segment(2) == 'perfil' ||
@@ -50,7 +50,7 @@
                             @foreach (session()->get('perfil')['modulos'] as $item)
                                 <li class="nav-item">
                                     <a href="{{ $item['rota'] }}"
-                                        @if (Request::segment(2) == $item['nome']) class="nav-link active"  @else   class="nav-link" @endif>
+                                        @if (Request::segment(2) == $item['slug']) class="nav-link active"  @else   class="nav-link" @endif>
                                         <i class="far fa-circle nav-icon"></i>
                                         <p> {{ $item['nome'] }}</p>
                                     </a>
@@ -59,6 +59,7 @@
                         @endif
                     </ul>
                 </li>
+
             </ul>
         </nav>
     </div>

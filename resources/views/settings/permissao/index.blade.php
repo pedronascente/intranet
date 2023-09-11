@@ -19,15 +19,15 @@
                                     @if ($permissoes)
                                         @foreach ($permissoes as $permissao)
                                             @if ($permissao->nome == 'Editar')
-                                                <!--a href="{{ route('permissao.edit', $item->id) }}" class="btn btn-primary"
-                                                        title="Editar">
-                                                        <i class="fas fa-edit"></i>
-                                                    </a-->
+                                                <a href="{{ route('permissao.edit', $item->id) }}" class="btn btn-primary"
+                                                    title="Editar">
+                                                    <i class="fas fa-edit"></i> Editar
+                                                </a>
                                             @endif
                                             @if ($permissao->nome == 'Excluir')
                                                 <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal"
                                                     data-target="#deleteModal" data-id="{{ $item->id }}">
-                                                    <i class="fas fa-trash"></i>
+                                                    <i class="fas fa-trash"></i> Excluir
                                                 </a>
                                             @endif
                                         @endforeach

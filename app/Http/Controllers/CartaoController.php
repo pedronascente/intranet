@@ -55,14 +55,14 @@ class CartaoController extends Controller
     {
         $this->validarFormulario($request);
         $user = User::findOrFail($request->user_id);
-        #criar e associar cartão ao usuario:
+        #criar e associar 2FA ao usuario:
         $user->cartao()->create([
             'status' => $request->status,
             'user_id' => $request->user_id,
             'nome' => "CARTAO-" . $request->user_id,
             'qtdToken' => (int)$request->qtdToken,
         ]);
-        //retornar o cartão do usuario.
+        //retornar o 2FA do usuario.
         $user = User::with('cartao')->findOrFail($request->user_id);
         $cartao = Cartao::findOrFail($user->cartao->id);
         Token::gerarToken($cartao);
@@ -72,7 +72,7 @@ class CartaoController extends Controller
     }
 
     /**
-     * Mosatrar Detalhes do cartão. 
+     * Mosatrar Detalhes do 2FA. 
      *
      * @param [type] $id
      * @return void
@@ -113,7 +113,7 @@ class CartaoController extends Controller
         }
     }
     /**
-     * Atualizar cartão.
+     * Atualizar 2FA.
      *
      * @param Request $request
      * @param [type] $id
@@ -134,7 +134,7 @@ class CartaoController extends Controller
     }
 
     /**
-     * Excluir cartão.
+     * Excluir 2FA.
      *
      * @param [Integer] $id
      * @return void
@@ -162,7 +162,7 @@ class CartaoController extends Controller
         Token::gerarToken($cartao);
         return redirect()
             ->action('App\Http\Controllers\UserController@show', $usuario)
-            ->with('status', "Cartão Registrado com sucesso!");
+            ->with('status', "2FA Registrado com sucesso!");
     }
 
     /**
@@ -188,7 +188,7 @@ class CartaoController extends Controller
     }
 
     /**
-     * Retornar lista dos usuários sem cartão.
+     * Retornar lista dos usuários sem 2FA.
      *
      * @return void
      */

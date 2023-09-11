@@ -6,7 +6,7 @@
             <table class="table table-hover text-nowrap table-striped">
                 <thead>
                     <tr>
-                        <th width="50%">Cartão</th>
+                        <th width="50%">2FA</th>
                         <th width="45%">Status</th>
                         <th width="5%" class="text-center">Permissões</th>
                     </tr>
@@ -29,13 +29,13 @@
                                             @if ($item->nome == 'Editar')
                                                 <a href="{{ route('cartao.edit', $cartao->id) }}" title="Editar"
                                                     class="btn btn-primary">
-                                                    <i class="fas fa-edit"></i>
+                                                    <i class="fas fa-edit"></i> Editar
                                                 </a>
                                             @endif
                                             @if ($item->nome == 'Visualizar')
                                                 <a href="{{ route('cartao.show', $cartao->id) }}" title="visualizar"
                                                     class="btn btn-warning">
-                                                    <i class="fas fa-solid fa-eye"></i>
+                                                    <i class="fas fa-solid fa-eye"></i> Visualizar
                                                 </a>
                                             @endif
                                         @endforeach

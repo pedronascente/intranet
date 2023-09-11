@@ -21,7 +21,7 @@
                     <b>Status</b> <a class="float-right"> {{ $status }}</a>
                 </li>
                 <li class="list-group-item">
-                    <b>Cartão</b>
+                    <b>2FA</b>
                     @if ($user->cartao)
                         <a class="float-right btn btn-warning" href="{{ route('cartao.show', $user->cartao->id) }}"
                             title="visualizar" class="btn btn-warning">
@@ -29,8 +29,8 @@
                         </a>
                     @else
                         <a class="float-right btn btn-success" href="{{ route('cartao.registar', $user->id) }}"
-                            class="btn btn-info" title="Criar Cartão">
-                            Registrar Cartão Token
+                            class="btn btn-info" title="2FA">
+                            Registrar 2FA
                         </a>
                     @endif
                 </li>
@@ -39,10 +39,10 @@
 
         <div class="card-footer">
             <a href="{{ route('user.edit', $user->id) }}" title="Editar" class="btn btn-primary">
-                <i class="fas fa-edit"></i>
+                <i class="fas fa-edit"></i> Editar
             </a>
             <a href="{{ route('user.index') }}" title="Voltar" class="btn btn-danger">
-                <i class="fa fa-reply" aria-hidden="true"></i>
+                <i class="fa fa-reply" aria-hidden="true"></i> Voltar
             </a>
         </div>
     </div>

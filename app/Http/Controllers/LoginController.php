@@ -46,7 +46,7 @@ class LoginController extends Controller
             $usuarioDB = User::with('cartao', 'perfil')->findOrFail($usuarioLogado->id);
             if (!$usuarioDB->cartao) {
                 $this->logout($request);
-                return redirect()->back()->with('error', 'Você não possui um Cartão Token válido.');
+                return redirect()->back()->with('error', 'Você não possui um 2FA válido.');
             }
 
             $this->criarSessaoPerfil($request, $usuarioDB->perfil->id);
@@ -84,6 +84,7 @@ class LoginController extends Controller
                     "id" => $modulo->id,
                     "nome" => $modulo->nome,
                     "rota" => $modulo->rota,
+                    "slug" => $modulo->slug,
                 ];
             }
         }
@@ -96,8 +97,4 @@ class LoginController extends Controller
 
         $request->session()->put('perfil', $sessaoPerfil);
     }
-
-   
-
-    
 }

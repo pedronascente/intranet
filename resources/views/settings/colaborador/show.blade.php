@@ -53,10 +53,10 @@
         </div>
         <div class="card-footer">
             <a href="{{ route('colaborador.edit', $colaborador->id) }}" title="Editar" class="btn btn-primary">
-                <i class="fas fa-edit"></i>
+                <i class="fas fa-edit"></i> Editar
             </a>
             <a href="{{ route('colaborador.index') }}" title="Voltar" class="btn btn-danger">
-                <i class="fa fa-reply"></i>
+                <i class="fa fa-reply"></i> Voltar
             </a>
         </div>
     </div>

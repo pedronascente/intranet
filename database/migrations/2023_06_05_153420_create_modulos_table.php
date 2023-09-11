@@ -12,6 +12,7 @@ class CreateModulosTable extends Migration
             $table->increments('id');
             $table->string('nome')->unique();
             $table->string('rota');
+            $table->string('slug');
             $table->string('descricao');
             $table->timestamps();
             $table->engine = 'InnoDB';

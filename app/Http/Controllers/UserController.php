@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Perfil;
+use App\Models\Token;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Colaborador;
@@ -48,6 +49,19 @@ class UserController extends Controller
             'perfil_id' => $request->perfil,
             'password' => Hash::make($request->password),
         ]);
+
+        #criar e associar 2FA ao usuario:
+        $user->cartao()->create([
+            'status' => $request->status,
+            'user_id' => $user->id,
+            'nome' => "CARTAO-" . $user->id,
+            'qtdToken' => 40,
+        ]);
+
+        //retornar o 2FA do usuario.
+        $userw = User::with('cartao')->findOrFail($user->id);
+        Token::gerarToken($userw->cartao);
+
         event(new Registered($user));
         Auth::login($user);
         return redirect()
@@ -152,11 +166,14 @@ class UserController extends Controller
 
     public function resetPasswordStore(Request $request)
     {
+
         $request->validate([
             'email' => 'required|email|email',
         ]);
         $email = Colaborador::where('email', $request->email)->count();
         if ($email >= 1) {
+
+            dd($email, $request->all());
             return redirect()
                 ->action('App\Http\Controllers\UserController@resetPasswordResult');
         } else {

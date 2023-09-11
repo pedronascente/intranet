@@ -75,6 +75,9 @@ Route::get('profile/{id}/edit', [ColaboradorController::class, 'editProfile'])->
 
 //tens qque fazer uma api:
 Route::get('/cartao/posicao', [CartaoController::class, 'getPosicaoDoTokenNoCartao'])->middleware('auth');
+
+
+
 Route::get('/reset-password', [UserController::class, 'resetPasswordCreate'])->name('user.reset-password');
 Route::post('/reset-password', [UserController::class, 'resetPasswordStore']);
 Route::get('/reset-result', [UserController::class, 'resetPasswordResult']);

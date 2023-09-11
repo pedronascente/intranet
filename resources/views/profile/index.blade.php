@@ -59,7 +59,7 @@
         </div>
         <div class="card-body">
             @if ($cartao)
-                <strong> Cartão</strong>
+                <strong> 2FA</strong>
                 <p class="text-muted">{{ $cartao->nome }}</p>
                 <hr>
                 <table class="table table-bordered ">

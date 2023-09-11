@@ -30,7 +30,7 @@ class CargoController extends Controller
 
     public function store(Request $request)
     {
-        $this->validarFormulario($request);
+        $this->validarFormulario($request, 'store');
         $cargo = new Cargo();
         $cargo->nome = $request->nome;
         $cargo->save();
@@ -51,7 +51,7 @@ class CargoController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->validarFormulario($request); //Válidar Formulário.
+        $this->validarFormulario($request, 'update');
         $cargo = Cargo::findOrFail($id);
         $cargo->nome = $request->nome;
         $cargo->update();
@@ -80,11 +80,19 @@ class CargoController extends Controller
         }
     }
 
-    private function validarFormulario(Request $request)
+    private function validarFormulario(Request $request, $method)
     {
+        switch ($method) {
+            case 'update':
+                $regras = 'required|max:190|min:2';
+                break;
+            case 'store':
+                $regras = 'required|max:190|min:2|unique:cargos,nome';
+                break;
+        }
         $request->validate(
             [
-                'nome' => 'required|max:190|min:2|unique:cargos,nome',
+                'nome' =>  $regras,
             ],
             [
                 'nome.required' => 'Campo obrigatório.',

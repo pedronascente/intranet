@@ -22,6 +22,9 @@
                     <i class="fas fa-save" aria-hidden="true"></i>
                     Salvar
                 </button>
+                <a href="{{ route('permissao.index') }}" title="Voltar" class="btn btn-danger">
+                    <i class="fa fa-reply"></i> Voltar
+                </a>
             </div>
         </form>
     </div>

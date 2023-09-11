@@ -4,7 +4,7 @@
         <div class="card-body p-0">
             <table class="table table-md ">
                 <tr>
-                    <td> <b> Cartão</b><br> {{ $cartao->nome }}</td>
+                    <td> <b> 2FA</b><br> {{ $cartao->nome }}</td>
                 </tr>
                 <tr>
                     <td><b>Status</b><br>
@@ -34,7 +34,7 @@
             </table>
             <table class="table table-md ">
                 <tr>
-                    <td><b>Dono do Cartão</b><br>
+                    <td><b>Usuário</b><br>
                         <a href="/settings/user/{{ $cartao->user->id }}" title="Visualizar Usuário" class="btn btn-warning">
                             <i class="fas  fa-eye"></i> {{ $cartao->user->name }}
                         </a>
@@ -44,12 +44,11 @@
             <table class="table table-md">
                 <tr>
                     <td>
-
                         <a href="{{ route('cartao.edit', $cartao->id) }}" title="Editar" class="btn btn-primary">
-                            <i class="fas fa-edit"></i>
+                            <i class="fas fa-edit"></i> Editar
                         </a>
                         <a href="{{ route('cartao.index') }}" title="Voltar" class="btn btn-danger">
-                            <i class="fa fa-reply" aria-hidden="true"></i>
+                            <i class="fa fa-reply" aria-hidden="true"></i> Voltar
                         </a>
                     </td>
                 </tr>
