@@ -147,6 +147,7 @@ class UserController extends Controller
 
     public function resetPassword(Request $request, $id)
     {
+
         $this->validarFormulario($request, 'resetPassword');
         $usuario = User::findOrFail($id);
         if (empty(!$request->password)) {
@@ -164,28 +165,44 @@ class UserController extends Controller
         return view('settings.user.reset_password');
     }
 
+    /*
+        *  recuperar o email
+        *  validar email
+        *  criar has de tokens de validação
+
+    */
     public function resetPasswordStore(Request $request)
     {
+        $request->validate(['email' => 'required|email|email',]);
+        $colaborador = Colaborador::where('email', $request->email)->first();
+        $tokenResetEmail = Hash::make('reset');
 
-        $request->validate([
-            'email' => 'required|email|email',
-        ]);
-        $email = Colaborador::where('email', $request->email)->count();
-        if ($email >= 1) {
+        if ($colaborador && $colaborador->count() >= 1) {
+            $colaborador->token_reset_pass = $tokenResetEmail;
+            $colaborador->update();
 
-            dd($email, $request->all());
+            //enviar email :
+            $this->enviarEmail($colaborador);
+
             return redirect()
                 ->action('App\Http\Controllers\UserController@resetPasswordResult');
-        } else {
-            return redirect()
-                ->action('App\Http\Controllers\UserController@resetPasswordCreate')
-                ->with('error', "Este email não está registrado!");
         }
+        return redirect()
+            ->action('App\Http\Controllers\UserController@resetPasswordCreate')
+            ->with('error', "Este email não está registrado!");
     }
 
     public function resetPasswordResult()
     {
         return view('settings.user.reset_password_result');
+    }
+
+    private function enviarEmail($colaborador)
+    {
+
+        dd(
+            "https://localhost/senha/{$colaborador->email}/$colaborador->token_reset_pass"
+        );
     }
 
     /**
