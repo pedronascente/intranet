@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 class UserController extends Controller
 {
     public function index()
@@ -54,14 +57,13 @@ class UserController extends Controller
         $user->cartao()->create([
             'status' => $request->status,
             'user_id' => $user->id,
-            'nome' => "CARTAO-" . $user->id,
+            'nome' => "2FA-" . $user->id,
             'qtdToken' => 40,
         ]);
 
         //retornar o 2FA do usuario.
         $userw = User::with('cartao')->findOrFail($user->id);
         Token::gerarToken($userw->cartao);
-
         event(new Registered($user));
         Auth::login($user);
         return redirect()
@@ -148,61 +150,171 @@ class UserController extends Controller
     public function resetPassword(Request $request, $id)
     {
 
+
         $this->validarFormulario($request, 'resetPassword');
-        $usuario = User::findOrFail($id);
+        $usuario = User::with('colaborador')->findOrFail($id);
         if (empty(!$request->password)) {
             $usuario->password = Hash::make($request->password);
         }
+
+        //dd($request->all(), $id, $usuario->colaborador);
+
         $usuario->update();
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/');
+        $this->composeEmail($usuario->colaborador, 'senha_recuperada');
+        return redirect()
+            ->action('App\Http\Controllers\UserController@senhaSucesso');
+
+        /*
+
+        echo '[] enviar email de cadastro de senha com sucesso<br>';
+        echo '[] redirecionar usuario pra pagiana de cadastro  de senha com sucesso';
+        dd('xdebug');
+*/
     }
 
-    public function resetPasswordCreate()
+    public function recuperarSenhaCreate()
     {
-        return view('settings.user.reset_password');
+        return view('settings.user.recuperar_senha');
     }
 
     /*
-        *  recuperar o email
+        *  Responsavel por enviar email , para o usuario recuperar a senha
         *  validar email
         *  criar has de tokens de validação
 
     */
-    public function resetPasswordStore(Request $request)
+    public function recuperarSenhaStore(Request $request)
     {
         $request->validate(['email' => 'required|email|email',]);
         $colaborador = Colaborador::where('email', $request->email)->first();
-        $tokenResetEmail = Hash::make('reset');
-
+        $tokenResetEmail = md5(time());
         if ($colaborador && $colaborador->count() >= 1) {
             $colaborador->token_reset_pass = $tokenResetEmail;
             $colaborador->update();
-
             //enviar email :
-            $this->enviarEmail($colaborador);
-
+            $this->composeEmail($colaborador, 'recuperar_senha');
             return redirect()
-                ->action('App\Http\Controllers\UserController@resetPasswordResult');
+                ->action('App\Http\Controllers\UserController@recuperarSenhaSucesso');
         }
         return redirect()
-            ->action('App\Http\Controllers\UserController@resetPasswordCreate')
+            ->action('App\Http\Controllers\UserController@recuperarSenhaCreate')
             ->with('error', "Este email não está registrado!");
     }
 
-    public function resetPasswordResult()
+    public function recuperarSenhaSucesso()
     {
-        return view('settings.user.reset_password_result');
+        return view('settings.user.recuperar_senha_sucesso');
     }
 
-    private function enviarEmail($colaborador)
+    public function senhaCreate($email, $token)
     {
+        $colaborador = Colaborador::where('email', $email)->where('token_reset_pass', $token)->first();
+        if (!$colaborador) {
+            return redirect('/');
+        } else {
+            return view('settings.user.senha_create', ['colaborador' => $colaborador]);
+        }
+    }
 
-        dd(
-            "https://localhost/senha/{$colaborador->email}/$colaborador->token_reset_pass"
-        );
+    public function senhaSucesso()
+    {
+        return view('settings.user.senhaSucesso');
+    }
+
+    private function getBody($colaborador, $tipoMensagem)
+    {
+        switch ($tipoMensagem) {
+            case 'recuperar_senha':
+                $link = route('senha', [$colaborador->email, $colaborador->token_reset_pass]);
+
+                $html = "<!doctype html>";
+                $html .= "<html>";
+                $html .= "<head>";
+                $html .= "<meta charset='utf-8'>";
+                $html .= "<meta http-equiv='X-UA-Compatible' content='IE=edge'>";
+                $html .= "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">";
+                $html .= "<title>Laravel - Resultados</title>";
+                $html .= "</head>";
+                $html .= "<body>";
+
+                $html .= "<p>presado(a) $colaborador->nome</p>";
+                $html .= "<p>Recebemos em nosso sistema uma solicitação para recuperar sua senha </p>";
+                $html .= "<p>Por favor, caso não tenha solicitado favor, ignore este email. caso contrario ...</p>";
+                $html .= "
+                    <h1>Super Dicas para uma boa senha!</h1>
+                        <ul>
+                            <li>deve ter pelo menos 6 caracteres: [ min:6 ]</li>
+                            <li>deve conter pelo menos uma letra minúscula: [a-z]</li>
+                            <li>deve conter pelo menos uma letra maiúscula: [A-Z]</li>
+                            <li>deve conter pelo menos um dígito: [0-9]</li>
+                            <li>deve conter um caractere especial:[@$!%*#?&]</li>
+                        </ul>";
+
+                $html .= "
+                    <br>
+                    <p>
+                        <a href=" . $link . " >CLIQUE AQUI PARA RECUPERAR SUA SENHA</a>
+                    </p>";
+                $html .= "</body>";
+                $html .= "</html>";
+
+
+
+                return $html;
+                break;
+
+
+            case 'senha_recuperada':
+                $html = "<!doctype html>";
+                $html .= "<html>";
+                $html .= "<head>";
+                $html .= "<meta charset='utf-8'>";
+                $html .= "<meta http-equiv='X-UA-Compatible' content='IE=edge'>";
+                $html .= "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">";
+                $html .= "<title>Laravel - Resultados</title>";
+                $html .= "</head>";
+                $html .= "<body>";
+                $html = "<h1>Sua Senha foi alterada!</h1>";
+                $html .= "<p>Olá, $colaborador->nome</p>";
+                $html .= "<p>A senha cadastrada na Intranet foi alterada</p>";
+                $html .= "<p>Caso não tenha pedido esssa Alteração, entre em contato com</p>";
+                $html .= "<p>o suporte o mais rápido possivel</p>";
+                $html .= "</body>";
+                $html .= "</html>";
+                return  $html;
+                break;
+        }
+    }
+
+    public function composeEmail($colaborador, $tipoMensagem)
+    {
+        $mail = new PHPMailer(true);
+        try {
+            //Server settings
+            $mail->SMTPDebug = 0;                      //Enable verbose debug output
+            $mail->isSMTP();                                            //Send using SMTP
+            $mail->Host       = env('PHP_MAILER_HOST');                     //Set the SMTP server to send through
+            $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+            $mail->Username   = env('PHP_MAILER_USERNAME');;                     //SMTP username
+            $mail->Password   = env('PHP_MAILER_PASSWORD');                               //SMTP password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+            $mail->Port       = env('PHP_MAILER_PORT');                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+
+            //Recipients
+            $mail->setFrom('desenvolvimento@grupovolpato.com', 'Intranet');
+            $mail->addAddress($colaborador->email, $colaborador->nome);     //Add a recipient
+
+            //Content
+            $mail->isHTML(true);                                  //Set email format to HTML
+            $mail->Subject = 'Recuperar Senha';
+            $mail->Body = $this->getBody($colaborador, $tipoMensagem);
+            $mail->send();
+        } catch (Exception $e) {
+            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        }
     }
 
     /**

@@ -11,7 +11,7 @@
                 <p class="mt-3 mb-1"></p>
                 <h1>Redefinição de senha!</h1>
                 <p>Acabamos de enviar um email com as instruções para redefinir sua senha.</p>
-                <p><a href="/">Ir para o site </a></p>
+                <p><a href="/">Voltar para o Login </a></p>
                 <p class="mt-3 mb-1"></p>
             </div>
         </div>
