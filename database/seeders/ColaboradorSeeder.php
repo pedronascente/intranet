@@ -18,9 +18,9 @@ class ColaboradorSeeder extends Seeder
             'nome' => Str::random(10),
             'sobrenome' => ' de tal ' . Str::random(3),
             'email' => 'nascente3d@gmail.com',
-            'rg' => '4248899977',
+            'rg' => '777777777777777',
             'cpf' => '348.211.190/13',
-            'cnpj' => '15626983000143',
+            'cnpj' => '15.626.983/0001-43',
             'foto' => 'dummy-round.png',
             'ramal' => '521',
         ]);
