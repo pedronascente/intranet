@@ -291,11 +291,14 @@ class UserController extends Controller
 
     public function composeEmail($colaborador, $tipoMensagem)
     {
+
         $mail = new PHPMailer(true);
+        $mail->CharSet = "UTF-8";
         try {
             //Server settings
             $mail->SMTPDebug = 0;                      //Enable verbose debug output
-            $mail->isSMTP();                                            //Send using SMTP
+            $mail->isSMTP();
+            //Send using SMTP
             $mail->Host       = env('PHP_MAILER_HOST');                     //Set the SMTP server to send through
             $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
             $mail->Username   = env('PHP_MAILER_USERNAME');;                     //SMTP username
