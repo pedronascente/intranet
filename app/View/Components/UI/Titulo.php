@@ -30,9 +30,7 @@ class Titulo extends Component
             } else {
                 $this->titulo = $this->segmentUm;
             }
-        } elseif ($this->segmentUm  == 'profile') {
-            $this->titulo = $this->segmentUm;
-        } elseif ($this->segmentUm  == 'dashboard') {
+        } else {
             $this->titulo = $this->segmentUm;
         }
 
@@ -41,6 +39,7 @@ class Titulo extends Component
 
     public function getTitulo($titulo)
     {
+
         switch ($titulo) {
             case 'dashboard':
                 $this->titulo = "Dashboard";
@@ -77,6 +76,9 @@ class Titulo extends Component
                 break;
             case 'settings':
                 $this->titulo = "Configurações";
+                break;
+            case 'comissao':
+                $this->titulo = "Comissão";
                 break;
         }
     }

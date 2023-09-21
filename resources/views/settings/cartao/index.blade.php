@@ -6,8 +6,9 @@
             <table class="table table-hover text-nowrap table-striped">
                 <thead>
                     <tr>
-                        <th width="50%">2FA</th>
-                        <th width="45%">Status</th>
+                        <th>2FA</th>
+                        <th>Usuário</th>
+                        <th>Status</th>
                         <th width="5%" class="text-center">Permissões</th>
                     </tr>
                 </thead>
@@ -16,6 +17,7 @@
                         @foreach ($collections as $cartao)
                             <tr>
                                 <td>{{ $cartao->nome }}</td>
+                                <td>{{ $cartao->user->name }}</td>
                                 <td>
                                     @if ($cartao->status == 'on')
                                         Ativo

@@ -6,7 +6,6 @@
         @include('layouts.includes.barralateral')
         <div class="content-wrapper">
             <div class="container-fluid">
-                <x-ui.titulo :segment-um="Request::segment(1)" :segment-dois="Request::segment(2)" />
                 <div class="row">
                     <div class="col-md-12">
                         @if (session('status'))

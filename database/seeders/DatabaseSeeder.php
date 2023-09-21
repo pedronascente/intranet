@@ -24,6 +24,8 @@ class DatabaseSeeder extends Seeder
             TokenSeeder::class,
             ModuloPerfilSeeder::class,
             PerfilPermissaoSeeder::class,
+            TipoPlanilhaSeeder::class,
+            PeriodoSeeder::class,
         ]);
     }
 }

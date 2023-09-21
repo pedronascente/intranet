@@ -29,7 +29,7 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
-                <li class="nav-item  menu-open">
+                <!--li class="nav-item  menu-open">
                     <a href="javascript:void(0)"
                         @if (Request::segment(2) == 'modulo' ||
                                 Request::segment(2) == 'permissao' ||
@@ -47,19 +47,47 @@
                     </a>
                     <ul class="nav nav-treeview">
                         @if (session()->get('perfil'))
-                            @foreach (session()->get('perfil')['modulos'] as $item)
-                                <li class="nav-item">
+@foreach (session()->get('perfil')['modulos'] as $item)
+<li class="nav-item">
                                     <a href="{{ $item['rota'] }}"
                                         @if (Request::segment(2) == $item['slug']) class="nav-link active"  @else   class="nav-link" @endif>
                                         <i class="far fa-circle nav-icon"></i>
                                         <p> {{ $item['nome'] }}</p>
                                     </a>
                                 </li>
-                            @endforeach
-                        @endif
+@endforeach
+@endif
+                    </ul>
+                </li-->
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-edit"></i>
+                        <p>
+                            Comisão
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview" style="display: none;">
+                        <li class="nav-item">
+                            <a href="/planilha" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Adicionar</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/comissao/conferir" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Conferir</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/comissao/arquivo" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Arquivo</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
-
             </ul>
         </nav>
     </div>

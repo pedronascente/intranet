@@ -14,7 +14,6 @@ class CreateModuloPerfilTable extends Migration
     public function up()
     {
         Schema::create('modulo_perfil', function (Blueprint $table) {
-            // $table->increments('id');
             $table->integer('perfil_id')->unsigned();
             $table->foreign('perfil_id')->references('id')->on('perfis')->onDelete('cascade');
             $table->integer('modulo_id')->unsigned();

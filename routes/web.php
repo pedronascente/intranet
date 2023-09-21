@@ -13,6 +13,8 @@ use App\Http\Controllers\ModuloController;
 use App\Http\Controllers\TokenController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BaseController;
+use App\Http\Controllers\ComissaoController;
+use App\Http\Controllers\PlanilhaController;
 
 Route::prefix('/login')->group(function () {
     Route::get('/', [LoginController::class, 'showForm'])->name('login.form');
@@ -82,7 +84,17 @@ Route::prefix('/recuperar')->group(function () {
     Route::get('/sucesso', [UserController::class, 'recuperarSenhaSucesso']);
 });
 
-
-
 Route::get('/senha/{email}/{token}', [UserController::class, 'senhaCreate'])->name('senha');
 Route::get('/senha', [UserController::class, 'senhaSucesso']);
+
+Route::prefix('/planilha')->group(function () {
+    Route::get('/', [PlanilhaController::class, 'index'])->name('planilha.index');
+    Route::get('/create', [PlanilhaController::class, 'create'])->name('planilha.create');
+    Route::post('/', [PlanilhaController::class, 'store'])->name('planilha.store');
+    Route::delete('/{id}', [PlanilhaController::class, 'destroy'])->name('planilha.destroy');
+});
+
+Route::prefix('/comissao')->group(function () {
+    Route::get('/planilha/{id}', [ComissaoController::class, 'AddComissao'])->name('comissao.create');
+    Route::post('/', [ComissaoController::class, 'store'])->name('comissao.store');
+});

@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+    <x-ui.titulo :segment-um="Request::segment(1)" :segment-dois="Request::segment(2)" />
     <div class="card">
         <x-botao.criar rota="cargo" :permissoes="$permissoes" />
         <div class="card-body table-responsive p-0">

@@ -47,6 +47,12 @@ class ModalDelete extends Component
             case 'base':
                 $this->rota = route('base.destroy', 1);
                 break;
+            case 'planilha':
+                $this->rota = route('planilha.destroy', 1);
+                break;
+            case 'comissao':
+                $this->rota = route('comissao.destroy', 1);
+                break;
         }
     }
 
