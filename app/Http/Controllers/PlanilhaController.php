@@ -41,6 +41,7 @@ class PlanilhaController extends Controller
             ]
         );
     }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -72,6 +73,37 @@ class PlanilhaController extends Controller
             ->with('status', "Registrado com sucesso!");
     }
 
+    public function edit($id)
+    {
+        $planilha = Planilha::with('colaborador', 'periodo', 'tipoPlanilha')->findorFail($id);
+        $periodos = Periodo::all();
+        $tipoPlanilhas = TipoPlanilha::all();
+        return view(
+            'comissao.planilha.edit',
+            [
+                'periodos' => $periodos,
+                'tipoPlanilhas' =>  $tipoPlanilhas,
+                'planilha' => $planilha,
+            ]
+        );
+    }
+
+    public function update(Request $request, $id)
+    {
+        $this->validarFormulario($request);
+        $planilha = Planilha::findOrFail($id);
+        $planilha->ctps = $request->ctps;
+        $planilha->matricula = $request->matricula;
+        $planilha->ano = $request->ano;
+        $planilha->periodo()->associate($request->periodo_id);
+        $planilha->colaborador()->associate($request->colaborador_id);
+        $planilha->tipoPlanilha()->associate($request->tipo_planilha_id);
+        $planilha->update();
+
+        return redirect()
+            ->action('App\Http\Controllers\PlanilhaController@index')
+            ->with('status', "Registro Atualizado!");
+    }
 
     public function destroy(Request $request, $id)
     {

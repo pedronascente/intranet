@@ -90,8 +90,10 @@ Route::get('/senha', [UserController::class, 'senhaSucesso']);
 Route::prefix('/planilha')->group(function () {
     Route::get('/', [PlanilhaController::class, 'index'])->name('planilha.index');
     Route::get('/create', [PlanilhaController::class, 'create'])->name('planilha.create');
+    Route::get('/{id}/edit', [PlanilhaController::class, 'edit'])->name('planilha.edit');
     Route::post('/', [PlanilhaController::class, 'store'])->name('planilha.store');
     Route::delete('/{id}', [PlanilhaController::class, 'destroy'])->name('planilha.destroy');
+    Route::put('/{id}', [PlanilhaController::class, 'update'])->name('planilha.update');
 });
 
 Route::prefix('/comissao')->group(function () {

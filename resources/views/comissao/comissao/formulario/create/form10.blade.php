@@ -37,10 +37,10 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Conta / Pedido:</label>
-                                <input type="text" name="conta_periodo" maxlength="190"
-                                    class="form-control @error('conta_periodo') is-invalid  @enderror"
-                                    placeholder="Conta/Periodo" value="{{ old('conta_periodo') }}">
-                                @error('conta_periodo')
+                                <input type="text" name="conta_pedido" maxlength="190"
+                                    class="form-control @error('conta_pedido') is-invalid  @enderror"
+                                    placeholder="Conta/Periodo" value="{{ old('conta_pedido') }}">
+                                @error('conta_pedido')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>

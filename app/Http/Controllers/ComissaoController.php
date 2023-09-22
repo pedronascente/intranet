@@ -9,17 +9,14 @@ class ComissaoController extends Controller
 {
     public function AddComissao($id)
     {
-        /*
-            * [x] Buscar dados da planilha na base de dados
-            * [x] Pegar o nome do formulario na tabela tipoPlanilha
-            * [x] Retornar view do formulario pra criar a comissão
-        
-        */
         $planilha = Planilha::with('colaborador', 'periodo', 'tipoPlanilha')->findOrFail($id);
+
+        //dd($planilha->tipoPlanilha->formulario);
         return view(
-            'comissao.formulario.' . $planilha->tipoPlanilha->formulario,
+            'comissao.create',
             [
-                'planilha' => $planilha
+                'planilha' => $planilha,
+                'formulario' => $planilha->tipoPlanilha->formulario
             ]
         );
     }

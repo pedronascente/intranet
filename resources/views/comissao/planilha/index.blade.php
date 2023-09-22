@@ -46,7 +46,7 @@
                                 <td>{{ $item->status }}</td>
                                 <td>{{ $item->tipoPlanilha->nome }}</td>
                                 <td class="text-center">
-                                    <a href="{{ route('comissao.create', $item->id) }}" class="btn btn-primary"
+                                    <a href="{{ route('planilha.edit', $item->id, 'edit') }}" class="btn btn-primary"
                                         title="Editar Planilha">
                                         <i class="nav-icon fas fa-edit"></i> Editar
                                     </a>

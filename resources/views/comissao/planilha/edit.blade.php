@@ -15,17 +15,16 @@
         </div>
     </section>
     <div class="card card-default">
-        <form action="{{ route('planilha.store') }}" method="POST">
+        <form action="{{ route('planilha.update', $planilha->id) }}" method="POST">
             @csrf
+            @method('PUT')
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Colaborador:</label>
                             <input type="text" class="form-control"
-                                value="{{ $colaborador->nome }} {{ $colaborador->sobrenome }}" disabled>
-                            <input type="hidden" name="colaborador_id" class="form-control "
-                                value="{{ $colaborador->id }}">
+                                value="{{ $planilha->colaborador->nome }} {{ $planilha->colaborador->sobrenome }}" disabled>
                         </div>
                     </div>
                 </div>
@@ -33,8 +32,9 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>CTPS:</label>
-                            <input type="text" name="ctps" class="form-control @error('ctps') is-invalid  @enderror"
-                                placeholder="Ctps" value="{{ old('ctps') }}">
+                            <input type="text" name="ctps" maxlength="20"
+                                class="form-control @error('ctps') is-invalid  @enderror" placeholder="Ctps"
+                                value="{{ $planilha->ctps }}">
                             @error('ctps')
                                 <span class=" invalid-feedback">{{ $message }}</span>
                             @enderror
@@ -45,7 +45,7 @@
                             <label>Matricula:</label>
                             <input type="text" name="matricula"
                                 class="form-control @error('matricula') is-invalid  @enderror" placeholder="Matricula"
-                                value="{{ old('matricula') }}">
+                                value="{{ $planilha->matricula }}">
                             @error('matricula')
                                 <span class=" invalid-feedback">{{ $message }}</span>
                             @enderror
@@ -57,11 +57,12 @@
                         <div class="form-group">
                             <label>Tipo Planilha:</label>
                             <select name="tipo_planilha_id"
-                                class="form-control @error('tipo_planilha_id') is-invalid  @enderror">
+                                class="form-control @error('tipo_planilha_id') is-invalid  @enderror" disabled>
                                 <option value="">selecionar...</option>
                                 @if ($tipoPlanilhas)
                                     @foreach ($tipoPlanilhas as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nome }}</option>
+                                        <option value="{{ $item->id }}"
+                                            @if ($item->id == $planilha->tipoPlanilha->id) selected @endif>{{ $item->nome }}</option>
                                     @endforeach
                                 @endif
                             </select>
@@ -75,7 +76,7 @@
                             <label>Ano:</label>
                             <input type="text" name="ano" maxlength="4"
                                 class="form-control @error('ano') is-invalid  @enderror" placeholder="Ano"
-                                value="{{ date('Y') }}">
+                                value="{{ $planilha->ano }}">
                             @error('ano')
                                 <span class=" invalid-feedback">{{ $message }}</span>
                             @enderror
@@ -88,7 +89,10 @@
                                 <option value="">selecionar...</option>
                                 @if ($periodos)
                                     @foreach ($periodos as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nome }}</option>
+                                        <option value="{{ $item->id }}"
+                                            @if ($item->id == $planilha->periodo->id) selected @endif>
+                                            {{ $item->nome }}
+                                        </option>
                                     @endforeach
                                 @endif
                             </select>
@@ -100,6 +104,9 @@
                 </div>
             </div>
             <div class="card-footer">
+                <input type="hidden" name="colaborador_id" class="form-control" value="{{ $planilha->colaborador->id }}">
+                <input type="hidden" name="tipo_planilha_id" class="form-control"
+                    value="{{ $planilha->tipoPlanilha->id }}">
                 <button type="submit" class="btn bg-gradient-primary">
                     <i class="fas fa-save" aria-hidden="true"></i>
                     Salvar
