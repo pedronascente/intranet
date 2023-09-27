@@ -10,7 +10,7 @@
             <th>Ins. / Vendas</th>
             <th>Mensal</th>
             <th>Comissão</th>
-            <th>Desconto da Comissão</th>
+            <th>Desconto</th>
             <th width="5%" class="text-center">Permissões</th>
         </tr>
     </thead>
@@ -27,7 +27,8 @@
                 <td>R$ 140.00</td>
                 <td>R$ 144.75</td>
                 <td>0.00</td>
-                <td> <a href="http://127.0.0.1:8000/comissao/planilha/1" class="btn btn-primary" title="Editar Planilha">
+                <td>
+                    <a href="{{ route('comissao.edit', $i) }}" class="btn btn-primary" title="Editar Planilha">
                         <i class="nav-icon fas fa-edit"></i> Editar
                     </a>
                     <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal"

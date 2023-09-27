@@ -33,8 +33,9 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>CTPS:</label>
-                            <input type="text" name="ctps" class="form-control @error('ctps') is-invalid  @enderror"
-                                placeholder="Ctps" value="{{ old('ctps') }}">
+                            <input type="text" name="ctps" maxlength="20"
+                                class="form-control @error('ctps') is-invalid  @enderror" placeholder="Ctps"
+                                value="{{ old('ctps') }}">
                             @error('ctps')
                                 <span class=" invalid-feedback">{{ $message }}</span>
                             @enderror
@@ -43,7 +44,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Matricula:</label>
-                            <input type="text" name="matricula"
+                            <input type="text" name="matricula" maxlength="20"
                                 class="form-control @error('matricula') is-invalid  @enderror" placeholder="Matricula"
                                 value="{{ old('matricula') }}">
                             @error('matricula')

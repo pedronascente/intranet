@@ -30,4 +30,9 @@ class Planilha extends Model
     {
         return $this->belongsTo(Colaborador::class);
     }
+
+    public function comissoes()
+    {
+        return $this->hasMany(Comissao::class);
+    }
 }

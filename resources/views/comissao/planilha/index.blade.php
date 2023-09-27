@@ -54,7 +54,7 @@
                                         data-target="#deleteModal" data-id="{{ $item->id }}" title="Excluir Planilha">
                                         <i class="fas fa-trash"></i> Excluir
                                     </a>
-                                    <a href="{{ route('comissao.create', $item->id) }}" class="btn btn-primary"
+                                    <a href="{{ route('comissao.addcomissao', $item->id) }}" class="btn btn-primary"
                                         title="Conissão">
                                         <i class="fas fa-solid fa-plus"></i> Comissão
                                     </a>

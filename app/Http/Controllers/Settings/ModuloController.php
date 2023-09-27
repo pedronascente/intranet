@@ -1,31 +1,41 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Settings;
+
+use App\Models\Modulo;
 
 use Illuminate\Http\Request;
-use App\Models\Modulo;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Help\PermissaoHelp;
 
 class ModuloController extends Controller
 {
+    private $modulo; //id do modulo
+    private $paginate;
+    private $actionIndex;
+
+    public function __construct()
+    {
+        $this->modulo = 4;
+        $this->paginate = 10;
+        $this->actionIndex = 'App\Http\Controllers\Settings\ModuloController@index';
+    }
+
     public function index()
     {
-        $modulos = Modulo::orderBy('id', 'desc')->paginate(10);
-        return view(
-            'settings.modulo.index',
-            [
-                'collection' => $modulos,
-                'permissoes' => $this->getPermissoes()
-            ]
-        );
+        return view('settings.modulo.index', [
+            'collection' => Modulo::orderBy('id', 'desc')->paginate($this->paginate),
+            'permissoes' => PermissaoHelp::getPermissoes($this->modulo),
+        ]);
     }
 
     public function create()
     {
-        if ($this->verificarPermissao('Criar')) {
+        if (PermissaoHelp::verificaPermissao(['permissao' => 'Criar', 'modulo' => $this->modulo])) {
             return view('settings.modulo.create');
         } else {
             return redirect()
-                ->action('App\Http\Controllers\ModuloController@index');
+                ->action($this->actionIndex);
         }
     }
 
@@ -39,28 +49,22 @@ class ModuloController extends Controller
         $modulo->descricao = $request->descricao;
         $modulo->save();
         return redirect()
-            ->action('App\Http\Controllers\ModuloController@index')
+            ->action($this->actionIndex)
             ->with('status', "Registrado com sucesso!");
     }
 
     public function show($id)
     {
-        $modulo = Modulo::find($id);
-        return view('settings.modulo.show', ['modulo' => $modulo]);
+        return view('settings.modulo.show', ['modulo' => Modulo::find($id)]);
     }
 
     public function edit($id)
     {
-        if ($this->verificarPermissao('Editar')) {
-            return view(
-                'settings.modulo.edit',
-                [
-                    'modulo' => Modulo::findOrFail($id)
-                ]
-            );
+        if (PermissaoHelp::verificaPermissao(['permissao' => 'Editar', 'modulo' => $this->modulo])) {
+            return view('settings.modulo.edit', ['modulo' => Modulo::findOrFail($id)]);
         } else {
             return redirect()
-                ->action('App\Http\Controllers\ModuloController@index');
+                ->action($this->actionIndex);
         }
     }
 
@@ -74,7 +78,7 @@ class ModuloController extends Controller
         $modulo->descricao = $request->descricao;
         $modulo->update();
         return redirect()
-            ->action('App\Http\Controllers\ModuloController@index')
+            ->action($this->actionIndex)
             ->with('status', "Registro Atualizado!");
     }
 
@@ -84,12 +88,12 @@ class ModuloController extends Controller
 
         if ($modulo->perfis->count() >= 1) {
             return redirect()
-                ->action('App\Http\Controllers\ModuloController@index')
+                ->action($this->actionIndex)
                 ->with('warning', "Este Módulo está relacionada a um perfil, Não pode ser excluida.");
         } else {
             $modulo->delete();
             return redirect()
-                ->action('App\Http\Controllers\ModuloController@index')
+                ->action($this->actionIndex)
                 ->with('status', "Registro Excluido!");
         }
     }
@@ -108,37 +112,6 @@ class ModuloController extends Controller
                 'descricao.required' => 'Campo obrigatório.',
             ]
         );
-    }
-
-    private function getPermissoes()
-    {
-        $arrayPermissoes  = isset(session()->get('perfil')['permissoes'][4]) ? session()->get('perfil')['permissoes'][4]->toArray() : null;
-        if (!empty($arrayPermissoes)) {
-            $permissoes = $arrayPermissoes;
-        } else {
-            $permissoes = null;
-        }
-        return $permissoes;
-    }
-
-    private function verificarPermissao($permissao)
-    {
-        $modulo = 4;
-        $ArrayLystPermissoes = [];
-        if (session()->get('perfil')) {
-            foreach (session()->get('perfil')['permissoes'] as $item) {
-                foreach ($item as  $value) {
-                    if ($value->modulo_id == $modulo) {
-                        $ArrayLystPermissoes[] = $value->nome;
-                    };
-                }
-            }
-        }
-        if (in_array($permissao, $ArrayLystPermissoes)) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     private function getSlug($rota)

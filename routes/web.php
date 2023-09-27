@@ -1,20 +1,20 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CargoController;
-use App\Http\Controllers\CartaoController;
-use App\Http\Controllers\ColaboradorController;
+use App\Http\Controllers\Settings\CargoController;
+use App\Http\Controllers\Settings\CartaoController;
+use App\Http\Controllers\Settings\ColaboradorController;
+use App\Http\Controllers\Settings\EmpresaController;
+use App\Http\Controllers\Settings\PerfilController;
+use App\Http\Controllers\Settings\PermissaoController;
+use App\Http\Controllers\Settings\BaseController;
+use App\Http\Controllers\Settings\ModuloController;
+use App\Http\Controllers\Comissao\ComissaoController;
+use App\Http\Controllers\Comissao\PlanilhaController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\EmpresaController;
-use App\Http\Controllers\PerfilController;
-use App\Http\Controllers\PermissaoController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\ModuloController;
 use App\Http\Controllers\TokenController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\BaseController;
-use App\Http\Controllers\ComissaoController;
-use App\Http\Controllers\PlanilhaController;
 
 Route::prefix('/login')->group(function () {
     Route::get('/', [LoginController::class, 'showForm'])->name('login.form');
@@ -87,16 +87,15 @@ Route::prefix('/recuperar')->group(function () {
 Route::get('/senha/{email}/{token}', [UserController::class, 'senhaCreate'])->name('senha');
 Route::get('/senha', [UserController::class, 'senhaSucesso']);
 
-Route::prefix('/planilha')->group(function () {
-    Route::get('/', [PlanilhaController::class, 'index'])->name('planilha.index');
-    Route::get('/create', [PlanilhaController::class, 'create'])->name('planilha.create');
-    Route::get('/{id}/edit', [PlanilhaController::class, 'edit'])->name('planilha.edit');
-    Route::post('/', [PlanilhaController::class, 'store'])->name('planilha.store');
-    Route::delete('/{id}', [PlanilhaController::class, 'destroy'])->name('planilha.destroy');
-    Route::put('/{id}', [PlanilhaController::class, 'update'])->name('planilha.update');
-});
-
 Route::prefix('/comissao')->group(function () {
-    Route::get('/planilha/{id}', [ComissaoController::class, 'AddComissao'])->name('comissao.create');
+    Route::get('/planilha', [PlanilhaController::class, 'index'])->name('planilha.index');
+    Route::get('/planilha/create', [PlanilhaController::class, 'create'])->name('planilha.create');
+    Route::get('/planilha/{id}/edit', [PlanilhaController::class, 'edit'])->name('planilha.edit');
+    Route::post('/planilha', [PlanilhaController::class, 'store'])->name('planilha.store');
+    Route::put('/planilha/{id}', [PlanilhaController::class, 'update'])->name('planilha.update');
+    Route::delete('/planilha/{id}', [PlanilhaController::class, 'destroy'])->name('planilha.destroy');
+
+    Route::get('/{id}', [ComissaoController::class, 'AddComissao'])->name('comissao.addcomissao');
     Route::post('/', [ComissaoController::class, 'store'])->name('comissao.store');
+    Route::get('/{id}/edit', [ComissaoController::class, 'edit'])->name('comissao.edit');
 });

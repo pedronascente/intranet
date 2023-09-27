@@ -1,38 +1,47 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Settings;
 
 use App\Models\Modulo;
+
 use App\Models\Perfil;
 use App\Models\Permissao;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Help\PermissaoHelp;
 
 class PerfilController extends Controller
 {
+    private $modulo; //id do modulo
+    private $paginate;
+    private $actionIndex;
+    private $actionEdit;
+    private $actionCreate;
+
+    public function __construct()
+    {
+        $this->modulo = 6;
+        $this->paginate = 10;
+        $this->actionIndex = 'App\Http\Controllers\PerfilController@index';
+        $this->actionEdit = 'App\Http\Controllers\PerfilController@edit';
+        $this->actionCreate = 'App\Http\Controllers\PerfilController@create';
+    }
+
     public function index()
     {
-        return view(
-            'settings.perfil.index',
-            [
-                'collections' => Perfil::orderBy('id', 'desc')->paginate(6),
-                'permissoes' => $this->getPermissoes()
-            ]
-        );
+        return view('settings.perfil.index', [
+            'collections' => Perfil::orderBy('id', 'desc')->paginate($this->paginate),
+            'permissoes' => PermissaoHelp::getPermissoes($this->modulo),
+        ]);
     }
 
     public function create()
     {
-        if ($this->verificarPermissao('Criar')) {
-            return view(
-                'settings.perfil.create',
-                [
-                    'modulos' => Modulo::all(),
-                    'permissoes' => Permissao::all(),
-                ]
-            );
+        if (PermissaoHelp::verificaPermissao(['permissao' => 'Criar', 'modulo' => $this->modulo])) {
+            return view('settings.perfil.create', ['modulos' => Modulo::all(), 'permissoes' => Permissao::all()]);
         } else {
             return redirect()
-                ->action('App\Http\Controllers\PerfilController@index');
+                ->action($this->actionIndex);
         }
     }
 
@@ -41,13 +50,13 @@ class PerfilController extends Controller
         $this->validarFormulario($request);
         if ($this->verificarDuplicidadeDePerfil($request)) {
             return redirect()
-                ->action('App\Http\Controllers\PerfilController@create')
+                ->action($this->actionCreate)
                 ->with('warning', "Já existe um Perfil com este nome");
         }
 
         if (!$request->modulos) {
             return redirect()
-                ->action('App\Http\Controllers\PerfilController@create')
+                ->action($this->actionCreate)
                 ->with('error', "Selecione pelo menos um modulo, e uma permissão para continuar.");
         }
 
@@ -69,13 +78,13 @@ class PerfilController extends Controller
         }
 
         return redirect()
-            ->action('App\Http\Controllers\PerfilController@index')
+            ->action($this->actionIndex)
             ->with('success', "Registrado com sucesso.");
     }
 
     public function edit($id)
     {
-        if ($this->verificarPermissao('Editar')) {
+        if (PermissaoHelp::verificaPermissao(['permissao' => 'Editar', 'modulo' => $this->modulo])) {
             $listArrayModulos = [];
             $modulos = Modulo::all();
             $permissoes = Permissao::all();
@@ -93,7 +102,7 @@ class PerfilController extends Controller
             ]);
         } else {
             return redirect()
-                ->action('App\Http\Controllers\PerfilController@index');
+                ->action($this->actionIndex);
         }
     }
 
@@ -110,15 +119,13 @@ class PerfilController extends Controller
                 $perfil->modulos()->attach($m);
             }
         }
-
         if ($request->permissoes) {
             foreach ($request->permissoes as $modulo => $permissoes) {
                 $perfil->permissoes()->attach($permissoes, ['modulo_id' => $modulo]);
             }
         }
-
         return redirect()
-            ->action('App\Http\Controllers\PerfilController@edit', $id)
+            ->action($this->actionEdit, $id)
             ->with('status', "Registro Atualizado!");
     }
 
@@ -127,12 +134,12 @@ class PerfilController extends Controller
         $perfil = Perfil::with('user')->findOrFail($request->id);
         if ($perfil->user) {
             return redirect()
-                ->action('App\Http\Controllers\PerfilController@index')
+                ->action($this->actionIndex)
                 ->with('warning', "Este Perfil tem usuario(s) associado(s), por tanto não pode ser excluida.");
         } else {
             $perfil->delete();
             return redirect()
-                ->action('App\Http\Controllers\PerfilController@index')
+                ->action($this->actionIndex)
                 ->with('status', "Registro Excluido!");
         }
     }
@@ -156,36 +163,5 @@ class PerfilController extends Controller
     {
         return Perfil::where('nome', $request->nome)
             ->get()->count();
-    }
-
-    private function getPermissoes()
-    {
-        $arrayPermissoes  = isset(session()->get('perfil')['permissoes'][6]) ? session()->get('perfil')['permissoes'][6]->toArray() : null;
-        if (!empty($arrayPermissoes)) {
-            $permissoes = $arrayPermissoes;
-        } else {
-            $permissoes = null;
-        }
-        return $permissoes;
-    }
-
-    private function verificarPermissao($permissao)
-    {
-        $modulo = 6;
-        $ArrayLystPermissoes = [];
-        if (session()->get('perfil')) {
-            foreach (session()->get('perfil')['permissoes'] as $item) {
-                foreach ($item as  $value) {
-                    if ($value->modulo_id == $modulo) {
-                        $ArrayLystPermissoes[] = $value->nome;
-                    };
-                }
-            }
-        }
-        if (in_array($permissao, $ArrayLystPermissoes)) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

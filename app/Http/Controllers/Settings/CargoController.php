@@ -1,30 +1,40 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Settings;
 
 use App\Models\Cargo;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Help\PermissaoHelp;
 
 class CargoController extends Controller
 {
+    private $modulo; //id do modulo
+    private $paginate;
+    private $actionIndex;
+
+    public function __construct()
+    {
+        $this->modulo = 1; //id do modulo
+        $this->paginate = 10;
+        $this->actionIndex = 'App\Http\Controllers\Settings\CargoController@index';
+    }
+
     public function index()
     {
-        return view(
-            'settings.cargo.index',
-            [
-                'collection' => Cargo::orderBy('id', 'desc')->paginate(10),
-                'permissoes' => $this->getPermissoes()
-            ]
-        );
+        return view('settings.cargo.index', [
+            'collection' => Cargo::orderBy('id', 'desc')->paginate($this->paginate),
+            'permissoes' => PermissaoHelp::getPermissoes($this->modulo),
+        ]);
     }
 
     public function create()
     {
-        if ($this->verificarPermissao('Criar')) {
+        if (PermissaoHelp::verificaPermissao(['permissao' => 'Criar', 'modulo' => $this->modulo])) {
             return view('settings.cargo.create');
         } else {
             return redirect()
-                ->action('App\Http\Controllers\CargoController@index');
+                ->action($this->actionIndex);
         }
     }
 
@@ -35,17 +45,17 @@ class CargoController extends Controller
         $cargo->nome = $request->nome;
         $cargo->save();
         return redirect()
-            ->action('App\Http\Controllers\CargoController@index')
+            ->action($this->actionIndex)
             ->with('status', "Registrado com sucesso!");
     }
 
     public function edit($id)
     {
-        if ($this->verificarPermissao('Editar')) {
+        if (PermissaoHelp::verificaPermissao(['permissao' => 'Editar', 'modulo' => $this->modulo])) {
             return view('settings.cargo.edit', ['cargo' => Cargo::findOrFail($id)]);
         } else {
             return redirect()
-                ->action('App\Http\Controllers\CargoController@index');
+                ->action($this->actionIndex);
         }
     }
 
@@ -56,7 +66,7 @@ class CargoController extends Controller
         $cargo->nome = $request->nome;
         $cargo->update();
         return redirect()
-            ->action('App\Http\Controllers\CargoController@index')
+            ->action($this->actionIndex)
             ->with('status', "Registro Atualizado!");
     }
 
@@ -66,16 +76,16 @@ class CargoController extends Controller
         if ($cargo) {
             if ($cargo->colaboradores->count() >= 1) {
                 return redirect()
-                    ->action('App\Http\Controllers\CargoController@index')
+                    ->action($this->actionIndex)
                     ->with('warning', "Este cargo tem colaborador associado, por tanto não pode ser excluida.");
             }
             $cargo->delete();
             return redirect()
-                ->action('App\Http\Controllers\CargoController@index')
+                ->action($this->actionIndex)
                 ->with('status', "Registro Excluido!");
         } else {
             return redirect()
-                ->action('App\Http\Controllers\CargoController@index')
+                ->action($this->actionIndex)
                 ->with('warning', "Registro não encontrado.");
         }
     }
@@ -99,36 +109,5 @@ class CargoController extends Controller
                 'nome.unique' => 'Este nome já está sendo utilizado.',
             ]
         );
-    }
-
-    private function getPermissoes()
-    {
-        $arrayPermissoes  = isset(session()->get('perfil')['permissoes'][1]) ? session()->get('perfil')['permissoes'][1]->toArray() : null;
-        if (!empty($arrayPermissoes)) {
-            $permissoes = $arrayPermissoes;
-        } else {
-            $permissoes = null;
-        }
-        return $permissoes;
-    }
-
-    private function verificarPermissao($permissao)
-    {
-        $modulo = 1;
-        $ArrayLystPermissoes = [];
-        if (session()->get('perfil')) {
-            foreach (session()->get('perfil')['permissoes'] as $item) {
-                foreach ($item as  $value) {
-                    if ($value->modulo_id == $modulo) {
-                        $ArrayLystPermissoes[] = $value->nome;
-                    };
-                }
-            }
-        }
-        if (in_array($permissao, $ArrayLystPermissoes)) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

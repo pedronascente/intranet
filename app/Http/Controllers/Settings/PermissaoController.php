@@ -1,30 +1,40 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Settings;
 
-use Illuminate\Http\Request;
 use App\Models\permissao;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Help\PermissaoHelp;
 
 class PermissaoController extends Controller
 {
+    private $modulo; //id do modulo
+    private $paginate;
+    private $actionIndex;
+
+    public function __construct()
+    {
+        $this->modulo = 5; //id do modulo
+        $this->paginate = 10;
+        $this->actionIndex = 'App\Http\Controllers\Settings\PermissaoController@index';
+    }
+
     public function index()
     {
-        return view(
-            'settings.permissao.index',
-            [
-                'collection' => Permissao::orderBy('id', 'desc')->paginate(6),
-                'permissoes' => $this->getPermissoes()
-            ]
-        );
+        return view('settings.permissao.index', [
+            'collection' => Permissao::orderBy('id', 'desc')->paginate($this->paginate),
+            'permissoes' => PermissaoHelp::getPermissoes($this->modulo),
+        ]);
     }
 
     public function create()
     {
-        if ($this->verificarPermissao('Criar')) {
+        if (PermissaoHelp::verificaPermissao(['permissao' => 'Criar', 'modulo' => $this->modulo])) {
             return view('settings.permissao.create');
         } else {
             return redirect()
-                ->action('App\Http\Controllers\PermissaoController@index');
+                ->action($this->actionIndex);
         }
     }
 
@@ -33,30 +43,24 @@ class PermissaoController extends Controller
         $this->validarFormulario($request);
         if ($this->validar_duplicidade($request)) {
             return redirect()
-                ->action('App\Http\Controllers\PermissaoController@index')
+                ->action($this->actionIndex)
                 ->with('warning', "já existe permissão com este nome!");
         }
         $permissao = new Permissao();
         $permissao->nome = $request->nome;
         $permissao->save();
-
         return redirect()
-            ->action('App\Http\Controllers\PermissaoController@index')
+            ->action($this->actionIndex)
             ->with('status', "Registrado com sucesso!");
     }
 
     public function edit($id)
     {
-        if ($this->verificarPermissao('Editar')) {
-            return view(
-                'settings.permissao.edit',
-                [
-                    'permissao' => Permissao::findOrFail($id)
-                ]
-            );
+        if (PermissaoHelp::verificaPermissao(['permissao' => 'Editar', 'modulo' => $this->modulo])) {
+            return view('settings.permissao.edit', ['permissao' => Permissao::findOrFail($id)]);
         } else {
             return redirect()
-                ->action('App\Http\Controllers\PermissaoController@index');
+                ->action($this->actionIndex);
         }
     }
 
@@ -67,7 +71,7 @@ class PermissaoController extends Controller
         $permissao->nome = $request->nome;
         $permissao->update();
         return redirect()
-            ->action('App\Http\Controllers\PermissaoController@index')
+            ->action($this->actionIndex)
             ->with('status', "Registro Atualizado!");
     }
 
@@ -76,12 +80,12 @@ class PermissaoController extends Controller
         $permissao = Permissao::with('perfis')->findOrFail($request->id);
         if ($permissao->perfis->count() >= 1) {
             return redirect()
-                ->action('App\Http\Controllers\PermissaoController@index')
+                ->action($this->actionIndex)
                 ->with('warning', "Está permissão está relacionada a um perfil, Não pode ser excluida.");
         } else {
             $permissao->delete();
             return redirect()
-                ->action('App\Http\Controllers\PermissaoController@index')
+                ->action($this->actionIndex)
                 ->with('status', "Registro Excluido!");
         }
     }
@@ -103,36 +107,5 @@ class PermissaoController extends Controller
         $duplicado = Permissao::where('nome', $request->nome)
             ->get()->count();
         return $duplicado;
-    }
-
-    private function getPermissoes()
-    {
-        $arrayPermissoes  = isset(session()->get('perfil')['permissoes'][5]) ? session()->get('perfil')['permissoes'][5]->toArray() : null;
-        if (!empty($arrayPermissoes)) {
-            $permissoes = $arrayPermissoes;
-        } else {
-            $permissoes = null;
-        }
-        return $permissoes;
-    }
-
-    private function verificarPermissao($permissao)
-    {
-        $modulo = 5;
-        $ArrayLystPermissoes = [];
-        if (session()->get('perfil')) {
-            foreach (session()->get('perfil')['permissoes'] as $item) {
-                foreach ($item as  $value) {
-                    if ($value->modulo_id == $modulo) {
-                        $ArrayLystPermissoes[] = $value->nome;
-                    };
-                }
-            }
-        }
-        if (in_array($permissao, $ArrayLystPermissoes)) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

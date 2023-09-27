@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Comissao;
 
 use App\Models\User;
 use App\Models\Periodo;
@@ -8,9 +8,19 @@ use App\Models\Planilha;
 use App\Models\Colaborador;
 use App\Models\TipoPlanilha;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class PlanilhaController extends Controller
 {
+    private $actionIndex;
+    private $paginate;
+
+    public function __construct()
+    {
+        $this->paginate = 10;
+        $this->actionIndex = 'App\Http\Controllers\Comissao\PlanilhaController@index';
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +28,7 @@ class PlanilhaController extends Controller
      */
     public function index()
     {
-        $collections = Planilha::orderBy('id', 'desc')->paginate(8);
+        $collections = Planilha::orderBy('id', 'desc')->paginate($this->paginate);
         return view('comissao.planilha.index', ['collections' => $collections]);
     }
 
@@ -53,10 +63,9 @@ class PlanilhaController extends Controller
         $this->validarFormulario($request);
         if ($this->validarDuplicidade($request) >= 1) {
             return redirect()
-                ->action('App\Http\Controllers\PlanilhaController@index')
+                ->action($this->actionIndex)
                 ->with('warning', "Está planilha já foi criada!");
         }
-
         $planilha = new Planilha();
         $colaborador = Colaborador::findOrFail($request->colaborador_id);
         $periodo = Periodo::findOrFail($request->periodo_id);
@@ -69,7 +78,7 @@ class PlanilhaController extends Controller
         $planilha->tipoPlanilha()->associate($tipoPlanilha);
         $planilha->save();
         return redirect()
-            ->action('App\Http\Controllers\PlanilhaController@index')
+            ->action($this->actionIndex)
             ->with('status', "Registrado com sucesso!");
     }
 
@@ -99,15 +108,19 @@ class PlanilhaController extends Controller
         $planilha->colaborador()->associate($request->colaborador_id);
         $planilha->tipoPlanilha()->associate($request->tipo_planilha_id);
         $planilha->update();
-
         return redirect()
-            ->action('App\Http\Controllers\PlanilhaController@index')
+            ->action($this->actionIndex)
             ->with('status', "Registro Atualizado!");
     }
 
     public function destroy(Request $request, $id)
     {
-        dd($request->all(), $id);
+        $planilha = Planilha::with('comissoes')->findOrFail($request->id);
+        $planilha->delete();
+
+        return redirect()
+            ->action($this->actionIndex)
+            ->with('status', "Registro Excluido!");
     }
 
     private function validarDuplicidade($request)
@@ -128,7 +141,6 @@ class PlanilhaController extends Controller
                 'ano' => 'required|max:4',
                 'periodo_id' => 'required',
                 'tipo_planilha_id' => 'required',
-
             ],
             [
                 'ctps.required' => 'Campo obrigatório.',

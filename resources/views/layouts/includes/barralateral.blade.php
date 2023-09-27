@@ -69,7 +69,7 @@
                     </a>
                     <ul class="nav nav-treeview" style="display: none;">
                         <li class="nav-item">
-                            <a href="/planilha" class="nav-link">
+                            <a href="{{ route('planilha.index') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Adicionar</p>
                             </a>

@@ -82,10 +82,10 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Desconto da Comissão:</label>
+                                <label>Desconto:</label>
                                 <input type="text" name="desconto" maxlength="190"
                                     class="form-control @error('desconto') is-invalid  @enderror"
-                                    placeholder="Desconto da Comissão" value="{{ old('desconto') }}">
+                                    placeholder="Desconto" value="{{ old('desconto') }}">
                                 @error('desconto')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -148,7 +148,7 @@
                         <th>Ins. / Vendas</th>
                         <th>Mensal</th>
                         <th>Comissão</th>
-                        <th>Desconto da Comissão</th>
+                        <th>Desconto</th>
                         <th width="5%" class="text-center">Permissões</th>
                     </tr>
                 </thead>

@@ -1,28 +1,40 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Settings;
 
-use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Cartao;
+
 use App\Models\Token;
+use App\Models\Cartao;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Help\PermissaoHelp;
 
 class CartaoController extends Controller
 {
-    /**
-     * Mostrar lista dos cartões criados.
-     *
-     * @return void
-     */
+    private $modulo; //id do modulo
+    private $paginate;
+    private $qtdToken;
+    private $actionIndex;
+    private $actionShow;
+    private $actionUserShow;
+
+    public function __construct()
+    {
+        $this->modulo = 8; //id do modulo
+        $this->paginate = 10;
+        $this->qtdToken = 40;
+        $this->actionIndex = 'App\Http\Controllers\Settings\CartaoController@index';
+        $this->actionShow = 'App\Http\Controllers\Settings\CartaoController@show';
+        $this->actionUserShow = 'App\Http\Controllers\Settings\UserController@show';
+    }
+
     public function index()
     {
-        return view(
-            'settings.cartao.index',
-            [
-                'collections' => Cartao::with('user')->orderBy('id', 'desc')->paginate(8),
-                'permissoes' => $this->getPermissoes()
-            ]
-        );
+        return view('settings.cartao.index', [
+            'collections' => Cartao::with('user')->orderBy('id', 'desc')->paginate($this->paginate),
+            'permissoes' => PermissaoHelp::getPermissoes($this->modulo),
+        ]);
     }
 
     /**
@@ -32,16 +44,11 @@ class CartaoController extends Controller
      */
     public function create()
     {
-        if ($this->verificarPermissao('Criar')) {
-            return view(
-                'settings.cartao.create',
-                [
-                    'users' => $this->getUserSemCartao()
-                ]
-            );
+        if (PermissaoHelp::verificaPermissao(['permissao' => 'Criar', 'modulo' => $this->modulo])) {
+            return view('settings.cartao.create',  ['users' => $this->getUserSemCartao()]);
         } else {
             return redirect()
-                ->action('App\Http\Controllers\CartaoController@index');
+                ->action($this->actionIndex);
         }
     }
 
@@ -55,6 +62,7 @@ class CartaoController extends Controller
     {
         $this->validarFormulario($request);
         $user = User::findOrFail($request->user_id);
+
         #criar e associar 2FA ao usuario:
         $user->cartao()->create([
             'status' => $request->status,
@@ -62,12 +70,13 @@ class CartaoController extends Controller
             'nome' => "CARTAO-" . $request->user_id,
             'qtdToken' => (int)$request->qtdToken,
         ]);
+
         //retornar o 2FA do usuario.
         $user = User::with('cartao')->findOrFail($request->user_id);
         $cartao = Cartao::findOrFail($user->cartao->id);
         Token::gerarToken($cartao);
         return redirect()
-            ->action('App\Http\Controllers\CartaoController@index')
+            ->action($this->actionIndex)
             ->with('status', "Registrado com sucesso!");
     }
 
@@ -79,17 +88,14 @@ class CartaoController extends Controller
      */
     public function show($id)
     {
-        if (session()->get('perfil')) {
-            foreach (session()->get('perfil')['permissoes'][8] as $item) {
-                if ($item->nome == 'Visualizar') {
-                    $cartao = Cartao::with('user', 'tokens')->findOrFail($id);
-                    return view('settings.cartao.show', ['cartao' => $cartao]);
-                    break;
-                }
+        foreach (PermissaoHelp::getPermissoes($this->modulo) as $permissao) {
+            if ($permissao->nome == 'Visualizar') {
+                return view('settings.cartao.show', ['cartao' => Cartao::with('user', 'tokens')->findOrFail($id)]);
+                break;
             }
         }
         return redirect()
-            ->action('App\Http\Controllers\CartaoController@index');
+            ->action($this->actionIndex);
     }
 
     /**
@@ -100,16 +106,11 @@ class CartaoController extends Controller
      */
     public function edit($id)
     {
-        if ($this->verificarPermissao('Editar')) {
-            return view(
-                'settings.cartao.edit',
-                [
-                    'cartao' => Cartao::with('user')->findOrFail($id)
-                ]
-            );
+        if (PermissaoHelp::verificaPermissao(['permissao' => 'Editar', 'modulo' => $this->modulo])) {
+            return view('settings.cartao.edit', ['cartao' => Cartao::with('user')->findOrFail($id)]);
         } else {
             return redirect()
-                ->action('App\Http\Controllers\CartaoController@index');
+                ->action($this->actionIndex);
         }
     }
     /**
@@ -129,7 +130,7 @@ class CartaoController extends Controller
             Token::gerarToken($cartao);
         }
         return redirect()
-            ->action('App\Http\Controllers\CartaoController@show', $cartao->id)
+            ->action($this->actionShow, $cartao->id)
             ->with('status', "Atualizado com sucesso!");
     }
 
@@ -144,7 +145,7 @@ class CartaoController extends Controller
         $cartao = Cartao::findOrfail($id);
         $cartao->delete();
         return redirect()
-            ->action('App\Http\Controllers\CartaoController@index')
+            ->action($this->actionIndex)
             ->with('status', "Excluido com sucesso!");
     }
 
@@ -154,14 +155,14 @@ class CartaoController extends Controller
         $user->cartao()->create([
             'status' => 'on',
             'user_id' => $usuario,
-            'nome' => "CARTAO-" . $usuario,
-            'qtdToken' => 40,
+            'nome' => "2FA-" . $usuario,
+            'qtdToken' => $this->qtdToken,
         ]);
 
         $cartao = Cartao::findOrFail($user->cartao->id);
         Token::gerarToken($cartao);
         return redirect()
-            ->action('App\Http\Controllers\UserController@show', $usuario)
+            ->action($this->actionUserShow, $usuario)
             ->with('status', "2FA Registrado com sucesso!");
     }
 
@@ -218,36 +219,5 @@ class CartaoController extends Controller
         $qtd = Token::getCartaoDoUsuarioLogado($request);
         $posicaoDoToken = rand(1, $qtd->qtdToken);
         return $posicaoDoToken;
-    }
-
-    private function getPermissoes()
-    {
-        $arrayPermissoes  = isset(session()->get('perfil')['permissoes'][8]) ? session()->get('perfil')['permissoes'][8]->toArray() : null;
-        if (!empty($arrayPermissoes)) {
-            $permissoes = $arrayPermissoes;
-        } else {
-            $permissoes = null;
-        }
-        return $permissoes;
-    }
-
-    private function verificarPermissao($permissao)
-    {
-        $modulo = 8;
-        $ArrayLystPermissoes = [];
-        if (session()->get('perfil')) {
-            foreach (session()->get('perfil')['permissoes'] as $item) {
-                foreach ($item as  $value) {
-                    if ($value->modulo_id == $modulo) {
-                        $ArrayLystPermissoes[] = $value->nome;
-                    };
-                }
-            }
-        }
-        if (in_array($permissao, $ArrayLystPermissoes)) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

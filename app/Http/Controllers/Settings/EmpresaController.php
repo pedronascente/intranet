@@ -1,30 +1,40 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Settings;
 
-use Illuminate\Http\Request;
 use App\Models\Empresa;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Help\PermissaoHelp;
 
 class EmpresaController extends Controller
 {
+    private $modulo; //id do modulo
+    private $paginate;
+    private $actionIndex;
+
+    public function __construct()
+    {
+        $this->modulo = 3;
+        $this->paginate = 10;
+        $this->actionIndex = 'App\Http\Controllers\EmpresaController@index';
+    }
+
     public function index()
     {
-        return view(
-            'settings.empresa.index',
-            [
-                'collection' => Empresa::orderBy('id', 'desc')->paginate(6),
-                'permissoes' => $this->getPermissoes()
-            ]
-        );
+        return view('settings.empresa.index', [
+            'collection' => Empresa::orderBy('id', 'desc')->paginate($this->paginate),
+            'permissoes' => PermissaoHelp::getPermissoes($this->modulo)
+        ]);
     }
 
     public function create()
     {
-        if ($this->verificarPermissao('Criar')) {
+        if (PermissaoHelp::verificaPermissao(['permissao' => 'Criar', 'modulo' => $this->modulo])) {
             return view('settings.empresa.create');
         } else {
             return redirect()
-                ->action('App\Http\Controllers\EmpresaController@index');
+                ->action($this->actionIndex);
         }
     }
 
@@ -33,7 +43,7 @@ class EmpresaController extends Controller
         $this->validarFormulario($request, 'store');
         if ($this->verificarDuplicidade($request)) {
             return redirect()
-                ->action('App\Http\Controllers\EmpresaController@index')
+                ->action($this->actionIndex)
                 ->with('warning', "já existe uma empresa com este nome, ou cnpj!");
         }
         $empresa = new Empresa();
@@ -41,28 +51,22 @@ class EmpresaController extends Controller
         $empresa->cnpj = $request->cnpj;
         $empresa->save();
         return redirect()
-            ->action('App\Http\Controllers\EmpresaController@index')
+            ->action($this->actionIndex)
             ->with('status', "Registrado com sucesso!");
     }
 
     public function show($id)
     {
-        $empresa = Empresa::find($id);
-        return view('settings.empresa.show', ['empresa' => $empresa]);
+        return view('settings.empresa.show', ['empresa' => Empresa::find($id)]);
     }
 
     public function edit($id)
     {
-        if ($this->verificarPermissao('Editar')) {
-            return view(
-                'settings.empresa.edit',
-                [
-                    'empresa' => Empresa::findOrFail($id)
-                ]
-            );
+        if (PermissaoHelp::verificaPermissao(['permissao' => 'Editar', 'modulo' => $this->modulo])) {
+            return view('settings.empresa.edit', ['empresa' => Empresa::findOrFail($id)]);
         } else {
             return redirect()
-                ->action('App\Http\Controllers\EmpresaController@index');
+                ->action($this->actionIndex);
         }
     }
 
@@ -74,7 +78,7 @@ class EmpresaController extends Controller
         $empresa->cnpj = $request->cnpj;
         $empresa->update();
         return redirect()
-            ->action('App\Http\Controllers\EmpresaController@index')
+            ->action($this->actionIndex)
             ->with('status', "Registro Atualizado!");
     }
 
@@ -83,12 +87,12 @@ class EmpresaController extends Controller
         $empresa = Empresa::with('colaboradores')->findOrFail($request->id);
         if ($empresa->colaboradores->count() >= 1) {
             return redirect()
-                ->action('App\Http\Controllers\EmpresaController@index')
+                ->action($this->actionIndex)
                 ->with('warning', "Esta empresa tem colaborador associado, por tanto não pode ser excluida.");
         }
         $empresa->delete();
         return redirect()
-            ->action('App\Http\Controllers\EmpresaController@index')
+            ->action($this->actionIndex)
             ->with('status', "Registro Excluido!");
     }
 
@@ -124,36 +128,5 @@ class EmpresaController extends Controller
             ->orWhere('cnpj', $request->cnpj)
             ->get()->count();
         return $duplicado;
-    }
-
-    private function getPermissoes()
-    {
-        $arrayPermissoes  = isset(session()->get('perfil')['permissoes'][3]) ? session()->get('perfil')['permissoes'][3]->toArray() : null;
-        if (!empty($arrayPermissoes)) {
-            $permissoes = $arrayPermissoes;
-        } else {
-            $permissoes = null;
-        }
-        return $permissoes;
-    }
-
-    private function verificarPermissao($permissao)
-    {
-        $modulo = 3;
-        $ArrayLystPermissoes = [];
-        if (session()->get('perfil')) {
-            foreach (session()->get('perfil')['permissoes'] as $item) {
-                foreach ($item as  $value) {
-                    if ($value->modulo_id == $modulo) {
-                        $ArrayLystPermissoes[] = $value->nome;
-                    };
-                }
-            }
-        }
-        if (in_array($permissao, $ArrayLystPermissoes)) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

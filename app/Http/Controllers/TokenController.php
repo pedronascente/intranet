@@ -43,25 +43,4 @@ class TokenController extends Controller
                 ->with('error', "Digite um token válido!");
         }
     }
-
-    /*
-    private function criarSessaoTokenValido($request, $id)
-    {
-        $cartao = Cartao::with('tokens')->findOrFail($id);
-        $sesscaoCartao['dados'] = [
-            "id" => $cartao->id,
-            "status" => $cartao->status,
-            "nome" => $cartao->nome,
-            "qtdToken" => $cartao->qtdToken,
-            "user_id" => $cartao->user_id,
-        ];
-        foreach ($cartao->tokens as  $token) {
-            $sesscaoCartao['tokens'][] = [
-                "token" => $token->token,
-                "posicao" => $token->posicao
-            ];
-        }
-        $request->session()->put('cartaoToken', $sesscaoCartao);
-    }
-    */
 }

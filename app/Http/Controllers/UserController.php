@@ -3,43 +3,48 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Perfil;
 use App\Models\Token;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Models\Perfil;
 use App\Models\Colaborador;
+use Illuminate\Http\Request;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+use App\Http\Controllers\Help\PermissaoHelp;
 
 class UserController extends Controller
 {
+    private $modulo;
+    private $paginate;
+    private $qtdToken;
+    private $actionIndex;
+
+    public function __construct()
+    {
+        $this->modulo = 7;
+        $this->paginate = 10;
+        $this->qtdToken = 40;
+        $this->actionIndex = 'App\Http\Controllers\UserController@index';
+    }
+
     public function index()
     {
-        return view(
-            'settings.user.index',
-            [
-                'collections' => User::with('perfil')->orderBy('id', 'desc')->paginate(8),
-                'permissoes' => $this->getPermissoes()
-            ]
-        );
+        return view('settings.user.index', [
+            'collections' => User::with('perfil')->orderBy('id', 'desc')->paginate($this->paginate),
+            'permissoes' => PermissaoHelp::getPermissoes($this->modulo),
+        ]);
     }
 
     public function create()
     {
-        if ($this->verificarPermissao('Criar')) {
-            return view(
-                'settings.user.create',
-                [
-                    'perfis' => Perfil::all()
-                ]
-            );
+        if (PermissaoHelp::verificaPermissao(['permissao' => 'Criar', 'modulo' => $this->modulo])) {
+            return view('settings.user.create', ['perfis' => Perfil::all()]);
         } else {
             return redirect()
-                ->action('App\Http\Controllers\UserController@index');
+                ->action($this->actionIndex);
         }
     }
 
@@ -58,7 +63,7 @@ class UserController extends Controller
             'status' => $request->status,
             'user_id' => $user->id,
             'nome' => "2FA-" . $user->id,
-            'qtdToken' => 40,
+            'qtdToken' => $this->qtdToken,
         ]);
 
         //retornar o 2FA do usuario.
@@ -73,17 +78,11 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        if ($this->verificarPermissao('Editar')) {
-            return view(
-                'settings.user.edit',
-                [
-                    'user' => User::findOrFail($id),
-                    'perfis' => Perfil::orderBy('id', 'desc')->get()
-                ]
-            );
+        if (PermissaoHelp::verificaPermissao(['permissao' => 'Editar', 'modulo' => $this->modulo])) {
+            return view('settings.user.edit', ['user' => User::findOrFail($id), 'perfis' => Perfil::orderBy('id', 'desc')->get()]);
         } else {
             return redirect()
-                ->action('App\Http\Controllers\UserController@index');
+                ->action($this->actionIndex);
         }
     }
 
@@ -138,27 +137,22 @@ class UserController extends Controller
         $usuario = User::with('colaborador', 'cartao')->findOrFail($request->id);
         if (!empty($usuario->colaborador)) {
             return redirect()
-                ->action('App\Http\Controllers\UserController@index')
+                ->action($this->actionIndex)
                 ->with('warning', "Não foi possivel escluir!, Este usuario está sendo associado a um colaborador.");
         }
         $usuario->delete();
         return redirect()
-            ->action('App\Http\Controllers\UserController@index')
+            ->action($this->actionIndex)
             ->with('status', "Registro excluido com sucesso!");
     }
 
     public function resetPassword(Request $request, $id)
     {
-
-
         $this->validarFormulario($request, 'resetPassword');
         $usuario = User::with('colaborador')->findOrFail($id);
         if (empty(!$request->password)) {
             $usuario->password = Hash::make($request->password);
         }
-
-        //dd($request->all(), $id, $usuario->colaborador);
-
         $usuario->update();
         Auth::logout();
         $request->session()->invalidate();
@@ -166,13 +160,6 @@ class UserController extends Controller
         $this->composeEmail($usuario->colaborador, 'senha_recuperada');
         return redirect()
             ->action('App\Http\Controllers\UserController@senhaSucesso');
-
-        /*
-
-        echo '[] enviar email de cadastro de senha com sucesso<br>';
-        echo '[] redirecionar usuario pra pagiana de cadastro  de senha com sucesso';
-        dd('xdebug');
-*/
     }
 
     public function recuperarSenhaCreate()
@@ -229,7 +216,6 @@ class UserController extends Controller
         switch ($tipoMensagem) {
             case 'recuperar_senha':
                 $link = route('senha', [$colaborador->email, $colaborador->token_reset_pass]);
-
                 $html = "<!doctype html>";
                 $html .= "<html>";
                 $html .= "<head>";
@@ -239,7 +225,6 @@ class UserController extends Controller
                 $html .= "<title>Laravel - Resultados</title>";
                 $html .= "</head>";
                 $html .= "<body>";
-
                 $html .= "<p>presado(a) $colaborador->nome</p>";
                 $html .= "<p>Recebemos em nosso sistema uma solicitação para recuperar sua senha </p>";
                 $html .= "<p>Por favor, caso não tenha solicitado favor, ignore este email. caso contrario ...</p>";
@@ -260,13 +245,8 @@ class UserController extends Controller
                     </p>";
                 $html .= "</body>";
                 $html .= "</html>";
-
-
-
                 return $html;
                 break;
-
-
             case 'senha_recuperada':
                 $html = "<!doctype html>";
                 $html .= "<html>";
@@ -291,7 +271,6 @@ class UserController extends Controller
 
     public function composeEmail($colaborador, $tipoMensagem)
     {
-
         $mail = new PHPMailer(true);
         $mail->CharSet = "UTF-8";
         try {
@@ -305,11 +284,9 @@ class UserController extends Controller
             $mail->Password   = env('PHP_MAILER_PASSWORD');                               //SMTP password
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
             $mail->Port       = env('PHP_MAILER_PORT');                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-
             //Recipients
             $mail->setFrom('desenvolvimento@grupovolpato.com', 'Intranet');
             $mail->addAddress($colaborador->email, $colaborador->nome);     //Add a recipient
-
             //Content
             $mail->isHTML(true);                                  //Set email format to HTML
             $mail->Subject = 'Recuperar Senha';
@@ -362,17 +339,6 @@ class UserController extends Controller
         }
     }
 
-    private function getPermissoes()
-    {
-        $arrayPermissoes  = isset(session()->get('perfil')['permissoes'][7]) ? session()->get('perfil')['permissoes'][7]->toArray() : null;
-        if (!empty($arrayPermissoes)) {
-            $permissoes = $arrayPermissoes;
-        } else {
-            $permissoes = null;
-        }
-        return $permissoes;
-    }
-
     private function getRegraPassword()
     {
         return [
@@ -385,25 +351,5 @@ class UserController extends Controller
             'regex:/[0-9]/',      // deve conter pelo menos um dígito
             'regex:/[@$!%*#?&]/', // deve conter um caractere especial
         ];
-    }
-
-    private function verificarPermissao($permissao)
-    {
-        $modulo = 7;
-        $ArrayLystPermissoes = [];
-        if (session()->get('perfil')) {
-            foreach (session()->get('perfil')['permissoes'] as $item) {
-                foreach ($item as  $value) {
-                    if ($value->modulo_id == $modulo) {
-                        $ArrayLystPermissoes[] = $value->nome;
-                    };
-                }
-            }
-        }
-        if (in_array($permissao, $ArrayLystPermissoes)) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

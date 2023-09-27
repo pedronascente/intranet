@@ -9,7 +9,7 @@
                         <div class="form-group">
                             <label>ID do Usuário:</label>
                             <input type="text" name="user_id" maxlength="4"
-                                class="form-control @error('user_id') is-invalid  @enderror" placeholder="ID"
+                                class="form-control @error('user_id') is-invalid  @enderror" placeholder="Id Usuário"
                                 value="{{ old('user_id') }}">
                             @error('user_id')
                                 <span class=" invalid-feedback">{{ $message }}</span>
@@ -20,6 +20,9 @@
                         <div class="form-group">
                             <label>Ramal:</label>
                             <input type="text" name="ramal" maxlength="4" class="form-control " placeholder="Ramal">
+                            @error('ramal')
+                                <span class=" invalid-feedback">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                 </div>
