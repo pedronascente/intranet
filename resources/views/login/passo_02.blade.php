@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="text" name="token" class="form-control" placeholder="Token" value="40500AD5">
+                    <input type="text" name="token" class="form-control" placeholder="Token" value="0B81E594">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>

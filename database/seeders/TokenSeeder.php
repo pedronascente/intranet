@@ -14,7 +14,7 @@ class TokenSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('tokens')->insert(['token' => '40500AD5', 'posicao' => 1, 'cartao_id' => 1]);
-        DB::table('tokens')->insert(['token' => 'E7B161F2', 'posicao' => 2, 'cartao_id' => 1]);
+        DB::table('tokens')->insert(['token' => '0B81E594', 'posicao' => 1, 'cartao_id' => 1]);
+        DB::table('tokens')->insert(['token' => 'C0AEBB73', 'posicao' => 2, 'cartao_id' => 1]);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Login;
 
 //use App\Models\Cartao;
 use Illuminate\Http\Request;
@@ -10,6 +10,13 @@ use App\Models\Token;
 
 class TokenController extends Controller
 {
+    private $actionCreate;
+
+    public function __construct()
+    {
+        $this->actionCreate = 'App\Http\Controllers\Login\TokenController@create';
+    }
+
     /**
      * Mostra um formulario para criar um novo recurso.
      *
@@ -39,7 +46,7 @@ class TokenController extends Controller
         } else {
             $request->session()->forget('cartaoToken');
             return redirect()
-                ->action('App\Http\Controllers\TokenController@create')
+                ->action($this->actionCreate)
                 ->with('error', "Digite um token válido!");
         }
     }

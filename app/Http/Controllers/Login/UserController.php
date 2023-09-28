@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Login;
 
 use App\Models\User;
 use App\Models\Token;
@@ -21,13 +21,21 @@ class UserController extends Controller
     private $paginate;
     private $qtdToken;
     private $actionIndex;
+    private $actionShow;
+    private $actionSenhaSucesso;
+    private $actionRecuperarSenhaCreate;
+    private $actionRecuperarSenhaSucesso;
 
     public function __construct()
     {
         $this->modulo = 7;
         $this->paginate = 10;
         $this->qtdToken = 40;
-        $this->actionIndex = 'App\Http\Controllers\UserController@index';
+        $this->actionIndex = 'App\Http\Controllers\Login\UserController@index';
+        $this->actionShow = 'App\Http\Controllers\Login\UserController@show';
+        $this->actionSenhaSucesso = 'App\Http\Controllers\Login\UserController@senhaSucesso';
+        $this->actionRecuperarSenhaCreate = 'App\Http\Controllers\Login\UserController@recuperarSenhaCreate';
+        $this->actionRecuperarSenhaSucesso = 'App\Http\Controllers\Login\UserController@senhaSucesso';
     }
 
     public function index()
@@ -72,7 +80,7 @@ class UserController extends Controller
         event(new Registered($user));
         Auth::login($user);
         return redirect()
-            ->action('App\Http\Controllers\UserController@index')
+            ->action($this->actionIndex)
             ->with('status', "Registrado com sucesso!");
     }
 
@@ -98,20 +106,17 @@ class UserController extends Controller
         }
         $usuario->perfil()->associate($perfil)->update();
         return redirect()
-            ->action('App\Http\Controllers\UserController@show', $usuario->id)
+            ->action($this->actionShow, $usuario->id)
             ->with('status', "Atualizado com sucesso!");
     }
 
     public function show($id)
     {
         $usuario =  User::with('perfil', 'colaborador', 'cartao')->findOrFail($id);
-        return view(
-            'settings.user.show',
-            [
-                'user' => $usuario,
-                'status' => $usuario->getStatus($id),
-            ]
-        );
+        return view('settings.user.show', [
+            'user' => $usuario,
+            'status' => $usuario->getStatus($id),
+        ]);
     }
 
     public function profile(Request $request)
@@ -159,7 +164,7 @@ class UserController extends Controller
         $request->session()->regenerateToken();
         $this->composeEmail($usuario->colaborador, 'senha_recuperada');
         return redirect()
-            ->action('App\Http\Controllers\UserController@senhaSucesso');
+            ->action($this->actionSenhaSucesso);
     }
 
     public function recuperarSenhaCreate()
@@ -184,10 +189,10 @@ class UserController extends Controller
             //enviar email :
             $this->composeEmail($colaborador, 'recuperar_senha');
             return redirect()
-                ->action('App\Http\Controllers\UserController@recuperarSenhaSucesso');
+                ->action($this->actionRecuperarSenhaSucesso);
         }
         return redirect()
-            ->action('App\Http\Controllers\UserController@recuperarSenhaCreate')
+            ->action($this->actionRecuperarSenhaCreate)
             ->with('error', "Este email não está registrado!");
     }
 
@@ -209,6 +214,36 @@ class UserController extends Controller
     public function senhaSucesso()
     {
         return view('settings.user.senhaSucesso');
+    }
+
+
+
+    public function composeEmail($colaborador, $tipoMensagem)
+    {
+        $mail = new PHPMailer(true);
+        $mail->CharSet = "UTF-8";
+        try {
+            //Server settings
+            $mail->SMTPDebug = 0;                      //Enable verbose debug output
+            $mail->isSMTP();
+            //Send using SMTP
+            $mail->Host       = env('PHP_MAILER_HOST');                     //Set the SMTP server to send through
+            $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+            $mail->Username   = env('PHP_MAILER_USERNAME');;                     //SMTP username
+            $mail->Password   = env('PHP_MAILER_PASSWORD');                               //SMTP password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+            $mail->Port       = env('PHP_MAILER_PORT');                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+            //Recipients
+            $mail->setFrom('desenvolvimento@grupovolpato.com', 'Intranet');
+            $mail->addAddress($colaborador->email, $colaborador->nome);     //Add a recipient
+            //Content
+            $mail->isHTML(true);                                  //Set email format to HTML
+            $mail->Subject = 'Recuperar Senha';
+            $mail->Body = $this->getBody($colaborador, $tipoMensagem);
+            $mail->send();
+        } catch (Exception $e) {
+            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        }
     }
 
     private function getBody($colaborador, $tipoMensagem)
@@ -268,35 +303,6 @@ class UserController extends Controller
                 break;
         }
     }
-
-    public function composeEmail($colaborador, $tipoMensagem)
-    {
-        $mail = new PHPMailer(true);
-        $mail->CharSet = "UTF-8";
-        try {
-            //Server settings
-            $mail->SMTPDebug = 0;                      //Enable verbose debug output
-            $mail->isSMTP();
-            //Send using SMTP
-            $mail->Host       = env('PHP_MAILER_HOST');                     //Set the SMTP server to send through
-            $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-            $mail->Username   = env('PHP_MAILER_USERNAME');;                     //SMTP username
-            $mail->Password   = env('PHP_MAILER_PASSWORD');                               //SMTP password
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-            $mail->Port       = env('PHP_MAILER_PORT');                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-            //Recipients
-            $mail->setFrom('desenvolvimento@grupovolpato.com', 'Intranet');
-            $mail->addAddress($colaborador->email, $colaborador->nome);     //Add a recipient
-            //Content
-            $mail->isHTML(true);                                  //Set email format to HTML
-            $mail->Subject = 'Recuperar Senha';
-            $mail->Body = $this->getBody($colaborador, $tipoMensagem);
-            $mail->send();
-        } catch (Exception $e) {
-            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-        }
-    }
-
     /**
      * Responsavel por validar formulario
      *

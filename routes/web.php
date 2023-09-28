@@ -12,9 +12,9 @@ use App\Http\Controllers\Settings\ModuloController;
 use App\Http\Controllers\Comissao\ComissaoController;
 use App\Http\Controllers\Comissao\PlanilhaController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\TokenController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Login\LoginController;
+use App\Http\Controllers\Login\TokenController;
+use App\Http\Controllers\Login\UserController;
 
 Route::prefix('/login')->group(function () {
     Route::get('/', [LoginController::class, 'showForm'])->name('login.form');

@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Login;
 
 use App\Models\User;
-use App\Models\Cartao;
 use App\Models\Perfil;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -12,6 +11,12 @@ use App\Http\Controllers\Help\FormatarDataController;
 
 class LoginController extends Controller
 {
+    private $actionCreateToken;
+
+    public function __construct()
+    {
+        $this->actionCreateToken = 'App\Http\Controllers\Login\TokenController@create';
+    }
     /**
      *  Mostrar formulario pro usuário fazer login.
      *
@@ -51,7 +56,7 @@ class LoginController extends Controller
 
             $this->criarSessaoPerfil($request, $usuarioDB->perfil->id);
             return redirect()
-                ->action('App\Http\Controllers\TokenController@create');
+                ->action($this->actionCreateToken);
         } else {
             return redirect()->back()->with('error', 'Usuário ou senha inválido.');
         }
@@ -88,13 +93,10 @@ class LoginController extends Controller
                 ];
             }
         }
-
         $permissoes = $perfil->getPermissoes($id);
-
         if ($permissoes) {
             $sessaoPerfil['permissoes']  = $permissoes;
         }
-
         $request->session()->put('perfil', $sessaoPerfil);
     }
 }
