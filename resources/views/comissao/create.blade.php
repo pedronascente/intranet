@@ -4,20 +4,21 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Comissão</h1>
+                    <h1 class="m-0">Comissão | Cadastrar </h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('planilha.index') }}">Comissão/</a>planilha</li>
+                        <li class="breadcrumb-item">
+                            <a href="/comissao/planilha">Planilhas</a> /
+                            <a href="#">comisão</a>
+                        </li>
                     </ol>
                 </div>
             </div>
         </div>
     </section>
     <div class="card card-primary">
-        <div class="card-header">
-            <h3 class="card-title"> Adicionar comissão</h3>
-        </div>
+
         <div class="card-body">
             @include('comissao.comissao.formulario.create.' . $formulario)
         </div>
