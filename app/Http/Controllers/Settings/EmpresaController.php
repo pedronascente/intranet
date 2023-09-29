@@ -17,7 +17,7 @@ class EmpresaController extends Controller
     {
         $this->modulo = 3;
         $this->paginate = 10;
-        $this->actionIndex = 'App\Http\Controllers\EmpresaController@index';
+        $this->actionIndex = 'App\Http\Controllers\Settings\EmpresaController@index';
     }
 
     public function index()

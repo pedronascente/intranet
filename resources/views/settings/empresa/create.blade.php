@@ -1,5 +1,19 @@
 @extends('layouts.app')
 @section('content')
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Empresa | Cadastrar</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/settings">Configurações/</a>empresa</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
     <div class="card card-default">
         <form action="{{ route('empresa.store') }}" method="POST" name="Formulario-Empresa-create">
             @csrf

@@ -22,9 +22,9 @@ class PerfilController extends Controller
     {
         $this->modulo = 6;
         $this->paginate = 10;
-        $this->actionIndex = 'App\Http\Controllers\PerfilController@index';
-        $this->actionEdit = 'App\Http\Controllers\PerfilController@edit';
-        $this->actionCreate = 'App\Http\Controllers\PerfilController@create';
+        $this->actionIndex = 'App\Http\Controllers\Settings\PerfilController@index';
+        $this->actionEdit = 'App\Http\Controllers\Settings\PerfilController@edit';
+        $this->actionCreate = 'App\Http\Controllers\Settings\PerfilController@create';
     }
 
     public function index()

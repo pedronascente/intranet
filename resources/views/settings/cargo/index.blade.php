@@ -1,6 +1,22 @@
 @extends('layouts.app')
 @section('content')
-    <x-ui.titulo :segment-um="Request::segment(1)" :segment-dois="Request::segment(2)" />
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Cargos </h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item">
+                            <a href="/settings">Configurações</a> /
+                            <a href="/settings/cargo">cargos</a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
     <div class="card">
         <x-botao.criar rota="cargo" :permissoes="$permissoes" />
         <div class="card-body table-responsive p-0">

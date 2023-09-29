@@ -29,7 +29,7 @@ class ColaboradorController extends Controller
         $this->paginate = 10;
         $this->actionIndex = 'App\Http\Controllers\Settings\ColaboradorController@index';
         $this->actionShow = 'App\Http\Controllers\Settings\ColaboradorController@show';
-        $this->actionUserProfile = 'App\Http\Controllers\UserController@profile';
+        $this->actionUserProfile = 'App\Http\Controllers\Login\UserController@profile';
         $this->bases = Base::orderBy('id', 'desc')->get();
         $this->empresas = Empresa::orderBy('id', 'desc')->get();
         $this->cargos = Cargo::orderBy('id', 'desc')->get();
@@ -269,5 +269,17 @@ class ColaboradorController extends Controller
                 'cargo_id.required' => 'Campo obrigatório.',
             ]
         );
+    }
+
+    private function getUsuariosSemColaborador()
+    {
+        $userList = null;
+        $users = User::with('colaborador')->get();
+        foreach ($users as $user) {
+            if (!$user->colaborador) {
+                $userList[] = $user;
+            }
+        }
+        return $userList;
     }
 }
