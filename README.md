@@ -1,4 +1,4 @@
-# <h1 align="center">GPI - Gestão de Processos Internos</h1>
+# <h1 align="center">Intranet</h1>
 
 <p align="center">Este projeto é um sistema interno, desenvolvido para atender algumas das necessidades da empresa Grupo Volpato, o objetivo é automatizar processos repetidos de alguns setores.</p>
 
