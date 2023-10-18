@@ -20,11 +20,24 @@ Para executar este projeto, você precisa ter instalado:
 
 ---
 
-##  Rodando a aplicação
+## Rodando a Aplicação
 
-Para executar este projeto, você precisa ter instalado:
+Siga os passos abaixo para rodar a aplicação Laravel:
 
+**Passo 1: Clonar o Repositório**
 
+Se você ainda não clonou o repositório do Laravel, use o comando Git para cloná-lo:
+
+```bash
+git clone https://github.com/pedronascente/intranet.git
+
+**Passo 2: Instalar Dependências
+
+Navegue até o diretório do projeto Laravel que você acabou de clonar e instale as dependências do Composer:
+
+```bash
+cd seu-repositorio
+composer install
 
 ---
 
