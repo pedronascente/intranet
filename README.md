@@ -4,17 +4,7 @@
 
 ---
 
-## Lista Alinhada na Horizontal
-
-- Features
-- Pré Requisitos
-- Rodando a Aplicação
-- Tecnologias
-- Autor
-
----
-
-## Features
+## Funções
 
 - Gestão de Usuário
 - Gestão de Perfil
