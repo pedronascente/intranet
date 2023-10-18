@@ -14,9 +14,7 @@
 
 ---
 
-## Lista Não Ordenada das Funções
-
-### Features
+## Features
 
 - Gestão de Usuário
 - Gestão de Perfil
@@ -27,6 +25,20 @@
 ## Pré-requisitos
 
 Para executar este projeto, você precisa ter instalado:
+
+
+
+---
+
+##  Rodando a aplicação
+
+Para executar este projeto, você precisa ter instalado:
+
+
+
+---
+
+- ## Técnologia
 
 - [PHP](https://www.php.net/)
 - [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML)
@@ -40,4 +52,4 @@ Para executar este projeto, você precisa ter instalado:
 
 ## Autor
 
-Seu Nome
+Pedro Nascente
