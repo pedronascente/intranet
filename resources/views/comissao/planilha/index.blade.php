@@ -28,6 +28,7 @@
             <table class="table table-hover text-nowrap table-striped">
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>Ano</th>
                         <th>Periodo</th>
                         <th>Colaborador</th>
@@ -41,6 +42,7 @@
                     @if ($collections)
                         @foreach ($collections as $item)
                             <tr>
+                                <td>{{ $item->id }}</td>
                                 <td>{{ $item->ano }}</td>
                                 <td>{{ $item->periodo->nome }}</td>
                                 <td>{{ $item->colaborador->nome }}</td>

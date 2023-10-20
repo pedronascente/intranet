@@ -34,4 +34,9 @@ class Comissao extends Model
     {
         return $this->belongsTo(Planilha::class);
     }
+
+    public function ServicoAlarme()
+    {
+        return $this->belongsTo(ServicoAlarme::class);
+    }
 }

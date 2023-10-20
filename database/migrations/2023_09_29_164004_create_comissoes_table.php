@@ -32,6 +32,8 @@ class CreateComissoesTable extends Migration
             $table->decimal('desconto_comissao', $precision = 9, $scale = 2);
             $table->decimal('taxa_instalacao', $precision = 9, $scale = 2);
             $table->timestamps();
+            $table->integer("servico_alarme_id")->unsigned();
+            $table->foreign('servico_alarme_id')->references('id')->on('servico_alarme');
             $table->integer("planilha_id")->unsigned();
             $table->foreign('planilha_id')->references('id')->on('planilhas')->onDelete('cascade');
             $table->engine = 'InnoDB';

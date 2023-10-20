@@ -95,7 +95,7 @@ Route::prefix('/comissao')->group(function () {
     Route::put('/planilha/{id}', [PlanilhaController::class, 'update'])->name('planilha.update');
     Route::delete('/planilha/{id}', [PlanilhaController::class, 'destroy'])->name('planilha.destroy');
 
-    Route::get('/{id}', [ComissaoController::class, 'AddComissao'])->name('comissao.addcomissao');
+    Route::get('/planilha-id/{id}', [ComissaoController::class, 'AddComissao'])->name('comissao.addcomissao');
     Route::post('/', [ComissaoController::class, 'store'])->name('comissao.store');
     Route::get('/{id}/edit', [ComissaoController::class, 'edit'])->name('comissao.edit');
 });

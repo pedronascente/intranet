@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             PerfilPermissaoSeeder::class,
             TipoPlanilhaSeeder::class,
             PeriodoSeeder::class,
+            ServicoAlarmeSeeder::class,
         ]);
     }
 }

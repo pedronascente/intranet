@@ -169,7 +169,7 @@ class UserController extends Controller
 
     public function recuperarSenhaCreate()
     {
-        return view('settings.user.recuperar_senha');
+        return view('login.recuperar_senha');
     }
 
     /*
@@ -198,7 +198,7 @@ class UserController extends Controller
 
     public function recuperarSenhaSucesso()
     {
-        return view('settings.user.recuperar_senha_sucesso');
+        return view('login.recuperar_senha_sucesso');
     }
 
     public function senhaCreate($email, $token)
@@ -207,16 +207,14 @@ class UserController extends Controller
         if (!$colaborador) {
             return redirect('/');
         } else {
-            return view('settings.user.senha_create', ['colaborador' => $colaborador]);
+            return view('login.senha_create', ['colaborador' => $colaborador]);
         }
     }
 
     public function senhaSucesso()
     {
-        return view('settings.user.senhaSucesso');
+        return view('login.senhaSucesso');
     }
-
-
 
     public function composeEmail($colaborador, $tipoMensagem)
     {

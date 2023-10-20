@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Comissao;
 
 use App\Models\Planilha;
+use App\Models\ServicoAlarme;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -20,13 +21,22 @@ class ComissaoController extends Controller
     public function AddComissao($id)
     {
         $planilha = Planilha::with('colaborador', 'periodo', 'tipoPlanilha')->findOrFail($id);
-        return view(
-            'comissao.create',
-            [
-                'planilha' => $planilha,
-                'formulario' => $planilha->tipoPlanilha->formulario
-            ]
-        );
+        $dataArray = [
+            'planilha' => $planilha,
+            'formulario' => $planilha->tipoPlanilha->formulario
+        ];
+
+        $dataArrayFormularioAlarmes = [
+            'comercialAlarmeCercaEletricaCFTV',
+            'tecnicaAlarmesCercaEletricaCFTV',
+            'supervisaoComercialAlarmesCercaEletricaCFTV'
+        ];
+
+        if (in_array($planilha->tipoPlanilha->formulario, $dataArrayFormularioAlarmes)) {
+            $dataArray['servico_alarme'] = ServicoAlarme::all();
+        }
+
+        return view('comissao.create', $dataArray);
     }
 
     public function edit($id)

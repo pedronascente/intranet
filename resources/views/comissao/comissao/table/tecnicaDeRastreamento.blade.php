@@ -4,13 +4,11 @@
             <th>ID</th>
             <th>Data</th>
             <th>Cliente</th>
-            <th>ID Contrato</th>
-            <th>Qtd de Veículos</th>
+            <th>Conta / Pedido</th>
             <th>Placa</th>
-            <th>Tx. Instalação</th>
-            <th>Mensal</th>
             <th>Comissão</th>
             <th>Desconto</th>
+            <th>Observação</th>
             <th width="5%" class="text-center">Permissões</th>
         </tr>
     </thead>
@@ -21,12 +19,10 @@
                 <td>17/08/2023</td>
                 <td>Rosemarie da Costa Pfitscher</td>
                 <td>333</td>
-                <td>1</td>
                 <td>IMW-1988</td>
-                <td>R$ 149.00</td>
                 <td>R$ 69.00</td>
-                <td>R$ 35.00</td>
-                <td></td>
+                <td>efefef</td>
+                <td>efefef</td>
                 <td>
                     <a href="{{ route('comissao.edit', $i) }}" class="btn btn-primary" title="Editar Planilha">
                         <i class="nav-icon fas fa-edit"></i> Editar
