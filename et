@@ -1,0 +1,100 @@
+[33m897d84d[m[33m ([m[1;36mHEAD -> [m[1;32mfeature/formularios[m[33m)[m finalizado modulo front end comissao
+[33m1ec04dd[m[33m ([m[1;32mmain[m[33m)[m Foi implementado os titulos no modulo de comissão
+[33mdc8c925[m Finalizado os titulos dos mosulos
+[33m64e329d[m Foi compactadas os controladores do modulo login pra dentro da pasta Login
+[33ma9a241e[m Foi feito um refatoramento de toda aplicação , e uma divisão dos controladores
+[33m655daea[m Foi inicializado os formularios e as tabelas do modulo comissões
+[33m1aaca46[m foi inicializado o front end do cadastro de comissoes
+[33m63854e8[m foi alterado a classe seed colaborador
+[33mf620d05[m foi corrigido utf8 do envio de email
+[33mab029e7[m Finalizado modulo de recuperar senha
+[33m6d69540[m Foi add uma nova coluna na tabela de colaboradores
+[33m2f5b0d8[m finalizado front end resetar senha
+[33me4a1a1d[m Foi Finalizado front end esqueci minha senha
+[33m1363b27[m foi add pagina html esqueci minha senha
+[33m7f2d509[m finalizado configurações de proteção das rotas create e edit sem permissões
+[33m31ebd01[m corrigido sessao user do modulo profile
+[33m037796d[m Foi finalizado o modulo profile
+[33m9e5195a[m Finalizado modulo base
+[33md94371f[m Iniciou modulo de profile
+[33m628e37a[m Finalizado modulo de permissoes dos botoes do crud
+[33mef4d89a[m Foi inicializado nivel de permissao de acesso nos modulos cargo e cartao
+[33m8064c6d[m Foi revisados as regras de exclusão dos modulos
+[33m1ca686f[m Foi implementado restrições de modulos de acesso
+[33m894c5c1[m Finalizado a implementação de componentes, e validação dos tokens
+[33mc52d75b[m validar token com middleware
+[33mbe83d4d[m foi implementado o menu dinamico
+[33m1f8795e[m FINALIZADO MODULO DE EDITAR PERFIL
+[33mc622a2e[m edit perfil
+[33m11a45b5[m Foi implementado nav, e uma restrição de login , que verifica se usuario esta ativo
+[33m28b39a1[m Foi implementado  o script javascript do contador token
+[33mb5a7895[m FOI ADD BTN DE LOGOUT
+[33m01bd9d5[m Foi add novos seeders cartao e token
+[33me49a5eb[m Foi implementado modulo de autenticação de token
+[33mf792c66[m Foi inicializado modulo de login de duas etapas
+[33m2aedaf8[m Foi renomeado as paginas do modulo de login
+[33m1c572f8[m Foi implementado os methods de associação nos controladores
+[33m33f5b30[m modificado controlador cartaoController, method destroy
+[33mac5f1b5[m foi alterdo a engine das tabelas do banco
+[33m1958a86[m modificações nas migrate tokens e users
+[33ma5fe20a[m Finalizado modulo cartao Token
+[33m59904ba[m modificado barra lateral
+[33m7016e23[m Foi add head nos cards dos formularios
+[33meea90c3[m foi implementado o modulo de gerar tokens do cartao
+[33m51b698a[m Foi implementado paginação no sistema
+[33madc3bdf[m Foi add as seeders
+[33mc6e740c[m Foi implementado associação de usuario e colaborador
+[33m15dde11[m Foi removido o email do modulo user
+[33m25b6ce9[m implementação do front end do modulo de cartão token
+[33m7256288[m resources/views/perfil/create.blade.php
+[33mb3becba[m foi refatorado as rotas
+[33mc0a183e[m foi padronizado os botões do app
+[33mab252fb[m foi trocado o icon dos botões excluir
+[33m3f97998[m [PERMISSAO][ PÁGINA - INDEX.PHP ] Trocar cor, e tamanho dos botões
+[33m849cc0a[m [MODULO][ PÁGINA - EDIT.PHP ] Trocar cor do botão
+[33m16cb96a[m [MIDULO][ PÁGINA - CREATE.PHP ] Alterar a cor do botão, para verde
+[33m501f139[m [MODULO][ PÁGINA - INDEX.PHP ] Trocar cor, e tamanho dos botões
+[33mc2ec198[m [modulo - perfil] Refatoração de código tabelas e Botões , da pagina detalhes do perfil
+[33m9be6d75[m simples atualizacao
+[33m589c006[m Merge branch 'main' of https://github.com/pedronascente/intranet
+[33m777dbde[m [ modulo - Perfis] Refatorar os Botões (front End), foi add as cores e tamanhos nos botões da pagina index.php
+[33m5203062[m iminuir o tamanho do card  Dicas para uma boa senha parte 2
+[33m257bfbb[m diminuir o tamanho do card  Dicas para uma boa senha
+[33md5cbd68[m Merge branch 'main' of https://github.com/pedronascente/intranet
+[33mdf6b217[m foi refatorado front end da aplicação, e add cadastro e edição de usuario
+[33m238ca64[m foi add iniciado a implementacao do relacionamento das tabelas grupo e modulos n:n
+[33mc6c79b3[m as migrations foram modificadas, e o cadastro de usuario foi implementado
+[33mc7709af[m Merge branch 'main' of https://github.com/pedronascente/intranet
+[33m674a7d2[m foi add regras de validações no modulo empresa
+[33m575b02d[m modificaçoes no modulo de grupo
+[33m9549b5b[m Merge branch 'main' of https://github.com/pedronascente/intranet
+[33me73f34e[m agora sexta
+[33mb1943f4[m Merge branch 'main' of https://github.com/pedronascente/intranet eefeff
+[33mcc9db0d[m implementacao do crud usuario
+[33m78d3b08[m Merge branch 'main' of https://github.com/pedronascente/intranet
+[33mea856db[m img colaborador
+[33m00ef780[m foi addicionado pagina authtoken
+[33m7ef6c7a[m implementação do modulo permissao
+[33m0649d89[m deletado img colaborador
+[33m48c5382[m Merge branch 'main' of https://github.com/pedronascente/intranet atualizacao do modulo colaborador
+[33m5507963[m Implementado upload de imagens no modulo de colaborador
+[33mcf346f8[m Merge pull request #1 from pedronascente/usuario
+[33mccb3d1e[m update-05-06
+[33m22846a0[m atualizacoes
+[33m1a7c8e2[m up
+[33m280c968[m inicializando crud do modulo usuario
+[33m36277c3[m Foi modificado as controllers dos modulos empresa,modulo
+[33m2205062[m correção no btn editar do arquivo show.blade.php
+[33m63b919b[m modificado arquivo AppServiceProvider
+[33mf88359c[m finalizado o crud backend do modulo empresa
+[33m95358b9[m Foi add um novo modulo
+[33md40426f[m modificações no modulo de uauario
+[33m44e563e[m Finalizado crud - parte da view
+[33m4087632[m inicializando crud
+[33mbea78c3[m foi modificado as paginas barralateral.blade.php e a pagina head.blade.php
+[33ma6d1f0e[m foi refatorado a barra lateral e add alguns modulos de exemplo
+[33mecf8d48[m novas atualizacoes
+[33m1f3d526[m neste commit foi add os controllers
+[33mf1552de[m FOI ALTERADO IMAGEM DA PAGINA DE LOGIN
+[33mac7caff[m FOI ADD LOGO NA BARRA LATERAL , E O FAVICO
+[33m07b182f[m primeiro commit

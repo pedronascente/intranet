@@ -8,7 +8,6 @@
             <th>Equipe / Serviço</th>
             <th>Inst. / Venda</th>
             <th>Mensal</th>
-
             <th>Comissão</th>
             <th>Desconto </th>
             <th width="5%" class="text-center">Permissões</th>

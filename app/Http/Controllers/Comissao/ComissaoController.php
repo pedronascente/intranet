@@ -21,17 +21,15 @@ class ComissaoController extends Controller
     public function AddComissao($id)
     {
         $planilha = Planilha::with('colaborador', 'periodo', 'tipoPlanilha')->findOrFail($id);
-        $dataArray = [
-            'planilha' => $planilha,
-            'formulario' => $planilha->tipoPlanilha->formulario
-        ];
-
         $dataArrayFormularioAlarmes = [
             'comercialAlarmeCercaEletricaCFTV',
             'tecnicaAlarmesCercaEletricaCFTV',
             'supervisaoComercialAlarmesCercaEletricaCFTV'
         ];
-
+        $dataArray = [
+            'planilha' => $planilha,
+            'formulario' => $planilha->tipoPlanilha->formulario
+        ];
         if (in_array($planilha->tipoPlanilha->formulario, $dataArrayFormularioAlarmes)) {
             $dataArray['servico_alarme'] = ServicoAlarme::all();
         }
