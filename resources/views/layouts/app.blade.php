@@ -6,7 +6,7 @@
         @include('layouts.includes.barralateral')
         <div class="content-wrapper">
             <div class="container-fluid">
-                <div class="row">
+                <div class="row mt-5">
                     <div class="col-md-12">
                         @if (session('status'))
                             <div class="alert alert-success alert-dismissible">

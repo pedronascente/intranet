@@ -84,14 +84,15 @@ class PlanilhaController extends Controller
 
     public function edit($id)
     {
-        $planilha = Planilha::with('colaborador', 'periodo', 'tipoPlanilha')->findorFail($id);
-        $periodos = Periodo::all();
-        $tipoPlanilhas = TipoPlanilha::all();
+        $planilha = Planilha::with('colaborador', 'periodo', 'tipoPlanilha')->findOrFail($id);
+        $periodos = Periodo::orderBy('nome', 'asc')->get(); // Ordenar os registros da tabela 'periodos' por nome em ordem alfabética
+        $tipoPlanilhas = TipoPlanilha::orderBy('id', 'desc')->get(); // Ordenar os registros da tabela 'tipo_planilhas' por nome em ordem alfabética
+
         return view(
             'comissao.planilha.edit',
             [
                 'periodos' => $periodos,
-                'tipoPlanilhas' =>  $tipoPlanilhas,
+                'tipoPlanilhas' => $tipoPlanilhas,
                 'planilha' => $planilha,
             ]
         );
@@ -115,7 +116,7 @@ class PlanilhaController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        $planilha = Planilha::with('comissoes')->findOrFail($request->id);
+        $planilha = Planilha::findOrFail($request->id);
         $planilha->delete();
 
         return redirect()

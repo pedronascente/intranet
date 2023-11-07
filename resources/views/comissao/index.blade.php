@@ -9,7 +9,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item">
-                            <a href="/comissao/planilha">Planilhas</a> /
+                            <a href="{{ route('planilha.index') }}">Planilhas</a> /
                             <a href="#">comisão</a>
                         </li>
                     </ol>
@@ -18,12 +18,6 @@
         </div>
     </section>
     <div class="card card-primary">
-        <div class="card-body">
-            <h4>Cadastrar Comissão</h4>
-            @include('comissao.comissao.formulario.create.' . $formulario)
-        </div>
-    </div>
-    <div class="card">
         <div class="card-body">
             <table class="table table-hover text-nowrap table-striped">
                 <tbody>
@@ -36,9 +30,15 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
-        <div class="card-footer">
             @include('comissao.comissao.table.' . $formulario)
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="card-body table-responsive p-0">
+                <h4>Cadastrar Comissão</h4>
+                @include('comissao.comissao.formulario.create.' . $formulario)
+            </div>
         </div>
     </div>
 @endsection

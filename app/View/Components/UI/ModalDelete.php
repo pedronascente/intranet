@@ -19,6 +19,8 @@ class ModalDelete extends Component
 
     public function getRota($modulo)
     {
+
+        // dd($modulo);
         switch ($modulo) {
             case 'cargo':
                 $this->rota = route('cargo.destroy', 1);
@@ -52,6 +54,9 @@ class ModalDelete extends Component
                 break;
             case 'comissao':
                 $this->rota = route('comissao.destroy', 1);
+                break;
+            case 'tecnicaDeRastreamento':
+                $this->rota = route('tecnicaDeRastreamento.destroy', 1);
                 break;
         }
     }

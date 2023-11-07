@@ -13,26 +13,34 @@
         </tr>
     </thead>
     <tbody>
-        @for ($i = 0; $i < 20; $i++)
-            <tr>
-                <td>23</td>
-                <td>17/08/2023</td>
-                <td>Rosemarie da Costa Pfitscher</td>
-                <td>333</td>
-                <td>IMW-1988</td>
-                <td>R$ 69.00</td>
-                <td>efefef</td>
-                <td>efefef</td>
-                <td>
-                    <a href="{{ route('comissao.edit', $i) }}" class="btn btn-primary" title="Editar Planilha">
-                        <i class="nav-icon fas fa-edit"></i> Editar
-                    </a>
-                    <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal"
-                        data-id="1" title="Excluir Planilha">
-                        <i class="fas fa-trash"></i> Excluir
-                    </a>
-                </td>
-            </tr>
-        @endfor
+        @if ($listaComissao)
+            @foreach ($listaComissao as $comissao)
+                <tr>
+                    <td>{{ $comissao->id }}</td>
+                    <td>{{ \Carbon\Carbon::parse($comissao->data)->format('d/m/Y') }}</td>
+                    <td>{{ $comissao->cliente }}</td>
+                    <td>{{ $comissao->conta_pedido }}</td>
+                    <td>{{ $comissao->placa }}</td>
+                    <td>R$ {{ $comissao->comissao }}</td>
+                    <td>R$ {{ $comissao->desconto_comissao }}</td>
+                    <td>{{ $comissao->observacao }}</td>
+                    <td>
+                        <a href="{{ route('tecnicaDeRastreamento.edit', $comissao->id) }}" class="btn btn-primary"
+                            title="Editar comissão">
+                            <i class="nav-icon fas fa-edit"></i> Editar
+                        </a>
+                        <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal"
+                            data-id="{{ $comissao->id }}" title="Excluir comissão">
+                            <i class="fas fa-trash"></i> Excluir
+                        </a>
+                    </td>
+                </tr>
+            @endforeach
+        @endif
     </tbody>
 </table>
+
+@if ($listaComissao)
+    {{ $listaComissao->links() }}
+@endif
+<x-ui.modalDelete modulo="tecnicaDeRastreamento" />

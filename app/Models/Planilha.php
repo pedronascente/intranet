@@ -31,8 +31,8 @@ class Planilha extends Model
         return $this->belongsTo(Colaborador::class);
     }
 
-    public function comissoes()
+    public function comissaoTecnicaDeRastreamento()
     {
-        return $this->hasMany(Comissao::class);
+        return $this->hasMany(TecnicaDeRastreamento::class);
     }
 }

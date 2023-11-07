@@ -9,7 +9,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item">
-                            <a href="/comissao/planilha">Planilhas</a>
+                            <a href="{{ route('planilha.index') }}">Planilhas</a>
                         </li>
                     </ol>
                 </div>
@@ -50,6 +50,10 @@
                                 <td>{{ $item->status }}</td>
                                 <td>{{ $item->tipoPlanilha->nome }}</td>
                                 <td class="text-center">
+                                    <a href="{{ route('planilha.edit', $item->id, 'edit') }}" class="btn btn-success"
+                                        title="Editar Planilha">
+                                        Lançar Planilha
+                                    </a>
                                     <a href="{{ route('planilha.edit', $item->id, 'edit') }}" class="btn btn-primary"
                                         title="Editar Planilha">
                                         <i class="nav-icon fas fa-edit"></i> Editar
@@ -58,7 +62,7 @@
                                         data-target="#deleteModal" data-id="{{ $item->id }}" title="Excluir Planilha">
                                         <i class="fas fa-trash"></i> Excluir
                                     </a>
-                                    <a href="{{ route('comissao.addcomissao', $item->id) }}" class="btn btn-primary"
+                                    <a href="{{ route('comissao.index', $item->id) }}" class="btn btn-primary"
                                         title="Conissão">
                                         <i class="fas fa-solid fa-plus"></i> Comissão
                                     </a>

@@ -1,4 +1,5 @@
-<form action="{{ route('comissao.store') }}" method="POST" name="Formulario-create">
+<form action="{{ route('tecnicaDeRastreamento.store') }}" method="POST" name="formulario-create">
+    <input type="hidden" name="planilha_id" value="{{ $planilha->id }}">
     @csrf
     <div class="card-body">
         <div class="row">
@@ -20,9 +21,9 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                         </div>
-                        <input type="text" class="form-control  @error('data') is-invalid  @enderror"
+                        <input type="text" name="data" class="form-control  @error('data') is-invalid  @enderror"
                             data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask=""
-                            inputmode="numeric" value="{{ old('data') }}">
+                            inputmode="numeric" value="{{ old('data') }}" maxlength="10">
                         @error('data')
                             <span class=" invalid-feedback">{{ $message }}</span>
                         @enderror
@@ -34,7 +35,7 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Conta / Pedido:</label>
-                    <input type="text" name="conta_pedido" maxlength="190"
+                    <input type="text" name="conta_pedido" maxlength="50"
                         class="form-control @error('conta_pedido') is-invalid  @enderror" placeholder="Conta/Periodo"
                         value="{{ old('conta_pedido') }}">
                     @error('conta_pedido')
@@ -45,10 +46,10 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Placa:</label>
-                    <input type="text" name="meio" maxlength="190"
-                        class="form-control @error('meio') is-invalid  @enderror" placeholder="Meio"
-                        value="{{ old('meio') }}">
-                    @error('meio')
+                    <input type="text" name="placa" maxlength="10"
+                        class="form-control @error('placa') is-invalid  @enderror" placeholder="Placa"
+                        value="{{ old('placa') }}">
+                    @error('placa')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
                 </div>
@@ -56,7 +57,7 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Comissão:</label>
-                    <input type="text" name="comissao" maxlength="190"
+                    <input type="text" name="comissao" maxlength="6"
                         class="form-control @error('comissao') is-invalid  @enderror" placeholder="Comissão"
                         value="{{ old('comissao') }}">
                     @error('comissao')
@@ -67,10 +68,10 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Desconto:</label>
-                    <input type="text" name="desconto" maxlength="190"
-                        class="form-control @error('desconto') is-invalid  @enderror" placeholder="Desconto"
-                        value="{{ old('desconto') }}">
-                    @error('desconto')
+                    <input type="text" name="desconto_comissao" maxlength="6"
+                        class="form-control @error('desconto_comissao') is-invalid  @enderror" placeholder="Desconto"
+                        value="{{ old('desconto_comissao') }}">
+                    @error('desconto_comissao')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
                 </div>

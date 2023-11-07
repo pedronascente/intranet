@@ -30,11 +30,7 @@ class Comissao extends Model
         'taxa_instalacao ',
     ];
 
-    public function planilha()
-    {
-        return $this->belongsTo(Planilha::class);
-    }
-
+   
     public function ServicoAlarme()
     {
         return $this->belongsTo(ServicoAlarme::class);

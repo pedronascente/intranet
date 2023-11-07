@@ -14,15 +14,15 @@ class TipoPlanilhaSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('tipo_planilhas')->insert(['nome' => 'Comercial Alarme / Cerca Elétrica / CFTV',                  'formulario' => 'form1']);
-        DB::table('tipo_planilhas')->insert(['nome' => 'Comercial Rastreamento Veicular',                           'formulario' => 'form2']);
-        DB::table('tipo_planilhas')->insert(['nome' => 'Entregas de Alarmes',                                       'formulario' => 'form3']);
-        DB::table('tipo_planilhas')->insert(['nome' => 'Portaria Virtual',                                          'formulario' => 'form4']);
-        DB::table('tipo_planilhas')->insert(['nome' => 'Reclamação de Cliente',                                     'formulario' => 'form5']);
-        DB::table('tipo_planilhas')->insert(['nome' => 'Supervisão Comercial Alarmes / Cerca Elétrica / CFTV',      'formulario' => 'form6']);
-        DB::table('tipo_planilhas')->insert(['nome' => 'Supervisão Comercial Rastreamento',                         'formulario' => 'form7']);
-        DB::table('tipo_planilhas')->insert(['nome' => 'Supervisão Técnica e SAC Alarmes / Cerca Elétrica / CFTV',  'formulario' => 'form8']);
-        DB::table('tipo_planilhas')->insert(['nome' => 'Técnica Alarmes / Cerca Elétrica / CFTV',                   'formulario' => 'form9']);
-        DB::table('tipo_planilhas')->insert(['nome' => 'Técnica de Rastreamento',                                   'formulario' => 'form10']);
+        DB::table('tipo_planilhas')->insert(['nome' => 'Comercial Alarme / Cerca Elétrica / CFTV',                  'formulario' => 'comercialAlarmeCercaEletricaCFTV']);
+        DB::table('tipo_planilhas')->insert(['nome' => 'Comercial Rastreamento Veicular',                           'formulario' => 'comercialRastreamentoVeicular']);
+        DB::table('tipo_planilhas')->insert(['nome' => 'Entregas de Alarmes',                                       'formulario' => 'entregasDeAlarmes']);
+        DB::table('tipo_planilhas')->insert(['nome' => 'Portaria Virtual',                                          'formulario' => 'portariaVirtual']);
+        DB::table('tipo_planilhas')->insert(['nome' => 'Reclamação de Cliente',                                     'formulario' => 'reclamacaoDeCliente']);
+        DB::table('tipo_planilhas')->insert(['nome' => 'Supervisão Comercial Alarmes / Cerca Elétrica / CFTV',      'formulario' => 'supervisaoComercialAlarmesCercaEletricaCFTV']);
+        DB::table('tipo_planilhas')->insert(['nome' => 'Supervisão Comercial Rastreamento',                         'formulario' => 'supervisaoComercialRastreamento']);
+        DB::table('tipo_planilhas')->insert(['nome' => 'Supervisão Técnica e SAC Alarmes / Cerca Elétrica / CFTV',  'formulario' => 'supervisaoTecnicaESACAlarmesCercaEletricaCFTV']);
+        DB::table('tipo_planilhas')->insert(['nome' => 'Técnica Alarmes / Cerca Elétrica / CFTV',                   'formulario' => 'tecnicaAlarmesCercaEletricaCFTV']);
+        DB::table('tipo_planilhas')->insert(['nome' => 'Técnica de Rastreamento',                                   'formulario' => 'tecnicaDeRastreamento']);
     }
 }

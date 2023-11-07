@@ -18,9 +18,9 @@ class CreateComissoesTable extends Migration
             $table->date('data');
             $table->string('cliente');
             $table->string('conta_pedido');
-            $table->string('meio');
-            $table->string('servico');
-            $table->integer('qtd_veiculos');
+            $table->string('meio')->nullable();
+            $table->string('servico')->nullable();
+            $table->integer('qtd_veiculos')->nullable();
             $table->string('placa');
             $table->integer('numero_os');
             $table->integer('total_rastreadores');
@@ -32,7 +32,7 @@ class CreateComissoesTable extends Migration
             $table->decimal('desconto_comissao', $precision = 9, $scale = 2);
             $table->decimal('taxa_instalacao', $precision = 9, $scale = 2);
             $table->timestamps();
-            $table->integer("servico_alarme_id")->unsigned();
+            $table->integer("servico_alarme_id")->unsigned()->nullable();
             $table->foreign('servico_alarme_id')->references('id')->on('servico_alarme');
             $table->integer("planilha_id")->unsigned();
             $table->foreign('planilha_id')->references('id')->on('planilhas')->onDelete('cascade');
