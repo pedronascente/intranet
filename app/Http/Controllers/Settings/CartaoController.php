@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Models\User;
-
 use App\Models\Token;
 use App\Models\Cartao;
 use Illuminate\Http\Request;
@@ -12,7 +11,7 @@ use App\Http\Controllers\Help\PermissaoHelp;
 
 class CartaoController extends Controller
 {
-    private $modulo; //id do modulo
+    private $modulo;
     private $paginate;
     private $qtdToken;
     private $actionIndex;
@@ -21,7 +20,7 @@ class CartaoController extends Controller
 
     public function __construct()
     {
-        $this->modulo = 8; //id do modulo
+        $this->modulo = 8;
         $this->paginate = 10;
         $this->qtdToken = 40;
         $this->actionIndex = 'App\Http\Controllers\Settings\CartaoController@index';
@@ -37,33 +36,20 @@ class CartaoController extends Controller
         ]);
     }
 
-    /**
-     * Mostrar o formulário para criar um novo recurso.
-     *
-     * @return void
-     */
     public function create()
     {
         if (PermissaoHelp::verificaPermissao(['permissao' => 'Criar', 'modulo' => $this->modulo])) {
-            return view('settings.cartao.create',  ['users' => $this->getUserSemCartao()]);
+            return view('settings.cartao.create', ['users' => $this->getUserSemCartao()]);
         } else {
-            return redirect()
-                ->action($this->actionIndex);
+            return redirect()->action($this->actionIndex);
         }
     }
 
-    /**
-     *  Armazene um recurso recém-criado no armazenamento.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $this->validarFormulario($request);
         $user = User::findOrFail($request->user_id);
 
-        #criar e associar 2FA ao usuario:
         $user->cartao()->create([
             'status' => $request->status,
             'user_id' => $request->user_id,
@@ -71,82 +57,53 @@ class CartaoController extends Controller
             'qtdToken' => (int)$request->qtdToken,
         ]);
 
-        //retornar o 2FA do usuario.
         $user = User::with('cartao')->findOrFail($request->user_id);
         $cartao = Cartao::findOrFail($user->cartao->id);
         Token::gerarToken($cartao);
-        return redirect()
-            ->action($this->actionIndex)
-            ->with('status', "Registrado com sucesso!");
+
+        return redirect()->action($this->actionIndex)->with('status', "Registrado com sucesso!");
     }
 
-    /**
-     * Mosatrar Detalhes do 2FA. 
-     *
-     * @param [type] $id
-     * @return void
-     */
     public function show($id)
     {
         foreach (PermissaoHelp::getPermissoes($this->modulo) as $permissao) {
             if ($permissao->nome == 'Visualizar') {
                 return view('settings.cartao.show', ['cartao' => Cartao::with('user', 'tokens')->findOrFail($id)]);
-                break;
             }
         }
-        return redirect()
-            ->action($this->actionIndex);
+
+        return redirect()->action($this->actionIndex);
     }
 
-    /**
-     * Mostrar formulario para edição.
-     *
-     * @param [type] $id
-     * @return void
-     */
     public function edit($id)
     {
         if (PermissaoHelp::verificaPermissao(['permissao' => 'Editar', 'modulo' => $this->modulo])) {
             return view('settings.cartao.edit', ['cartao' => Cartao::with('user')->findOrFail($id)]);
         } else {
-            return redirect()
-                ->action($this->actionIndex);
+            return redirect()->action($this->actionIndex);
         }
     }
-    /**
-     * Atualizar 2FA.
-     *
-     * @param Request $request
-     * @param [type] $id
-     * @return void
-     */
+
     public function update(Request $request, $id)
     {
         $cartao = Cartao::with('user', 'tokens')->findOrFail($id);
-        $cartao->status =  $request->status;
-        $cartao->qtdToken =  $request->qtdToken;
+        $cartao->status = $request->status;
+        $cartao->qtdToken = $request->qtdToken;
         $cartao->update();
+
         if (isset($request->resetToken) && $request->resetToken == 'on') {
             Token::gerarToken($cartao);
         }
-        return redirect()
-            ->action($this->actionShow, $cartao->id)
-            ->with('status', "Atualizado com sucesso!");
+
+        return redirect()->action($this->actionShow, $cartao->id)->with('status', "Atualizado com sucesso!");
     }
 
-    /**
-     * Excluir 2FA.
-     *
-     * @param [Integer] $id
-     * @return void
-     */
     public function destroy($id)
     {
-        $cartao = Cartao::findOrfail($id);
+        $cartao = Cartao::findOrFail($id);
         $cartao->delete();
-        return redirect()
-            ->action($this->actionIndex)
-            ->with('status', "Excluido com sucesso!");
+
+        return redirect()->action($this->actionIndex)->with('status', "Excluido com sucesso!");
     }
 
     public function registrarCartaoUsuario($usuario)
@@ -161,17 +118,10 @@ class CartaoController extends Controller
 
         $cartao = Cartao::findOrFail($user->cartao->id);
         Token::gerarToken($cartao);
-        return redirect()
-            ->action($this->actionUserShow, $usuario)
-            ->with('status', "2FA Registrado com sucesso!");
+
+        return redirect()->action($this->actionUserShow, $usuario)->with('status', "2FA Registrado com sucesso!");
     }
 
-    /**
-     * Válidar formulário.
-     *
-     * @param Request $request
-     * @return void
-     */
     private function validarFormulario(Request $request)
     {
         $request->validate(
@@ -188,15 +138,11 @@ class CartaoController extends Controller
         );
     }
 
-    /**
-     * Retornar lista dos usuários sem 2FA.
-     *
-     * @return void
-     */
     private function getUserSemCartao()
     {
         $array_users = [];
         $collections = User::with('cartao')->get();
+
         foreach ($collections as $key => $value) {
             if ($value->cartao == null) {
                 $array_users[] = [
@@ -205,19 +151,15 @@ class CartaoController extends Controller
                 ];
             }
         }
+
         return $array_users;
     }
 
-    /**
-     * Api
-     *
-     * @param Request $request
-     * @return void
-     */
     public function getPosicaoDoTokenNoCartao(Request $request)
     {
         $qtd = Token::getCartaoDoUsuarioLogado($request);
         $posicaoDoToken = rand(1, $qtd->qtdToken);
-        return $posicaoDoToken;
+
+        return response()->json(['posicao' => $posicaoDoToken]);
     }
 }

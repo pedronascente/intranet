@@ -65,8 +65,8 @@
         function getPosicaoDoTokenNoCartao() {
             $.get("/cartao/posicao", function(data) {
                 console.log(data);
-                $("#posicaoDoToken").val('Posição:' + data);
-                $("#posicaoDoTokenHidden").val(data);
+                $("#posicaoDoToken").val('Posição:' + data.posicao);
+                $("#posicaoDoTokenHidden").val(data.posicao);
             });
         }
 
@@ -77,8 +77,3 @@
         }
     </script>
 @endsection
-
-<!--
-
-<div id="result"></div>
--->
