@@ -16,7 +16,7 @@ class CreatePlanilhasTable extends Migration
         Schema::create('planilhas', function (Blueprint $table) {
             $table->increments('id');
             $table->string("matricula");
-            $table->char("status", 10)->default('aberto');
+            $table->char("status", 30)->default('aberto')->comment('aberto;homologar;reprovado');
             $table->char("ano", 4);
             $table->string("ctps");
             $table->integer("colaborador_id")->unsigned();

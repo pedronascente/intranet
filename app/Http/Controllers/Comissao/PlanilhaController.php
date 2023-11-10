@@ -28,7 +28,7 @@ class PlanilhaController extends Controller
      */
     public function index()
     {
-        $collections = Planilha::orderBy('id', 'desc')->paginate($this->paginate);
+        $collections = Planilha::where('status', '<>', 'homologar')->orderBy('id', 'desc')->paginate($this->paginate);
         return view('comissao.planilha.index', ['collections' => $collections]);
     }
 
@@ -87,7 +87,6 @@ class PlanilhaController extends Controller
         $planilha = Planilha::with('colaborador', 'periodo', 'tipoPlanilha')->findOrFail($id);
         $periodos = Periodo::orderBy('nome', 'asc')->get(); // Ordenar os registros da tabela 'periodos' por nome em ordem alfabética
         $tipoPlanilhas = TipoPlanilha::orderBy('id', 'desc')->get(); // Ordenar os registros da tabela 'tipo_planilhas' por nome em ordem alfabética
-
         return view(
             'comissao.planilha.edit',
             [
@@ -118,10 +117,19 @@ class PlanilhaController extends Controller
     {
         $planilha = Planilha::findOrFail($request->id);
         $planilha->delete();
-
         return redirect()
             ->action($this->actionIndex)
             ->with('status', "Registro Excluido!");
+    }
+
+    public function homologar($id)
+    {
+        $planilha = Planilha::findOrFail($id);
+        $planilha->status = 'homologar';
+        $planilha->update();
+        return redirect()
+            ->action($this->actionIndex)
+            ->with('status', "Planilha encaminhada para homlogação.");
     }
 
     private function validarDuplicidade($request)

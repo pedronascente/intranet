@@ -13,7 +13,7 @@ class CreateServicoAlarmeTable extends Migration
      */
     public function up()
     {
-        Schema::create('servico_alarme', function (Blueprint $table) {
+        Schema::create('servico_alarmes', function (Blueprint $table) {
             $table->increments('id');
             $table->string("nome");
             $table->timestamps();
@@ -27,6 +27,6 @@ class CreateServicoAlarmeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('servico_alarme');
+        Schema::dropIfExists('servico_alarmes');
     }
 }

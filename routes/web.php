@@ -1,21 +1,22 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Settings\CargoController;
-use App\Http\Controllers\Settings\CartaoController;
-use App\Http\Controllers\Settings\ColaboradorController;
-use App\Http\Controllers\Settings\EmpresaController;
-use App\Http\Controllers\Settings\PerfilController;
-use App\Http\Controllers\Settings\PermissaoController;
-use App\Http\Controllers\Settings\BaseController;
-use App\Http\Controllers\Settings\ModuloController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Login\UserController;
 use App\Http\Controllers\Login\LoginController;
 use App\Http\Controllers\Login\TokenController;
-use App\Http\Controllers\Login\UserController;
-use App\Http\Controllers\Comissao\PlanilhaController;
+use App\Http\Controllers\Settings\BaseController;
+use App\Http\Controllers\Settings\CargoController;
+use App\Http\Controllers\Settings\CartaoController;
+use App\Http\Controllers\Settings\ModuloController;
+use App\Http\Controllers\Settings\PerfilController;
+use App\Http\Controllers\Settings\EmpresaController;
 use App\Http\Controllers\Comissao\ComissaoController;
+use App\Http\Controllers\Comissao\PlanilhaController;
+use App\Http\Controllers\Settings\PermissaoController;
+use App\Http\Controllers\Settings\ColaboradorController;
 use App\Http\Controllers\comissao\TecnicaDeRastreamentoController;
+use App\Http\Controllers\comissao\ComercialAlarmeCercaEletricaCFTV;
 
 Route::prefix('/login')
     ->group(function () {
@@ -107,12 +108,14 @@ Route::get('/senha/{email}/{token}', [UserController::class, 'senhaCreate'])
     ->name('senha');
 Route::get('/senha', [UserController::class, 'senhaSucesso']);
 
-Route::middleware('logAcesso')->prefix('/planilha')
+Route::prefix('/planilha')
     ->group(function () {
         Route::get('/', [PlanilhaController::class, 'index'])
             ->name('planilha.index');
         Route::get('/create', [PlanilhaController::class, 'create'])
             ->name('planilha.create');
+        Route::get('/{id}/homologar', [PlanilhaController::class, 'homologar'])
+            ->name('planilha.homologar');
         Route::get('/{id}/edit', [PlanilhaController::class, 'edit'])
             ->name('planilha.edit');
         Route::post('/', [PlanilhaController::class, 'store'])
@@ -123,7 +126,7 @@ Route::middleware('logAcesso')->prefix('/planilha')
             ->name('planilha.destroy');
     });
 
-Route::middleware('logAcesso')->prefix('/comissao')->group(function () {
+Route::prefix('/comissao')->group(function () {
     Route::get('/planilha/{id}', [ComissaoController::class, 'index'])
         ->name('comissao.index');
     Route::get('/{id}/edit', [ComissaoController::class, 'edit'])
@@ -142,4 +145,16 @@ Route::prefix('/tecnicaDeRastreamento')
             ->name('tecnicaDeRastreamento.update');
         Route::delete('/{id}', [TecnicaDeRastreamentoController::class, 'destroy'])
             ->name('tecnicaDeRastreamento.destroy');
+    });
+
+Route::prefix('/comercialAlarmeCercaEletricaCFTV')
+    ->group(function () {
+        Route::get('/{id}/edit', [ComercialAlarmeCercaEletricaCFTV::class, 'edit'])
+            ->name('comercialAlarmeCercaEletricaCFTV.edit');
+        Route::post('/', [ComercialAlarmeCercaEletricaCFTV::class, 'store'])
+            ->name('comercialAlarmeCercaEletricaCFTV.store');
+        Route::put('/{id}', [ComercialAlarmeCercaEletricaCFTV::class, 'update'])
+            ->name('comercialAlarmeCercaEletricaCFTV.update');
+        Route::delete('/{id}', [ComercialAlarmeCercaEletricaCFTV::class, 'destroy'])
+            ->name('comercialAlarmeCercaEletricaCFTV.destroy');
     });

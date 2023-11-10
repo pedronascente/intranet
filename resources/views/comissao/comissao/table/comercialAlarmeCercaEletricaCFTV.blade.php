@@ -15,28 +15,8 @@
         </tr>
     </thead>
     <tbody>
-        @for ($i = 0; $i < 20; $i++)
-            <tr>
-                <td>237158</td>
-                <td>17/08/2023</td>
-                <td>Rosemarie da Costa Pfitscher</td>
-                <td>b119</td>
-                <td>Alarme Monitorado</td>
-                <td>Captação </td>
-                <td>R$ 1495.00</td>
-                <td>R$ 140.00</td>
-                <td>R$ 144.75</td>
-                <td>0.00</td>
-                <td>
-                    <a href="{{ route('comissao.edit', $i) }}" class="btn btn-primary" title="Editar Planilha">
-                        <i class="nav-icon fas fa-edit"></i> Editar
-                    </a>
-                    <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal"
-                        data-id="1" title="Excluir Planilha">
-                        <i class="fas fa-trash"></i> Excluir
-                    </a>
-                </td>
-            </tr>
-        @endfor
+
     </tbody>
 </table>
+
+

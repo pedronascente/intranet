@@ -14,18 +14,18 @@ class ServicoAlarmeSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('servico_alarme')->insert(['nome' => 'Alarme monitorado']);
-        DB::table('servico_alarme')->insert(['nome' => 'Ampliação']);
-        DB::table('servico_alarme')->insert(['nome' => 'Auditoria']);
-        DB::table('servico_alarme')->insert(['nome' => 'Cerca Eletrica']);
-        DB::table('servico_alarme')->insert(['nome' => 'CFTV']);
-        DB::table('servico_alarme')->insert(['nome' => 'Instalação']);
-        DB::table('servico_alarme')->insert(['nome' => 'Levantamento']);
-        DB::table('servico_alarme')->insert(['nome' => 'Manutenção']);
-        DB::table('servico_alarme')->insert(['nome' => 'Plantão']);
-        DB::table('servico_alarme')->insert(['nome' => 'Retirada']);
-        DB::table('servico_alarme')->insert(['nome' => 'Venda']);
-        DB::table('servico_alarme')->insert(['nome' => 'Renovação']);
-        DB::table('servico_alarme')->insert(['nome' => 'Troca de Retirada']);
+        DB::table('servico_alarmes')->insert(['nome' => 'Alarme monitorado']);
+        DB::table('servico_alarmes')->insert(['nome' => 'Ampliação']);
+        DB::table('servico_alarmes')->insert(['nome' => 'Auditoria']);
+        DB::table('servico_alarmes')->insert(['nome' => 'Cerca Eletrica']);
+        DB::table('servico_alarmes')->insert(['nome' => 'CFTV']);
+        DB::table('servico_alarmes')->insert(['nome' => 'Instalação']);
+        DB::table('servico_alarmes')->insert(['nome' => 'Levantamento']);
+        DB::table('servico_alarmes')->insert(['nome' => 'Manutenção']);
+        DB::table('servico_alarmes')->insert(['nome' => 'Plantão']);
+        DB::table('servico_alarmes')->insert(['nome' => 'Retirada']);
+        DB::table('servico_alarmes')->insert(['nome' => 'Venda']);
+        DB::table('servico_alarmes')->insert(['nome' => 'Renovação']);
+        DB::table('servico_alarmes')->insert(['nome' => 'Troca de Retirada']);
     }
 }

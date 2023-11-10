@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\comissao;
 
 use App\Models\Planilha;
-use App\Models\TecnicaDeRastreamento;
+use App\Models\Comissao\TecnicaDeRastreamento;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -36,6 +36,7 @@ class TecnicaDeRastreamentoController extends Controller
 
     public function update(Request $request, $id)
     {
+        $this->validarFormulario($request);
         $data_array = $request->only([
             'cliente',
             'conta_pedido',
@@ -92,6 +93,7 @@ class TecnicaDeRastreamentoController extends Controller
                     'numeric', // Deve ser um número
                     'regex:/^\d+(\.\d{1,2})?$/' // Deve ser um número decimal com até 2 casas decimais
                 ],
+                'desconto_comissao' => 'numeric',
             ],
             [
                 'required' => 'Campo obrigatório.',

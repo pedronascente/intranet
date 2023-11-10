@@ -14,6 +14,6 @@ class CartaoSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('cartoes')->insert(['status' => 'on', 'nome' => 'cartao-1', 'qtdToken' => 2, 'user_id' => 1]);
+        DB::table('cartoes')->insert(['status' => 'on', 'nome' => '2fa', 'qtdToken' => 2, 'user_id' => 1]);
     }
 }

@@ -1,22 +1,27 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\comissao;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TecnicaDeRastreamento extends Model
+class ComercialAlarmeCercaEletricaCFTV extends Model
 {
     use HasFactory;
-    protected $table = "comissao_tecnica_de_rastreamentos";
+
+    protected $table = "comissao_comercial_alarme_cerca_eletrica_cftvs";
+
     protected $fillable   = [
-        'cliente',
         'data',
+        'cliente',
         'conta_pedido',
-        'placa',
+        'meio',
+        'ins_vendas',
+        'mensal',
         'comissao',
         'desconto_comissao',
-        'observacao',
+        'planilha_id',
+        'servico_id',
     ];
 
     public function planilha()

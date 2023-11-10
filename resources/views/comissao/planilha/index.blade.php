@@ -50,9 +50,9 @@
                                 <td>{{ $item->status }}</td>
                                 <td>{{ $item->tipoPlanilha->nome }}</td>
                                 <td class="text-center">
-                                    <a href="{{ route('planilha.edit', $item->id, 'edit') }}" class="btn btn-success"
-                                        title="Editar Planilha">
-                                        Lançar Planilha
+                                    <a href="{{ route('planilha.homologar', $item->id, 'edit') }}" class="btn btn-success"
+                                        title="Lançar Planilha">
+                                        Homologar
                                     </a>
                                     <a href="{{ route('planilha.edit', $item->id, 'edit') }}" class="btn btn-primary"
                                         title="Editar Planilha">

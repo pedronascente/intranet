@@ -1,4 +1,5 @@
-<form action="{{ route('comissao.store') }}" method="POST" name="Formulario-create">
+<form action="{{ route('comercialAlarmeCercaEletricaCFTV.store') }}" method="POST" name="formulario-create">
+    <input type="hidden" name="planilha_id" value="{{ $planilha->id }}">
     @csrf
     <div class="card-body">
         <div class="row">
@@ -102,10 +103,10 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Desconto:</label>
-                    <input type="text" name="desconto" maxlength="190"
-                        class="form-control @error('desconto') is-invalid  @enderror" placeholder="Desconto"
-                        value="{{ old('desconto') }}">
-                    @error('desconto')
+                    <input type="text" name="desconto_comissao" maxlength="190"
+                        class="form-control @error('desconto_comissao') is-invalid  @enderror" placeholder="Desconto"
+                        value="{{ old('desconto_comissao') }}">
+                    @error('desconto_comissao')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
                 </div>

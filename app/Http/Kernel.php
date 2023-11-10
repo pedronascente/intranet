@@ -37,6 +37,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\LogAcesso::class,
         ],
 
         'api' => [
@@ -65,6 +66,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'verificarToken' => \App\Http\Middleware\ControlarAcessoDasRotas::class,
         'verificarModulos' => \App\Http\Middleware\ControlarAcessoDosModulos::class,
-        'logAcesso' => \App\Http\Middleware\LogAcesso::class,
+
     ];
 }
