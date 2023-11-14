@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateComissaoTecnicaDeRastreamentosTable extends Migration
+class CreateTecnicaDeRastreamentosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateComissaoTecnicaDeRastreamentosTable extends Migration
      */
     public function up()
     {
-        Schema::create('comissao_tecnica_de_rastreamentos', function (Blueprint $table) {
+        Schema::create('tecnica_de_rastreamentos', function (Blueprint $table) {
             $table->increments('id');
             $table->date('data');
             $table->string('cliente');
@@ -36,6 +36,6 @@ class CreateComissaoTecnicaDeRastreamentosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('comissao_tecnica_de_rastreamentos');
+        Schema::dropIfExists('tecnica_de_rastreamentos');
     }
 }

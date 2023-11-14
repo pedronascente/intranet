@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Comissao;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,11 +28,16 @@ class Planilha extends Model
 
     public function colaborador()
     {
-        return $this->belongsTo(Colaborador::class);
+        return $this->belongsTo(\App\Models\Colaborador::class);
     }
 
-    public function comissaoTecnicaDeRastreamento()
+    public function TecnicaDeRastreamento()
     {
         return $this->hasMany(TecnicaDeRastreamento::class);
+    }
+
+    public function ComercialAlarmeCercaEletricaCFTV()
+    {
+        return $this->hasMany(ComercialAlarmeCercaEletricaCFTV::class);
     }
 }

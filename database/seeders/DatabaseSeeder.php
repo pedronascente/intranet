@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             TipoPlanilhaSeeder::class,
             PeriodoSeeder::class,
             ServicoAlarmeSeeder::class,
+            MeioSeeder::class,
         ]);
     }
 }

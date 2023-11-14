@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Comissao;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Periodo extends Model
+class TipoPlanilha extends Model
 {
     use HasFactory;
 

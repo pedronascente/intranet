@@ -2,26 +2,35 @@
 
 namespace App\Http\Controllers\comissao;
 
-use App\Models\Planilha;
+use App\Models\Comissao\Planilha;
 use App\Models\Comissao\TecnicaDeRastreamento;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class TecnicaDeRastreamentoController extends Controller
 {
+
+    private $comissao;
+
+    public function __construct()
+    {
+        $this->comissao = new ComissaoController();
+    }
+
     public function store(Request $request)
     {
         $this->validarFormulario($request);
-        $comissao = new TecnicaDeRastreamento();
-        $comissao->cliente = $request->cliente;
-        $comissao->data = $this->foramatarData($request->data);
-        $comissao->conta_pedido = $request->conta_pedido;
-        $comissao->placa = $request->placa;
-        $comissao->comissao =  $request->comissao;
-        $comissao->desconto_comissao = $request->desconto_comissao;
-        $comissao->observacao = $request->observacao;
-        $comissao->planilha()->associate(Planilha::findOrFail($request->planilha_id));
-        $comissao->save();
+        $tecnicaDeRastreamento  = new TecnicaDeRastreamento();
+
+        $tecnicaDeRastreamento->planilha()->associate(Planilha::findOrFail($request->planilha_id));
+        $tecnicaDeRastreamento->cliente           = $request->cliente;
+        $tecnicaDeRastreamento->data              = $this->comissao->formatarData($request->data);
+        $tecnicaDeRastreamento->conta_pedido      = $request->conta_pedido;
+        $tecnicaDeRastreamento->placa             = $request->placa;
+        $tecnicaDeRastreamento->comissao          = $request->comissao;
+        $tecnicaDeRastreamento->desconto_comissao = $request->desconto_comissao;
+        $tecnicaDeRastreamento->observacao        = $request->observacao;
+        $tecnicaDeRastreamento->save();
 
         return redirect(route('comissao.index', $request->planilha_id))
             ->with('status', "Registrado com sucesso!");
@@ -45,11 +54,10 @@ class TecnicaDeRastreamentoController extends Controller
             'desconto_comissao',
             'observacao',
         ]);
-        $data_array['data'] = $this->foramatarData($request->data);
+        $data_array['data'] = $this->comissao->formatarData($request->data);;
         try {
-            $seuModelo = TecnicaDeRastreamento::findOrFail($id); // Encontre o modelo com base no ID
-            // dd($seuModelo);
-            $seuModelo->update($data_array); // Atualize os dados do modelo com os valores do array
+            $tecnicaDeRastreamento  = TecnicaDeRastreamento::findOrFail($id); // Encontre o modelo com base no I
+            $tecnicaDeRastreamento->update($data_array); // Atualize os dados do modelo com os valores do array
             // Se você quiser redirecionar ou retornar uma resposta de sucesso, faça isso aqui.
             return redirect()
                 ->route('tecnicaDeRastreamento.edit', $id)
@@ -63,20 +71,10 @@ class TecnicaDeRastreamentoController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        $comissao = TecnicaDeRastreamento::findOrFail($request->id);
-        $comissao->delete();
-        return redirect(route('comissao.index', $comissao->planilha_id))
+        $tecnicaDeRastreamento  = TecnicaDeRastreamento::findOrFail($request->id);
+        $tecnicaDeRastreamento->delete();
+        return redirect(route('comissao.index', $tecnicaDeRastreamento->planilha_id))
             ->with('status', "Registro excluido com sucesso!");
-    }
-
-    private function foramatarData($dataEntrada)
-    {
-        // Quebrar a data em dia, mês e ano
-        list($dia, $mes, $ano) = explode("/", $dataEntrada);
-        // Formatar a data no formato desejado: "2023/04/06"
-        $dataFormatada = $ano . "-" . $mes . "-" . $dia;
-        // Saída da data formatada
-        return  $dataFormatada;
     }
 
     private function validarFormulario(Request $request)

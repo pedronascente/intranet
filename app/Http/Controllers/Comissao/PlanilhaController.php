@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Comissao;
 
 use App\Models\User;
-use App\Models\Periodo;
-use App\Models\Planilha;
 use App\Models\Colaborador;
-use App\Models\TipoPlanilha;
+use App\Models\Comissao\Periodo;
+use App\Models\Comissao\Planilha;
+use App\Models\Comissao\TipoPlanilha;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 

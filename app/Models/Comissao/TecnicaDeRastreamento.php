@@ -4,13 +4,12 @@ namespace App\Models\Comissao;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Planilha;
 
 class TecnicaDeRastreamento extends Model
 {
     use HasFactory;
 
-    protected $table = "comissao_tecnica_de_rastreamentos";
+    protected $table = "tecnica_de_rastreamentos";
 
     protected $fillable   = [
         'cliente',
