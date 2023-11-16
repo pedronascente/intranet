@@ -11,10 +11,12 @@ class TecnicaDeRastreamentoController extends Controller
 {
 
     private $comissao;
+    private $titulo;
 
     public function __construct()
     {
         $this->comissao = new ComissaoController();
+        $this->titulo = "Técnica de Rastreamento";
     }
 
     public function store(Request $request)
@@ -39,7 +41,8 @@ class TecnicaDeRastreamentoController extends Controller
     public function edit($id)
     {
         return view('comissao.comissao.formulario.edit.tecnicaDeRastreamento', [
-            'comissao' => TecnicaDeRastreamento::findOrFail($id)
+            'comissao' => TecnicaDeRastreamento::findOrFail($id),
+            'titulo' => $this->titulo
         ]);
     }
 
@@ -85,11 +88,17 @@ class TecnicaDeRastreamentoController extends Controller
                 'data' => 'required|date_format:d/m/Y', // Validar o formato da data
                 'conta_pedido' => 'required|max:50',
                 'placa' => 'required|max:10',
-                'comissao' =>
-                [
-                    'required', // Campo obrigatório
-                    'numeric', // Deve ser um número
-                    'regex:/^\d+(\.\d{1,2})?$/' // Deve ser um número decimal com até 2 casas decimais
+                'comissao' => [
+                    'required',
+                    'numeric',
+                    'regex:/^\d+(\.\d{1,2})?$/',
+                    function ($attribute, $value, $fail) {
+                        if (
+                            $value < 0 || $value > 9999999.99
+                        ) {
+                            $fail("O campo $attribute deve estar entre 0 e 9999999.99");
+                        }
+                    },
                 ],
                 'desconto_comissao' => 'numeric',
             ],

@@ -38,3 +38,29 @@
         });
     });
 </script>
+<script>
+    $(document).ready(function() {
+        $('.btn-delete').on('click', function() {
+            var rota = $(this).data('route');
+            console.log(rota);
+
+            if (confirm('Tem certeza que deseja excluir este registro?')) {
+                $.ajax({
+                    type: 'DELETE',
+                    url: rota,
+                    data: {
+                        _token: '{{ csrf_token() }}',
+
+                    },
+                    success: function(response) {
+                        alert(response.message);
+                        window.location.reload();
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
+    });
+</script>

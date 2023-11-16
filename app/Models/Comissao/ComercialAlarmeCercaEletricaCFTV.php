@@ -20,7 +20,7 @@ class ComercialAlarmeCercaEletricaCFTV extends Model
         'comissao',
         'desconto_comissao',
         'planilha_id',
-        'servico_alarme_id',
+        'servico_id',
         'meio_id'
     ];
 

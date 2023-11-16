@@ -4,7 +4,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0"> Comissão</h1>
+                    <h1 class="m-0"> {{ $titulo }}</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -30,7 +30,7 @@
                                 <label>Cliente:</label>
                                 <input type="text" name="cliente" maxlength="190"
                                     class="form-control @error('cliente') is-invalid  @enderror" placeholder="Cliente"
-                                    value="@if (old('cliente')) {{ old('cliente') }} @else {{ $comissao->cliente }} @endif">
+                                    value="{{ $comissao->cliente ? $comissao->cliente : old(cliente) }} @endif">
                                 @error('cliente')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -47,7 +47,7 @@
                                         class="form-control  @error('data') is-invalid  @enderror"
                                         data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy"
                                         data-mask="" inputmode="numeric"
-                                        value="{{ \Carbon\Carbon::parse($comissao->data)->format('d/m/Y') }}"
+                                        value="{{ \Carbon\Carbon::parse($comissao->data)->format('d/m/Y') ? \Carbon\Carbon::parse($comissao->data)->format('d/m/Y') : old('data') }}"
                                         maxlength="10">
                                     @error('data')
                                         <span class=" invalid-feedback">{{ $message }}</span>
@@ -62,7 +62,8 @@
                                 <label>Conta / Pedido:</label>
                                 <input type="text" name="conta_pedido" maxlength="50"
                                     class="form-control @error('conta_pedido') is-invalid  @enderror"
-                                    placeholder="Conta/Periodo" value="{{ $comissao->conta_pedido }}">
+                                    placeholder="Conta/Periodo"
+                                    value="{{ $comissao->conta_pedido ? $comissao->conta_pedido : old('conta_pedido') }}">
                                 @error('conta_pedido')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -73,7 +74,7 @@
                                 <label>Placa:</label>
                                 <input type="text" name="placa" maxlength="10"
                                     class="form-control @error('placa') is-invalid  @enderror" placeholder="Placa"
-                                    value="{{ $comissao->placa }}">
+                                    value="{{ $comissao->placa ? $comissao->placa : old('placa') }}">
                                 @error('placa')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -84,7 +85,7 @@
                                 <label>Comissão:</label>
                                 <input type="text" name="comissao" maxlength="6"
                                     class="form-control @error('comissao') is-invalid  @enderror" placeholder="Comissão"
-                                    value="{{ $comissao->comissao }}">
+                                    value="{{ $comissao->comissao ? $comissao->comissao : old('comissao') }}">
                                 @error('comissao')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -95,7 +96,8 @@
                                 <label>Desconto:</label>
                                 <input type="text" name="desconto_comissao" maxlength="6"
                                     class="form-control @error('desconto_comissao') is-invalid  @enderror"
-                                    placeholder="Desconto" value="{{ $comissao->desconto_comissao }}">
+                                    placeholder="Desconto"
+                                    value="{{ $comissao->desconto_comissao ? $comissao->desconto_comissao : old('desconto_comissao') }} ">
                                 @error('desconto_comissao')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -108,7 +110,7 @@
                                 <label>Observação:</label>
                                 <input type="text" name="observacao" maxlength="190"
                                     class="form-control @error('observacao') is-invalid  @enderror" placeholder="Observação"
-                                    value="{{ $comissao->observacao }}">
+                                    value="{{ $comissao->observacao ? $comissao->observacao : old('observacao') }}">
                                 @error('observacao')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror

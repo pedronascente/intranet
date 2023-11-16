@@ -35,24 +35,22 @@
             <div class="col-md-5">
                 <div class="form-group">
                     <label>Serviço:</label>
-                    <select name="servico_alarme_id"
-                        class="form-control @error('servico_alarme_id') is-invalid @enderror">
+                    <select name="servico_id" class="form-control @error('servico_id') is-invalid @enderror">
                         <option value="">Selecione</option>
                         @isset($servico_alarme)
                             @foreach ($servico_alarme as $servico)
                                 <option value="{{ $servico->id }}"
-                                    {{ old('servico_alarme_id') == $servico->id ? 'selected' : '' }}>
+                                    {{ old('servico_id') == $servico->id ? 'selected' : '' }}>
                                     {{ $servico->nome }}
                                 </option>
                             @endforeach
                         @endisset
                     </select>
-                    @error('servico_alarme_id')
+                    @error('servico_id')
                         <span class="invalid-feedback">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
-
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Conta / Pedido:</label>
@@ -82,13 +80,12 @@
                     @enderror
                 </div>
             </div>
-
         </div>
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Ins. / Vendas:</label>
-                    <input type="text" name="ins_venda" maxlength="190"
+                    <input type="text" name="ins_venda" maxlength="9"
                         class="form-control @error('ins_venda') is-invalid  @enderror" placeholder="Ins. / Vendas"
                         value="{{ old('ins_venda') }}">
                     @error('ins_venda')
@@ -99,7 +96,7 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Mensal:</label>
-                    <input type="text" name="mensal" maxlength="190"
+                    <input type="text" name="mensal" maxlength="9"
                         class="form-control @error('mensal') is-invalid  @enderror" placeholder="Mensal"
                         value="{{ old('mensal') }}">
                     @error('mensal')
@@ -110,7 +107,7 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Comissão:</label>
-                    <input type="text" name="comissao" maxlength="190"
+                    <input type="text" name="comissao" maxlength="9"
                         class="form-control @error('comissao') is-invalid  @enderror" placeholder="Comissão"
                         value="{{ old('comissao') }}">
                     @error('comissao')
@@ -121,7 +118,7 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Desconto:</label>
-                    <input type="text" name="desconto_comissao" maxlength="190"
+                    <input type="text" name="desconto_comissao" maxlength="9"
                         class="form-control @error('desconto_comissao') is-invalid  @enderror" placeholder="Desconto"
                         value="{{ old('desconto_comissao') }}">
                     @error('desconto_comissao')

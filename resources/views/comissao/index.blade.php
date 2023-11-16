@@ -19,18 +19,22 @@
     </section>
     <div class="card card-primary">
         <div class="card-body">
-            <table class="table table-hover text-nowrap table-striped">
-                <tbody>
-                    <tr>
-                        <td><b>Colaborador</b> <br>{{ $planilha->colaborador->nome }}</td>
-                        <td><b>Matricula</b> <br>{{ $planilha->matricula }}</td>
-                        <td><b>CTPS </b> <br>{{ $planilha->ctps }}</td>
-                        <td><b>Periodo</b><br> {{ $planilha->periodo->nome }}</td>
-                        <td><b>Ano</b> <br>{{ $planilha->ano }}</td>
-                    </tr>
-                </tbody>
-            </table>
-            @include('comissao.comissao.table.' . $formulario)
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap table-striped">
+                    <tbody>
+                        <tr>
+                            <td><b>Colaborador</b> <br>{{ $planilha->colaborador->nome }}</td>
+                            <td><b>Matricula</b> <br>{{ $planilha->matricula }}</td>
+                            <td><b>CTPS </b> <br>{{ $planilha->ctps }}</td>
+                            <td><b>Periodo</b><br> {{ $planilha->periodo->nome }}</td>
+                            <td><b>Ano</b> <br>{{ $planilha->ano }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-body table-responsive p-0">
+                @include('comissao.comissao.table.' . $formulario)
+            </div>
         </div>
     </div>
     <div class="card">

@@ -33,8 +33,9 @@
                             class="btn btn-primary" title="Editar comissão">
                             <i class="nav-icon fas fa-edit"></i> Editar
                         </a>
-                        <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal"
-                            data-id="{{ $comissao->id }}" title="Excluir comissão">
+                        <a href="javascript:void(0)" class=" btn btn-danger btn-delete"
+                            data-route="{{ route('comercialAlarmeCercaEletricaCFTV.destroy', $comissao->id) }}"
+                            title="Excluir comissão">
                             <i class="fas fa-trash"></i> Excluir
                         </a>
                     </td>

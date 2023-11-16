@@ -13,9 +13,10 @@ use App\Http\Controllers\Controller;
 class ComissaoController extends Controller
 {
     /*
-            1 - Recuperar a planilha da base de dados , parametro planilha_id;
-            2 - Recuperar todas as comissões da respectiva planilha;
-            3 - 
+        1 - Recuperar a planilha da base de dados , parametro planilha_id;
+        2 - Recuperar todas as comissões da respectiva planilha;
+        3 - Recuperar Servicos de alarmes;
+        4 - Recuperar Meios,
     */
     public function index($id)
     {
@@ -33,7 +34,6 @@ class ComissaoController extends Controller
         }
 
         //Meio
-        //Serviços de alarmes:
         if ($this->getMeio($planilha->tipoPlanilha->formulario)) {
             $data['meios'] = Meio::all();
         }
@@ -85,11 +85,11 @@ class ComissaoController extends Controller
             case 'tecnicaDeRastreamento':
                 return  TecnicaDeRastreamento::where('planilha_id', $id)
                     ->orderBy('id', 'desc')
-                    ->paginate(10); // Defina o número desejado de itens por página, neste caso, 10
+                    ->paginate(10);
             case 'comercialAlarmeCercaEletricaCFTV':
                 return  ComercialAlarmeCercaEletricaCFTV::with(['servico', 'meio'])->where('planilha_id', $id)
                     ->orderBy('id', 'desc')
-                    ->paginate(10); // Defina o número desejado de itens por página, neste caso, 10
+                    ->paginate(10);
         }
     }
 }
