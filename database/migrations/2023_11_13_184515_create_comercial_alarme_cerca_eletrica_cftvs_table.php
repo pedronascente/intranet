@@ -25,13 +25,13 @@ class CreateComercialAlarmeCercaEletricaCFTVSTable extends Migration
             $table->timestamps();
 
             $table->unsignedInteger("meio_id");
-            $table->foreign('meio_id', 'fk_comissao_meio')->references('id')->on('meios');
+            $table->foreign('meio_id', 'fk_cac_cftv_meio')->references('id')->on('meios');
 
             $table->unsignedInteger("servico_id");
-            $table->foreign('servico_id', 'fk_comissao_servico')->references('id')->on('servico_alarmes');
+            $table->foreign('servico_id', 'fk_cac_cftv_servico')->references('id')->on('servico_alarmes');
 
             $table->unsignedInteger("planilha_id");
-            $table->foreign('planilha_id', 'fk_comissao_planilha')->references('id')->on('planilhas')->onDelete('cascade');
+            $table->foreign('planilha_id', 'fk_cac_cftv_planilha')->references('id')->on('planilhas')->onDelete('cascade');
             $table->engine = 'InnoDB';
         });
     }

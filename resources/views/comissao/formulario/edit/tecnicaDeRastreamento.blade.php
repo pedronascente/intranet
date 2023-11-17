@@ -20,8 +20,7 @@
     <div class="card card-primary">
         <div class="card-body">
             <h4>Editar Comissão</h4>
-            <form action="{{ route('comercialAlarmeCercaEletricaCFTV.update', $comissao->id) }}" method="POST"
-                name="formulario-edit">
+            <form action="{{ route('tecnicaDeRastreamento.update', $comissao->id) }}" method="POST" name="formulario-edit">
                 @csrf
                 @method('PUT')
                 <div class="card-body">
@@ -31,9 +30,9 @@
                                 <label>Cliente:</label>
                                 <input type="text" name="cliente" maxlength="190"
                                     class="form-control @error('cliente') is-invalid  @enderror" placeholder="Cliente"
-                                    value="{{ $comissao->cliente ? $comissao->cliente : old('cliente') }}">
+                                    value="{{ $comissao->cliente ? $comissao->cliente : old(cliente) }}">
                                 @error('cliente')
-                                    <span class="invalid-feedback">{{ $message }}</span>
+                                    <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
@@ -58,25 +57,6 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-5">
-                            <div class="form-group">
-                                <label>Serviço:</label>
-                                <select name="servico_id" class="form-control @error('servico_id') is-invalid @enderror">
-                                    <option value="">Selecione</option>
-                                    @isset($servico_alarme)
-                                        @foreach ($servico_alarme as $servico)
-                                            <option value="{{ $servico->id }}"
-                                                {{ $comissao->servico_id == $servico->id || old('servico_id') == $servico->id ? 'selected' : '' }}>
-                                                {{ $servico->nome }}
-                                            </option>
-                                        @endforeach
-                                    @endisset
-                                </select>
-                                @error('servico_alarme_id')
-                                    <span class="invalid-feedback">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label>Conta / Pedido:</label>
@@ -89,46 +69,13 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Meio:</label>
-                                <select name="meio_id" class="form-control @error('meio_id') is-invalid @enderror">
-                                    <option value="">Selecione</option>
-                                    @isset($meios)
-                                        @foreach ($meios as $meio)
-                                            <option value="{{ $meio->id }}"
-                                                {{ $comissao->meio_id == $meio->id || old('meio_id') == $meio->id ? 'selected' : '' }}>
-                                                {{ $meio->nome }}
-                                            </option>
-                                        @endforeach
-                                    @endisset
-                                </select>
-                                @error('meio_id')
-                                    <span class="invalid-feedback">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label>Ins. / Vendas:</label>
-                                <input type="text" name="ins_venda" maxlength="9"
-                                    class="form-control @error('ins_venda') is-invalid  @enderror"
-                                    placeholder="Ins. / Vendas"
-                                    value="{{ $comissao->ins_venda ? $comissao->ins_venda : old('ins_venda') }}">
-                                @error('ins_venda')
-                                    <span class=" invalid-feedback">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Mensal:</label>
-                                <input type="text" name="mensal" maxlength="9"
-                                    class="form-control @error('mensal') is-invalid  @enderror" placeholder="Mensal"
-                                    value="{{ $comissao->mensal ? $comissao->mensal : old('mensal') }}">
-                                @error('mensal')
+                                <label>Placa:</label>
+                                <input type="text" name="placa" maxlength="10"
+                                    class="form-control @error('placa') is-invalid  @enderror" placeholder="Placa"
+                                    value="{{ $comissao->placa ? $comissao->placa : old('placa') }}">
+                                @error('placa')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -136,7 +83,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label>Comissão:</label>
-                                <input type="text" name="comissao" maxlength="9"
+                                <input type="text" name="comissao" maxlength="6"
                                     class="form-control @error('comissao') is-invalid  @enderror" placeholder="Comissão"
                                     value="{{ $comissao->comissao ? $comissao->comissao : old('comissao') }}">
                                 @error('comissao')
@@ -147,11 +94,24 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label>Desconto:</label>
-                                <input type="text" name="desconto_comissao" maxlength="9"
+                                <input type="text" name="desconto_comissao" maxlength="6"
                                     class="form-control @error('desconto_comissao') is-invalid  @enderror"
                                     placeholder="Desconto"
-                                    value="{{ $comissao->desconto_comissao ? $comissao->desconto_comissao : old('desconto_comissao') }}">
+                                    value="{{ $comissao->desconto_comissao ? $comissao->desconto_comissao : old('desconto_comissao') }} ">
                                 @error('desconto_comissao')
+                                    <span class=" invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Observação:</label>
+                                <input type="text" name="observacao" maxlength="190"
+                                    class="form-control @error('observacao') is-invalid  @enderror" placeholder="Observação"
+                                    value="{{ $comissao->observacao ? $comissao->observacao : old('observacao') }}">
+                                @error('observacao')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -163,8 +123,7 @@
                         <i class="fas fa-save" aria-hidden="true"></i>
                         Salvar
                     </button>
-                    <a href="{{ route('comissao.index', $comissao->planilha_id) }}" title="Voltar"
-                        class="btn btn-danger">
+                    <a href="{{ route('comissao.index', $comissao->planilha_id) }}" title="Voltar" class="btn btn-danger">
                         <i class="fa fa-reply"></i> Voltar
                     </a>
                 </div>

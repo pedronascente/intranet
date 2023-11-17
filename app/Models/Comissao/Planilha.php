@@ -40,4 +40,9 @@ class Planilha extends Model
     {
         return $this->hasMany(ComercialAlarmeCercaEletricaCFTV::class);
     }
+
+    public function ComercialRastreamentoVeicular()
+    {
+        return $this->hasMany(ComercialRastreamentoVeicular::class);
+    }
 }

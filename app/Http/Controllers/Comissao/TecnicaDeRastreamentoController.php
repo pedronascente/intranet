@@ -9,7 +9,6 @@ use App\Http\Controllers\Controller;
 
 class TecnicaDeRastreamentoController extends Controller
 {
-
     private $comissao;
     private $titulo;
 
@@ -40,7 +39,7 @@ class TecnicaDeRastreamentoController extends Controller
 
     public function edit($id)
     {
-        return view('comissao.comissao.formulario.edit.tecnicaDeRastreamento', [
+        return view('comissao.formulario.edit.tecnicaDeRastreamento', [
             'comissao' => TecnicaDeRastreamento::findOrFail($id),
             'titulo' => $this->titulo
         ]);
@@ -105,7 +104,7 @@ class TecnicaDeRastreamentoController extends Controller
             [
                 'required' => 'Campo obrigatório.',
                 'comissao.regex:/^\d+(\.\d{1,2})?$/' => 'Deve ser um número decimal com até 2 casas decimais',
-                'date_format' => 'O campo data deve estar no formato válido d/m/Y'
+                'date_format' => 'O campo data deve estar no formato válido dia/mes/ano'
             ],
         );
     }

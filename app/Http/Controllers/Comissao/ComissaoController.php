@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Comissao;
 
-use App\Models\Comissao\Planilha;
 use App\Models\Comissao\Meio;
+use App\Models\Comissao\Planilha;
+use App\Http\Controllers\Controller;
 use App\Models\Comissao\ServicoAlarme;
 use App\Models\Comissao\TecnicaDeRastreamento;
-use App\Models\comissao\ComercialAlarmeCercaEletricaCFTV;
 
-use App\Http\Controllers\Controller;
+use App\Models\comissao\ComercialRastreamentoVeicular;
+use App\Models\comissao\ComercialAlarmeCercaEletricaCFTV;
 
 class ComissaoController extends Controller
 {
@@ -23,6 +24,7 @@ class ComissaoController extends Controller
         $planilha = Planilha::with('colaborador', 'periodo', 'tipoPlanilha')->findOrFail($id);
         $comissoes = $this->getComissoes($planilha->tipoPlanilha->formulario, $id);
         $data = [
+            'titulo' => $planilha->tipoPlanilha->nome,
             'planilha' => $planilha,
             'formulario' => $planilha->tipoPlanilha->formulario,
             'listaComissao' => $comissoes,
@@ -79,17 +81,20 @@ class ComissaoController extends Controller
         return false;
     }
 
-    private function getComissoes($tipoPlanilha, $id)
+    private function getComissoes($tipoPlanilha)
     {
         switch ($tipoPlanilha) {
             case 'tecnicaDeRastreamento':
-                return  TecnicaDeRastreamento::where('planilha_id', $id)
-                    ->orderBy('id', 'desc')
-                    ->paginate(10);
+                return TecnicaDeRastreamento::orderBy('id', 'desc')->paginate(10);
             case 'comercialAlarmeCercaEletricaCFTV':
-                return  ComercialAlarmeCercaEletricaCFTV::with(['servico', 'meio'])->where('planilha_id', $id)
+                return ComercialAlarmeCercaEletricaCFTV::with(['servico', 'meio'])
                     ->orderBy('id', 'desc')
                     ->paginate(10);
+            case 'comercialRastreamentoVeicular':
+                return ComercialRastreamentoVeicular::orderBy('id', 'desc')->paginate(10);
+            default:
+                // Lidar com outros casos ou lançar uma exceção, se necessário
+                return null;
         }
     }
 }

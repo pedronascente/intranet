@@ -32,35 +32,9 @@
         $('[data-mask]').inputmask();
         $('#deleteModal').on('shown.bs.modal', function(event) {
             var button = $(event.relatedTarget);
-            var recipientId = button.data('id');
-            var modal = $(this);
-            modal.find('#id').val(recipientId);
-        });
-    });
-</script>
-<script>
-    $(document).ready(function() {
-        $('.btn-delete').on('click', function() {
-            var rota = $(this).data('route');
-            console.log(rota);
-
-            if (confirm('Tem certeza que deseja excluir este registro?')) {
-                $.ajax({
-                    type: 'DELETE',
-                    url: rota,
-                    data: {
-                        _token: '{{ csrf_token() }}',
-
-                    },
-                    success: function(response) {
-                        alert(response.message);
-                        window.location.reload();
-                    },
-                    error: function(error) {
-                        console.log(error);
-                    }
-                });
-            }
+            var rota = button.data('route');
+            // Atualiza o atributo action do formulário com o valor da URL
+            $('#deleteForm').attr('action', rota);
         });
     });
 </script>

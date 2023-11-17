@@ -2,21 +2,25 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+#Login
 use App\Http\Controllers\Login\UserController;
 use App\Http\Controllers\Login\LoginController;
 use App\Http\Controllers\Login\TokenController;
+#Settings
 use App\Http\Controllers\Settings\BaseController;
 use App\Http\Controllers\Settings\CargoController;
 use App\Http\Controllers\Settings\CartaoController;
 use App\Http\Controllers\Settings\ModuloController;
 use App\Http\Controllers\Settings\PerfilController;
 use App\Http\Controllers\Settings\EmpresaController;
-use App\Http\Controllers\Comissao\ComissaoController;
-use App\Http\Controllers\Comissao\PlanilhaController;
 use App\Http\Controllers\Settings\PermissaoController;
 use App\Http\Controllers\Settings\ColaboradorController;
+#Comissao
+use App\Http\Controllers\Comissao\ComissaoController;
+use App\Http\Controllers\Comissao\PlanilhaController;
 use App\Http\Controllers\comissao\TecnicaDeRastreamentoController;
 use App\Http\Controllers\comissao\ComercialAlarmeCercaEletricaCFTV;
+use App\Http\Controllers\comissao\ComercialRastreamentoVeicular;
 
 Route::prefix('/login')
     ->group(function () {
@@ -157,4 +161,16 @@ Route::prefix('/comercialAlarmeCercaEletricaCFTV')
             ->name('comercialAlarmeCercaEletricaCFTV.update');
         Route::delete('/{id}', [ComercialAlarmeCercaEletricaCFTV::class, 'destroy'])
             ->name('comercialAlarmeCercaEletricaCFTV.destroy');
+    });
+
+Route::prefix('/comercialRastreamentoVeicular')
+    ->group(function () {
+        Route::get('/{id}/edit', [ComercialRastreamentoVeicular::class, 'edit'])
+            ->name('comercialRastreamentoVeicular.edit');
+        Route::post('/', [ComercialRastreamentoVeicular::class, 'store'])
+            ->name('comercialRastreamentoVeicular.store');
+        Route::put('/{id}', [ComercialRastreamentoVeicular::class, 'update'])
+            ->name('comercialRastreamentoVeicular.update');
+        Route::delete('/{id}', [ComercialRastreamentoVeicular::class, 'destroy'])
+            ->name('comercialRastreamentoVeicular.destroy');
     });

@@ -1,11 +1,12 @@
-<form action="{{ route('comissao.store') }}" method="POST" name="Formulario-create">
+<form action="{{ route('comercialRastreamentoVeicular.store') }}" method="POST" name="formulario-create">
+    <input type="hidden" name="planilha_id" value="{{ $planilha->id }}">
     @csrf
     <div class="card-body">
         <div class="row">
-            <div class="col-md-10">
+            <div class="col-md-8">
                 <div class="form-group">
                     <label>Cliente:</label>
-                    <input type="text" name="cliente" maxlength="190"
+                    <input type="text" name="cliente" maxlength="200"
                         class="form-control @error('cliente') is-invalid  @enderror" placeholder="Cliente"
                         value="{{ old('cliente') }}">
                     @error('cliente')
@@ -16,65 +17,66 @@
             <div class="col-md-2">
                 <div class="form-group">
                     <label>Data:</label>
-                    <input type="text" name="data" class="form-control @error('data') is-invalid  @enderror"
-                        placeholder="Data" value="{{ old('data') }}">
+                    <input type="text" name="data" class="form-control  @error('data') is-invalid  @enderror"
+                        data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask=""
+                        inputmode="numeric" value="{{ old('data') }}" maxlength="10">
                     @error('data')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <div class="form-group">
-                    <label>Conta / Pedido:</label>
-                    <input type="text" name="conta" maxlength="190"
-                        class="form-control @error('conta') is-invalid  @enderror" placeholder="Conta"
-                        value="{{ old('conta') }}">
-                    @error('conta')
-                        <span class=" invalid-feedback">{{ $message }}</span>
-                    @enderror
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label>Equip /Serviço:</label>
-                    <input type="text" name="equipe_servico" maxlength="190"
-                        class="form-control @error('equipe_servico') is-invalid  @enderror" placeholder="Equipe Servico"
-                        value="{{ old('equipe_servico') }}">
-                    @error('equipe_servico')
-                        <span class=" invalid-feedback">{{ $message }}</span>
-                    @enderror
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label>Ins. / Vendas:</label>
-                    <input type="text" name="ins_vendas" maxlength="20"
-                        class="form-control @error('ins_vendas') is-invalid  @enderror" placeholder="ins_vendas"
-                        value="{{ old('ins_vendas') }}">
-                    @error('ins_vendas')
+                    <label>ID Contrato:</label>
+                    <input type="text" name="id_contrato" maxlength="10"
+                        class="form-control @error('id_contrato') is-invalid  @enderror" placeholder="ID Contrato"
+                        value="{{ old('id_contrato') }}">
+                    @error('id_contrato')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
         </div>
         <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Placa:</label>
+                    <input type="text" name="placa" maxlength="10"
+                        class="form-control @error('placa') is-invalid  @enderror" placeholder="Placa"
+                        value="{{ old('placa') }}">
+                    @error('placa')
+                        <span class=" invalid-feedback">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Taxa Instalação:</label>
+                    <input type="text" name="taxa_instalacao" maxlength="10"
+                        class="form-control @error('taxa_instalacao') is-invalid  @enderror"
+                        placeholder="Taxa Instalação" value="{{ old('taxa_instalacao') }}">
+                    @error('taxa_instalacao')
+                        <span class=" invalid-feedback">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label>Mensal:</label>
-                    <input type="text" name="mensal" maxlength="20"
-                        class="form-control @error('mensal') is-invalid  @enderror" placeholder="mensal"
+                    <input type="text" name="mensal" maxlength="10"
+                        class="form-control @error('mensal') is-invalid  @enderror" placeholder="Mensal"
                         value="{{ old('mensal') }}">
                     @error('mensal')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
+        </div>
+        <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
                     <label>Comissão:</label>
-                    <input type="text" name="comissao" maxlength="190"
+                    <input type="text" name="comissao" maxlength="10"
                         class="form-control @error('comissao') is-invalid  @enderror" placeholder="Comissão"
                         value="{{ old('comissao') }}">
                     @error('comissao')
@@ -85,9 +87,9 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label>Desconto:</label>
-                    <input type="text" name="desconto_comissao" maxlength="190"
+                    <input type="text" name="desconto_comissao" maxlength="10"
                         class="form-control @error('desconto_comissao') is-invalid  @enderror" placeholder="Desconto"
-                        value="{{ old('desconto_comissao') }}">
+                        value="{{ old('desconto_comissao') ? old('desconto_comissao') : 0 }}   ">
                     @error('desconto_comissao')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror

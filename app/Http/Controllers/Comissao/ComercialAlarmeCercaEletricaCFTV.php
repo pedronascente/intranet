@@ -18,8 +18,8 @@ class ComercialAlarmeCercaEletricaCFTV extends Controller
 
     public function __construct()
     {
+        $this->titulo = "Comercial Alarme / Cerca Elétrica / CFTV";
         $this->comissao = new ComissaoController();
-        $this->titulo =  "Comercial Alarme / Cerca Elétrica / CFTV";
     }
 
     public function store(Request $request)
@@ -47,7 +47,7 @@ class ComercialAlarmeCercaEletricaCFTV extends Controller
         $comissao = CACCFTV::findOrFail($id);
         $servico_alarme = ServicoAlarme::all();
         $meios = Meio::all();
-        return view('comissao.comissao.formulario.edit.comercialAlarmeCercaEletricaCFTV', [
+        return view('comissao.formulario.edit.comercialAlarmeCercaEletricaCFTV', [
             'titulo' => $this->titulo,
             'comissao' => $comissao,
             'servico_alarme' => $servico_alarme,
@@ -74,12 +74,12 @@ class ComercialAlarmeCercaEletricaCFTV extends Controller
             ->with('status', "Atualizado com sucesso!");
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        $caccftv  = CACCFTV::findOrFail($id);
+        $caccftv  = CACCFTV::findOrFail($request->id);
         $caccftv->delete();
-
-        return response()->json(['success' => true, 'message' => 'Registro excluído com sucesso!']);
+        return redirect(route('comissao.index', $caccftv->planilha_id))
+            ->with('status', "Registro excluido com sucesso!");
     }
 
     private function validarFormulario(Request $request)
@@ -121,7 +121,15 @@ class ComercialAlarmeCercaEletricaCFTV extends Controller
                         }
                     },
                 ],
-                'desconto_comissao' => 'numeric',
+                'desconto_comissao' => [
+                    'numeric',
+                    'regex:/^\d+(\.\d{1,2})?$/',
+                    function ($attribute, $value, $fail) {
+                        if ($value < 0 || $value > 9999999.99) {
+                            $fail("O campo $attribute deve estar entre 0 e 9999999.99");
+                        }
+                    },
+                ],
             ],
             [
                 'required' => 'Campo obrigatório.',
