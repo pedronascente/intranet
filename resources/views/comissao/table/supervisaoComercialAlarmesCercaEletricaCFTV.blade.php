@@ -1,7 +1,7 @@
 <table class="table table-hover text-nowrap table-striped">
     <thead>
         <tr>
-            <th>ID</th>
+            <th>#</th>
             <th>Data</th>
             <th>Cliente</th>
             <th>Conta / Pedido</th>
@@ -15,29 +15,33 @@
         </tr>
     </thead>
     <tbody>
-        @for ($i = 0; $i < 20; $i++)
-            <tr>
-                <td>33</td>
-                <td>17/08/2023</td>
-                <td>Rosemarie da Costa Pfitscher</td>
-                <td>55555</td>
-                <td>w4545455</td>
-                <td>R$ 69.00</td>
-                <td>R$ 00.00</td>
-                <td>R$ 00.00</td>
-                <td>R$ 00.00</td>
-                <td>R$ 00.00</td>
-                <td>
-                    <a href="{{ route('comissao.edit', $i) }}" class="btn btn-primary" title="Editar Planilha">
-                        <i class="nav-icon fas fa-edit"></i> Editar
-                    </a>
-                    <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal"
-                        data-id="1" title="Excluir Planilha">
-                        <i class="fas fa-trash"></i> Excluir
-                    </a>
-                </td>
-            </tr>
-        @endfor
+        @if ($listaComissao)
+            @foreach ($listaComissao as $comissao)
+                <tr>
+                    <td>{{ $comissao->id }}</td>
+                    <td>{{ \Carbon\Carbon::parse($comissao->data)->format('d/m/Y') }}</td>
+                    <td>{{ $comissao->cliente }}</td>
+                    <td>{{ $comissao->conta }}</td>
+                    <td>{{ $comissao->servico }}</td>
+                    <td>{{ $comissao->ins_venda }}</td>
+                    <td>{{ $comissao->mensal }}</td>
+                    <td>{{ $comissao->consultor }}</td>
+                    <td>{{ $comissao->comissao }}</td>
+                    <td>{{ $comissao->desconto_comissao }}</td>
+                    <td>
+                        <a href="{{ route('supervisaoComercialAlarmesCercaEletricaCFTV.edit', $comissao->id) }}"
+                            class="btn btn-primary" title="Editar comissão">
+                            <i class="nav-icon fas fa-edit"></i> Editar
+                        </a>
+                        <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal"
+                            data-route="{{ route('supervisaoComercialAlarmesCercaEletricaCFTV.destroy', $comissao->id) }}"
+                            title="Excluir comissão">
+                            <i class="fas fa-trash"></i> Excluir
+                        </a>
+                    </td>
+                </tr>
+            @endforeach
+        @endif
     </tbody>
 </table>
 @if ($listaComissao)

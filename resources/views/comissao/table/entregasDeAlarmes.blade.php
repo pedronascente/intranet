@@ -1,7 +1,7 @@
 <table class="table table-hover text-nowrap table-striped">
     <thead>
         <tr>
-            <th>ID</th>
+            <th>#</th>
             <th>Data</th>
             <th>Cliente</th>
             <th>Conta</th>
