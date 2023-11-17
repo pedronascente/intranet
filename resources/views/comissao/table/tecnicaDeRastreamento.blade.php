@@ -40,7 +40,6 @@
         @endif
     </tbody>
 </table>
-
 @if ($listaComissao)
     {{ $listaComissao->links() }}
 @endif

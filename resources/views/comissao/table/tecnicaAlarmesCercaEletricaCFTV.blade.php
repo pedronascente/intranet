@@ -36,3 +36,7 @@
         @endfor
     </tbody>
 </table>
+@if ($listaComissao)
+    {{ $listaComissao->links() }}
+@endif
+<x-ui.modalDelete />

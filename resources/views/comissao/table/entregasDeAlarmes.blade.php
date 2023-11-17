@@ -11,25 +11,32 @@
         </tr>
     </thead>
     <tbody>
-        @for ($i = 0; $i < 20; $i++)
-            <tr>
-                <td>23</td>
-                <td>17/08/2023</td>
-                <td>Rosemarie da Costa Pfitscher</td>
-                <td>4343343433</td>
-                <td>R$ 69.00</td>
-                <td>R$ 35.00</td>
-
-                <td>
-                    <a href="{{ route('comissao.edit', $i) }}" class="btn btn-primary" title="Editar Planilha">
-                        <i class="nav-icon fas fa-edit"></i> Editar
-                    </a>
-                    <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal"
-                        data-id="1" title="Excluir Planilha">
-                        <i class="fas fa-trash"></i> Excluir
-                    </a>
-                </td>
-            </tr>
-        @endfor
+        @if ($listaComissao)
+            @foreach ($listaComissao as $comissao)
+                <tr>
+                    <td>{{ $comissao->id }}</td>
+                    <td>{{ \Carbon\Carbon::parse($comissao->data)->format('d/m/Y') }}</td>
+                    <td>{{ $comissao->cliente }}</td>
+                    <td>{{ $comissao->conta }}</td>
+                    <td>{{ $comissao->comissao }}</td>
+                    <td>{{ $comissao->desconto_comissao }}</td>
+                    <td>
+                        <a href="{{ route('entregasDeAlarmes.edit', $comissao->id) }}" class="btn btn-primary"
+                            title="Editar comissão">
+                            <i class="nav-icon fas fa-edit"></i> Editar
+                        </a>
+                        <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal"
+                            data-route="{{ route('entregasDeAlarmes.destroy', $comissao->id) }}"
+                            title="Excluir comissão">
+                            <i class="fas fa-trash"></i> Excluir
+                        </a>
+                    </td>
+                </tr>
+            @endforeach
+        @endif
     </tbody>
 </table>
+@if ($listaComissao)
+    {{ $listaComissao->links() }}
+@endif
+<x-ui.modalDelete />
