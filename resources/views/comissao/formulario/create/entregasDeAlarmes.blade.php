@@ -30,10 +30,10 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label>Conta:</label>
-                    <input type="text" name="conta" maxlength="190"
-                        class="form-control @error('conta') is-invalid  @enderror" placeholder="Conta"
-                        value="{{ old('conta') }}">
-                    @error('conta')
+                    <input type="text" name="conta_pedido" maxlength="50"
+                        class="form-control @error('conta_pedido') is-invalid  @enderror" placeholder="Conta"
+                        value="{{ old('conta_pedido') }}">
+                    @error('conta_pedido')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
                 </div>
@@ -52,9 +52,9 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label>Desconto:</label>
-                    <input type="text" name="desconto_comissao" maxlength="190"
+                    <input type="text" name="desconto_comissao" maxlength="10"
                         class="form-control @error('desconto_comissao') is-invalid  @enderror" placeholder="Desconto"
-                        value="{{ old('desconto_comissao') }}">
+                        value="{{ old('desconto_comissao') ? old('desconto_comissao') : 0 }}   ">
                     @error('desconto_comissao')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror

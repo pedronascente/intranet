@@ -104,9 +104,9 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Desconto:</label>
-                    <input type="text" name="desconto_comissao" maxlength="9"
+                     <input type="text" name="desconto_comissao" maxlength="10"
                         class="form-control @error('desconto_comissao') is-invalid  @enderror" placeholder="Desconto"
-                        value="{{ old('desconto_comissao') }}">
+                        value="{{ old('desconto_comissao') ? old('desconto_comissao') : 0 }}   ">
                     @error('desconto_comissao')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
