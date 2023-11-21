@@ -16,7 +16,7 @@ class TipoPlanilhaSeeder extends Seeder
     {
         DB::table('tipo_planilhas')->insert(['nome' => 'Comercial Alarme / Cerca Elétrica / CFTV',                  'formulario' => 'comercialAlarmeCercaEletricaCFTV']);
         DB::table('tipo_planilhas')->insert(['nome' => 'Comercial Rastreamento Veicular',                           'formulario' => 'comercialRastreamentoVeicular']);
-        DB::table('tipo_planilhas')->insert(['nome' => 'Entregas de Alarmes',                                       'formulario' => 'entregasDeAlarmes']);
+        DB::table('tipo_planilhas')->insert(['nome' => 'Entregas de Alarmes',                                       'formulario' => 'entregaDeAlarmes']);
         DB::table('tipo_planilhas')->insert(['nome' => 'Portaria Virtual',                                          'formulario' => 'portariaVirtual']);
         DB::table('tipo_planilhas')->insert(['nome' => 'Reclamação de Cliente',                                     'formulario' => 'reclamacaoDeCliente']);
         DB::table('tipo_planilhas')->insert(['nome' => 'Supervisão Comercial Alarmes / Cerca Elétrica / CFTV',      'formulario' => 'supervisaoComercialAlarmesCercaEletricaCFTV']);

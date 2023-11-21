@@ -1,21 +1,16 @@
 @extends('layouts.app')
+
+@section('titulo', $titulo)
+
+@section('breadcrumb')
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item">
+            <a href="{{ route('planilha.index') }}">Planilhas</a>
+        </li>
+    </ol>
+@endsection
+
 @section('content')
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">Planilha | Editar </h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item">
-                            <a href="/comissao/planilha">Planilhas</a>
-                        </li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>
     <div class="card card-default">
         <form action="{{ route('planilha.update', $planilha->id) }}" method="POST">
             @csrf

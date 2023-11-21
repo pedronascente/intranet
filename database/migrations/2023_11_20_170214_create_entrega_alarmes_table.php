@@ -14,8 +14,16 @@ class CreateEntregaAlarmesTable extends Migration
     public function up()
     {
         Schema::create('entrega_alarmes', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
+            $table->date('data');
+            $table->string('cliente');
+            $table->string('conta_pedido');
+            $table->decimal('comissao', 9, 2);
+            $table->decimal('desconto_comissao', 9, 2)->nullable(); // Tornar a coluna 'desconto_comissao' nula
             $table->timestamps();
+            $table->unsignedInteger("planilha_id");
+            $table->foreign('planilha_id', 'fk_entrega_alarmes_planilha')->references('id')->on('planilhas')->onDelete('cascade');
+            $table->engine = 'InnoDB';
         });
     }
 

@@ -1,4 +1,5 @@
-<form action="{{ route('supervisaoComercialAlarmesCercaEletricaCFTV.store') }}" method="POST" name="formulario-create">
+<form action="{{ route('supervisao.comercial.alarmes.cerca.eletrica.cftv.store') }}" method="POST"
+    name="formulario-create">
     <input type="hidden" name="planilha_id" value="{{ $planilha->id }}">
     @csrf
     <div class="card-body">
@@ -18,8 +19,8 @@
                 <div class="form-group">
                     <label>Data:</label>
                     <input type="text" name="data" class="form-control  @error('data') is-invalid  @enderror"
-                            data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask=""
-                            inputmode="numeric" value="{{ old('data') }}" maxlength="10">
+                        data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask=""
+                        inputmode="numeric" value="{{ old('data') }}" maxlength="10">
                     @error('data')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
@@ -35,7 +36,12 @@
                         <option value="">Selecione</option>
                         @isset($servico_alarme)
                             @foreach ($servico_alarme as $servico)
-                                <option value="{{ $servico->id }}">{{ $servico->nome }}</option>
+                                <option value="{{ $servico->id }}"
+                                    @if ($comissao->servico->id == $servico->id) {{ 'selected' }}
+                                    @elseif (old('servico_id') == $servico->id)
+                                        {{ 'selected' }} @endif>
+                                    {{ $servico->nome }}
+                                </option>
                             @endforeach
                         @endisset
                     </select>
@@ -104,7 +110,7 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Desconto:</label>
-                     <input type="text" name="desconto_comissao" maxlength="10"
+                    <input type="text" name="desconto_comissao" maxlength="10"
                         class="form-control @error('desconto_comissao') is-invalid  @enderror" placeholder="Desconto"
                         value="{{ old('desconto_comissao') ? old('desconto_comissao') : 0 }}   ">
                     @error('desconto_comissao')

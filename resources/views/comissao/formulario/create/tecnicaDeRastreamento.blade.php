@@ -1,4 +1,4 @@
-<form action="{{ route('tecnicaDeRastreamento.store') }}" method="POST" name="formulario-create">
+<form action="{{ route('tecnica.de.rastreamento.store') }}" method="POST" name="formulario-create">
     <input type="hidden" name="planilha_id" value="{{ $planilha->id }}">
     @csrf
     <div class="card-body">

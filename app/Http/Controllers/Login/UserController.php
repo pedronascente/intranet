@@ -40,7 +40,7 @@ class UserController extends Controller
 
     public function index()
     {
-        return view('settings.user.index', [
+        return view('configuracoes.user.index', [
             'collections' => User::with('perfil')->orderBy('id', 'desc')->paginate($this->paginate),
             'permissoes' => PermissaoHelp::getPermissoes($this->modulo),
         ]);
@@ -49,7 +49,7 @@ class UserController extends Controller
     public function create()
     {
         if (PermissaoHelp::verificaPermissao(['permissao' => 'Criar', 'modulo' => $this->modulo])) {
-            return view('settings.user.create', ['perfis' => Perfil::all()]);
+            return view('configuracoes.user.create', ['perfis' => Perfil::all()]);
         } else {
             return redirect()
                 ->action($this->actionIndex);
@@ -87,7 +87,7 @@ class UserController extends Controller
     public function edit($id)
     {
         if (PermissaoHelp::verificaPermissao(['permissao' => 'Editar', 'modulo' => $this->modulo])) {
-            return view('settings.user.edit', ['user' => User::findOrFail($id), 'perfis' => Perfil::orderBy('id', 'desc')->get()]);
+            return view('configuracoes.user.edit', ['user' => User::findOrFail($id), 'perfis' => Perfil::orderBy('id', 'desc')->get()]);
         } else {
             return redirect()
                 ->action($this->actionIndex);
@@ -113,7 +113,7 @@ class UserController extends Controller
     public function show($id)
     {
         $usuario =  User::with('perfil', 'colaborador', 'cartao')->findOrFail($id);
-        return view('settings.user.show', [
+        return view('configuracoes.user.show', [
             'user' => $usuario,
             'status' => $usuario->getStatus($id),
         ]);
@@ -221,7 +221,7 @@ class UserController extends Controller
         $mail = new PHPMailer(true);
         $mail->CharSet = "UTF-8";
         try {
-            //Server settings
+            //Server configuracoes
             $mail->SMTPDebug = 0;                      //Enable verbose debug output
             $mail->isSMTP();
             //Send using SMTP

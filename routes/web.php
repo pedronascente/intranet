@@ -1,27 +1,33 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DashboardController;
+
 #Login
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Login\UserController;
 use App\Http\Controllers\Login\LoginController;
 use App\Http\Controllers\Login\TokenController;
-#Settings
-use App\Http\Controllers\Settings\BaseController;
-use App\Http\Controllers\Settings\CargoController;
-use App\Http\Controllers\Settings\CartaoController;
-use App\Http\Controllers\Settings\ModuloController;
-use App\Http\Controllers\Settings\PerfilController;
-use App\Http\Controllers\comissao\EntregasDeAlarmes;
-use App\Http\Controllers\Settings\EmpresaController;
-use App\Http\Controllers\Comissao\ComissaoController;
+
+
+#Configuracoes
+use App\Http\Controllers\Configuracoes\BaseController;
+use App\Http\Controllers\Configuracoes\CargoController;
+use App\Http\Controllers\Configuracoes\CartaoController;
+use App\Http\Controllers\Configuracoes\ModuloController;
+use App\Http\Controllers\Configuracoes\PerfilController;
+use App\Http\Controllers\Configuracoes\EmpresaController;
+use App\Http\Controllers\Configuracoes\PermissaoController;
+use App\Http\Controllers\Configuracoes\ColaboradorController;
+
 #Comissao
+use App\Http\Controllers\Comissao\ComissaoController;
 use App\Http\Controllers\Comissao\PlanilhaController;
-use App\Http\Controllers\Settings\PermissaoController;
-use App\Http\Controllers\Settings\ColaboradorController;
-use App\Http\Controllers\comissao\ComercialRastreamentoVeicular;
-use App\Http\Controllers\comissao\TecnicaDeRastreamentoController;
-use App\Http\Controllers\comissao\ComercialAlarmeCercaEletricaCFTV;
+
+use App\Http\Controllers\Comissao\ComercialRastreamentoVeicular;
+use App\Http\Controllers\Comissao\TecnicaDeRastreamentoController;
+use App\Http\Controllers\Comissao\ComercialAlarmeCercaEletricaCFTV;
+
+use App\Http\Controllers\Comissao\EntregaDeAlarme;
 
 Route::prefix('/login')->group(function () {
     Route::get('/', [LoginController::class, 'showForm'])->name('login.form');
@@ -39,14 +45,14 @@ Route::middleware(['auth', 'verificarToken'])->group(
     function () {
         Route::redirect('/', '/dashboard', 301);
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
-        Route::get('/settings', function () {
-            return view('settings.index');
+        Route::get('/configuracoes', function () {
+            return view('configuracoes.index');
         })->name('configuracoes');
     }
 );
 
 Route::middleware(['auth', 'verificarToken', 'verificarModulos'])->group(function () {
-    Route::prefix('/settings')->group(
+    Route::prefix('/configuracoes')->group(
         function () {
             Route::prefix('/cartao')->group(
                 function () {
@@ -108,30 +114,47 @@ Route::prefix('/comissao')->group(function () {
     Route::post('/', [ComissaoController::class, 'store'])->name('comissao.store');
 });
 
-Route::prefix('/tecnicaDeRastreamento')->group(function () {
-    Route::get('/{id}/edit', [TecnicaDeRastreamentoController::class, 'edit'])->name('tecnicaDeRastreamento.edit');
-    Route::post('/', [TecnicaDeRastreamentoController::class, 'store'])->name('tecnicaDeRastreamento.store');
-    Route::put('/{id}', [TecnicaDeRastreamentoController::class, 'update'])->name('tecnicaDeRastreamento.update');
-    Route::delete('/{id}', [TecnicaDeRastreamentoController::class, 'destroy'])->name('tecnicaDeRastreamento.destroy');
+Route::prefix('/tecnica-de-rastreamento')->group(function () {
+    Route::get('/{id}/edit', [TecnicaDeRastreamentoController::class, 'edit'])->name('tecnica.de.rastreamento.edit');
+    Route::post('/', [TecnicaDeRastreamentoController::class, 'store'])->name('tecnica.de.rastreamento.store');
+    Route::put('/{id}', [TecnicaDeRastreamentoController::class, 'update'])->name('tecnica.de.rastreamento.update');
+    Route::delete('/{id}', [TecnicaDeRastreamentoController::class, 'destroy'])->name('tecnica.de.rastreamento.destroy');
 });
 
-Route::prefix('/comercialAlarmeCercaEletricaCFTV')->group(function () {
-    Route::get('/{id}/edit', [ComercialAlarmeCercaEletricaCFTV::class, 'edit'])->name('comercialAlarmeCercaEletricaCFTV.edit');
-    Route::post('/', [ComercialAlarmeCercaEletricaCFTV::class, 'store'])->name('comercialAlarmeCercaEletricaCFTV.store');
-    Route::put('/{id}', [ComercialAlarmeCercaEletricaCFTV::class, 'update'])->name('comercialAlarmeCercaEletricaCFTV.update');
-    Route::delete('/{id}', [ComercialAlarmeCercaEletricaCFTV::class, 'destroy'])->name('comercialAlarmeCercaEletricaCFTV.destroy');
+Route::prefix('/comercial-alarme-cerca-eletrica-cftv')->group(function () {
+    Route::get('/{id}/edit', [ComercialAlarmeCercaEletricaCFTV::class, 'edit'])->name('comercial.alarme.cerca.eletrica.cftv.edit');
+    Route::post('/', [ComercialAlarmeCercaEletricaCFTV::class, 'store'])->name('comercial.alarme.cerca.eletrica.cftv.store');
+    Route::put('/{id}', [ComercialAlarmeCercaEletricaCFTV::class, 'update'])->name('comercial.alarme.cerca.eletrica.cftv.update');
+    Route::delete('/{id}', [ComercialAlarmeCercaEletricaCFTV::class, 'destroy'])->name('comercial.alarme.cerca.eletrica.cftv.destroy');
 });
 
-Route::prefix('/comercialRastreamentoVeicular')->group(function () {
-    Route::get('/{id}/edit', [ComercialRastreamentoVeicular::class, 'edit'])->name('comercialRastreamentoVeicular.edit');
-    Route::post('/', [ComercialRastreamentoVeicular::class, 'store'])->name('comercialRastreamentoVeicular.store');
-    Route::put('/{id}', [ComercialRastreamentoVeicular::class, 'update'])->name('comercialRastreamentoVeicular.update');
-    Route::delete('/{id}', [ComercialRastreamentoVeicular::class, 'destroy'])->name('comercialRastreamentoVeicular.destroy');
+Route::prefix('/comercial-rastreamento-veicular')->group(function () {
+    Route::get('/{id}/edit', [ComercialRastreamentoVeicular::class, 'edit'])->name('comercial.rastreamento.veicular.edit');
+    Route::post('/', [ComercialRastreamentoVeicular::class, 'store'])->name('comercial.rastreamento.veicular.store');
+    Route::put('/{id}', [ComercialRastreamentoVeicular::class, 'update'])->name('comercial.rastreamento.veicular.update');
+    Route::delete('/{id}', [ComercialRastreamentoVeicular::class, 'destroy'])->name('comercial.rastreamento.veicular.destroy');
 });
 
-Route::prefix('/entregasDeAlarmes')->group(function () {
-    Route::get('/{id}/edit', [EntregasDeAlarmes::class, 'edit'])->name('entregasDeAlarmes.edit');
-    Route::post('/', [EntregasDeAlarmes::class, 'store'])->name('entregasDeAlarmes.store');
-    Route::put('/{id}', [EntregasDeAlarmes::class, 'update'])->name('entregasDeAlarmes.update');
-    Route::delete('/{id}', [EntregasDeAlarmes::class, 'destroy'])->name('entregasDeAlarmes.destroy');
+Route::prefix('/entrega-de-alarme')->group(function () {
+    Route::get('/{id}/edit', [EntregaDeAlarme::class, 'edit'])->name('entrega.alarme.edit');
+    Route::post('/', [EntregaDeAlarme::class, 'store'])->name('entrega.alarme.store');
+    Route::put('/{id}', [EntregaDeAlarme::class, 'update'])->name('entrega.alarme.update');
+    Route::delete('/{id}', [EntregaDeAlarme::class, 'destroy'])->name('entrega.alarme.destroy');
 });
+
+
+/*
+[x] comercial.alarme.cerca.eletrica.cftv.edit
+[x] comercial.rastreamento.veicular
+[x] entrega.alarme
+[x] tecnica.de.rastreamento
+[] portaria.virtual
+[] reclamacao.de.cliente
+[] supervisao.comercial.alarmes.cerca.eletrica.cftv
+[] supervisao.comercial.rastreamento
+[] supervisao.tecnica.sac.alarmes.cerca.eletrica.cftv
+[] tecnica.alarmes.cerca.eletrica.cftv
+
+
+
+*/

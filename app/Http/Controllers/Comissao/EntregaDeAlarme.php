@@ -1,65 +1,77 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\comissao;
 
 use Illuminate\Http\Request;
-
+use App\Http\Controllers\Controller;
 use App\Models\comissao\Planilha;
-use App\Models\comissao\EntregaDeAlarme;
+use App\Models\comissao\EntregaDeAlarme as EA;
+use App\Models\comissao\EntregaDeAlarme as ComissaoEntregaDeAlarme;
 
 class EntregaDeAlarme extends Controller
 {
+    private $comissao;
+    private $titulo;
+
+    public function __construct()
+    {
+        $this->titulo = "Entregas de Alarmes";
+        $this->comissao = new ComissaoController();
+    }
+
     public function store(Request $request)
     {
+        $this->validarFormulario($request);
 
-        dd($request->all());
-
-
-
-
-
-
-        /*
-"planilha_id" => "2"
-  "_token" => "Q9oJ8zrATrrLDbz2a3M7uvAtKTNeBGZBOmkA6Ut6"
-  "cliente" => "23423234234"
-  "data" => "23/02/3232"
-  "conta_pedido" => "33333333333333333333333334444444444444444444444444"
-  "comissao" => "234"
-  "desconto_comissao" => "23"
-
-
-            $this->validarFormulario($request);
-
-        $entregasDeAlarmes->planilha()->associate(Planilha::findOrFail($request->planilha_id));
-        $entregasDeAlarmes->cliente           = $request->cliente;
-        $entregasDeAlarmes->data              = $this->comissao->formatarData($request->data);
-        $entregasDeAlarmes->conta_pedido      = $request->conta_pedido;
-        $entregasDeAlarmes->placa             = $request->placa;
-        $entregasDeAlarmes->comissao          = $request->comissao;
-        $entregasDeAlarmes->desconto_comissao = $request->desconto_comissao;
-        $entregasDeAlarmes->observacao        = $request->observacao;
-        $entregasDeAlarmes->save();
+        $entregaDeAlarme  =  new EA();
+        $entregaDeAlarme->planilha()->associate(Planilha::findOrFail($request->planilha_id));
+        $entregaDeAlarme->cliente           = $request->cliente;
+        $entregaDeAlarme->data              = $this->comissao->formatarData($request->data);
+        $entregaDeAlarme->conta_pedido      = $request->conta_pedido;
+        $entregaDeAlarme->comissao          = $request->comissao;
+        $entregaDeAlarme->desconto_comissao = $request->desconto_comissao;
+        $entregaDeAlarme->save();
 
         return redirect(route('comissao.index', $request->planilha_id))
             ->with('status', "Registrado com sucesso!");
-*/
     }
-
 
     public function edit($id)
     {
-        //
+        return view('comissao.formulario.edit.entregaDeAlarmes', [
+            'comissao' => EA::findOrFail($id),
+            'titulo' => $this->titulo
+        ]);
     }
 
     public function update(Request $request, $id)
     {
-        //
+        $this->validarFormulario($request);
+        $data_array = $request->only([
+            'cliente',
+            'data',
+            'conta_pedido',
+            'comissao',
+            'desconto_comissao',
+        ]);
+        $data_array['data'] = $this->comissao->formatarData($request->data);;
+        try {
+            $entregaDeAlarme = EA::findOrFail($id);
+            $entregaDeAlarme->update($data_array);
+            return redirect()
+                ->route('entrega.alarme.edit', $id)
+                ->with('status', 'Registro atualizado.');
+        } catch (\Exception $e) {
+            dd($e);
+            return back()->with('error', 'Erro ao atualizar os dados.');
+        }
     }
-
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        $entregaDeAlarme  = EA::findOrFail($request->id);
+        $entregaDeAlarme->delete();
+        return redirect(route('comissao.index', $entregaDeAlarme->planilha_id))
+            ->with('status', "Registro excluido com sucesso!");
     }
 
     private function validarFormulario(Request $request)

@@ -14,50 +14,45 @@ class PlanilhaController extends Controller
 {
     private $actionIndex;
     private $paginate;
+    private $titulo;
 
     public function __construct()
     {
+        $this->titulo = "Planilha";
         $this->paginate = 10;
         $this->actionIndex = 'App\Http\Controllers\Comissao\PlanilhaController@index';
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $collections = Planilha::where('status', '<>', 'homologar')->orderBy('id', 'desc')->paginate($this->paginate);
-        return view('comissao.planilha.index', ['collections' => $collections]);
+        $collections = Planilha::where('status', '<>', 'homologar')
+            ->orderBy('id', 'desc')
+            ->paginate($this->paginate);
+
+        return view('comissao.planilha.index', [
+            'titulo' => $this->titulo,
+            'collections' => $collections
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create(Request $request)
     {
-        $periodos = Periodo::all();
-        $tipoPlanilhas = TipoPlanilha::all();
-        $colaborador = User::with('colaborador')->find($request->user()->id);
+        $titulo         = "Cadastrar  " . $this->titulo;
+        $periodos       = Periodo::all();
+        $tipoPlanilhas  = TipoPlanilha::all();
+        $colaborador    = User::with('colaborador')->find($request->user()->id);
+
         return view(
             'comissao.planilha.create',
             [
+                'titulo' => $titulo,
                 'periodos' => $periodos,
-                'tipoPlanilhas' =>  $tipoPlanilhas,
-                'colaborador' =>  $colaborador->colaborador,
+                'tipoPlanilhas' => $tipoPlanilhas,
+                'colaborador' => $colaborador->colaborador,
             ]
         );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $this->validarFormulario($request);
@@ -67,16 +62,18 @@ class PlanilhaController extends Controller
                 ->with('warning', "Está planilha já foi criada!");
         }
         $planilha = new Planilha();
-        $colaborador = Colaborador::findOrFail($request->colaborador_id);
-        $periodo = Periodo::findOrFail($request->periodo_id);
-        $tipoPlanilha = TipoPlanilha::findOrFail($request->tipo_planilha_id);
-        $planilha->ctps = $request->ctps;
-        $planilha->matricula = $request->matricula;
-        $planilha->ano = $request->ano;
+        $colaborador    = Colaborador::findOrFail($request->colaborador_id);
+        $periodo        = Periodo::findOrFail($request->periodo_id);
+        $tipoPlanilha   = TipoPlanilha::findOrFail($request->tipo_planilha_id);
+
         $planilha->colaborador()->associate($colaborador);
         $planilha->periodo()->associate($periodo);
         $planilha->tipoPlanilha()->associate($tipoPlanilha);
+        $planilha->ctps      = $request->ctps;
+        $planilha->matricula = $request->matricula;
+        $planilha->ano       = $request->ano;
         $planilha->save();
+
         return redirect()
             ->action($this->actionIndex)
             ->with('status', "Registrado com sucesso!");
@@ -84,12 +81,15 @@ class PlanilhaController extends Controller
 
     public function edit($id)
     {
-        $planilha = Planilha::with('colaborador', 'periodo', 'tipoPlanilha')->findOrFail($id);
-        $periodos = Periodo::orderBy('nome', 'asc')->get(); // Ordenar os registros da tabela 'periodos' por nome em ordem alfabética
-        $tipoPlanilhas = TipoPlanilha::orderBy('id', 'desc')->get(); // Ordenar os registros da tabela 'tipo_planilhas' por nome em ordem alfabética
+        $titulo        = "Editar " . $this->titulo;
+        $planilha      = Planilha::with('colaborador', 'periodo', 'tipoPlanilha')->findOrFail($id);
+        $periodos      = Periodo::orderBy('nome', 'asc')->get();
+        $tipoPlanilhas = TipoPlanilha::orderBy('id', 'desc')->get();
+
         return view(
             'comissao.planilha.edit',
             [
+                'titulo' => $titulo,
                 'periodos' => $periodos,
                 'tipoPlanilhas' => $tipoPlanilhas,
                 'planilha' => $planilha,
@@ -101,12 +101,13 @@ class PlanilhaController extends Controller
     {
         $this->validarFormulario($request);
         $planilha = Planilha::findOrFail($id);
-        $planilha->ctps = $request->ctps;
-        $planilha->matricula = $request->matricula;
-        $planilha->ano = $request->ano;
         $planilha->periodo()->associate($request->periodo_id);
         $planilha->colaborador()->associate($request->colaborador_id);
         $planilha->tipoPlanilha()->associate($request->tipo_planilha_id);
+        $planilha->ctps      = $request->ctps;
+        $planilha->matricula = $request->matricula;
+        $planilha->ano       = $request->ano;
+
         $planilha->update();
         return redirect()
             ->action($this->actionIndex)
@@ -124,7 +125,7 @@ class PlanilhaController extends Controller
 
     public function homologar($id)
     {
-        $planilha = Planilha::findOrFail($id);
+        $planilha         = Planilha::findOrFail($id);
         $planilha->status = 'homologar';
         $planilha->update();
         return redirect()
@@ -137,7 +138,8 @@ class PlanilhaController extends Controller
         $planilha = Planilha::where('colaborador_id', $request->colaborador_id)
             ->where('ano', $request->ano)
             ->where('periodo_id', $request->periodo_id)
-            ->where('tipo_planilha_id', $request->tipo_planilha_id)->count();
+            ->where('tipo_planilha_id', $request->tipo_planilha_id)
+            ->count();
         return $planilha;
     }
 

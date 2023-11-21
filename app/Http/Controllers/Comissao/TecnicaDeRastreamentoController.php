@@ -62,7 +62,7 @@ class TecnicaDeRastreamentoController extends Controller
             $tecnicaDeRastreamento->update($data_array); // Atualize os dados do modelo com os valores do array
             // Se você quiser redirecionar ou retornar uma resposta de sucesso, faça isso aqui.
             return redirect()
-                ->route('tecnicaDeRastreamento.edit', $id)
+                ->route('tecnica.de.rastreamento.edit', $id)
                 ->with('status', 'Sucess ao atualizar os dados.');
         } catch (\Exception $e) {
             // Se ocorrer um erro, você pode lidar com ele aqui.

@@ -1,4 +1,4 @@
-<form action="{{ route('tecnicaAlarmesCercaEletricaCFTV.store') }}" method="POST" name="formulario-create">
+<form action="{{ route('tecnica.alarmes.cerca.eletrica.cftv.store') }}" method="POST" name="formulario-create">
     <input type="hidden" name="planilha_id" value="{{ $planilha->id }}">
     @csrf
     <div class="card-body">
@@ -57,7 +57,12 @@
                         <option value="">Selecione</option>
                         @isset($servico_alarme)
                             @foreach ($servico_alarme as $servico)
-                                <option value="{{ $servico->id }}">{{ $servico->nome }}</option>
+                                <option value="{{ $servico->id }}"
+                                    @if ($comissao->servico->id == $servico->id) {{ 'selected' }}
+                                    @elseif (old('servico_id') == $servico->id)
+                                        {{ 'selected' }} @endif>
+                                    {{ $servico->nome }}
+                                </option>
                             @endforeach
                         @endisset
                     </select>
@@ -82,7 +87,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label>Desconto:</label>
-                     <input type="text" name="desconto_comissao" maxlength="10"
+                    <input type="text" name="desconto_comissao" maxlength="10"
                         class="form-control @error('desconto_comissao') is-invalid  @enderror" placeholder="Desconto"
                         value="{{ old('desconto_comissao') ? old('desconto_comissao') : 0 }}   ">
                     @error('desconto_comissao')

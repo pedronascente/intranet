@@ -7,7 +7,6 @@ use App\Models\Comissao\Planilha;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Comissao\ComissaoController;
 use App\Models\comissao\ComercialRastreamentoVeicular as CRV;
-
 class ComercialRastreamentoVeicular extends Controller
 {
     private $comissao;
@@ -64,7 +63,7 @@ class ComercialRastreamentoVeicular extends Controller
         $crv->update($data_array); // Atualize os dados do modelo com os valores do array
         // Se você quiser redirecionar ou retornar uma resposta de sucesso, faça isso aqui.
         return redirect()
-            ->route('comercialRastreamentoVeicular.edit', $id)
+            ->route('comercial.rastreamento.veicular.edit', $id)
             ->with('status', 'Sucess ao atualizar os dados.');
     }
 

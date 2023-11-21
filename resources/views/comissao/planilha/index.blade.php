@@ -1,21 +1,8 @@
 @extends('layouts.app')
+
+@section('titulo', $titulo)
+
 @section('content')
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">Planilhas </h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item">
-                            <a href="{{ route('planilha.index') }}">Planilhas</a>
-                        </li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>
     <div class="card">
         <div class="card-header">
             <h3>
@@ -28,7 +15,7 @@
             <table class="table table-hover text-nowrap table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>#</th>
                         <th>Ano</th>
                         <th>Periodo</th>
                         <th>Colaborador</th>
@@ -59,7 +46,8 @@
                                         <i class="nav-icon fas fa-edit"></i> Editar
                                     </a>
                                     <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal"
-                                        data-target="#deleteModal" data-id="{{ $item->id }}" title="Excluir Planilha">
+                                        data-target="#deleteModal" data-route="{{ route('planilha.destroy', $item->id) }}"
+                                        title="Excluir comissão">
                                         <i class="fas fa-trash"></i> Excluir
                                     </a>
                                     <a href="{{ route('comissao.index', $item->id) }}" class="btn btn-primary"
@@ -83,5 +71,5 @@
             @endif
         </div>
     </div>
-    <x-ui.modalDelete modulo="planilha" />
+    <x-ui.modalDelete />
 @endsection

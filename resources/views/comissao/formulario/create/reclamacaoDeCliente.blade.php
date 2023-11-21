@@ -1,4 +1,4 @@
-<form action="{{ route('reclamacaoDeCliente.store') }}" method="POST" name="formulario-create">
+<form action="{{ route('reclamacao.de.cliente.store') }}" method="POST" name="formulario-create">
     <input type="hidden" name="planilha_id" value="{{ $planilha->id }}">
     @csrf
     <div class="card-body">
@@ -52,7 +52,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label>Desconto:</label>
-                     <input type="text" name="desconto_comissao" maxlength="10"
+                    <input type="text" name="desconto_comissao" maxlength="10"
                         class="form-control @error('desconto_comissao') is-invalid  @enderror" placeholder="Desconto"
                         value="{{ old('desconto_comissao') ? old('desconto_comissao') : 0 }}   ">
                     @error('desconto_comissao')

@@ -6,7 +6,17 @@
         @include('layouts.includes.barralateral')
         <div class="content-wrapper">
             <div class="container-fluid">
-                <div class="row mt-5">
+                <div class="content-header ">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h1 class="m-0"> @yield('titulo')</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            @yield('breadcrumb')
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-12">
                         @if (session('status'))
                             <div class="alert alert-success alert-dismissible">

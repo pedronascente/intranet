@@ -1,4 +1,4 @@
-<form action="{{ route('supervisaoTecnicaESACAlarmesCercaEletricaCFTV.store') }}" method="POST" name="formulario-create">
+<form action="{{ route('supervisao.tecnica.sac.alarmes.cerca.eletrica.cftv.store') }}" method="POST" name="formulario-create">
     <input type="hidden" name="planilha_id" value="{{ $planilha->id }}">
     @csrf
     <div class="card-body">

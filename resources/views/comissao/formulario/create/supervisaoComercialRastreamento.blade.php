@@ -1,4 +1,4 @@
-<form action="{{ route('supervisaoComercialRastreamento.store') }}" method="POST" name="formulario-create">
+<form action="{{ route('supervisao.comercial.rastreamento.store') }}" method="POST" name="formulario-create">
     <input type="hidden" name="planilha_id" value="{{ $planilha->id }}">
     @csrf
     <div class="card-body">
@@ -65,7 +65,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Desconto:</label>
-                     <input type="text" name="desconto_comissao" maxlength="10"
+                    <input type="text" name="desconto_comissao" maxlength="10"
                         class="form-control @error('desconto_comissao') is-invalid  @enderror" placeholder="Desconto"
                         value="{{ old('desconto_comissao') ? old('desconto_comissao') : 0 }}   ">
                     @error('desconto_comissao')
