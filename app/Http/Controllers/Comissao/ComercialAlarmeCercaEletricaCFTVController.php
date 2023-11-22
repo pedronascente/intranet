@@ -3,15 +3,13 @@
 namespace App\Http\Controllers\comissao;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Models\Comissao\Meio;
 use App\Models\comissao\Planilha;
-use App\Http\Controllers\Controller;
 use App\Models\Comissao\ServicoAlarme;
-
-use App\Http\Controllers\Comissao\ComissaoController;
 use App\Models\comissao\ComercialAlarmeCercaEletricaCFTV as CACCFTV;
 
-class ComercialAlarmeCercaEletricaCFTV extends Controller
+class ComercialAlarmeCercaEletricaCFTVController extends Controller
 {
     private $comissao;
     private $titulo;

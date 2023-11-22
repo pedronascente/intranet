@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\comissao;
 
 use Illuminate\Http\Request;
-use App\Models\Comissao\Planilha;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Comissao\ComissaoController;
+use App\Models\Comissao\Planilha;
 use App\Models\comissao\ComercialRastreamentoVeicular as CRV;
-class ComercialRastreamentoVeicular extends Controller
+
+class ComercialRastreamentoVeicularController extends Controller
 {
     private $comissao;
     private $titulo;

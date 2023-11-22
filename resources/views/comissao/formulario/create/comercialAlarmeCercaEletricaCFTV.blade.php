@@ -39,9 +39,7 @@
                         <option value="">Selecione</option>
                         @isset($servico_alarme)
                             @foreach ($servico_alarme as $servico)
-                                <option value="{{ $servico->id }}"
-                                    @if ($comissao->servico->id == $servico->id) {{ 'selected' }}
-                                    @elseif (old('servico_id') == $servico->id) {{ 'selected' }} @endif>
+                                <option value="{{ $servico->id }}">
                                     {{ $servico->nome }}
                                 </option>
                             @endforeach
@@ -70,10 +68,7 @@
                         <option value="">Selecione</option>
                         @isset($meios)
                             @foreach ($meios as $meio)
-                                <option value="{{ $meio->id }}"
-                                    @if ($comissao->meio->id == $meio->id) {{ 'selected' }}
-                                                @elseif (old('meio_id') == $meio->id) 
-                                                    {{ 'selected' }} @endif>
+                                <option value="{{ $meio->id }}">
                                     {{ $meio->nome }}
                                 </option>
                             @endforeach

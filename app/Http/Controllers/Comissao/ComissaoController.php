@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Comissao;
 
 use App\Models\Comissao\Meio;
 use App\Models\Comissao\Planilha;
-use App\Http\Controllers\Controller;
 use App\Models\Comissao\ServicoAlarme;
 use App\Models\Comissao\TecnicaDeRastreamento;
 use App\Models\comissao\EntregaDeAlarme;
 use App\Models\comissao\ComercialRastreamentoVeicular;
 use App\Models\comissao\ComercialAlarmeCercaEletricaCFTV;
+use App\Http\Controllers\Controller;
 
 class ComissaoController extends Controller
 {
@@ -77,14 +77,16 @@ class ComissaoController extends Controller
 
     private function getComissoes($tipoPlanilha)
     {
-        // dd($tipoPlanilha);
+
         switch ($tipoPlanilha) {
             case 'tecnicaDeRastreamento':
                 return TecnicaDeRastreamento::orderBy('id', 'desc')->paginate(10);
             case 'comercialAlarmeCercaEletricaCFTV':
+
                 return ComercialAlarmeCercaEletricaCFTV::with(['servico', 'meio'])
                     ->orderBy('id', 'desc')->paginate(10);
             case 'comercialRastreamentoVeicular':
+
                 return ComercialRastreamentoVeicular::orderBy('id', 'desc')->paginate(10);
             case 'entregaDeAlarmes':
                 return EntregaDeAlarme::orderBy('id', 'desc')->paginate(10);

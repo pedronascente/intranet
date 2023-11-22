@@ -6,9 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\comissao\Planilha;
 use App\Models\comissao\EntregaDeAlarme as EA;
-use App\Models\comissao\EntregaDeAlarme as ComissaoEntregaDeAlarme;
 
-class EntregaDeAlarme extends Controller
+class EntregaDeAlarmeController extends Controller
 {
     private $comissao;
     private $titulo;
