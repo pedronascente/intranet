@@ -14,11 +14,7 @@ class MeioSeeder extends Seeder
      */
     public function run()
     {
-        // Criar 7 registros na tabela "meio"
-        for ($i = 1; $i <= 7; $i++) {
-            DB::table('meios')->insert([
-                'nome' => "Meio {$i}",
-            ]);
-        }
+        DB::table('meios')->insert(['nome' => "Captação"]);
+        DB::table('meios')->insert(['nome' => "Prospecção"]);
     }
 }
