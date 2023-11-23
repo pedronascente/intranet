@@ -39,7 +39,8 @@
                         <option value="">Selecione</option>
                         @isset($servico_alarme)
                             @foreach ($servico_alarme as $servico)
-                                <option value="{{ $servico->id }}">
+                                <option value="{{ $servico->id }}"
+                                    {{ old('servico_id') == $servico->id ? 'selected' : '' }}>
                                     {{ $servico->nome }}
                                 </option>
                             @endforeach
@@ -68,7 +69,7 @@
                         <option value="">Selecione</option>
                         @isset($meios)
                             @foreach ($meios as $meio)
-                                <option value="{{ $meio->id }}">
+                                <option value="{{ $meio->id }}" {{ old('meio_id') == $meio->id ? 'selected' : '' }}>
                                     {{ $meio->nome }}
                                 </option>
                             @endforeach
@@ -84,10 +85,10 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Ins. / Vendas:</label>
-                    <input type="text" name="ins_venda" maxlength="9"
-                        class="form-control @error('ins_venda') is-invalid  @enderror" placeholder="Ins. / Vendas"
-                        value="{{ old('ins_venda') }}">
-                    @error('ins_venda')
+                    <input type="text" name="ins_vendas" maxlength="9"
+                        class="form-control @error('ins_vendas') is-invalid  @enderror" placeholder="Ins. / Vendas"
+                        value="{{ old('ins_vendas') }}">
+                    @error('ins_vendas')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
                 </div>

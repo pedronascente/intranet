@@ -24,8 +24,8 @@
                     <td>{{ $comissao->servico->nome }}</td>
                     <td>{{ $comissao->conta_pedido }}</td>
                     <td>{{ $comissao->meio->nome }}</td>
-                    <td>{{ $comissao->ins_venda }}</td>
-                    <td>{{ $comissao->mensal }}</td>
+                    <td>R$ {{ $comissao->ins_vendas }}</td>
+                    <td>R$ {{ $comissao->mensal }}</td>
                     <td>R$ {{ $comissao->comissao }}</td>
                     <td>R$ {{ $comissao->desconto_comissao }}</td>
                     <td>

@@ -30,7 +30,7 @@ class ComercialAlarmeCercaEletricaCFTVController extends Controller
         $caccftv->data              =  $this->comissao->formatarData($request->data);
         $caccftv->cliente           =  $request->cliente;
         $caccftv->conta_pedido      =  $request->conta_pedido;
-        $caccftv->ins_venda         =  $request->ins_venda;
+        $caccftv->ins_vendas         =  $request->ins_vendas;
         $caccftv->mensal            =  $request->mensal;
         $caccftv->comissao          =  $request->comissao;
         $caccftv->desconto_comissao =  $request->desconto_comissao;
@@ -62,7 +62,7 @@ class ComercialAlarmeCercaEletricaCFTVController extends Controller
         $caccftv->data              = $this->comissao->formatarData($request->data);
         $caccftv->cliente           = $request->cliente;
         $caccftv->conta_pedido      = $request->conta_pedido;
-        $caccftv->ins_venda         = $request->ins_venda;
+        $caccftv->ins_vendas         = $request->ins_vendas;
         $caccftv->mensal            = $request->mensal;
         $caccftv->comissao          = $request->comissao;
         $caccftv->desconto_comissao = $request->desconto_comissao;
@@ -99,7 +99,7 @@ class ComercialAlarmeCercaEletricaCFTVController extends Controller
                         }
                     },
                 ],
-                'ins_venda' => [
+                'ins_vendas' => [
                     'required',
                     'numeric',
                     'regex:/^\d+(\.\d{1,2})?$/',

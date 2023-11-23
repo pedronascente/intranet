@@ -18,7 +18,7 @@ class CreateComercialAlarmeCercaEletricaCFTVSTable extends Migration
             $table->date('data');
             $table->string('cliente');
             $table->string('conta_pedido');
-            $table->decimal('ins_venda', 9, 2);
+            $table->decimal('ins_vendas', 9, 2);
             $table->decimal('comissao', 9, 2);
             $table->decimal('mensal', 9, 2);
             $table->decimal('desconto_comissao', 9, 2)->nullable(); // Tornar a coluna 'desconto_comissao' nula
