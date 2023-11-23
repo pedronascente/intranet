@@ -30,21 +30,28 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label>Meio:</label>
-                    <input type="text" name="meio" maxlength="190"
-                        class="form-control @error('meio') is-invalid  @enderror" placeholder="Meio"
-                        value="{{ old('meio') }}">
-                    @error('meio')
-                        <span class=" invalid-feedback">{{ $message }}</span>
+                    <select name="meio_id" class="form-control @error('meio_id') is-invalid @enderror">
+                        <option value="">Selecione</option>
+                        @isset($meios)
+                            @foreach ($meios as $meio)
+                                <option value="{{ $meio->id }}" {{ old('meio_id') == $meio->id ? 'selected' : '' }}>
+                                    {{ $meio->nome }}
+                                </option>
+                            @endforeach
+                        @endisset
+                    </select>
+                    @error('meio_id')
+                        <span class="invalid-feedback">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label>Ins./Vendas :</label>
-                    <input type="text" name="ins_venda" maxlength="190"
-                        class="form-control @error('ins_venda') is-invalid  @enderror" placeholder="Ins./Vendas"
-                        value="{{ old('ins_venda') }}">
-                    @error('ins_venda')
+                    <input type="text" name="ins_vendas" maxlength="9"
+                        class="form-control @error('ins_vendas') is-invalid  @enderror" placeholder="Ins./Vendas"
+                        value="{{ old('ins_vendas') }}">
+                    @error('ins_vendas')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
                 </div>
@@ -52,7 +59,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label>Mensal :</label>
-                    <input type="text" name="mensal" maxlength="190"
+                    <input type="text" name="mensal" maxlength="9"
                         class="form-control @error('mensal') is-invalid  @enderror" placeholder="Mensal"
                         value="{{ old('mensal') }}">
                     @error('mensal')
@@ -65,10 +72,10 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label>Conta:</label>
-                    <input type="text" name="conta" maxlength="190"
-                        class="form-control @error('conta') is-invalid  @enderror" placeholder="Conta"
-                        value="{{ old('conta') }}">
-                    @error('conta')
+                    <input type="text" name="conta_pedido" maxlength="50"
+                        class="form-control @error('conta_pedido') is-invalid  @enderror" placeholder="Conta"
+                        value="{{ old('conta_pedido') }}">
+                    @error('conta_pedido')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
                 </div>
@@ -87,7 +94,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label>Desconto:</label>
-                     <input type="text" name="desconto_comissao" maxlength="10"
+                    <input type="text" name="desconto_comissao" maxlength="9"
                         class="form-control @error('desconto_comissao') is-invalid  @enderror" placeholder="Desconto"
                         value="{{ old('desconto_comissao') ? old('desconto_comissao') : 0 }}   ">
                     @error('desconto_comissao')

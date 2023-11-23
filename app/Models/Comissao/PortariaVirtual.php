@@ -14,9 +14,9 @@ class PortariaVirtual extends Model
     protected $fillable = [
         "cliente",
         "data",
-        "ins_venda",
+        "ins_vendas",
         "mensal",
-        "conta",
+        "conta_pedido",
         "comissao",
         "desconto_comissao",
         "planilha_id",
@@ -26,5 +26,10 @@ class PortariaVirtual extends Model
     public function planilha()
     {
         return $this->belongsTo(Planilha::class);
+    }
+
+    public function meio()
+    {
+        return $this->belongsTo(Meio::class);
     }
 }

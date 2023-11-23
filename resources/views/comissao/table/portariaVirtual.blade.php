@@ -20,14 +20,14 @@
                     <td>{{ $comissao->id }}</td>
                     <td>{{ \Carbon\Carbon::parse($comissao->data)->format('d/m/Y') }}</td>
                     <td>{{ $comissao->cliente }}</td>
-                    <td>{{ $comissao->conta }}</td>
-                    <td>{{ $comissao->meio }}</td>
-                    <td>{{ $comissao->ins_venda }}</td>
-                    <td>{{ $comissao->mensal }}</td>
-                    <td>{{ $comissao->comissao }}</td>
-                    <td>{{ $comissao->desconto_comissao }}</td>
+                    <td>{{ $comissao->conta_pedido }}</td>
+                    <td>{{ $comissao->meio->nome }}</td>
+                    <td>R$ {{ $comissao->ins_vendas }}</td>
+                    <td>R$ {{ $comissao->mensal }}</td>
+                    <td>R$ {{ $comissao->comissao }}</td>
+                    <td>R$ {{ $comissao->desconto_comissao }}</td>
                     <td>
-                        <a href="{{ route('portariaVirtual.edit', $comissao->id) }}" class="btn btn-primary"
+                        <a href="{{ route('portaria.virtual.edit', $comissao->id) }}" class="btn btn-primary"
                             title="Editar comissão">
                             <i class="nav-icon fas fa-edit"></i> Editar
                         </a>
