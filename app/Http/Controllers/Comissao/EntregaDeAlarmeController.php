@@ -5,7 +5,7 @@ namespace App\Http\Controllers\comissao;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\comissao\Planilha;
-use App\Models\comissao\EntregaDeAlarme as EA;
+use App\Models\comissao\EntregaDeAlarme;
 
 class EntregaDeAlarmeController extends Controller
 {
@@ -22,7 +22,7 @@ class EntregaDeAlarmeController extends Controller
     {
         $this->validarFormulario($request);
 
-        $entregaDeAlarme  =  new EA();
+        $entregaDeAlarme  =  new EntregaDeAlarme();
         $entregaDeAlarme->planilha()->associate(Planilha::findOrFail($request->planilha_id));
         $entregaDeAlarme->cliente           = $request->cliente;
         $entregaDeAlarme->data              = $this->comissao->formatarData($request->data);
@@ -38,7 +38,7 @@ class EntregaDeAlarmeController extends Controller
     public function edit($id)
     {
         return view('comissao.formulario.edit.entregaDeAlarmes', [
-            'comissao' => EA::findOrFail($id),
+            'comissao' => EntregaDeAlarme::findOrFail($id),
             'titulo' => $this->titulo
         ]);
     }
@@ -54,20 +54,15 @@ class EntregaDeAlarmeController extends Controller
             'desconto_comissao',
         ]);
         $data_array['data'] = $this->comissao->formatarData($request->data);;
-        try {
-            $entregaDeAlarme = EA::findOrFail($id);
-            $entregaDeAlarme->update($data_array);
-            return redirect()
-                ->route('entrega.alarme.edit', $id)
-                ->with('status', 'Registro atualizado.');
-        } catch (\Exception $e) {
-            dd($e);
-            return back()->with('error', 'Erro ao atualizar os dados.');
-        }
+        $entregaDeAlarme = EntregaDeAlarme::findOrFail($id);
+        $entregaDeAlarme->update($data_array);
+        return redirect()
+            ->route('entrega.alarme.edit', $id)
+            ->with('status', 'Registro atualizado.');
     }
     public function destroy(Request $request, $id)
     {
-        $entregaDeAlarme  = EA::findOrFail($request->id);
+        $entregaDeAlarme  = EntregaDeAlarme::findOrFail($request->id);
         $entregaDeAlarme->delete();
         return redirect(route('comissao.index', $entregaDeAlarme->planilha_id))
             ->with('status', "Registro excluido com sucesso!");

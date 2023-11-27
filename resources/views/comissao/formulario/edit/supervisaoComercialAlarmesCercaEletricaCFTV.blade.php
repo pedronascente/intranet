@@ -5,8 +5,8 @@
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
-            <a href="{{ route('planilha.index') }}">Planilhas</a>
-            <a href="{{ route('comissao.index', $comissao->planilha_id) }}"> /
+            <a href="{{ route('planilha.index') }}">Planilhas</a> /
+            <a href="{{ route('comissao.index', $comissao->planilha_id) }}">
                 {{ $titulo }}
             </a>
         </li>
@@ -52,8 +52,8 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Serviço:</label>
-                                <select name="servico_alarme"
-                                    class="form-control  @error('servico_alarme') is-invalid  @enderror" required="">
+                                <select name="servico_id" class="form-control  @error('servico_id') is-invalid  @enderror"
+                                    required="">
                                     <option value="">Selecione</option>
                                     @isset($servico_alarme)
                                         @foreach ($servico_alarme as $servico)
@@ -66,7 +66,7 @@
                                         @endforeach
                                     @endisset
                                 </select>
-                                @error('servico_alarme')
+                                @error('servico_id')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -74,10 +74,10 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Conta / Pedido:</label>
-                                <input type="text" name="conta" maxlength="190"
-                                    class="form-control @error('conta') is-invalid  @enderror" placeholder="Conta"
-                                    value="{{ $comissao->conta ? $comissao->conta : old(conta) }} ">
-                                @error('conta')
+                                <input type="text" name="conta_pedido" maxlength="50"
+                                    class="form-control @error('conta_pedido') is-invalid  @enderror" placeholder="Conta"
+                                    value="{{ $comissao->conta_pedido ? $comissao->conta_pedido : old(conta_pedido) }} ">
+                                @error('conta_pedido')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>

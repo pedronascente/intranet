@@ -58,12 +58,6 @@ class ColaboradorController extends Controller
         }
     }
 
-    /**
-     * Responsável por salvar o colaborador na base de dados.
-     *
-     * @param Request $request
-     * @return void
-     */
     public function store(Request $request)
     {
         $colaborador = new Colaborador();
@@ -134,13 +128,6 @@ class ColaboradorController extends Controller
         ]);
     }
 
-    /**
-     * Responsável por atualizar os dados do colaborador
-     *
-     * @param Request $request
-     * @param [Integer] $id
-     * @return void
-     */
     public function update(Request $request, $id)
     {
         $colaborador = Colaborador::with('cargo', 'empresa')->findOrFail($id);
@@ -166,6 +153,7 @@ class ColaboradorController extends Controller
                 }
                 $colaborador->foto = $this->upload($request);
             }
+
             $colaborador->update();
             if ($request->editProfile >= 1) {
                 return redirect()
@@ -179,12 +167,6 @@ class ColaboradorController extends Controller
         }
     }
 
-    /**
-     * Responsável por excluir registro
-     *
-     * @param Request $request
-     * @return void
-     */
     public function destroy(Request $request, $id)
     {
         $colaborador = Colaborador::with('user')->findOrFail($request->id);
@@ -203,12 +185,6 @@ class ColaboradorController extends Controller
             ->with('status', "Registro Excluido!");
     }
 
-    /**
-     * Responsável por fazer upload da Imagem do colabortador
-     *
-     * @param Request $request
-     * @return void
-     */
     private function upload(Request $request)
     {
         if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
@@ -221,12 +197,6 @@ class ColaboradorController extends Controller
         return false;
     }
 
-    /**
-     * Responsável por validar formulário
-     *
-     * @param Request $request
-     * @return void
-     */
     private function validarFormulario(Request $request, $colaborador = null)
     {
         if ($colaborador) {
@@ -241,7 +211,11 @@ class ColaboradorController extends Controller
             $validar['email'] = 'required|email|unique:colaboradores,email';
             $validar['cpf'] = 'required|max:14|unique:colaboradores,cpf';
         }
-        $validar['user_id'] = 'required|max:4|unique:colaboradores,user_id';
+
+        if (isset($request->user_id)) {
+            $validar['user_id'] = 'required|max:4|unique:colaboradores,user_id';
+        }
+
         $validar['nome'] = 'required|max:191|min:5';
         $validar['ramal'] = 'required|max:4|min:2';
         $validar['sobrenome'] = 'required|max:191|min:5';

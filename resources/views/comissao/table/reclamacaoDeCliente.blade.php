@@ -17,9 +17,9 @@
                     <td>{{ $comissao->id }}</td>
                     <td>{{ \Carbon\Carbon::parse($comissao->data)->format('d/m/Y') }}</td>
                     <td>{{ $comissao->cliente }}</td>
-                    <td>{{ $comissao->conta }}</td>
-                    <td>{{ $comissao->comissao }}</td>
-                    <td>{{ $comissao->desconto_comissao }}</td>
+                    <td>{{ $comissao->conta_pedido }}</td>
+                    <td>R$ {{ $comissao->comissao }}</td>
+                    <td>R$ {{ $comissao->desconto_comissao }}</td>
                     <td>
                         <a href="{{ route('reclamacao.de.cliente.edit', $comissao->id) }}" class="btn btn-primary"
                             title="Editar comissão">

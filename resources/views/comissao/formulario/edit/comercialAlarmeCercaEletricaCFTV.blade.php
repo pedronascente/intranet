@@ -56,7 +56,6 @@
                         <div class="col-md-5">
                             <div class="form-group">
                                 <label>Serviço:
-
                                 </label>
                                 <select name="servico_id" class="form-control @error('servico_id') is-invalid @enderror">
                                     <option value="">Selecione</option>
@@ -113,11 +112,10 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label>Ins. / Vendas:</label>
-                                <input type="text" name="ins_venda" maxlength="9"
-                                    class="form-control @error('ins_venda') is-invalid  @enderror"
-                                    placeholder="Ins. / Vendas"
-                                    value="{{ $comissao->ins_venda ? $comissao->ins_venda : old(ins_venda) }} ">
-                                @error('ins_venda')
+                                <input type="text" name="ins_vendas" maxlength="9"
+                                    class="form-control @error('ins_vendas') is-invalid  @enderror"
+                                    value="{{ $comissao->ins_vendas ? $comissao->ins_vendas : old(ins_vendas) }}">
+                                @error('ins_vendas')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -149,7 +147,6 @@
                                 <label>Desconto:</label>
                                 <input type="text" name="desconto_comissao" maxlength="10"
                                     class="form-control @error('desconto_comissao') is-invalid  @enderror"
-                                    placeholder="Desconto"
                                     value="{{ $comissao->desconto_comissao ? $comissao->desconto_comissao : old(desconto_comissao) }} ">
                                 @error('desconto_comissao')
                                     <span class=" invalid-feedback">{{ $message }}</span>

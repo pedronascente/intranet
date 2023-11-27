@@ -21,19 +21,17 @@ class ComercialRastreamentoVeicularController extends Controller
     public function store(Request $request)
     {
         $this->validarFormulario($request);
-        $crv = new CRV();
-
-        $crv->planilha()->associate(Planilha::findOrFail($request->planilha_id));
-        $crv->id_contrato        =  $request->id_contrato;
-        $crv->cliente            =  $request->cliente;
-        $crv->data               =  $this->comissao->formatarData($request->data);
-        $crv->placa              =  $request->placa;
-        $crv->comissao           =  $request->comissao;
-        $crv->taxa_instalacao    =  $request->taxa_instalacao;
-        $crv->mensal             =  $request->mensal;
-        $crv->desconto_comissao  =  $request->desconto_comissao;
-
-        $crv->save();
+        $objetoModel = new CRV();
+        $objetoModel->planilha()->associate(Planilha::findOrFail($request->planilha_id));
+        $objetoModel->id_contrato        =  $request->id_contrato;
+        $objetoModel->cliente            =  $request->cliente;
+        $objetoModel->data               =  $this->comissao->formatarData($request->data);
+        $objetoModel->placa              =  $request->placa;
+        $objetoModel->comissao           =  $request->comissao;
+        $objetoModel->taxa_instalacao    =  $request->taxa_instalacao;
+        $objetoModel->mensal             =  $request->mensal;
+        $objetoModel->desconto_comissao  =  $request->desconto_comissao;
+        $objetoModel->save();
         return redirect(route('comissao.index', $request->planilha_id))
             ->with('status', "Registrado com sucesso!");
     }
@@ -59,19 +57,18 @@ class ComercialRastreamentoVeicularController extends Controller
             "desconto_comissao",
         ]);
         $data_array['data'] = $this->comissao->formatarData($request->data);;
-        $crv  = CRV::findOrFail($id); // Encontre o modelo com base no I
-        $crv->update($data_array); // Atualize os dados do modelo com os valores do array
-        // Se você quiser redirecionar ou retornar uma resposta de sucesso, faça isso aqui.
+        $objetoModel = CRV::findOrFail($id);
+        $objetoModel->update($data_array);
         return redirect()
             ->route('comercial.rastreamento.veicular.edit', $id)
-            ->with('status', 'Sucess ao atualizar os dados.');
+            ->with('status', 'Registro atualizado com sucesso.');
     }
 
     public function destroy(Request $request, $id)
     {
-        $crv  = CRV::findOrFail($request->id);
-        $crv->delete();
-        return redirect(route('comissao.index', $crv->planilha_id))
+        $objetoModel  = CRV::findOrFail($request->id);
+        $objetoModel->delete();
+        return redirect(route('comissao.index', $objetoModel->planilha_id))
             ->with('status', "Registro excluido com sucesso!");
     }
 

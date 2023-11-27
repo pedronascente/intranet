@@ -19,9 +19,9 @@
                     <td>{{ $comissao->id }}</td>
                     <td>{{ \Carbon\Carbon::parse($comissao->data)->format('d/m/Y') }}</td>
                     <td>{{ $comissao->cliente }}</td>
-                    <td>{{ $comissao->conta }}</td>
+                    <td>{{ $comissao->conta_pedido }}</td>
                     <td>{{ $comissao->numero_os }}</td>
-                    <td>{{ $comissao->servico }}</td>
+                    <td>{{ $comissao->servico->nome }}</td>
                     <td>{{ $comissao->comissao }}</td>
                     <td>{{ $comissao->desconto_comissao }}</td>
                     <td>

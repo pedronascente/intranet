@@ -29,7 +29,7 @@ use App\Http\Controllers\Comissao\PortariaVirtualController;
 use App\Http\Controllers\Comissao\ReclamacaoDeClienteController;
 use App\Http\Controllers\Comissao\SupervisaoComercialAlarmesCercaEletricaCFTVController;
 use App\Http\Controllers\Comissao\SupervisaoComercialRastreamentoController;
-use App\Http\Controllers\Comissao\SupervisaoTecnicaSacAlarmesCercaEletricaCFTVController;
+use App\Http\Controllers\Comissao\SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController;
 use App\Http\Controllers\Comissao\TecnicaDeRastreamentoController;
 use App\Http\Controllers\Comissao\TecnicaAlarmesCercaEletricaCFTVController;
 
@@ -176,10 +176,10 @@ Route::prefix('/supervisao-comercial-rastreamento')->group(function () {
 });
 
 Route::prefix('/supervisao-tecnica-sac-alarmes-cerca-eletrica.cftv')->group(function () {
-    Route::get('/{id}/edit', [SupervisaoTecnicaSacAlarmesCercaEletricaCFTVController::class, 'edit'])->name('supervisao.tecnica.sac.alarmes.cerca.eletrica.cftv.edit');
-    Route::post('/', [SupervisaoTecnicaSacAlarmesCercaEletricaCFTVController::class, 'store'])->name('supervisao.tecnica.sac.alarmes.cerca.eletrica.cftv.store');
-    Route::put('/{id}', [SupervisaoTecnicaSacAlarmesCercaEletricaCFTVController::class, 'update'])->name('supervisao.tecnica.sac.alarmes.cerca.eletrica.cftv.update');
-    Route::delete('/{id}', [SupervisaoTecnicaSacAlarmesCercaEletricaCFTVController::class, 'destroy'])->name('supervisao.tecnica.sac.alarmes.cerca.eletrica.cftv.destroy');
+    Route::get('/{id}/edit', [SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController::class, 'edit'])->name('supervisao.tecnica.sac.alarmes.cerca.eletrica.cftv.edit');
+    Route::post('/', [SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController::class, 'store'])->name('supervisao.tecnica.sac.alarmes.cerca.eletrica.cftv.store');
+    Route::put('/{id}', [SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController::class, 'update'])->name('supervisao.tecnica.sac.alarmes.cerca.eletrica.cftv.update');
+    Route::delete('/{id}', [SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController::class, 'destroy'])->name('supervisao.tecnica.sac.alarmes.cerca.eletrica.cftv.destroy');
 });
 
 
@@ -190,19 +190,3 @@ Route::prefix('/tecnica-alarmes-cerca-eletrica-cftv')->group(function () {
     Route::delete('/{id}', [TecnicaAlarmesCercaEletricaCFTVController::class, 'destroy'])->name('tecnica.alarmes.cerca.eletrica.cftv.destroy');
 });
 
-
-/*
-[x] comercial.alarme.cerca.eletrica.cftv.edit
-[x] comercial.rastreamento.veicular
-[x] entrega.alarme
-[x] tecnica.de.rastreamento
-[x] portaria.virtual
-[x] reclamacao.de.cliente
-[x] supervisao.comercial.alarmes.cerca.eletrica.cftv
-[x] supervisao.comercial.rastreamento
-[x] supervisao.tecnica.sac.alarmes.cerca.eletrica.cftv
-[x] tecnica.alarmes.cerca.eletrica.cftv
-
-
-
-*/

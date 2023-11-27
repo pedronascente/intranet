@@ -1,4 +1,5 @@
-<form action="{{ route('supervisao.tecnica.sac.alarmes.cerca.eletrica.cftv.store') }}" method="POST" name="formulario-create">
+<form action="{{ route('supervisao.tecnica.sac.alarmes.cerca.eletrica.cftv.store') }}" method="POST"
+    name="formulario-create">
     <input type="hidden" name="planilha_id" value="{{ $planilha->id }}">
     @csrf
     <div class="card-body">
@@ -30,10 +31,10 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label>Conta / Pedido:</label>
-                    <input type="text" name="conta" maxlength="190"
-                        class="form-control @error('conta') is-invalid  @enderror" placeholder="Conta"
-                        value="{{ old('conta') }}">
-                    @error('conta')
+                    <input type="text" name="conta_pedido" maxlength="50"
+                        class="form-control @error('conta_pedido') is-invalid  @enderror" placeholder="Conta"
+                        value="{{ old('conta_pedido') }}">
+                    @error('conta_pedido')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
                 </div>
@@ -53,8 +54,8 @@
                 <div class="form-group">
                     <label>Ins. / Vendas:</label>
                     <input type="text" name="ins_vendas" maxlength="9"
-                        class="form-control @error('ins_vendas') is-invalid  @enderror" placeholder="ins_vendas"
-                        value="{{ old('ins_vendas') }}">
+                        class="form-control @error('ins_vendas') is-invalid  @enderror" value="{{ old('ins_vendas') }}"
+                        placeholder="00.00">
                     @error('ins_vendas')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
@@ -66,8 +67,8 @@
                 <div class="form-group">
                     <label>Mensal:</label>
                     <input type="text" name="mensal" maxlength="9"
-                        class="form-control @error('mensal') is-invalid  @enderror" placeholder="mensal"
-                        value="{{ old('mensal') }}">
+                        class="form-control @error('mensal') is-invalid  @enderror" value="{{ old('mensal') }}"
+                        placeholder="00.00">
                     @error('mensal')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
@@ -77,8 +78,8 @@
                 <div class="form-group">
                     <label>Comissão:</label>
                     <input type="text" name="comissao" maxlength="9"
-                        class="form-control @error('comissao') is-invalid  @enderror" placeholder="Comissão"
-                        value="{{ old('comissao') }}">
+                        class="form-control @error('comissao') is-invalid  @enderror" value="{{ old('comissao') }}"
+                        placeholder="00.00">
                     @error('comissao')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
@@ -87,9 +88,9 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label>Desconto:</label>
-                     <input type="text" name="desconto_comissao" maxlength="10"
-                        class="form-control @error('desconto_comissao') is-invalid  @enderror" placeholder="Desconto"
-                        value="{{ old('desconto_comissao') ? old('desconto_comissao') : 0 }}   ">
+                    <input type="text" name="desconto_comissao" maxlength="9"
+                        class="form-control @error('desconto_comissao') is-invalid  @enderror"
+                        value="{{ old('desconto_comissao') ? old('desconto_comissao') : 0 }}" placeholder="00.00">
                     @error('desconto_comissao')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror

@@ -30,10 +30,10 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Conta:</label>
-                    <input type="text" name="conta" maxlength="190"
-                        class="form-control @error('conta') is-invalid  @enderror" placeholder="Conta"
-                        value="{{ old('conta') }}">
-                    @error('conta')
+                    <input type="text" name="conta_pedido" maxlength="50"
+                        class="form-control @error('conta_pedido') is-invalid  @enderror" placeholder="Conta"
+                        value="{{ old('conta_pedido') }}">
+                    @error('conta_pedido')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
                 </div>
@@ -42,8 +42,8 @@
                 <div class="form-group">
                     <label>Total de Rastreadores:</label>
                     <input type="text" name="total_rastreadores" maxlength="9"
-                        class="form-control @error('total_rastreadores') is-invalid  @enderror"
-                        placeholder="Total Rastreadores" value="{{ old('total_rastreadores') }}">
+                        class="form-control @error('total_rastreadores') is-invalid  @enderror" placeholder="0"
+                        value="{{ old('total_rastreadores') }}">
                     @error('total_rastreadores')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
@@ -55,8 +55,8 @@
                 <div class="form-group">
                     <label>Comissão:</label>
                     <input type="text" name="comissao" maxlength="9"
-                        class="form-control @error('comissao') is-invalid  @enderror" placeholder="Comissão"
-                        value="{{ old('comissao') }}">
+                        class="form-control @error('comissao') is-invalid  @enderror" value="{{ old('comissao') }}"
+                        placeholder="00.00">
                     @error('comissao')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
@@ -65,9 +65,9 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Desconto:</label>
-                    <input type="text" name="desconto_comissao" maxlength="10"
-                        class="form-control @error('desconto_comissao') is-invalid  @enderror" placeholder="Desconto"
-                        value="{{ old('desconto_comissao') ? old('desconto_comissao') : 0 }}   ">
+                    <input type="text" name="desconto_comissao" maxlength="9"
+                        class="form-control @error('desconto_comissao') is-invalid  @enderror"
+                        value="{{ old('desconto_comissao') ? old('desconto_comissao') : 0 }}" placeholder="00.00">
                     @error('desconto_comissao')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror

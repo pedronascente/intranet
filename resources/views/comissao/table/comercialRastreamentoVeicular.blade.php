@@ -24,8 +24,8 @@
                     <td>{{ $comissao->placa }}</td>
                     <td>R$ {{ $comissao->taxa_instalacao }}</td>
                     <td>R$ {{ $comissao->mensal }}</td>
-                    <td>{{ $comissao->comissao }}</td>
-                    <td>{{ $comissao->desconto_comissao }}</td>
+                    <td>R$ {{ $comissao->comissao }}</td>
+                    <td>R$ {{ $comissao->desconto_comissao }}</td>
                     <td>
                         <a href="{{ route('comercial.rastreamento.veicular.edit', $comissao->id) }}"
                             class="btn btn-primary" title="Editar comissão">

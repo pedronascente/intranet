@@ -51,21 +51,32 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Meio:</label>
-                                <input type="text" name="meio" maxlength="190"
-                                    class="form-control @error('meio') is-invalid  @enderror" placeholder="Meio"
-                                    value="{{ $comissao->meio ? $comissao->meio : old(meio) }} ">
-                                @error('meio')
-                                    <span class=" invalid-feedback">{{ $message }}</span>
+                                <select name="meio_id" class="form-control @error('meio_id') is-invalid @enderror">
+                                    <option value="">Selecione</option>
+                                    @isset($meios)
+                                        @foreach ($meios as $meio)
+                                            <option value="{{ $meio->id }}"
+                                                @if ($comissao->meio->id == $meio->id) {{ 'selected' }}
+                                                @elseif (old('meio_id') == $meio->id) 
+                                                    {{ 'selected' }} @endif>
+                                                {{ $meio->nome }}
+                                            </option>
+                                        @endforeach
+                                    @endisset
+                                </select>
+                                @error('meio_id')
+                                    <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Ins./Vendas :</label>
-                                <input type="text" name="ins_venda" maxlength="9"
-                                    class="form-control @error('ins_venda') is-invalid  @enderror" placeholder="Ins./Vendas"
-                                    value="{{ $comissao->ins_venda ? $comissao->ins_venda : old(ins_venda) }} ">
-                                @error('ins_venda')
+                                <input type="text" name="ins_vendas" maxlength="9"
+                                    class="form-control @error('ins_vendas') is-invalid  @enderror"
+                                    placeholder="Ins./Vendas"
+                                    value="{{ $comissao->ins_vendas ? $comissao->ins_vendas : old(ins_vendas) }} ">
+                                @error('ins_vendas')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -86,10 +97,10 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Conta:</label>
-                                <input type="text" name="conta" maxlength="50"
-                                    class="form-control @error('conta') is-invalid  @enderror" placeholder="Conta"
-                                    value="{{ $comissao->conta ? $comissao->conta : old(conta) }} ">
-                                @error('conta')
+                                <input type="text" name="conta_pedido" maxlength="50"
+                                    class="form-control @error('conta_pedido') is-invalid  @enderror" placeholder="Conta"
+                                    value="{{ $comissao->conta_pedido ? $comissao->conta_pedido : old(conta_pedido) }} ">
+                                @error('conta_pedido')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -110,7 +121,8 @@
                                 <label>Desconto:</label>
                                 <input type="text" name="desconto_comissao" maxlength="190"
                                     class="form-control @error('desconto_comissao') is-invalid  @enderror"
-                                    placeholder="Desconto" value="{{ $comissao->desconto_comissao ? $comissao->desconto_comissao : old(desconto_comissao) }} ">
+                                    placeholder="Desconto"
+                                    value="{{ $comissao->desconto_comissao ? $comissao->desconto_comissao : old(desconto_comissao) }} ">
                                 @error('desconto_comissao')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror

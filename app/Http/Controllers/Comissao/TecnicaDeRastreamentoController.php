@@ -22,7 +22,6 @@ class TecnicaDeRastreamentoController extends Controller
     {
         $this->validarFormulario($request);
         $tecnicaDeRastreamento  = new TecnicaDeRastreamento();
-
         $tecnicaDeRastreamento->planilha()->associate(Planilha::findOrFail($request->planilha_id));
         $tecnicaDeRastreamento->cliente           = $request->cliente;
         $tecnicaDeRastreamento->data              = $this->comissao->formatarData($request->data);
@@ -56,19 +55,12 @@ class TecnicaDeRastreamentoController extends Controller
             'desconto_comissao',
             'observacao',
         ]);
-        $data_array['data'] = $this->comissao->formatarData($request->data);;
-        try {
-            $tecnicaDeRastreamento  = TecnicaDeRastreamento::findOrFail($id); // Encontre o modelo com base no I
-            $tecnicaDeRastreamento->update($data_array); // Atualize os dados do modelo com os valores do array
-            // Se você quiser redirecionar ou retornar uma resposta de sucesso, faça isso aqui.
-            return redirect()
-                ->route('tecnica.de.rastreamento.edit', $id)
-                ->with('status', 'Sucess ao atualizar os dados.');
-        } catch (\Exception $e) {
-            // Se ocorrer um erro, você pode lidar com ele aqui.
-            dd($e);
-            return back()->with('error', 'Erro ao atualizar os dados.');
-        }
+        $data_array['data'] = $this->comissao->formatarData($request->data);
+        $tecnicaDeRastreamento  = TecnicaDeRastreamento::findOrFail($id);
+        $tecnicaDeRastreamento->update($data_array);
+        return redirect()
+            ->route('tecnica.de.rastreamento.edit', $id)
+            ->with('status', 'Registro atualizado com sucesso.');
     }
 
     public function destroy(Request $request, $id)
@@ -99,7 +91,17 @@ class TecnicaDeRastreamentoController extends Controller
                         }
                     },
                 ],
-                'desconto_comissao' => 'numeric',
+                'desconto_comissao' => [
+                    'numeric',
+                    'regex:/^\d+(\.\d{1,2})?$/',
+                    function ($attribute, $value, $fail) {
+                        if (
+                            $value < 0 || $value > 9999999.99
+                        ) {
+                            $fail("O campo $attribute deve estar entre 0 e 9999999.99");
+                        }
+                    },
+                ],
             ],
             [
                 'required' => 'Campo obrigatório.',

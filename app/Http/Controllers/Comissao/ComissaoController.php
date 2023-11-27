@@ -23,10 +23,6 @@ class ComissaoController extends Controller
     {
         $planilha = Planilha::with('colaborador', 'periodo', 'tipoPlanilha')->findOrFail($id);
         $comissoes = $this->getComissoes($planilha->tipoPlanilha->formulario, $id);
-
-
-        // dd($id, $comissoes, $planilha);
-
         $data = [
             'titulo' => $planilha->tipoPlanilha->nome,
             'planilha' => $planilha,

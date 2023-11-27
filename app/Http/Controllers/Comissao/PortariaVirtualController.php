@@ -54,7 +54,6 @@ class PortariaVirtualController extends Controller
 
     public function update(Request $request, $id)
     {
-
         $ptv = PortariaVirtual::findOrFail($id);
         $ptv->meio()->associate(Meio::find($request->meio_id));
         $ptv->cliente            = $request->cliente;
@@ -66,8 +65,9 @@ class PortariaVirtualController extends Controller
         $ptv->desconto_comissao  = $request->desconto_comissao;
         $ptv->save();
 
-        return redirect(route('comissao.index', $ptv->planilha_id))
-            ->with('status', "Atualizado com sucesso!");
+        return redirect()
+            ->route('portaria.virtual.edit', $id)
+            ->with('status', 'Registro atualizado com sucesso.');
     }
 
     public function destroy(Request $request, $id)

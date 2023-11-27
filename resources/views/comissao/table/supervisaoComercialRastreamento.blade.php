@@ -18,8 +18,8 @@
                     <td>{{ $comissao->id }}</td>
                     <td>{{ \Carbon\Carbon::parse($comissao->data)->format('d/m/Y') }}</td>
                     <td>{{ $comissao->cliente }}</td>
-                    <td>{{ $comissao->conta }}</td>
-                    <td>{{ $comissao->total_rastreamento }}</td>
+                    <td>{{ $comissao->conta_pedido }}</td>
+                    <td>{{ $comissao->total_rastreadores }}</td>
                     <td>{{ $comissao->comissao }}</td>
                     <td>{{ $comissao->desconto_comissao }}</td>
                     <td>

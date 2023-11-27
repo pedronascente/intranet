@@ -28,7 +28,7 @@
                                 <label>Cliente:</label>
                                 <input type="text" name="cliente" maxlength="190"
                                     class="form-control @error('cliente') is-invalid  @enderror" placeholder="Cliente"
-                                    value="{{ old('cliente') }}">
+                                    value="{{ $comissao->cliente ? $comissao->cliente : old(cliente) }} ">
                                 @error('cliente')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -52,10 +52,10 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Conta:</label>
-                                <input type="text" name="conta" maxlength="190"
-                                    class="form-control @error('conta') is-invalid  @enderror" placeholder="Conta"
-                                    value="{{ old('conta') }}">
-                                @error('conta')
+                                <input type="text" name="conta_pedido" maxlength="50"
+                                    class="form-control @error('conta_pedido') is-invalid  @enderror" placeholder="Conta"
+                                    value="{{ $comissao->conta_pedido ? $comissao->conta_pedido : old(conta_pedido) }} ">
+                                @error('conta_pedido')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -63,9 +63,9 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>N° OS:</label>
-                                <input type="text" name="numero_os" maxlength="190"
-                                    class="form-control @error('numero_os') is-invalid  @enderror"
-                                    placeholder="Numero da OS" value="{{ old('numero_os') }}">
+                                <input type="text" name="numero_os" maxlength="10"
+                                    class="form-control @error('numero_os') is-invalid  @enderror" placeholder="000000"
+                                    value="{{ $comissao->numero_os ? $comissao->numero_os : old(numero_os) }} ">
                                 @error('numero_os')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -74,8 +74,8 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Serviço:</label>
-                                <select name="servico_alarme"
-                                    class="form-control  @error('servico_alarme') is-invalid  @enderror" required="">
+                                <select name="servico_id" class="form-control  @error('servico_id') is-invalid  @enderror"
+                                    required="">
                                     <option value="">Selecione</option>
                                     @isset($servico_alarme)
                                         @foreach ($servico_alarme as $servico)
@@ -98,7 +98,7 @@
                                 <label>Comissão:</label>
                                 <input type="text" name="comissao" maxlength="9"
                                     class="form-control @error('comissao') is-invalid  @enderror" placeholder="Comissão"
-                                    value="{{ old('comissao') }}">
+                                    value="{{ $comissao->comissao ? $comissao->comissao : old(comissao) }} ">
                                 @error('comissao')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -109,7 +109,8 @@
                                 <label>Desconto:</label>
                                 <input type="text" name="desconto_comissao" maxlength="9"
                                     class="form-control @error('desconto_comissao') is-invalid  @enderror"
-                                    placeholder="Desconto" value="{{ old('desconto_comissao') }}">
+                                    placeholder="Desconto"
+                                    value="{{ $comissao->desconto_comissao ? $comissao->desconto_comissao : old(desconto_comissao) }} ">
                                 @error('desconto_comissao')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -119,8 +120,7 @@
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn bg-gradient-primary">
-                        <i class="fas fa-save" aria-hidden="true"></i>
-                        Salvar
+                        <i class="fas fa-save" aria-hidden="true"></i>Salvar
                     </button>
                     <a href="{{ route('planilha.index') }}" title="Voltar" class="btn btn-danger">
                         <i class="fa fa-reply"></i> Voltar

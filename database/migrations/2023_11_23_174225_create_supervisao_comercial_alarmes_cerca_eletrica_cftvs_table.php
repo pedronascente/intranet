@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePortariaVirtuaisTable extends Migration
+class CreateSupervisaoComercialAlarmesCercaEletricaCftvsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,22 @@ class CreatePortariaVirtuaisTable extends Migration
      */
     public function up()
     {
-        Schema::create('portaria_virtuais', function (Blueprint $table) {
+        Schema::create('supervisao_comercial_alarmes_cerca_eletrica_cftvs', function (Blueprint $table) {
             $table->increments('id');
             $table->date('data');
             $table->string('cliente');
             $table->string('conta_pedido');
-            $table->decimal('ins_vendas', 9, 2);
+            $table->string('consultor');
             $table->decimal('mensal', 9, 2);
+            $table->decimal('ins_vendas', 9, 2);
             $table->decimal('comissao', 9, 2);
-            $table->decimal('desconto_comissao', 9, 2)->nullable(); // Tornar a coluna 'desconto_comissao' nula
+            $table->decimal('desconto_comissao', 9, 2);
             $table->timestamps();
-            $table->unsignedInteger("meio_id");
-            $table->foreign('meio_id')->references('id')->on('meios')->onDelete('cascade');
+            $table->unsignedInteger("servico_id");
+            $table->foreign('servico_id', 'fk_scace_cftv_servico')->references('id')->on('servico_alarmes');
             $table->unsignedInteger("planilha_id");
-            $table->foreign('planilha_id')->references('id')->on('planilhas')->onDelete('cascade');
+            $table->foreign('planilha_id', 'fk_scace_cftv_planilha')->references('id')->on('planilhas')->onDelete('cascade');
+
             $table->engine = 'InnoDB';
         });
     }
@@ -38,6 +40,6 @@ class CreatePortariaVirtuaisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('portaria_virtuais');
+        Schema::dropIfExists('supervisao_comercial_alarmes_cerca_eletrica_cftvs');
     }
 }

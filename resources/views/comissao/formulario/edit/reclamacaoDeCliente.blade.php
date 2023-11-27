@@ -51,10 +51,10 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Conta:</label>
-                                <input type="text" name="conta" maxlength="190"
-                                    class="form-control @error('conta') is-invalid  @enderror" placeholder="Conta"
-                                    value="{{ $comissao->conta ? $comissao->conta : old(conta) }} ">
-                                @error('conta')
+                                <input type="text" name="conta_pedido" maxlength="50"
+                                    class="form-control @error('conta_pedido') is-invalid  @enderror" placeholder="Conta"
+                                    value="{{ $comissao->conta_pedido ? $comissao->conta_pedido : old(conta_pedido) }} ">
+                                @error('conta_pedido')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -62,7 +62,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Comissão:</label>
-                                <input type="text" name="comissao" maxlength="190"
+                                <input type="text" name="comissao" maxlength="9"
                                     class="form-control @error('comissao') is-invalid  @enderror" placeholder="Comissão"
                                     value="{{ $comissao->comissao ? $comissao->comissao : old(comissao) }} ">
                                 @error('comissao')
@@ -73,7 +73,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Desconto:</label>
-                                <input type="text" name="desconto_comissao" maxlength="190"
+                                <input type="text" name="desconto_comissao" maxlength="9"
                                     class="form-control @error('desconto_comissao') is-invalid  @enderror"
                                     placeholder="Desconto"
                                     value="{{ $comissao->desconto_comissao ? $comissao->desconto_comissao : old(desconto_comissao) }} ">

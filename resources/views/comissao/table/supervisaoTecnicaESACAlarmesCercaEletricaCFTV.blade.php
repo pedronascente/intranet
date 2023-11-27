@@ -22,7 +22,7 @@
                     <td>{{ $comissao->cliente }}</td>
                     <td>{{ $comissao->conta }}</td>
                     <td>{{ $comissao->servico }}</td>
-                    <td>{{ $comissao->ins_venda }}</td>
+                    <td>{{ $comissao->ins_vendas }}</td>
                     <td>{{ $comissao->mensal }}</td>
                     <td>{{ $comissao->comissao }}</td>
                     <td>{{ $comissao->desconto_comissao }}</td>

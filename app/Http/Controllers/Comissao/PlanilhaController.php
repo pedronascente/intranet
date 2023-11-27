@@ -18,7 +18,7 @@ class PlanilhaController extends Controller
 
     public function __construct()
     {
-        $this->titulo = "Planilha";
+        $this->titulo = "Planilha de comissão";
         $this->paginate = 10;
         $this->actionIndex = 'App\Http\Controllers\Comissao\PlanilhaController@index';
     }

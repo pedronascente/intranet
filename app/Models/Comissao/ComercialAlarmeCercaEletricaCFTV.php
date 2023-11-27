@@ -15,7 +15,7 @@ class ComercialAlarmeCercaEletricaCFTV extends Model
         'data',
         'cliente',
         'conta_pedido',
-        'ins_venda',
+        'ins_vendas',
         'mensal',
         'comissao',
         'desconto_comissao',

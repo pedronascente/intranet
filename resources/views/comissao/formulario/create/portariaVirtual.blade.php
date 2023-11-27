@@ -49,8 +49,8 @@
                 <div class="form-group">
                     <label>Ins./Vendas :</label>
                     <input type="text" name="ins_vendas" maxlength="9"
-                        class="form-control @error('ins_vendas') is-invalid  @enderror" placeholder="Ins./Vendas"
-                        value="{{ old('ins_vendas') }}">
+                        class="form-control @error('ins_vendas') is-invalid  @enderror" value="{{ old('ins_vendas') }}"
+                        placeholder="00.00">
                     @error('ins_vendas')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
@@ -60,8 +60,8 @@
                 <div class="form-group">
                     <label>Mensal :</label>
                     <input type="text" name="mensal" maxlength="9"
-                        class="form-control @error('mensal') is-invalid  @enderror" placeholder="Mensal"
-                        value="{{ old('mensal') }}">
+                        class="form-control @error('mensal') is-invalid  @enderror" value="{{ old('mensal') }}"
+                        placeholder="00.00">
                     @error('mensal')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
@@ -84,8 +84,8 @@
                 <div class="form-group">
                     <label>Comissão:</label>
                     <input type="text" name="comissao" maxlength="9"
-                        class="form-control @error('comissao') is-invalid  @enderror" placeholder="Comissão"
-                        value="{{ old('comissao') }}">
+                        class="form-control @error('comissao') is-invalid  @enderror" value="{{ old('comissao') }}"
+                        placeholder="00.00">
                     @error('comissao')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
@@ -95,8 +95,8 @@
                 <div class="form-group">
                     <label>Desconto:</label>
                     <input type="text" name="desconto_comissao" maxlength="9"
-                        class="form-control @error('desconto_comissao') is-invalid  @enderror" placeholder="Desconto"
-                        value="{{ old('desconto_comissao') ? old('desconto_comissao') : 0 }}   ">
+                        class="form-control @error('desconto_comissao') is-invalid  @enderror"
+                        value="{{ old('desconto_comissao') ? old('desconto_comissao') : 0 }}" placeholder="00.00">
                     @error('desconto_comissao')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror

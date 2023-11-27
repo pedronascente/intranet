@@ -6,7 +6,7 @@
     <div class="card">
         <div class="card-header">
             <h3>
-                <a href="{{ route('planilha.create') }}" class="btn btn-primary">
+                <a href="{{ route('planilha.create') }}" class="btn btn-primary" title="Cadastrar nova Planilha">
                     <i class="fas fa-solid fa-plus"></i> Planilha
                 </a>
             </h3>
@@ -37,10 +37,6 @@
                                 <td>{{ $item->status }}</td>
                                 <td>{{ $item->tipoPlanilha->nome }}</td>
                                 <td class="text-center">
-                                    <a href="{{ route('planilha.homologar', $item->id, 'edit') }}" class="btn btn-success"
-                                        title="Lançar Planilha">
-                                        Homologar
-                                    </a>
                                     <a href="{{ route('planilha.edit', $item->id, 'edit') }}" class="btn btn-primary"
                                         title="Editar Planilha">
                                         <i class="nav-icon fas fa-edit"></i> Editar
@@ -54,7 +50,10 @@
                                         title="Conissão">
                                         <i class="fas fa-solid fa-plus"></i> Comissão
                                     </a>
-                                </td>
+                                    <a href="{{ route('planilha.homologar', $item->id, 'edit') }}" class="btn btn-success"
+                                        title="Lançar Planilha">
+                                        Homologar
+                                    </a </td>
                             </tr>
                         @endforeach
                     @endif

@@ -16,13 +16,25 @@
             @csrf
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-8">
                         <div class="form-group">
                             <label>Colaborador:</label>
                             <input type="text" class="form-control"
                                 value="{{ $colaborador->nome }} {{ $colaborador->sobrenome }}" disabled>
                             <input type="hidden" name="colaborador_id" class="form-control "
                                 value="{{ $colaborador->id }}">
+                        </div>
+                    </div>
+                    <div class="col-md-1 text-center">
+                        <label>Ou</label>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Pesquisar Usuário:</label>
+
+                            <a href="{{ route('planilha.index') }}" title="Voltar" class="btn btn-danger form-control">
+                                <i class="fa fa-search"></i> Pesquisar
+                            </a>
                         </div>
                     </div>
                 </div>
