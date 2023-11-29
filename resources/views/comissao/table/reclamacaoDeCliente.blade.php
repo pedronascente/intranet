@@ -21,12 +21,12 @@
                     <td>R$ {{ $comissao->comissao }}</td>
                     <td>R$ {{ $comissao->desconto_comissao }}</td>
                     <td>
-                        <a href="{{ route('reclamacao.de.cliente.edit', $comissao->id) }}" class="btn btn-primary"
+                        <a href="{{ route('reclamacao-de-cliente.edit', $comissao->id) }}" class="btn btn-primary"
                             title="Editar comissão">
                             <i class="nav-icon fas fa-edit"></i> Editar
                         </a>
                         <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal"
-                            data-route="{{ route('reclamacao.de.cliente.destroy', $comissao->id) }}"
+                            data-route="{{ route('reclamacao-de-cliente.destroy', $comissao->id) }}"
                             title="Excluir comissão">
                             <i class="fas fa-trash"></i> Excluir
                         </a>
