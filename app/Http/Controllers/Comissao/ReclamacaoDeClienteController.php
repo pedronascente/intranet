@@ -54,13 +54,17 @@ class ReclamacaoDeClienteController extends Controller
         $objetoModel->desconto_comissao  = $request->desconto_comissao;
         $objetoModel->save();
         return redirect()
-            ->route('reclamacao.de.cliente.edit', $id)
+            ->route('reclamacao-de-cliente.edit', $id)
             ->with('status', 'Registro atualizado com sucesso.');
     }
 
-    public function destroy(Request $request, $id)
+    public function show($id)
     {
-        $objetoModel = ReclamacaoDeCliente::findOrFail($request->id);
+    }
+
+    public function destroy($id)
+    {
+        $objetoModel = ReclamacaoDeCliente::findOrFail($id);
         $objetoModel->delete();
         return redirect(route('comissao.index', $objetoModel->planilha_id))
             ->with('status', "Registro excluido com sucesso!");

@@ -55,7 +55,7 @@ class SupervisaoComercialRastreamentoController extends Controller
         $objetoModel->desconto_comissao  = $request->desconto_comissao;
         $objetoModel->save();
         return redirect()
-            ->route('supervisao.comercial.rastreamento.edit', $id)
+            ->route('scr.edit', $id)
             ->with('status', 'Registro atualizado com sucesso.');
     }
 
