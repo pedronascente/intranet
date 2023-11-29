@@ -86,7 +86,7 @@ class PortariaVirtualController extends Controller
                 'cliente' => 'required|min:2|max:200',
                 'data' => 'required|date_format:d/m/Y', // Validar o formato da data
                 'conta_pedido' => 'required|max:50',
-                'meio_id' => 'required',
+                'meio_id' => 'exists:meios,id',
                 'comissao' => [
                     'required',
                     'numeric',
@@ -136,6 +136,7 @@ class PortariaVirtualController extends Controller
                 ],
             ],
             [
+                'meio_id.exists' => 'O meio informado não existe.',
                 'required' => 'Campo obrigatório.',
                 'comissao.regex:/^\d+(\.\d{1,2})?$/' => 'Deve ser um número decimal com até 2 casas decimais',
                 'date_format' => 'O campo data deve estar no formato válido dia/mes/ano'

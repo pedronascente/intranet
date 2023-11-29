@@ -21,6 +21,7 @@ class SupervisaoComercialAlarmesCercaEletricaCFTVController extends Controller
 
     public function store(Request $request)
     {
+
         $this->validarFormulario($request);
         $objetoModel = new SupervisaoComercialAlarmesCercaEletricaCFTV();
         $objetoModel->planilha()->associate(Planilha::find($request->planilha_id));
@@ -64,11 +65,11 @@ class SupervisaoComercialAlarmesCercaEletricaCFTVController extends Controller
         $objetoModel->desconto_comissao = $request->desconto_comissao;
         $objetoModel->save();
         return redirect()
-            ->route('supervisao.comercial.alarmes.cerca.eletrica.cftv.edit', $id)
+            ->route('scace-cftv.edit', $id)
             ->with('status', 'Registro atualizado com sucesso.');
     }
 
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
         $objetoModel = SupervisaoComercialAlarmesCercaEletricaCFTV::findOrFail($id);
         $objetoModel->delete();
@@ -84,7 +85,8 @@ class SupervisaoComercialAlarmesCercaEletricaCFTVController extends Controller
                 'data' => 'required|date_format:d/m/Y',
                 'conta_pedido' => 'required|max:50',
                 'consultor' => 'required|max:200',
-                'servico_id' => 'required',
+                'servico_id' => 'exists:servico_alarmes,id',
+
                 'mensal' => [
                     'required',
                     'numeric',
@@ -126,6 +128,7 @@ class SupervisaoComercialAlarmesCercaEletricaCFTVController extends Controller
                 ],
             ],
             [
+                'servico_id.exists' => 'O Serviço informado não existe.',
                 'required' => 'Campo obrigatório.',
                 'comissao.regex:/^\d+(\.\d{1,2})?$/' => 'Deve ser um número decimal com até 2 casas decimais',
                 'date_format' => 'O campo data deve estar no formato válido d/m/Y',

@@ -81,7 +81,7 @@ class SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController extends Controller
                 'data' => 'required|date_format:d/m/Y',
                 'conta_pedido' => 'required|max:50',
                 'equipe_servico' => 'required|max:200',
-                'servico_id' => 'required',
+                'servico_id' => 'exists:servico_alarmes,id',
                 'ins_vendas' => [
                     'required',
                     'numeric',
@@ -123,6 +123,7 @@ class SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController extends Controller
                 ],
             ],
             [
+                'servico_id.exists' => 'O Serviço informado não existe.',
                 'required' => 'Campo obrigatório.',
                 'comissao.regex:/^\d+(\.\d{1,2})?$/' => 'Deve ser um número decimal com até 2 casas decimais',
                 'date_format' => 'O campo data deve estar no formato válido d/m/Y',
