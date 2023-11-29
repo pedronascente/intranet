@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\comissao;
 
 use Illuminate\Http\Request;
-use App\Models\Comissao\Planilha;
+use App\Models\Planilha\Planilha;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Comissao\ComissaoController;
-use App\Models\comissao\SupervisaoTecnicaESacAlarmesCercaEletricaCFTV;
+use App\Models\Comissao\SupervisaoTecnicaESacAlarmesCercaEletricaCFTV;
 
 class SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController extends Controller
 {

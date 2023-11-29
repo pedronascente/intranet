@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Comissao;
 
 use Illuminate\Http\Request;
-use App\Models\Comissao\Planilha;
+use App\Models\Planilha\Planilha;
+use App\Models\Comissao\ReclamacaoDeCliente;
 use App\Http\Controllers\Controller;
-use App\Models\comissao\ReclamacaoDeCliente;
 use App\Http\Controllers\Comissao\ComissaoController;
 
 class ReclamacaoDeClienteController extends Controller

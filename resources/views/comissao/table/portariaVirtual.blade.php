@@ -27,11 +27,12 @@
                     <td>R$ {{ $comissao->comissao }}</td>
                     <td>R$ {{ $comissao->desconto_comissao }}</td>
                     <td>
-                        <a href="{{ route('portaria.virtual.edit', $comissao->id) }}" class="btn btn-primary"
+                        <a href="{{ route('portaria.virtual.edit', $comissao->id) }}" class="btn btn-info btn-sm"
                             title="Editar comissão">
                             <i class="nav-icon fas fa-edit"></i> Editar
                         </a>
-                        <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal"
+                        <a href="javascript:void(0)" class="btn btn-danger btn-sm" data-toggle="modal"
+                            data-target="#deleteModal"
                             data-route="{{ route('portaria.virtual.destroy', $comissao->id) }}"
                             title="Excluir comissão">
                             <i class="fas fa-trash"></i> Excluir

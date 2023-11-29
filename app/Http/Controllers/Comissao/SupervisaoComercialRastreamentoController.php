@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\comissao;
+namespace App\Http\Controllers\Comissao;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Comissao\ComissaoController;
-use App\Models\Comissao\Planilha;
-use App\Models\comissao\SupervisaoComercialRastreamento;
+use App\Models\Planilha\Planilha;
+use App\Models\Comissao\SupervisaoComercialRastreamento;
 
 class SupervisaoComercialRastreamentoController extends Controller
 {

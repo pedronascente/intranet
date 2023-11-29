@@ -75,13 +75,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/comissao/conferir" class="nav-link">
+                            <a href="{{ route('planilha.administrativo.conferir') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Conferir</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/comissao/arquivo" class="nav-link">
+                            <a href="/planilha/arquivo" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Arquivo</p>
                             </a>

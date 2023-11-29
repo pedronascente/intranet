@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\comissao;
+namespace App\Models\Comissao;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,6 +22,6 @@ class EntregaDeAlarme extends Model
 
     public function planilha()
     {
-        return $this->belongsTo(Planilha::class);
+        return $this->belongsTo(\App\Models\Planilha\Planilha::class);
     }
 }

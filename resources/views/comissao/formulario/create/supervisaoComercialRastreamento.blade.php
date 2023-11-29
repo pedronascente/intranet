@@ -1,4 +1,4 @@
-<form action="{{ route('supervisao.comercial.rastreamento.store') }}" method="POST" name="formulario-create">
+<form action="{{ route('scr.store') }}" method="POST" name="formulario-create">
     <input type="hidden" name="planilha_id" value="{{ $planilha->id }}">
     @csrf
     <div class="card-body">

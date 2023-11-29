@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\comissao;
+namespace App\Models\Comissao;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,13 +21,13 @@ class TecnicaAlarmesCercaEletricaCFTV extends Model
         'planilha_id'
     ];
 
-    public function planilha()
-    {
-        return $this->belongsTo(Planilha::class);
-    }
-
     public function servico()
     {
         return $this->belongsTo(ServicoAlarme::class);
+    }
+
+    public function planilha()
+    {
+        return $this->belongsTo(\App\Models\Planilha\Planilha::class);
     }
 }

@@ -4,9 +4,8 @@ namespace App\Http\Controllers\comissao;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use App\Models\Planilha\Planilha;
 use App\Models\Comissao\PortariaVirtual;
-use App\Models\Comissao\Planilha;
 use App\Models\Comissao\Meio;
 
 class PortariaVirtualController extends Controller

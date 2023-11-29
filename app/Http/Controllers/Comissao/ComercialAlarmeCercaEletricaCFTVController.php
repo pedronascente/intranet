@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\comissao;
+namespace App\Http\Controllers\Comissao;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Planilha\Planilha;
 use App\Models\Comissao\Meio;
-use App\Models\comissao\Planilha;
 use App\Models\Comissao\ServicoAlarme;
-use App\Models\comissao\ComercialAlarmeCercaEletricaCFTV as CACCFTV;
+use App\Models\Comissao\ComercialAlarmeCercaEletricaCFTV as CACCFTV;
 
 class ComercialAlarmeCercaEletricaCFTVController extends Controller
 {
@@ -22,8 +22,6 @@ class ComercialAlarmeCercaEletricaCFTVController extends Controller
 
     public function store(Request $request)
     {
-
-       
         $this->validarFormulario($request);
         $objetoModel = new CACCFTV();
         $objetoModel->planilha()->associate(Planilha::find($request->planilha_id));

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\comissao;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\comissao\Planilha;
+use App\Models\Planilha\Planilha;
 use App\Models\comissao\EntregaDeAlarme;
 
 class EntregaDeAlarmeController extends Controller

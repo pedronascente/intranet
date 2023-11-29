@@ -24,6 +24,6 @@ class TecnicaDeRastreamento extends Model
 
     public function planilha()
     {
-        return $this->belongsTo(Planilha::class);
+        return $this->belongsTo(\App\Models\Planilha\Planilha::class);
     }
 }

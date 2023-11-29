@@ -20,7 +20,7 @@ use App\Http\Controllers\Configuracoes\PermissaoController;
 use App\Http\Controllers\Configuracoes\ColaboradorController;
 
 
-use App\Http\Controllers\Comissao\PlanilhaController;
+use App\Http\Controllers\PlanilhaController;
 use App\Http\Controllers\Comissao\ComissaoController;
 use App\Http\Controllers\Comissao\ComercialAlarmeCercaEletricaCFTVController;
 use App\Http\Controllers\Comissao\ComercialRastreamentoVeicularController;
@@ -103,13 +103,31 @@ Route::prefix('/recuperar')->group(function () {
 });
 
 Route::prefix('/planilha')->group(function () {
-    Route::get('/', [PlanilhaController::class, 'index'])->name('planilha.index');
-    Route::get('/create', [PlanilhaController::class, 'create'])->name('planilha.create');
+    Route::get('/create/{id}/colaborador', [PlanilhaController::class, 'createNovoColaborador'])->name('planilha.create.new');
     Route::get('/{id}/homologar', [PlanilhaController::class, 'homologar'])->name('planilha.homologar');
-    Route::get('/{id}/edit', [PlanilhaController::class, 'edit'])->name('planilha.edit');
-    Route::post('/', [PlanilhaController::class, 'store'])->name('planilha.store');
-    Route::put('/{id}', [PlanilhaController::class, 'update'])->name('planilha.update');
-    Route::delete('/{id}', [PlanilhaController::class, 'destroy'])->name('planilha.destroy');
+    Route::get('/pesquisar-colaborador', [PlanilhaController::class, 'createPesquisarColaborador'])->name('planilha.pesquisar.colaborador');
+    Route::post('/pesquisar-colaborador', [PlanilhaController::class, 'resultadoPesquisaColaborador'])->name('planilha.pesquisar.colaborador');
+
+    Route::prefix('/colaborador')->group(
+        function () {
+            Route::get('/', [PlanilhaController::class, 'index'])->name('planilha.index');
+            Route::get('/create', [PlanilhaController::class, 'create'])->name('planilha.create');
+            Route::get('/{id}/edit', [PlanilhaController::class, 'edit'])->name('planilha.edit');
+            Route::post('/', [PlanilhaController::class, 'store'])->name('planilha.store');
+            Route::put('/{id}', [PlanilhaController::class, 'update'])->name('planilha.update');
+            Route::delete('/{id}', [PlanilhaController::class, 'destroy'])->name('planilha.destroy');
+        }
+    );
+
+    Route::prefix('/administrativo')->group(
+        function () {
+            Route::get('/', [PlanilhaController::class, 'indexAdministrativo'])->name('planilha.administrativo.conferir');
+            Route::get('/create', [PlanilhaController::class, 'createAdministrativo'])->name('planilha.administrativo.create');
+            Route::get('/{id}/edit', [PlanilhaController::class, 'editAdministrativo'])->name('planilha.administrativo.edit');
+            Route::post('/', [PlanilhaController::class, 'storeAdministrativo'])->name('planilha.administrativo.store');
+            Route::get('detalhes/{id}', [PlanilhaController::class, 'detalhePlanilha'])->name('planilha.administrativo.visualizar');
+        }
+    );
 });
 
 Route::prefix('/comissao')->group(function () {
@@ -153,27 +171,13 @@ Route::prefix('/portaria-virtual')->group(function () {
     Route::delete('/{id}', [PortariaVirtualController::class, 'destroy'])->name('portaria.virtual.destroy');
 });
 
+Route::resource('/reclamacao-de-cliente', ReclamacaoDeClienteController::class);
+Route::resource('/scace-cftv', SupervisaoComercialAlarmesCercaEletricaCFTVController::class);
+Route::resource('/scr', SupervisaoComercialRastreamentoController::class);
 
-Route::prefix('/reclamacao-de-cliente')->group(function () {
-    Route::get('/{id}/edit', [ReclamacaoDeClienteController::class, 'edit'])->name('reclamacao.de.cliente.edit');
-    Route::post('/', [ReclamacaoDeClienteController::class, 'store'])->name('reclamacao.de.cliente.store');
-    Route::put('/{id}', [ReclamacaoDeClienteController::class, 'update'])->name('reclamacao.de.cliente.update');
-    Route::delete('/{id}', [ReclamacaoDeClienteController::class, 'destroy'])->name('reclamacao.de.cliente.destroy');
-});
 
-Route::prefix('/supervisao-comercial-alarmes-cerca-eletrica-cftv')->group(function () {
-    Route::get('/{id}/edit', [SupervisaoComercialAlarmesCercaEletricaCFTVController::class, 'edit'])->name('supervisao.comercial.alarmes.cerca.eletrica.cftv.edit');
-    Route::post('/', [SupervisaoComercialAlarmesCercaEletricaCFTVController::class, 'store'])->name('supervisao.comercial.alarmes.cerca.eletrica.cftv.store');
-    Route::put('/{id}', [SupervisaoComercialAlarmesCercaEletricaCFTVController::class, 'update'])->name('supervisao.comercial.alarmes.cerca.eletrica.cftv.update');
-    Route::delete('/{id}', [SupervisaoComercialAlarmesCercaEletricaCFTVController::class, 'destroy'])->name('supervisao.comercial.alarmes.cerca.eletrica.cftv.destroy');
-});
 
-Route::prefix('/supervisao-comercial-rastreamento')->group(function () {
-    Route::get('/{id}/edit', [SupervisaoComercialRastreamentoController::class, 'edit'])->name('supervisao.comercial.rastreamento.edit');
-    Route::post('/', [SupervisaoComercialRastreamentoController::class, 'store'])->name('supervisao.comercial.rastreamento.store');
-    Route::put('/{id}', [SupervisaoComercialRastreamentoController::class, 'update'])->name('supervisao.comercial.rastreamento.update');
-    Route::delete('/{id}', [SupervisaoComercialRastreamentoController::class, 'destroy'])->name('supervisao.comercial.rastreamento.destroy');
-});
+
 
 Route::prefix('/supervisao-tecnica-sac-alarmes-cerca-eletrica.cftv')->group(function () {
     Route::get('/{id}/edit', [SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController::class, 'edit'])->name('supervisao.tecnica.sac.alarmes.cerca.eletrica.cftv.edit');
@@ -182,11 +186,9 @@ Route::prefix('/supervisao-tecnica-sac-alarmes-cerca-eletrica.cftv')->group(func
     Route::delete('/{id}', [SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController::class, 'destroy'])->name('supervisao.tecnica.sac.alarmes.cerca.eletrica.cftv.destroy');
 });
 
-
 Route::prefix('/tecnica-alarmes-cerca-eletrica-cftv')->group(function () {
     Route::get('/{id}/edit', [TecnicaAlarmesCercaEletricaCFTVController::class, 'edit'])->name('tecnica.alarmes.cerca.eletrica.cftv.edit');
     Route::post('/', [TecnicaAlarmesCercaEletricaCFTVController::class, 'store'])->name('tecnica.alarmes.cerca.eletrica.cftv.store');
     Route::put('/{id}', [TecnicaAlarmesCercaEletricaCFTVController::class, 'update'])->name('tecnica.alarmes.cerca.eletrica.cftv.update');
     Route::delete('/{id}', [TecnicaAlarmesCercaEletricaCFTVController::class, 'destroy'])->name('tecnica.alarmes.cerca.eletrica.cftv.destroy');
 });
-

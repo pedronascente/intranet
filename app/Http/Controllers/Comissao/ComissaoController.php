@@ -3,19 +3,19 @@
 namespace App\Http\Controllers\Comissao;
 
 use App\Models\Comissao\Meio;
-use App\Models\Comissao\Planilha;
+use App\Models\Planilha\Planilha;
 use App\Http\Controllers\Controller;
 use App\Models\Comissao\ServicoAlarme;
-use App\Models\comissao\EntregaDeAlarme;
-use App\Models\comissao\PortariaVirtual;
+use App\Models\Comissao\EntregaDeAlarme;
+use App\Models\Comissao\PortariaVirtual;
 use App\Models\Comissao\ReclamacaoDeCliente;
 use App\Models\Comissao\TecnicaDeRastreamento;
-use App\Models\comissao\ComercialRastreamentoVeicular;
-use App\Models\comissao\SupervisaoComercialRastreamento;
-use App\Models\comissao\TecnicaAlarmesCercaEletricaCFTV;
-use App\Models\comissao\ComercialAlarmeCercaEletricaCFTV;
-use App\Models\comissao\SupervisaoComercialAlarmesCercaEletricaCFTV;
-use App\Models\comissao\SupervisaoTecnicaESacAlarmesCercaEletricaCFTV;
+use App\Models\Comissao\ComercialRastreamentoVeicular;
+use App\Models\Comissao\SupervisaoComercialRastreamento;
+use App\Models\Comissao\TecnicaAlarmesCercaEletricaCFTV;
+use App\Models\Comissao\ComercialAlarmeCercaEletricaCFTV;
+use App\Models\Comissao\SupervisaoComercialAlarmesCercaEletricaCFTV;
+use App\Models\Comissao\SupervisaoTecnicaESacAlarmesCercaEletricaCFTV;
 
 class ComissaoController extends Controller
 {
@@ -41,6 +41,17 @@ class ComissaoController extends Controller
         }
 
         return view('comissao.index', $data);
+    }
+
+    public function indexAdmnistrativo($id)
+    {
+        $planilha = Planilha::with('colaborador', 'periodo', 'tipoPlanilha')->findOrFail($id);
+        $comissoes = $this->getComissoes($planilha->tipoPlanilha->formulario, $id);
+        $data = [
+            'planilha' => $planilha,
+            'listaComissao' => $comissoes,
+        ];
+        return $data;
     }
 
     public function formatarData($dataEntrada)

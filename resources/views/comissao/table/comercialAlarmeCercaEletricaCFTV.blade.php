@@ -30,10 +30,11 @@
                     <td>R$ {{ $comissao->desconto_comissao }}</td>
                     <td>
                         <a href="{{ route('comercial.alarme.cerca.eletrica.cftv.edit', $comissao->id) }}"
-                            class="btn btn-primary" title="Editar comissão">
+                            class="btn btn-info btn-sm" title="Editar comissão">
                             <i class="nav-icon fas fa-edit"></i> Editar
                         </a>
-                        <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal"
+                        <a href="javascript:void(0)" class="btn btn-danger btn-sm" data-toggle="modal"
+                            data-target="#deleteModal"
                             data-route="{{ route('comercial.alarme.cerca.eletrica.cftv.destroy', $comissao->id) }}"
                             title="Excluir comissão">
                             <i class="fas fa-trash"></i> Excluir

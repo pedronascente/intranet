@@ -15,6 +15,8 @@ class ServicoAlarme extends Model
     {
         return $this->hasOne(ComercialAlarmeCercaEletricaCFTV::class);
     }
-
-   
+    public function supervisaoComercialAlarmesCercaEletricaCFTV()
+    {
+        return $this->hasOne(SupervisaoComercialAlarmesCercaEletricaCFTV::class);
+    }
 }

@@ -1,5 +1,4 @@
-<form action="{{ route('supervisao.comercial.alarmes.cerca.eletrica.cftv.store') }}" method="POST"
-    name="formulario-create">
+<form action="{{ route('scace-cftv.store') }}" method="POST" name="formulario-create">
     <input type="hidden" name="planilha_id" value="{{ $planilha->id }}">
     @csrf
     <div class="card-body">
@@ -36,7 +35,7 @@
                         @isset($servico_alarme)
                             @foreach ($servico_alarme as $servico)
                                 <option value="{{ $servico->id }}"
-                                    @if (old('servico_id') == $servico->id) {{ 'selected' }} @endif>
+                                    {{ old('servico_id') == $servico->id ? 'selected' : '' }}>
                                     {{ $servico->nome }}
                                 </option>
                             @endforeach

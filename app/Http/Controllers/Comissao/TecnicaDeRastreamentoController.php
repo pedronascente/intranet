@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\comissao;
+namespace App\Http\Controllers\Comissao;
 
-use App\Models\Comissao\Planilha;
+use App\Models\Planilha\Planilha;
 use App\Models\Comissao\TecnicaDeRastreamento;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
