@@ -28,7 +28,7 @@
                                 <label>Cliente:</label>
                                 <input type="text" name="cliente" maxlength="200"
                                     class="form-control @error('cliente') is-invalid  @enderror" placeholder="Cliente"
-                                    value="{{ $comissao->cliente ? $comissao->cliente : old(cliente) }} ">
+                                    value="{{ $comissao->cliente ?? old(cliente) }} ">
                                 @error('cliente')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -39,7 +39,7 @@
                                 <label>Data:</label>
                                 <input type="text" name="data" maxlength="15"
                                     class="form-control @error('data') is-invalid  @enderror" placeholder="Data"
-                                    value="{{ \Carbon\Carbon::parse($comissao->data)->format('d/m/Y') ? \Carbon\Carbon::parse($comissao->data)->format('d/m/Y') : old('data') }}">
+                                    value="{{ \Carbon\Carbon::parse($comissao->data)->format('d/m/Y') ?? old('data') }}">
                                 @error('data')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -50,8 +50,7 @@
                                 <label>ID Contrato:</label>
                                 <input type="text" name="id_contrato" maxlength="10"
                                     class="form-control @error('id_contrato') is-invalid  @enderror"
-                                    placeholder="ID Contrato"
-                                    value="@if ($comissao->id_contrato) {{ $comissao->id_contrato }} @endif ">
+                                    placeholder="ID Contrato" value="{{ $comissao->id_contrato ?? old(id_contrato) }} ">
                                 @error('id_contrato')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -64,7 +63,7 @@
                                 <label>Placa:</label>
                                 <input type="text" name="placa" maxlength="10"
                                     class="form-control @error('placa') is-invalid  @enderror" placeholder="Placa"
-                                    value="{{ $comissao->placa ? $comissao->placa : old(placa) }}">
+                                    value="{{ $comissao->placa ?? old(placa) }}">
                                 @error('placa')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -76,7 +75,7 @@
                                 <input type="text" name="taxa_instalacao" maxlength="10"
                                     class="form-control @error('taxa_instalacao') is-invalid  @enderror"
                                     placeholder="Taxa Instalação"
-                                    value="{{ $comissao->taxa_instalacao ? $comissao->taxa_instalacao : old(taxa_instalacao) }} ">
+                                    value="{{ $comissao->taxa_instalacao ?? old(taxa_instalacao) }} ">
                                 @error('taxa_instalacao')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -85,9 +84,9 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Mensal:</label>
-                                <input type="text" name="mensal" maxlength="10"
-                                    class="form-control @error('mensal') is-invalid  @enderror" placeholder="Mensal"
-                                    value="{{ $comissao->mensal ? $comissao->mensal : old(mensal) }} ">
+                                <input type="text" name="mensal" maxlength="9"
+                                    class="form-control @error('mensal') is-invalid  @enderror" placeholder="0"
+                                    value="{{ $comissao->mensal ?? old(mensal) }} ">
                                 @error('mensal')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -99,8 +98,8 @@
                             <div class="form-group">
                                 <label>Comissão:</label>
                                 <input type="text" name="comissao" maxlength="10"
-                                    class="form-control @error('comissao') is-invalid  @enderror" placeholder="Comissão"
-                                    value="{{ $comissao->comissao ? $comissao->comissao : old(comissao) }} ">
+                                    class="form-control @error('comissao') is-invalid  @enderror" placeholder="0"
+                                    value="{{ $comissao->comissao ?? old(comissao) }} ">
                                 @error('comissao')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -110,9 +109,8 @@
                             <div class="form-group">
                                 <label>Desconto:</label>
                                 <input type="text" name="desconto_comissao" maxlength="10"
-                                    class="form-control @error('desconto_comissao') is-invalid  @enderror"
-                                    placeholder="Desconto"
-                                    value="{{ $comissao->desconto_comissao ? $comissao->desconto_comissao : old(desconto_comissao) }} ">
+                                    class="form-control @error('desconto_comissao') is-invalid  @enderror" placeholder="0"
+                                    value="{{ $comissao->desconto_comissao ?? old(desconto_comissao) }} ">
                                 @error('desconto_comissao')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
