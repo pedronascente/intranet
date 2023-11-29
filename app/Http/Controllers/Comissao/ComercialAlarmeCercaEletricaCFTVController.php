@@ -22,6 +22,8 @@ class ComercialAlarmeCercaEletricaCFTVController extends Controller
 
     public function store(Request $request)
     {
+
+       
         $this->validarFormulario($request);
         $objetoModel = new CACCFTV();
         $objetoModel->planilha()->associate(Planilha::find($request->planilha_id));
@@ -87,8 +89,8 @@ class ComercialAlarmeCercaEletricaCFTVController extends Controller
             [
                 'cliente' => 'required|min:2|max:200',
                 'data' => 'required|date_format:d/m/Y',
-                'servico_id' => 'required',
-                'meio_id' => 'required',
+                'servico_id' => 'exists:servico_alarmes,id',
+                'meio_id' => 'exists:meios,id',
                 'conta_pedido' => 'required|max:50',
                 'mensal' => [
                     'required',
@@ -131,6 +133,8 @@ class ComercialAlarmeCercaEletricaCFTVController extends Controller
                 ],
             ],
             [
+                'meio_id.exists' => 'O meio informado não existe.',
+                'servico_id.exists' => 'O Serviço informado não existe.',
                 'required' => 'Campo obrigatório.',
                 'comissao.regex:/^\d+(\.\d{1,2})?$/' => 'Deve ser um número decimal com até 2 casas decimais',
                 'date_format' => 'O campo data deve estar no formato válido d/m/Y',
