@@ -121,9 +121,8 @@ class UserController extends Controller
 
     public function profile(Request $request)
     {
-        if ($request->user()) {
-            $id = $request->user()->id;
-            $usuario = User::with('colaborador', 'perfil', 'cartao')->findorFail($id);
+        if (isset($request->user()->id)) {
+            $usuario = User::with('colaborador', 'perfil', 'cartao')->findorFail($request->user()->id);
             return view('profile.index', [
                 'id usuario' => $id,
                 'usuario' => $usuario,
@@ -133,7 +132,8 @@ class UserController extends Controller
                 'status' => $usuario->getStatus($id),
             ]);
         } else {
-            dd('usuario não localizado!');
+            return redirect()
+                ->route('login.form');
         }
     }
 

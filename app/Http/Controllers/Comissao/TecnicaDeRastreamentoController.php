@@ -59,13 +59,13 @@ class TecnicaDeRastreamentoController extends Controller
         $tecnicaDeRastreamento  = TecnicaDeRastreamento::findOrFail($id);
         $tecnicaDeRastreamento->update($data_array);
         return redirect()
-            ->route('tecnica.de.rastreamento.edit', $id)
+            ->route('tecnica-de-rastreamento.edit', $id)
             ->with('status', 'Registro atualizado com sucesso.');
     }
 
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
-        $tecnicaDeRastreamento  = TecnicaDeRastreamento::findOrFail($request->id);
+        $tecnicaDeRastreamento  = TecnicaDeRastreamento::findOrFail($id);
         $tecnicaDeRastreamento->delete();
         return redirect(route('comissao.index', $tecnicaDeRastreamento->planilha_id))
             ->with('status', "Registro excluido com sucesso!");

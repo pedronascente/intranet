@@ -1,4 +1,4 @@
-<form action="{{ route('entrega.alarme.store') }}" method="POST" name="formulario-create">
+<form action="{{ route('entrega-de-alarme.store') }}" method="POST" name="formulario-create">
     <input type="hidden" name="planilha_id" value="{{ $planilha->id }}">
     @csrf
     <div class="card-body">
@@ -42,8 +42,8 @@
                 <div class="form-group">
                     <label>Comissão:</label>
                     <input type="text" name="comissao" maxlength="9"
-                        class="form-control @error('comissao') is-invalid  @enderror" 
-                        value="{{ old('comissao') }}" placeholder="00.00">
+                        class="form-control @error('comissao') is-invalid  @enderror" value="{{ old('comissao') }}"
+                        placeholder="00.00">
                     @error('comissao')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
@@ -53,7 +53,7 @@
                 <div class="form-group">
                     <label>Desconto:</label>
                     <input type="text" name="desconto_comissao" maxlength="10"
-                        class="form-control @error('desconto_comissao') is-invalid  @enderror" 
+                        class="form-control @error('desconto_comissao') is-invalid  @enderror"
                         value="{{ old('desconto_comissao') ? old('desconto_comissao') : 0 }}" placeholder="00.00">
                     @error('desconto_comissao')
                         <span class=" invalid-feedback">{{ $message }}</span>
@@ -63,11 +63,11 @@
         </div>
     </div>
     <div class="card-footer">
-        <button type="submit" class="btn bg-gradient-primary">
+        <button type="submit" class="btn bg-gradient-primary btn-sm">
             <i class="fas fa-save" aria-hidden="true"></i>
             Salvar
         </button>
-        <a href="{{ route('planilha.index') }}" title="Voltar" class="btn btn-danger">
+        <a href="{{ route('planilha.index') }}" title="Voltar" class="btn btn-danger btn-sm">
             <i class="fa fa-reply"></i> Voltar
         </a>
     </div>

@@ -69,13 +69,13 @@ class ComercialAlarmeCercaEletricaCFTVController extends Controller
         $objetoModel->save();
 
         return redirect()
-            ->route('comercial.alarme.cerca.eletrica.cftv.edit', $id)
+            ->route('cace-cftv.edit', $id)
             ->with('status', 'Registro atualizado com sucesso.');
     }
 
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
-        $objetoModel  = CACCFTV::findOrFail($request->id);
+        $objetoModel  = CACCFTV::findOrFail($id);
         $objetoModel->delete();
         return redirect(route('comissao.index', $objetoModel->planilha_id))
             ->with('status', "Registro excluido com sucesso!");

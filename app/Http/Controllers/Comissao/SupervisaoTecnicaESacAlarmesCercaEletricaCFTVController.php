@@ -59,7 +59,7 @@ class SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController extends Controller
         $objetoModel->desconto_comissao  = $request->desconto_comissao;
         $objetoModel->save();
         return redirect()
-            ->route('supervisao.tecnica.sac.alarmes.cerca.eletrica.cftv.edit', $id)
+            ->route('stsace-cftv.edit', $id)
             ->with('status', 'Registro atualizado com sucesso.');
     }
 

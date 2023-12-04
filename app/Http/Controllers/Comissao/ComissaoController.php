@@ -19,24 +19,23 @@ use App\Models\Comissao\SupervisaoTecnicaESacAlarmesCercaEletricaCFTV;
 
 class ComissaoController extends Controller
 {
+
     public function index($id)
     {
-        $planilha = Planilha::with('colaborador', 'periodo', 'tipoPlanilha')->findOrFail($id);
-        $comissoes = $this->getComissoes($planilha->tipoPlanilha->formulario, $id);
+        $planilha = Planilha::with('colaborador', 'periodo', 'tipo')->findOrFail($id);
+        $comissoes = $this->getComissoes($planilha->tipo->formulario, $id);
         $data = [
-            'titulo' => $planilha->tipoPlanilha->nome,
             'planilha' => $planilha,
-            'formulario' => $planilha->tipoPlanilha->formulario,
             'listaComissao' => $comissoes,
         ];
 
         //Serviços de alarmes:
-        if ($this->getServicoAlarme($planilha->tipoPlanilha->formulario)) {
+        if ($this->getServicoAlarme($planilha->tipo->formulario)) {
             $data['servico_alarme'] = ServicoAlarme::all();
         }
 
         //Meio
-        if ($this->getMeio($planilha->tipoPlanilha->formulario)) {
+        if ($this->getMeio($planilha->tipo->formulario)) {
             $data['meios'] = Meio::all();
         }
 
@@ -45,8 +44,8 @@ class ComissaoController extends Controller
 
     public function indexAdmnistrativo($id)
     {
-        $planilha = Planilha::with('colaborador', 'periodo', 'tipoPlanilha')->findOrFail($id);
-        $comissoes = $this->getComissoes($planilha->tipoPlanilha->formulario, $id);
+        $planilha = Planilha::with('colaborador', 'periodo', 'tipo')->findOrFail($id);
+        $comissoes = $this->getComissoes($planilha->tipo->formulario, $id);
         $data = [
             'planilha' => $planilha,
             'listaComissao' => $comissoes,
@@ -69,34 +68,34 @@ class ComissaoController extends Controller
         return $dataFormatada;
     }
 
-    private function getServicoAlarme($tipoPlanilha)
+    private function getServicoAlarme($tipo)
     {
         $dataArrayFormularioAlarmes = [
             'comercialAlarmeCercaEletricaCFTV',
             'tecnicaAlarmesCercaEletricaCFTV',
             'supervisaoComercialAlarmesCercaEletricaCFTV'
         ];
-        if (in_array($tipoPlanilha, $dataArrayFormularioAlarmes)) {
+        if (in_array($tipo, $dataArrayFormularioAlarmes)) {
             return true;
         }
         return false;
     }
 
-    private function getMeio($tipoPlanilha)
+    private function getMeio($tipo)
     {
         $dataArrayFormularioAlarmes = [
             'comercialAlarmeCercaEletricaCFTV',
             'portariaVirtual',
         ];
-        if (in_array($tipoPlanilha, $dataArrayFormularioAlarmes)) {
+        if (in_array($tipo, $dataArrayFormularioAlarmes)) {
             return true;
         }
         return false;
     }
 
-    private function getComissoes($tipoPlanilha)
+    private function getComissoes($tipo)
     {
-        switch ($tipoPlanilha) {
+        switch ($tipo) {
             case 'tecnicaDeRastreamento':
                 return TecnicaDeRastreamento::orderBy('id', 'desc')->paginate(10);
             case 'comercialAlarmeCercaEletricaCFTV':

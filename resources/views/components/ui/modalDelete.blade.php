@@ -14,11 +14,11 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-secondary  btn-sm" data-dismiss="modal">Cancelar</button>
                 <form id="deleteForm" action="" method="post">
                     @method('DELETE')
                     @csrf
-                    <button type="submit" class="btn btn-danger">Deletar</button>
+                    <button type="submit" class="btn btn-danger btn-sm">Deletar</button>
                 </form>
             </div>
         </div>

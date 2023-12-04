@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('titulo', $planilha->tipoPlanilha->nome)
+@section('titulo', $planilha->tipo->nome)
 
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
@@ -38,7 +38,7 @@
     </div>
     <div class="card card-primary">
         <div class="card-body table-responsive p-0">
-            @include('comissao.table.' . $planilha->tipoPlanilha->formulario)
+            @include('comissao.table.' . $planilha->tipo->formulario)
         </div>
     </div>
 @endsection

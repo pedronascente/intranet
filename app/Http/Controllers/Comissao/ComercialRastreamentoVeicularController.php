@@ -38,9 +38,11 @@ class ComercialRastreamentoVeicularController extends Controller
 
     public function edit($id)
     {
+        $comissao = CRV::findOrFail($id);
+        $titulo = $this->titulo;
         return view('comissao.formulario.edit.comercialRastreamentoVeicular', [
-            'comissao' => CRV::findOrFail($id),
-            'titulo' => $this->titulo
+            'comissao' => $comissao,
+            'titulo' => $titulo
         ]);
     }
 
@@ -79,6 +81,7 @@ class ComercialRastreamentoVeicularController extends Controller
                 'cliente' => 'required|min:2|max:200',
                 'data' => 'required|date_format:d/m/Y', // Validar o formato da data
                 'placa' => 'required|max:10',
+                'id_contrato' => 'max:10',
                 'comissao' => [
                     'required',
                     'numeric',
@@ -126,7 +129,7 @@ class ComercialRastreamentoVeicularController extends Controller
                         }
                     },
                 ],
-                'id_contrato' => 'max:10',
+
             ],
             [
                 'required' => 'Campo obrigatório.',

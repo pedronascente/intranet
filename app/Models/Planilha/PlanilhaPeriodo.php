@@ -5,7 +5,7 @@ namespace App\Models\Planilha;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TipoPlanilha extends Model
+class PlanilhaPeriodo extends Model
 {
     use HasFactory;
 
@@ -17,4 +17,6 @@ class TipoPlanilha extends Model
     {
         return $this->hasOne(Planilha::class);
     }
+
+    
 }

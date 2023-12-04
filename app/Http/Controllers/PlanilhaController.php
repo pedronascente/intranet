@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Colaborador;
 use Illuminate\Http\Request;
-use App\Models\Planilha\Periodo;
+use App\Models\Planilha\PlanilhaPeriodo;
 use App\Models\Planilha\Planilha;
-use App\Models\Planilha\TipoPlanilha;
+use App\Models\Planilha\PlanilhaTipo;
 use App\Http\Controllers\Comissao\ComissaoController;
+use App\Models\planilha\PlanilhaStatus;
 
 class PlanilhaController extends Controller
 {
@@ -16,11 +17,13 @@ class PlanilhaController extends Controller
     private $paginate;
     private $titulo;
     private $comissao;
+    private $planilha;
 
-    public function __construct()
+    public function __construct(Planilha $planilha)
     {
         $this->titulo = "Planilha de comissão";
         $this->paginate = 10;
+        $this->planilha =  $planilha;
         $this->actionIndex = 'App\Http\Controllers\PlanilhaController@index';
         $this->comissao = new ComissaoController();
     }
@@ -31,45 +34,47 @@ class PlanilhaController extends Controller
 
     public function index()
     {
-        $collections = Planilha::where('status', '<>', 'homologar')
+        $collections = $this->planilha::whereIn('planilha_status_id', [1, 3,4])
             ->orderBy('id', 'desc')
             ->paginate($this->paginate);
-
         return view('planilha.colaborador.index', [
             'titulo' => $this->titulo,
             'collections' => $collections
         ]);
     }
 
+
     public function create(Request $request)
     {
-        $titulo         = "Cadastrar  " . $this->titulo;
-        $periodos       = Periodo::all();
-        $tipoPlanilhas  = TipoPlanilha::all();
-        $colaborador    = User::with('colaborador')->find($request->user()->id);
-
-        return view(
-            'planilha.colaborador.create',
-            [
-                'titulo' => $titulo,
-                'periodos' => $periodos,
-                'tipoPlanilhas' => $tipoPlanilhas,
-                'colaborador' => $colaborador->colaborador,
-            ]
-        );
+        if (isset($request->user()->id)) {
+            $titulo         = "Cadastrar  " . $this->titulo;
+            $periodos       = PlanilhaPeriodo::all();
+            $tipos          = PlanilhaTipo::all();
+            $colaborador    = User::with('colaborador')->find($request->user()->id);
+            return view(
+                'planilha.colaborador.create',
+                [
+                    'titulo'      => $titulo,
+                    'periodos'    => $periodos,
+                    'tipos'       => $tipos,
+                    'colaborador' => $colaborador->colaborador,
+                ]
+            );
+        } else {
+            return redirect()
+                ->route('login.form');
+        }
     }
 
     public function store(Request $request)
     {
-        $this->validarFormulario($request);
+        $request->validate($this->planilha->rules(), $this->planilha->feedback());
         if ($this->validarDuplicidade($request) >= 1) {
             return redirect()
                 ->action($this->actionIndex)
                 ->with('warning', "Está planilha já foi criada!");
         }
-
         $this->salvar($request);
-
         return redirect()
             ->route('planilha.index')
             ->with('status', 'Registrado com sucesso.');
@@ -78,77 +83,84 @@ class PlanilhaController extends Controller
     public function edit($id)
     {
         $titulo        = "Editar " . $this->titulo;
-        $planilha      = Planilha::with('colaborador', 'periodo', 'tipoPlanilha')->findOrFail($id);
-        $periodos      = Periodo::orderBy('nome', 'asc')->get();
-        $tipoPlanilhas = TipoPlanilha::orderBy('id', 'desc')->get();
-
+        $planilha      = $this->planilha::with('colaborador', 'periodo', 'tipo')->findOrFail($id);
+        $periodos      = PlanilhaPeriodo::orderBy('nome', 'asc')->get();
+        $tipos         = PlanilhaTipo::orderBy('id', 'desc')->get();
         return view(
             'planilha.colaborador.edit',
             [
-                'titulo' => $titulo,
-                'periodos' => $periodos,
-                'tipoPlanilhas' => $tipoPlanilhas,
-                'planilha' => $planilha,
+                'titulo'    => $titulo,
+                'periodos'  => $periodos,
+                'tipos'     => $tipos,
+                'planilha'  => $planilha,
             ]
         );
     }
 
     public function update(Request $request, $id)
     {
-        $this->validarFormulario($request);
+        $request->validate($this->planilha->rules(), $this->planilha->feedback());
         $planilha = Planilha::findOrFail($id);
-        $planilha->periodo()->associate($request->periodo_id);
-        $planilha->colaborador()->associate($request->colaborador_id);
-        $planilha->tipoPlanilha()->associate($request->tipo_planilha_id);
-        $planilha->ctps      = $request->ctps;
-        $planilha->matricula = $request->matricula;
-        $planilha->ano       = $request->ano;
-
-        $planilha->update();
+        $planilha->update($request->all());
+        if (isset($request->formulario) && $request->formulario == 'administrativo') {
+            return redirect()
+                ->route('planilha.administrativo.index')
+                ->with('status', 'Registro atualizado com sucesso.');
+        }
         return redirect()
             ->action($this->actionIndex)
-            ->with('status', "Registro Atualizado!");
+            ->with('status', "Registro Atualizado com sucesso.");
     }
 
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
-        $planilha = Planilha::findOrFail($request->id);
+        $planilha = Planilha::findOrFail($id);
         $planilha->delete();
         return redirect()
             ->action($this->actionIndex)
             ->with('status', "Registro Excluido!");
     }
 
+    public function homologar($id)
+    {
+        $planilha = $this->planilha::findOrFail($id);
+        $planilha->planilha_status_id = 2;
+        $planilha->update();
+        return redirect()
+            ->action($this->actionIndex)
+            ->with('status', "Planilha encaminhada para Homlogação.");
+    }
+
     /*
-    * ADMNISTRATIVO
+    * ADMNISTRATIVO----------------------------------------------------------------------
     */
 
     public function indexAdministrativo()
     {
-        $collections = Planilha::whereIn('status', ['homologar', 'reprovado'])
+        $collections = $this->planilha::whereIn('planilha_status_id', [1, 2])
             ->orderBy('id', 'desc')
             ->paginate($this->paginate);
-
         return view('planilha.administrativo.index', [
             'titulo' => "Conferir " . $this->titulo,
             'collections' => $collections
         ]);
     }
 
-    public function createAdministrativo(Request $request)
+    public function  editAdministrativo($id)
     {
-        $titulo         = "Cadastrar " . $this->titulo;
-        $periodos       = Periodo::all();
-        $tipoPlanilhas  = TipoPlanilha::all();
-        $colaborador    = User::with('colaborador')->find($request->user()->id);
-
+        $titulo        = "Editar " . $this->titulo;
+        $planilha      = $this->planilha::with('colaborador', 'periodo', 'tipo')->findOrFail($id);
+        $periodos      = PlanilhaPeriodo::orderBy('nome', 'asc')->get();
+        $tipos         = PlanilhaTipo::orderBy('id', 'desc')->get();
+        $status         = PlanilhaStatus::orderBy('id', 'desc')->get();
         return view(
-            'planilha.administrativo.create',
+            'planilha.administrativo.edit',
             [
                 'titulo' => $titulo,
+                'planilha' => $planilha,
                 'periodos' => $periodos,
-                'tipoPlanilhas' => $tipoPlanilhas,
-                'colaborador' => $colaborador->colaborador,
+                'tipos' => $tipos,
+                'status' => $status,
             ]
         );
     }
@@ -158,47 +170,25 @@ class PlanilhaController extends Controller
         $this->validarFormulario($request);
         if ($this->validarDuplicidade($request) >= 1) {
             return redirect()
-                ->route('planilha.administrativo.conferir')
+                ->route('planilha.administrativo.index')
                 ->with('warning', "Está planilha já foi criada!");
         }
         $this->salvar($request);
         return redirect()
-            ->route('planilha.administrativo.conferir')
+            ->route('planilha.administrativo.index')
             ->with('status', 'Registrado com sucesso.');
     }
     public function detalhePlanilha($id)
     {
         $comissao = $this->comissao->indexAdmnistrativo($id);
-
-        //dd($comissao);
-
         return view('planilha.administrativo.detalhes', $comissao);
     }
 
-    public function  editAdministrativo($id)
-    {
-        $titulo        = "Editar " . $this->titulo;
-        $planilha      = Planilha::with('colaborador', 'periodo', 'tipoPlanilha')->findOrFail($id);
-        $periodos      = Periodo::orderBy('nome', 'asc')->get();
-        $tipoPlanilhas = TipoPlanilha::orderBy('id', 'desc')->get();
-
-        return view(
-            'planilha.administrativo.edit',
-            [
-                'titulo' => $titulo,
-                'periodos' => $periodos,
-                'tipoPlanilhas' => $tipoPlanilhas,
-                'planilha' => $planilha,
-            ]
-        );
-    }
-
-    /*
     public function createNovoColaborador($id)
     {
         $titulo         = "Cadastrar  " . $this->titulo;
-        $periodos       = Periodo::all();
-        $tipoPlanilhas  = TipoPlanilha::all();
+        $periodos       = PlanilhaPeriodo::all();
+        $tipos  = PlanilhaTipo::all();
         $colaborador    = User::with('colaborador')->find($id);
 
         return view(
@@ -206,24 +196,10 @@ class PlanilhaController extends Controller
             [
                 'titulo' => $titulo,
                 'periodos' => $periodos,
-                'tipoPlanilhas' => $tipoPlanilhas,
+                'tipos' => $tipos,
                 'colaborador' => $colaborador->colaborador,
             ]
         );
-    }
-
-    
-
-    */
-
-    public function homologar($id)
-    {
-        $planilha         = Planilha::findOrFail($id);
-        $planilha->status = 'homologar';
-        $planilha->update();
-        return redirect()
-            ->action($this->actionIndex)
-            ->with('status', "Planilha encaminhada para homlogação.");
     }
 
     public function createPesquisarColaborador()
@@ -254,53 +230,87 @@ class PlanilhaController extends Controller
         ]);
     }
 
-
-
     private function salvar($request)
     {
+        $colaborador = Colaborador::findOrFail($request->colaborador_id);
+        $periodo     = PlanilhaPeriodo::findOrFail($request->planilha_periodo_id);
+        $tipo        = PlanilhaTipo::findOrFail($request->planilha_tipo_id);
+        $statu       = PlanilhaStatus::findOrFail(4);
 
-        $planilha = new Planilha();
-        $colaborador    = Colaborador::findOrFail($request->colaborador_id);
-        $periodo        = Periodo::findOrFail($request->periodo_id);
-        $tipoPlanilha   = TipoPlanilha::findOrFail($request->tipo_planilha_id);
+        $this->planilha->colaborador()->associate($colaborador);
+        $this->planilha->periodo()->associate($periodo);
+        $this->planilha->tipo()->associate($tipo);
+        $this->planilha->status()->associate($statu);
 
-        $planilha->colaborador()->associate($colaborador);
-        $planilha->periodo()->associate($periodo);
-        $planilha->tipoPlanilha()->associate($tipoPlanilha);
-        $planilha->ctps      = $request->ctps;
-        $planilha->matricula = $request->matricula;
-        $planilha->ano       = $request->ano;
-        $planilha->save();
+        $this->planilha->ctps      = $request->ctps;
+        $this->planilha->matricula = $request->matricula;
+        $this->planilha->ano       = $request->ano;
+        $this->planilha->save();
     }
-
 
     private function validarDuplicidade($request)
     {
         $planilha = Planilha::where('colaborador_id', $request->colaborador_id)
             ->where('ano', $request->ano)
-            ->where('periodo_id', $request->periodo_id)
-            ->where('tipo_planilha_id', $request->tipo_planilha_id)
+            ->where('planilha_periodo_id', $request->planilha_periodo_id)
+            ->where('planilha_tipo_id', $request->planilha_tipo_id)
             ->count();
         return $planilha;
     }
+}
 
-    private function validarFormulario(Request $request)
+
+
+
+
+
+
+
+
+    /*
+    public function createAdministrativo(Request $request)
+    {
+        $titulo         = "Cadastrar " . $this->titulo;
+        $periodos       = Periodo::all();
+        $tipos  = PlanilhaTipo::all();
+        $colaborador    = User::with('colaborador')->find($request->user()->id);
+
+        return view(
+            'planilha.administrativo.create',
+            [
+                'titulo' => $titulo,
+                'periodos' => $periodos,
+                'tipos' => $tipos,
+                'colaborador' => $colaborador->colaborador,
+            ]
+        );
+    }
+
+
+
+    */
+
+/*
+
+
+private function validarFormulario(Request $request)
     {
         $request->validate(
             [
                 'ctps' => 'required|max:20',
                 'matricula' => 'required|max:20',
                 'ano' => 'required|max:4',
-                'periodo_id' => 'exists:periodos,id',
-                'tipo_planilha_id' => 'exists:tipo_planilhas,id',
+                'planilha_periodo_id' => 'exists:planilha_periodos,id',
+                'planilha_tipo_id' => 'exists:planilha_tipos,id',
             ],
             [
                 'ctps.required' => 'Campo obrigatório.',
                 'matricula.unique' => 'Campo obrigatório.',
                 'ano.required' => 'Campo obrigatório.',
-                'periodo_id.exists' => 'O Periodo informado não existe.',
-                'tipo_planilha_id.exists' => 'O Tipo de planilha informado não existe.',
+                'planilha_periodo_id.exists' => 'O Periodo informado não existe.',
+                'planilha_tipo_id.exists' => 'O Tipo de planilha informado não existe.',
             ],
         );
     }
-}
+
+*/

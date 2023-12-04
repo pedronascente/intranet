@@ -5,7 +5,7 @@ namespace App\Models\Planilha;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Periodo extends Model
+class PlanilhaTipo extends Model
 {
     use HasFactory;
 

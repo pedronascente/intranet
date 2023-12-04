@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTipoPlanilhas extends Migration
+class CreatePlanilhaPeriodosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateTipoPlanilhas extends Migration
      */
     public function up()
     {
-        Schema::create('tipo_planilhas', function (Blueprint $table) {
+        Schema::create('planilha_periodos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nome')->unique();
-            $table->string('formulario')->unique();
             $table->timestamps();
             $table->engine = 'InnoDB';
         });
@@ -29,6 +28,6 @@ class CreateTipoPlanilhas extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tipo_planilhas');
+        Schema::dropIfExists('planilha_periodos');
     }
 }

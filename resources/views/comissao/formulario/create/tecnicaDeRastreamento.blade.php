@@ -1,4 +1,4 @@
-<form action="{{ route('tecnica.de.rastreamento.store') }}" method="POST" name="formulario-create">
+<form action="{{ route('tecnica-de-rastreamento.store') }}" method="POST" name="formulario-create">
     <input type="hidden" name="planilha_id" value="{{ $planilha->id }}">
     @csrf
     <div class="card-body">
@@ -81,22 +81,17 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label>Observação:</label>
-                    <input type="text" name="observacao" maxlength="200"
-                        class="form-control @error('observacao') is-invalid  @enderror" placeholder="Observação"
-                        value="{{ old('observacao') }}">
-                    @error('observacao')
-                        <span class=" invalid-feedback">{{ $message }}</span>
-                    @enderror
+                    <textarea name="observacao" class="form-control" rows="3" maxlength="300"></textarea>
                 </div>
             </div>
         </div>
     </div>
     <div class="card-footer">
-        <button type="submit" class="btn bg-gradient-primary">
+        <button type="submit" class="btn bg-gradient-primary btn-sm">
             <i class="fas fa-save" aria-hidden="true"></i>
             Salvar
         </button>
-        <a href="{{ route('planilha.index') }}" title="Voltar" class="btn btn-danger">
+        <a href="{{ route('planilha.index') }}" title="Voltar" class="btn btn-danger btn-sm">
             <i class="fa fa-reply"></i> Voltar
         </a>
     </div>

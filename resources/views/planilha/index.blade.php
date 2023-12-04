@@ -35,7 +35,7 @@
                                 <td>{{ $item->colaborador->nome }}</td>
                                 <td>{{ $item->colaborador->empresa->nome }}</td>
                                 <td>{{ $item->status }}</td>
-                                <td>{{ $item->tipoPlanilha->nome }}</td>
+                                <td>{{ $item->tipo->nome }}</td>
                                 <td class="text-center">
                                     <a href="{{ route('planilha.edit', $item->id, 'edit') }}" class="btn btn-primary"
                                         title="Editar Planilha">

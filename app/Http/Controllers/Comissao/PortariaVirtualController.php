@@ -65,15 +65,14 @@ class PortariaVirtualController extends Controller
         $ptv->save();
 
         return redirect()
-            ->route('portaria.virtual.edit', $id)
+            ->route('portaria-virtual.edit', $id)
             ->with('status', 'Registro atualizado com sucesso.');
     }
 
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
-        $ptv  = PortariaVirtual::findOrFail($request->id);
+        $ptv  = PortariaVirtual::findOrFail($id);
         $ptv->delete();
-
         return redirect(route('comissao.index', $ptv->planilha_id))
             ->with('status', "Registro excluido com sucesso!");
     }

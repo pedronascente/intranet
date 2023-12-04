@@ -75,7 +75,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('planilha.administrativo.conferir') }}" class="nav-link">
+                            <a href="{{ route('planilha.administrativo.index') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Conferir</p>
                             </a>

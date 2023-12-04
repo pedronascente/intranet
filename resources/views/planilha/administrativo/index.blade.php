@@ -28,10 +28,10 @@
                                 <td>{{ $item->colaborador->nome }}</td>
                                 <td>{{ $item->colaborador->empresa->nome }}</td>
                                 <td>R$ 9999</td>
-                                <td>{{ $item->tipoPlanilha->nome }}</td>
+                                <td>{{ $item->tipo->nome }}</td>
                                 <td>{{ $item->periodo->nome }}</td>
                                 <td>{{ $item->ano }}</td>
-                                <td>{{ $item->status }}</td>
+                                <td>{{ $item->status->status }}</td>
                                 <td class="text-center">
                                     <a href="{{ route('planilha.administrativo.edit', $item->id, 'edit') }}"
                                         class="btn btn-info btn-sm" title="Editar Planilha">

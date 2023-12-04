@@ -65,19 +65,19 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Tipo Planilha:</label>
-                            <select name="tipo_planilha_id"
-                                class="form-control @error('tipo_planilha_id') is-invalid  @enderror">
+                            <label>Planilha:</label>
+                            <select name="planilha_tipo_id"
+                                class="form-control @error('planilha_tipo_id') is-invalid  @enderror">
                                 <option value="">selecionar...</option>
-                                @if ($tipoPlanilhas)
-                                    @foreach ($tipoPlanilhas as $item)
+                                @if ($tipos)
+                                    @foreach ($tipos as $item)
                                         <option value="{{ $item->id }}"
-                                            {{ old('tipo_planilha_id') == $item->id ? 'selected' : '' }}>
+                                            {{ old('planilha_tipo_id') == $item->id ? 'selected' : '' }}>
                                             {{ $item->nome }}</option>
                                     @endforeach
                                 @endif
                             </select>
-                            @error('tipo_planilha_id')
+                            @error('planilha_tipo_id')
                                 <span class=" invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
@@ -96,17 +96,17 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>Periodo:</label>
-                            <select name="periodo_id" class="form-control @error('periodo') is-invalid  @enderror">
+                            <select name="planilha_periodo_id" class="form-control @error('planilha_periodo_id') is-invalid  @enderror">
                                 <option value="">selecionar...</option>
                                 @if ($periodos)
                                     @foreach ($periodos as $item)
                                         <option value="{{ $item->id }}"
-                                            {{ old('periodo_id') == $item->id ? 'selected' : '' }}>
+                                            {{ old('planilha_periodo_id') == $item->id ? 'selected' : '' }}>
                                             {{ $item->nome }}</option>
                                     @endforeach
                                 @endif
                             </select>
-                            @error('periodo_id')
+                            @error('planilha_periodo_id')
                                 <span class=" invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>

@@ -1,4 +1,4 @@
-<form action="{{ route('comercial.alarme.cerca.eletrica.cftv.store') }}" method="POST" name="formulario-create">
+<form action="{{ route('cace-cftv.store') }}" method="POST" name="formulario-create">
     <input type="hidden" name="planilha_id" value="{{ $planilha->id }}">
     @csrf
     <div class="card-body">
@@ -129,11 +129,11 @@
         </div>
     </div>
     <div class="card-footer">
-        <button type="submit" class="btn bg-gradient-primary">
+        <button type="submit" class="btn bg-gradient-primary btn-sm">
             <i class="fas fa-save" aria-hidden="true"></i>
             Salvar
         </button>
-        <a href="{{ route('planilha.index') }}" title="Voltar" class="btn btn-danger">
+        <a href="{{ route('planilha.index') }}" title="Voltar" class="btn btn-danger btn-sm">
             <i class="fa fa-reply"></i> Voltar
         </a>
     </div>

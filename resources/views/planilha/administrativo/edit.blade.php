@@ -13,6 +13,7 @@
 @section('content')
     <div class="card card-default">
         <form action="{{ route('planilha.update', $planilha->id) }}" method="POST">
+            <input type="hidden" name="formulario" value="administrativo">
             @csrf
             @method('PUT')
             <div class="card-body">
@@ -53,17 +54,17 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Tipo Planilha:</label>
-                            <select name="tipo_planilha_id"
-                                class="form-control @error('tipo_planilha_id') is-invalid  @enderror" disabled>
+                            <select name="planilha_tipo_id"
+                                class="form-control @error('planilha_tipo_id') is-invalid  @enderror" disabled>
                                 <option value="">selecionar...</option>
-                                @if ($tipoPlanilhas)
-                                    @foreach ($tipoPlanilhas as $item)
+                                @if ($tipos)
+                                    @foreach ($tipos as $item)
                                         <option value="{{ $item->id }}"
-                                            @if ($item->id == $planilha->tipoPlanilha->id) selected @endif>{{ $item->nome }}</option>
+                                            @if ($item->id == $planilha->tipo->id) selected @endif>{{ $item->nome }}</option>
                                     @endforeach
                                 @endif
                             </select>
-                            @error('tipo_planilha_id')
+                            @error('planilha_tipo_id')
                                 <span class=" invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
@@ -82,7 +83,8 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>Periodo:</label>
-                            <select name="periodo_id" class="form-control @error('periodo') is-invalid  @enderror">
+                            <select name="planilha_periodo_id"
+                                class="form-control @error('planilha_periodo_id') is-invalid  @enderror">
                                 <option value="">selecionar...</option>
                                 @if ($periodos)
                                     @foreach ($periodos as $item)
@@ -93,7 +95,7 @@
                                     @endforeach
                                 @endif
                             </select>
-                            @error('periodo_id')
+                            @error('planilha_periodo_id')
                                 <span class=" invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
@@ -103,32 +105,39 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>Status:</label>
-                            <select name="status" class="form-control ">
+                            <select name="planilha_status_id"
+                                class="form-control @error('planilha_status_id') is-invalid  @enderror">
                                 <option value="">selecionar...</option>
-                                <option value="Homologar">Homologar</option>
-                                <option value="Reprovar">Reprovar</option>
-                                <option value="Arquivar">Arquivar</option>
+                                @if ($status)
+                                    @foreach ($status as $item)
+                                        <option value="{{ $item->id }}"
+                                            {{ $planilha->status->id == $item->id ? 'selected' : '' }}>
+                                            {{ $item->status }}
+                                        </option>
+                                    @endforeach
+                                @endif
                             </select>
+                            @error('planilha_status_id')
+                                <span class=" invalid-feedback">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Motivo Repovação:</label>
-                            <textarea id="motivo_reprovacao" name="motivo_reprovacao" rows="4" cols="50" class="form-control">
-                            </textarea>
+                            <textarea id="motivo_reprovacao" name="motivo_reprovacao" rows="4" cols="50" class="form-control"></textarea>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="card-footer">
                 <input type="hidden" name="colaborador_id" class="form-control" value="{{ $planilha->colaborador->id }}">
-                <input type="hidden" name="tipo_planilha_id" class="form-control"
-                    value="{{ $planilha->tipoPlanilha->id }}">
+                <input type="hidden" name="planilha_tipo_id" class="form-control" value="{{ $planilha->tipo->id }}">
                 <button type="submit" class="btn bg-gradient-primary">
                     <i class="fas fa-save" aria-hidden="true"></i>
                     Salvar
                 </button>
-                <a href="{{ route('planilha.administrativo.conferir') }}" title="Voltar" class="btn btn-danger">
+                <a href="{{ route('planilha.administrativo.index') }}" title="Voltar" class="btn btn-danger">
                     <i class="fa fa-reply"></i> Voltar
                 </a>
             </div>

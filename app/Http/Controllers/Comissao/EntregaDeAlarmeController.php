@@ -57,12 +57,12 @@ class EntregaDeAlarmeController extends Controller
         $entregaDeAlarme = EntregaDeAlarme::findOrFail($id);
         $entregaDeAlarme->update($data_array);
         return redirect()
-            ->route('entrega.alarme.edit', $id)
+            ->route('entrega-de-alarme.edit', $id)
             ->with('status', 'Registro atualizado.');
     }
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
-        $entregaDeAlarme  = EntregaDeAlarme::findOrFail($request->id);
+        $entregaDeAlarme  = EntregaDeAlarme::findOrFail($id);
         $entregaDeAlarme->delete();
         return redirect(route('comissao.index', $entregaDeAlarme->planilha_id))
             ->with('status', "Registro excluido com sucesso!");
