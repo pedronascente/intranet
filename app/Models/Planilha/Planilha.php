@@ -2,6 +2,7 @@
 
 namespace App\Models\Planilha;
 
+use App\Models\Comissao\EntregaDeAlarme;
 use App\Models\planilha\PlanilhaStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,7 +27,7 @@ class Planilha extends Model
 
     public function tipo()
     {
-        return $this->belongsTo(PlanilhaTipo::class, 'planilha_tipo_id', 'id');
+        return $this->belongsTo(\App\Models\planilha\Tipo\PlanilhaTipo::class, 'planilha_tipo_id', 'id');
     }
 
     public function status()
@@ -52,6 +53,16 @@ class Planilha extends Model
     public function comercialRastreamentoVeicular()
     {
         return $this->hasMany(ComercialRastreamentoVeicular::class);
+    }
+
+    public function supervisaoComercialRastreamento()
+    {
+        return $this->hasMany(SupervisaoComercialRastreamento::class);
+    }
+
+    public function entrega_alarme()
+    {
+        return $this->hasMany(EntregaDeAlarme::class);
     }
 
     public function rules()

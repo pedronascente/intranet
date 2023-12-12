@@ -5,7 +5,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
-            <a href="{{ route('planilha.index') }}">Planilhas</a>
+            <a href="{{ route('planilha-colaborador.index') }}">Planilhas</a>
         </li>
     </ol>
 @endsection
@@ -119,7 +119,7 @@
                     <i class="fas fa-save" aria-hidden="true"></i>
                     Salvar
                 </button>
-                <a href="{{ route('planilha.index') }}" title="Voltar" class="btn btn-danger">
+                <a href="{{ route('planilha-colaborador.index') }}" title="Voltar" class="btn btn-danger">
                     <i class="fa fa-reply"></i> Voltar
                 </a>
             </div>

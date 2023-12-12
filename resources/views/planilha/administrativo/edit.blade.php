@@ -5,14 +5,14 @@
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
-            <a href="{{ route('planilha.index') }}">Planilhas</a>
+            <a href="{{ route('planilha-administrativo.index') }}">Planilha</a>
         </li>
     </ol>
 @endsection
 
 @section('content')
     <div class="card card-default">
-        <form action="{{ route('planilha.update', $planilha->id) }}" method="POST">
+        <form action="{{ route('planilha-administrativo.update', $planilha->id) }}" method="POST">
             <input type="hidden" name="formulario" value="administrativo">
             @csrf
             @method('PUT')
@@ -137,7 +137,7 @@
                     <i class="fas fa-save" aria-hidden="true"></i>
                     Salvar
                 </button>
-                <a href="{{ route('planilha.administrativo.index') }}" title="Voltar" class="btn btn-danger">
+                <a href="{{ route('planilha-administrativo.index') }}" title="Voltar" class="btn btn-danger">
                     <i class="fa fa-reply"></i> Voltar
                 </a>
             </div>

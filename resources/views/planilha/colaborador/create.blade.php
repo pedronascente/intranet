@@ -5,36 +5,24 @@
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
-            <a href="{{ route('planilha.index') }}">Planilhas</a>
+            <a href="{{ route('planilha-colaborador.index') }}">Planilhas</a>
         </li>
     </ol>
 @endsection
 
 @section('content')
     <div class="card card-default">
-        <form action="{{ route('planilha.store') }}" method="POST">
+        <form action="{{ route('planilha-colaborador.store') }}" method="POST">
             @csrf
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-12">
                         <div class="form-group">
                             <label>Colaborador:</label>
                             <input type="text" class="form-control"
                                 value="{{ $colaborador->nome }} {{ $colaborador->sobrenome }}" disabled>
                             <input type="hidden" name="colaborador_id" class="form-control "
                                 value="{{ $colaborador->id }}">
-                        </div>
-                    </div>
-                    <div class="col-md-1 text-center">
-                        <label>Ou</label>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>Pesquisar Colaborador:</label>
-                            <a href="{{ route('planilha.pesquisar.colaborador') }}" title="Pesquisar"
-                                class="btn btn-danger form-control">
-                                <i class="fa fa-search"></i> Pesquisar
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -96,7 +84,8 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>Periodo:</label>
-                            <select name="planilha_periodo_id" class="form-control @error('planilha_periodo_id') is-invalid  @enderror">
+                            <select name="planilha_periodo_id"
+                                class="form-control @error('planilha_periodo_id') is-invalid  @enderror">
                                 <option value="">selecionar...</option>
                                 @if ($periodos)
                                     @foreach ($periodos as $item)
@@ -118,7 +107,10 @@
                     <i class="fas fa-save" aria-hidden="true"></i>
                     Salvar
                 </button>
-                <a href="{{ route('planilha.index') }}" title="Voltar" class="btn btn-danger  btn-sm">
+                <a href="{{ route('planilha-colaborador.filtro') }}" title="Pesquisar" class="btn btn-warning btn-sm">
+                    <i class="fa fa-search"></i> Pesquisar Colaborador
+                </a>
+                <a href="{{ route('planilha-colaborador.index') }}" title="Voltar" class="btn btn-danger  btn-sm">
                     <i class="fa fa-reply"></i> Voltar
                 </a>
             </div>
