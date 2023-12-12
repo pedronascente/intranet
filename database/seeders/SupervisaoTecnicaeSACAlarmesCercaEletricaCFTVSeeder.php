@@ -5,7 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-class ComercialRastreamentoVeicularSeeder extends Seeder
+
+class SupervisaoTecnicaeSACAlarmesCercaEletricaCFTVSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,16 +16,16 @@ class ComercialRastreamentoVeicularSeeder extends Seeder
     public function run()
     {
         for ($i = 1; $i <= 200; $i++) {
-            DB::table('comercial_rastreamento_veiculares')->insert([
-                "planilha_id"       => 2,
+            DB::table('supervisao_tecnica_e_sac_alarmes_cerca_eletrica_cftvs')->insert([
+                "planilha_id"       => 8,
                 "cliente"           => Str::random(10),
-                "data"              => "2023-12-12",
-                "id_contrato"       => '0014' . $i,
-                "placa"             => "IMW-4444",
-                "taxa_instalacao"   => 79,
+                "data"              => "2023-11-12",
+                "conta_pedido"      => "23434",
+                "equipe_servico"    => Str::random(10),
+                "ins_vendas"        => $i,
                 "mensal"            => $i,
                 "comissao"          => $i,
-                "desconto_comissao" => 0
+                "desconto_comissao" => 0,
             ]);
         }
     }
