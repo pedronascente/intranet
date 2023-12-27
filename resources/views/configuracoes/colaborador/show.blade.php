@@ -4,7 +4,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Colaboradores </h1>
+                    <h1 class="m-0">Colaborador </h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -54,24 +54,14 @@
                             {{ $colaborador->user->perfil->nome }}
                         </td>
                     </tr>
-                @else
-                    <tr>
-                        <td colspan="3">
-                            <b>Usuário </b><br>
-                            <a href="{{ route('create_associar', $colaborador->id) }}" class="btn btn-primary"
-                                title="Associar Usuário">
-                                Associar Usuário
-                            </a>
-                        </td>
-                    </tr>
                 @endif
             </table>
         </div>
         <div class="card-footer">
-            <a href="{{ route('colaborador.edit', $colaborador->id) }}" title="Editar" class="btn btn-primary">
+            <a href="{{ route('colaborador.edit', $colaborador->id) }}" title="Editar" class="btn btn-sm btn-primary">
                 <i class="fas fa-edit"></i> Editar
             </a>
-            <a href="{{ route('colaborador.index') }}" title="Voltar" class="btn btn-danger">
+            <a href="{{ route('colaborador.index') }}" title="Voltar" class="btn btn-sm btn-danger">
                 <i class="fa fa-reply"></i> Voltar
             </a>
         </div>

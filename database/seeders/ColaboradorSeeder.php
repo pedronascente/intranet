@@ -14,7 +14,6 @@ class ColaboradorSeeder extends Seeder
             'base_id' => 1,
             'empresa_id' => 1,
             'cargo_id' => 1,
-            'user_id' => 1,
             'nome' => Str::random(10),
             'sobrenome' => ' de tal ' . Str::random(3),
             'email' => 'nascente3d@gmail.com',

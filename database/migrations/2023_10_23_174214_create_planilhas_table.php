@@ -18,7 +18,7 @@ class CreatePlanilhasTable extends Migration
             $table->string("matricula");
             $table->char("ano", 4);
             $table->string("ctps");
-
+            $table->string("motivo_reprovacao")->nullable(); // Adiciona nullable e remove valor padrão
             $table->integer("colaborador_id")->unsigned();
             $table->foreign('colaborador_id')->references('id')->on('colaboradores');
 

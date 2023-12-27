@@ -41,5 +41,5 @@
         </tfoot>
     </table>
 @else
-      <p class="text-center">Nenhum registro encontrado.</p>
+    <p class="text-center">Nenhum registro encontrado.</p>
 @endif

@@ -48,12 +48,11 @@ class LoginController extends Controller
         if (Auth::attempt($credenciais)) {
             $request->session()->regenerate();
             $usuarioLogado = $request->user();
-            $usuarioDB = User::with('cartao', 'perfil')->findOrFail($usuarioLogado->id);
-            if (!$usuarioDB->cartao) {
+            $usuarioDB = User::with('tokens', 'perfil')->findOrFail($usuarioLogado->id);
+            if (!$usuarioDB->tokens) {
                 $this->logout($request);
                 return redirect()->back()->with('error', 'Você não possui um 2FA válido.');
             }
-
             $this->criarSessaoPerfil($request, $usuarioDB->perfil->id);
             return redirect()
                 ->action($this->actionCreateToken);

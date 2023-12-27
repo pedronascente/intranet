@@ -9,13 +9,12 @@
             <p>
                 para continuar insira seu <b>Token</b>
             </p>
-            <p class="mt-3 mb-1">
-            </p>
+
             <form action="{{ route('token.store') }}" method="post">
                 @csrf
                 <div class="input-group mb-3">
-                    <input type="text" id="posicaoDoToken" class="form-control" value="Posição : " disabled="true">
-                    <input type="hidden" id="posicaoDoTokenHidden" name="posicaoDoToken" value="">
+                    <input type="text" class="form-control" value="Posição : {{ $posicaoDoToken }}" disabled="true">
+                    <input type="hidden" name="posicaoDoToken" value="{{ $posicaoDoToken }}">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-address-card"></span>

@@ -1,4 +1,5 @@
-<table class="table table-hover  table-bordered text-nowrap table-striped">
+@if ($listaComissao->count() > 0)
+    <table class="table table-hover table-bordered text-nowrap table-striped">
     <thead>
         <tr>
             <th>#</th>
@@ -40,14 +41,18 @@
             @endforeach
         @endif
     </tbody>
-    <tfoot>
-        <tr>
-            <td colspan="9">
-                @if ($listaComissao)
-                    {{ $listaComissao->links() }}
-                @endif
-            </td>
-        </tr>
-    </tfoot>
-</table>
-<x-ui.modalDelete />
+        <tfoot>
+            <tr>
+                <td colspan="8">
+                    <p> <b>{{ $listaComissao->total() }}</b> Registros Encontrados. Valor Total <b>R$
+                            {{ $valorTotalComissao }}</b></p>
+                    @if ($listaComissao)
+                        {{ $listaComissao->links() }}
+                    @endif
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+@else
+    <p class="text-center">Nenhum registro encontrado.</p>
+@endif

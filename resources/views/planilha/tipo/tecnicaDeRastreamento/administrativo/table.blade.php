@@ -1,5 +1,5 @@
 @if ($listaComissao->count() > 0)
-    <table class="table table-hover table-bordered  text-nowrap table-striped">
+    <table class="table table-hover table-bordered  text-nowrap table-striped"> 
         <thead>
             <tr>
                 <th>#</th>

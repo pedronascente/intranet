@@ -74,28 +74,21 @@
             <h3 class="card-title">Informações de Acesso</h3>
         </div>
         <div class="card-body">
-            @if ($cartao)
-                <strong> 2FA</strong>
-                <p class="text-muted">{{ $cartao->nome }}</p>
-                <hr>
-                <table class="table table-bordered ">
-                    <thead>
-                        <th>Token</th>
-                        <th class="text-center">Posição</th>
-                    </thead>
-                    <tbody>
-                        @if ($cartao->tokens)
-                            @foreach ($cartao->tokens as $item)
-                                <tr>
-                                    <td>{{ $item->token }}</td>
-                                    <td class="text-center">{{ $item->posicao }}</td>
-                                </tr>
-                            @endforeach
-                        @endif
-                    </tbody>
-                </table>
-                <hr>
-            @endif
+
+            <strong> 2FA</strong>
+            <p class="text-muted"></p>
+            <hr>
+            <table class="table table-bordered ">
+                <thead>
+                    <th>Token</th>
+                    <th class="text-center">Posição</th>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+            <hr>
+
         </div>
     </div>
     <div class="card card-primary">

@@ -124,7 +124,7 @@
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label>Motivo Repovação:</label>
+                            <label>Observação:</label>
                             <textarea id="motivo_reprovacao" name="motivo_reprovacao" rows="4" cols="50" class="form-control"></textarea>
                         </div>
                     </div>
@@ -133,11 +133,11 @@
             <div class="card-footer">
                 <input type="hidden" name="colaborador_id" class="form-control" value="{{ $planilha->colaborador->id }}">
                 <input type="hidden" name="planilha_tipo_id" class="form-control" value="{{ $planilha->tipo->id }}">
-                <button type="submit" class="btn bg-gradient-primary">
+                <button type="submit" class="btn btn-sm bg-gradient-primary">
                     <i class="fas fa-save" aria-hidden="true"></i>
                     Salvar
                 </button>
-                <a href="{{ route('planilha-administrativo.index') }}" title="Voltar" class="btn btn-danger">
+                <a href="{{ route('planilha-administrativo.index') }}" title="Voltar" class="btn  btn-sm btn-danger">
                     <i class="fa fa-reply"></i> Voltar
                 </a>
             </div>

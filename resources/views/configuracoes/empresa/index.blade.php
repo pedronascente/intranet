@@ -22,6 +22,7 @@
                     <tr>
                         <th>Empresa</th>
                         <th>Cnpj</th>
+                        <th>Logo</th>
                         <th width="5%" class="text-center">Permissões</th>
                     </tr>
                 </thead>
@@ -31,18 +32,21 @@
                             <tr>
                                 <td>{{ $item->nome }}</td>
                                 <td>{{ $item->cnpj }}</td>
+                                <td><img src="{{ asset('/img/empresa/' . $item->imglogo) }}" width="100"></td>
                                 <td class="text-center">
                                     @if ($permissoes)
                                         @foreach ($permissoes as $permissao)
                                             @if ($permissao->nome == 'Editar')
                                                 <a href="{{ route('empresa.edit', $item->id) }}" title="Editar"
-                                                    class="btn btn-primary">
+                                                    class="btn  btn-sm btn-primary">
                                                     <i class="fas fa-edit"></i> Editar
                                                 </a>
                                             @endif
                                             @if ($permissao->nome == 'Excluir')
-                                                <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal"
-                                                    data-target="#deleteModal" data-id="{{ $item->id }}">
+                                                <a href="javascript:void(0)" class="btn btn-danger btn-sm"
+                                                    data-toggle="modal" data-target="#deleteModal"
+                                                    data-route="{{ route('empresa.destroy', $item->id) }}"
+                                                    title="Excluir Planilha">
                                                     <i class="fas fa-trash"></i> Excluir
                                                 </a>
                                             @endif
@@ -63,5 +67,5 @@
             </div>
         </div>
     </div>
-    <x-ui.modalDelete modulo="empresa" />
+    <x-ui.modalDelete />
 @endsection

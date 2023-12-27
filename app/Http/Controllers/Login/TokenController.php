@@ -3,50 +3,44 @@
 namespace App\Http\Controllers\Login;
 
 //use App\Models\Cartao;
+use App\Models\User;
+use App\Models\Token;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Help\FormatarDataController;
-use App\Models\Token;
 
 class TokenController extends Controller
 {
-    private $actionCreate;
 
-    public function __construct()
+    private $token;
+
+    public function __construct(Token $token)
     {
-        $this->actionCreate = 'App\Http\Controllers\Login\TokenController@create';
+        $this->token = $token;
     }
 
-    /**
-     * Mostra um formulario para criar um novo recurso.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create(Request $request)
     {
-        $qtd = Token::getCartaoDoUsuarioLogado($request);
-        $posicaoDoToken = rand(1, $qtd->qtdToken);
-        return view('login.passo_02', [
-            'mensagem' => FormatarDataController::formatarData(),
-            'posicaoDoToken' => $posicaoDoToken
-        ]);
+        $usuariro       = User::find($request->user()->id);
+        $posicaoDoToken = rand(1, $usuariro->qtdToken);
+        return view(
+            'login.passo_02',
+            [
+                'mensagem' => FormatarDataController::formatarData(),
+                'posicaoDoToken' => $posicaoDoToken
+            ]
+        );
     }
 
-    /**
-     *  Armazene um recurso recém-criado no armazenamento.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        if (Token::validarToken($request)) {
-            $request->session()->put('cartaoToken', true);
+        if ($this->token->validarToken($request)) {
+            $request->session()->put('token_validado', true);
             return redirect('/dashboard');
         } else {
-            $request->session()->forget('cartaoToken');
+            $request->session()->forget('token_validado');
             return redirect()
-                ->action($this->actionCreate)
+                ->route("token.create")
                 ->with('error', "Digite um token válido!");
         }
     }

@@ -20,7 +20,6 @@
                         <td>{{ $comissao->conta_pedido }}</td>
                         <td>R$ {{ $comissao->comissao }}</td>
                         <td>R$ {{ $comissao->desconto_comissao }}</td>
-
                     </tr>
                 @endforeach
             @endif

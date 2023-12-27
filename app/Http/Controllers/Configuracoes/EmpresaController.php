@@ -9,124 +9,218 @@ use App\Http\Controllers\Help\PermissaoHelp;
 
 class EmpresaController extends Controller
 {
-    private $modulo; //id do modulo
-    private $paginate;
-    private $actionIndex;
+    /**
+     * Id do módulo
+     *
+     * @var int
+     */
+    private $modulo;
 
-    public function __construct()
+    /**
+     * Instância da Empresa
+     *
+     * @var Empresa
+     */
+    private $empresa;
+
+    /**
+     * Cria uma nova instância do controlador.
+     *
+     * @param Empresa $empresa
+     */
+    public function __construct(Empresa $empresa)
     {
+        $this->empresa = $empresa;
         $this->modulo = 3;
-        $this->paginate = 10;
-        $this->actionIndex = 'App\Http\Controllers\Configuracoes\EmpresaController@index';
     }
 
+    /**
+     * Exibe a lista de empresas.
+     *
+     * @return \Illuminate\View\View
+     */
     public function index()
     {
         return view('configuracoes.empresa.index', [
-            'collection' => Empresa::orderBy('id', 'desc')->paginate($this->paginate),
+            'collection' => $this->empresa->orderBy('id', 'desc')->paginate(10),
             'permissoes' => PermissaoHelp::getPermissoes($this->modulo)
         ]);
     }
 
+    /**
+     * Exibe o formulário de criação de uma nova empresa.
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function create()
     {
-        if (PermissaoHelp::verificaPermissao(['permissao' => 'Criar', 'modulo' => $this->modulo])) {
+        if (PermissaoHelp::verificaPermissao([
+            'permissao' => 'Criar',
+            'modulo' => $this->modulo
+        ])) {
             return view('configuracoes.empresa.create');
         } else {
-            return redirect()
-                ->action($this->actionIndex);
+            return redirect()->route('empresa.index');
         }
     }
 
+    /**
+     * Armazena uma nova empresa no banco de dados.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
-        $this->validarFormulario($request, 'store');
+        $request->validate($this->empresa->rules('store'), $this->empresa->feedback());
         if ($this->verificarDuplicidade($request)) {
-            return redirect()
-                ->action($this->actionIndex)
-                ->with('warning', "já existe uma empresa com este nome, ou cnpj!");
+            return redirect()->route('empresa.index')->with('warning', 'Já existe uma empresa com este nome ou CNPJ!');
         }
-        $empresa = new Empresa();
-        $empresa->nome = $request->nome;
-        $empresa->cnpj = $request->cnpj;
-        $empresa->save();
-        return redirect()
-            ->action($this->actionIndex)
-            ->with('status', "Registrado com sucesso!");
+
+        $this->empresa->nome = $request->nome;
+        $this->empresa->cnpj = $request->cnpj;
+        if ($imglogo = $this->upload($request)) {
+            $this->empresa->imglogo  = $imglogo;
+        }
+
+        $this->empresa->save();
+
+        return redirect()->route('empresa.index')->with('status', 'Registrado com sucesso!');
     }
 
+    /**
+     * Exibe os detalhes de uma empresa específica.
+     *
+     * @param int $id
+     * @return \Illuminate\View\View
+     */
     public function show($id)
     {
         return view('configuracoes.empresa.show', ['empresa' => Empresa::find($id)]);
     }
 
+    /**
+     * Exibe o formulário de edição de uma empresa.
+     *
+     * @param int $id
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function edit($id)
     {
         if (PermissaoHelp::verificaPermissao(['permissao' => 'Editar', 'modulo' => $this->modulo])) {
             return view('configuracoes.empresa.edit', ['empresa' => Empresa::findOrFail($id)]);
         } else {
-            return redirect()
-                ->action($this->actionIndex);
+            return redirect()->route('empresa.index');
         }
     }
 
+    /**
+     * Atualiza uma empresa específica no banco de dados.
+     *
+     * @param Request $request
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(Request $request, $id)
     {
-        $this->validarFormulario($request, 'update');
-        $empresa = Empresa::findOrFail($id);
-        $empresa->nome = $request->nome;
-        $empresa->cnpj = $request->cnpj;
-        $empresa->update();
-        return redirect()
-            ->action($this->actionIndex)
-            ->with('status', "Registro Atualizado!");
+        // Validar os dados do request de acordo com as regras definidas na model
+        $request->validate($this->empresa->rules('update'), $this->empresa->feedback());
+
+        // Encontrar a empresa no banco de dados pelo ID
+        $empresa = $this->empresa->findOrFail($id);
+
+        // Preencher os atributos da empresa com os dados do request
+        $empresa->fill([
+            'nome' => $request->nome,
+            'cnpj' => $request->cnpj,
+        ]);
+
+        // Verificar se há uma nova imagem para upload
+        if ($request->hasFile('imglogo') && $request->file('imglogo')->isValid()) {
+            // Excluir a imagem antiga, se existir
+            $this->excluirImagem($empresa->imglogo);
+
+            // Fazer o upload da nova imagem
+            $empresa->imglogo = $this->upload($request);
+        }
+
+        // Salvar as alterações no banco de dados
+        $empresa->save();
+
+        // Redirecionar de volta à lista de empresas com uma mensagem de sucesso
+        return redirect()->route('empresa.index')->with('status', 'Registro Atualizado!');
     }
 
-    public function destroy(Request $request, $id)
+    /**
+     * Exclui uma empresa específica do banco de dados, incluindo a imagem associada.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy($id)
     {
-        $empresa = Empresa::with('colaboradores')->findOrFail($request->id);
+        $empresa = $this->empresa->with('colaboradores')->findOrFail($id);
+
         if ($empresa->colaboradores->count() >= 1) {
-            return redirect()
-                ->action($this->actionIndex)
-                ->with('warning', "Esta empresa tem colaborador associado, por tanto não pode ser excluida.");
+            return redirect()->route('empresa.index')->with('warning', 'Esta empresa tem colaborador associado e não pode ser excluída.');
         }
+
+        // Excluir a imagem associada se existir
+        $this->excluirImagem($empresa->imglogo);
+
         $empresa->delete();
-        return redirect()
-            ->action($this->actionIndex)
-            ->with('status', "Registro Excluido!");
+
+        return redirect()->route('empresa.index')->with('status', 'Registro Excluído!');
     }
 
-    private function validarFormulario(Request $request, $method)
+    /**
+     * Realiza o upload da imagem do logo.
+     *
+     * @param Request $request
+     * @return false|string
+     */
+    private function upload(Request $request)
     {
-        switch ($method) {
-            case 'update':
-                $nome = 'required|max:190|min:5';
-                $cnpj = 'required|max:20|min:5';
-                break;
-            case 'store':
-                $nome = 'required|max:190|min:5|unique:empresas,nome';
-                $cnpj = 'required|max:20|unique:empresas,cnpj';
-                break;
+        if ($request->hasFile('imglogo') && $request->file('imglogo')->isValid()) {
+            $requestImagem = $request->imglogo;
+            $extension     = $requestImagem->extension();
+            $imagemName    = md5($requestImagem->getClientOriginalName() . strtotime('now')) . '.' . $extension;
+            $requestImagem->move(public_path('img/empresa'), $imagemName);
+
+            return $imagemName;
         }
-        $request->validate(
-            [
-                'nome' => $nome,
-                'cnpj' => $cnpj,
-            ],
-            [
-                'nome.required' => 'Campo obrigatório.',
-                'cnpj.required' => 'Campo obrigatório.',
-                'nome.unique' => 'Esta empresa já está sendo utilizado.',
-                'cnpj.unique' => 'Esta cnpj já está sendo utilizado.',
-            ]
-        );
+
+        return false;
     }
 
+    /**
+     * Verifica a duplicidade de uma empresa com base no nome ou CNPJ.
+     *
+     * @param Request $request
+     * @return int
+     */
     private function verificarDuplicidade(Request $request)
     {
-        $duplicado = Empresa::where('nome', $request->nome)
+        return $this->empresa->where('nome', $request->nome)
             ->orWhere('cnpj', $request->cnpj)
             ->get()->count();
-        return $duplicado;
+    }
+
+    /**
+     * Exclui uma imagem específica do diretório de uploads.
+     *
+     * @param string|null $imagemNome
+     * @return void
+     */
+    private function excluirImagem($imagemNome)
+    {
+        if ($imagemNome) {
+            $caminhoImagem = public_path('img/empresa') . '/' . $imagemNome;
+
+            // Verificar se o arquivo existe antes de excluir
+            if (file_exists($caminhoImagem)) {
+                unlink($caminhoImagem);
+            }
+        }
     }
 }

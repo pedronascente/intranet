@@ -10,7 +10,7 @@
                 <th>Serviço</th>
                 <th>Comissão</th>
                 <th>Desconto</th>
-            </tr>
+            </tr> 
         </thead>
         <tbody>
             @if ($listaComissao)

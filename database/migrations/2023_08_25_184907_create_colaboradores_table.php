@@ -31,8 +31,6 @@ class CreateColaboradoresTable extends Migration
             $table->foreign('empresa_id')->references('id')->on('empresas');
             $table->integer('cargo_id')->unsigned();
             $table->foreign('cargo_id')->references('id')->on('cargos');
-            $table->integer('user_id')->unsigned()->unique();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->engine = 'InnoDB';
         });
     }

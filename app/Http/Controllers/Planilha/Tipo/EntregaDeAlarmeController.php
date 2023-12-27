@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Planilha\Tipo;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Planilha\Planilha;
-use App\Models\Planilha\Tipo\EntregaDeAlarme;
+use App\Models\Planilha\Tipo\EntregaDeAlarmes;
 use App\Models\Planilha\Tipo\PlanilhaTipo;
 
 class EntregaDeAlarmeController extends Controller
@@ -14,7 +14,7 @@ class EntregaDeAlarmeController extends Controller
     private $planilhaTipo;
     private $entregaDeAlarme;
 
-    public function __construct(EntregaDeAlarme  $entregaDeAlarme)
+    public function __construct(EntregaDeAlarmes  $entregaDeAlarme)
     {
         $this->titulo = "Entregas de Alarmes";
         $this->planilhaTipo = new PlanilhaTipo();

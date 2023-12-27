@@ -108,6 +108,10 @@
                     <i class="fas fa-save" aria-hidden="true"></i>
                     Salvar
                 </button>
+                <a href="{{ route('planilha-colaborador-tipo.index', $planilha->id) }}" class="btn btn-primary btn-sm"
+                    title="Cadastrar Comissão">
+                    <i class="fas fa-solid fa-plus"></i> Gerenciar Comissão
+                </a>
                 <a href="{{ route('planilha-colaborador.index') }}" title="Voltar" class="btn btn-danger btn-sm">
                     <i class="fa fa-reply"></i> Voltar
                 </a>

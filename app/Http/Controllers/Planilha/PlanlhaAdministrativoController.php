@@ -6,52 +6,70 @@ use Illuminate\Http\Request;
 use App\Models\Planilha\Planilha;
 use App\Http\Controllers\Controller;
 use App\Models\Planilha\PlanilhaPeriodo;
-use App\Models\Planilha\Tipo\PlanilhaTipo;
 use App\Models\planilha\PlanilhaStatus;
+use App\Models\Planilha\Tipo\PlanilhaTipo;
 
+/**
+ * Controlador para manipulação das operações administrativas relacionadas às planilhas de comissão.
+ */
 class PlanlhaAdministrativoController extends Controller
 {
-
     private $titulo;
-    private $paginate;
     private $planilha;
 
+    /**
+     * Construtor do controlador.
+     *
+     * @param Planilha $planilha
+     */
     public function __construct(Planilha $planilha)
     {
         $this->titulo   = "Planilha de comissão";
-        $this->paginate = 10;
         $this->planilha =  $planilha;
     }
 
+    /**
+     * Exibe a página inicial para conferência de planilhas de comissões.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
         return view('planilha.administrativo.index', [
-            'titulo'      => $this->titulo,
-            'collections' => $this->planilha->whereIn('planilha_status_id', [2])
+            'titulo'      => "Conferir Planilha de comissões",
+            'collections' => $this->planilha->whereIn('planilha_status_id', [3, 5])
                 ->orderBy('id', 'desc')
-                ->paginate($this->paginate)
+                ->paginate(10)
         ]);
     }
 
+    /**
+     * Exibe a página de edição de uma planilha.
+     *
+     * @param int $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function  edit($id)
     {
-        $titulo        = "Editar " . $this->titulo;
-        $planilha      = $this->planilha->with('colaborador', 'periodo', 'tipo')->findOrFail($id);
-        $periodos      = PlanilhaPeriodo::orderBy('nome', 'asc')->get();
-        $tipos         = PlanilhaTipo::orderBy('id', 'desc')->get();
-        $status         = PlanilhaStatus::orderBy('id', 'desc')->get();
         return view(
             'planilha.administrativo.edit',
             [
-                'titulo' => $titulo,
-                'planilha' => $planilha,
-                'periodos' => $periodos,
-                'tipos' => $tipos,
-                'status' => $status,
+                'titulo'   => "Editar " . $this->titulo,
+                'planilha' => $this->planilha->with('colaborador', 'periodo', 'tipo')->findOrFail($id),
+                'periodos' => PlanilhaPeriodo::orderBy('nome', 'asc')->get(),
+                'tipos'    => PlanilhaTipo::orderBy('id', 'desc')->get(),
+                'status'   => PlanilhaStatus::orderBy('id', 'asc')->get(),
             ]
         );
     }
 
+    /**
+     * Atualiza os dados de uma planilha.
+     *
+     * @param Request $request
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(Request $request, $id)
     {
         $request->validate($this->planilha->rules(), $this->planilha->feedback());
@@ -67,83 +85,127 @@ class PlanlhaAdministrativoController extends Controller
             ->route('planilha-colaborador.index')
             ->with('status', 'Registro atualizado com sucesso.');
     }
-}
 
-
-/*
-
-public function storeAdministrativo(Request $request)
+    /**
+     * Aplica filtros para pesquisa de planilhas.
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function filtro(Request $request)
     {
-        $this->validarFormulario($request);
-        if ($this->validarDuplicidade($request) >= 1) {
-            return redirect()
-                ->route('planilha.administrativo.index')
-                ->with('warning', "Está planilha já foi criada!");
+        $ano = $request->input('ano');
+        $termoPesquisa = $request->input('filtro');
+        if ($ano) {
+            $query = $this->planilha->with('colaborador', 'tipo', 'status')
+                ->whereIn('planilha_status_id', [3, 5])
+                ->where('ano', '=', $ano);
+        } else {
+            $query = $this->planilha->with('colaborador', 'tipo', 'status')
+                ->whereIn('planilha_status_id', [3, 5]);
         }
-        $this->salvar($request);
+
+        if ($termoPesquisa) {
+            $query->where(function ($q) use ($termoPesquisa) {
+                $q->whereHas('colaborador', function ($q) use ($termoPesquisa) {
+                    $q->where('nome', 'like', '%' . $termoPesquisa . '%')
+                        ->orWhere('sobrenome', 'like', '%' . $termoPesquisa . '%');
+                })
+                    ->orWhereHas('tipo', function ($q) use ($termoPesquisa) {
+                        $q->where('nome', 'like', '%' . $termoPesquisa . '%');
+                    })
+                    ->orWhereHas('periodo', function ($q) use ($termoPesquisa) {
+                        $q->where('nome', 'like', '%' . $termoPesquisa . '%');
+                    });
+            });
+        }
+        // Adicionando paginação com um número fixo de itens por página (por exemplo, 10 itens por página)
+        $colaboradores = $query->paginate(10);
+        return view('planilha.administrativo.index', [
+            'titulo' => $this->titulo,
+            'collections' => $colaboradores
+        ]);
+    }
+
+    /**
+     * Exibe a página para gerenciamento de planilhas no status "Arquivo".
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function arquivo()
+    {
+        return view('planilha.administrativo.arquivo', [
+            'titulo'      => "Arquivo",
+            'collections' => $this->planilha->whereIn('planilha_status_id', [2])
+                ->orderBy('id', 'desc')
+                ->paginate(10)
+        ]);
+    }
+
+
+    /**
+     * Arquiva uma planilha .
+     *
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function arquivar($id)
+    {
+        $planilha = $this->planilha->findOrFail($id);
+        $planilha->planilha_status_id = 2;
+        $planilha->update();
         return redirect()
             ->route('planilha-administrativo.index')
-            ->with('status', 'Registrado com sucesso.');
-    }
-    public function detalhePlanilha($id)
-    {
-        $comissao = $this->indexAdmnistrativo($id);
-        return view('planilha.administrativo.detalhes', $comissao);
+            ->with('status', "Planilha Arquivado com sucesso.");
     }
 
-    public function wdw($id)
+    /**
+     * Recupera uma planilha para homologação.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function recuperar($id)
     {
-        $titulo         = "Cadastrar  " . $this->titulo;
-        $periodos       = PlanilhaPeriodo::all();
-        $tipos  = PlanilhaTipo::all();
-        $colaborador    = User::with('colaborador')->find($id);
+        $planilha = $this->planilha->findOrFail($id);
+        $planilha->planilha_status_id = 5;
+        $planilha->update();
+        return redirect()
+            ->route('planilha-administrativo.index')
+            ->with('status', "Planilha Recuperada para Homologação.");
+    }
 
+    /**
+     * Exibe a página de edição para reprovar uma planilha.
+     *
+     * @param int $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function  editReprovar($id)
+    {
         return view(
-            'planilha.colaborador.create',
+            'planilha.administrativo.edit-reprovar',
             [
-                'titulo' => $titulo,
-                'periodos' => $periodos,
-                'tipos' => $tipos,
-                'colaborador' => $colaborador->colaborador,
+                'titulo'   => "Reprovar " . $this->titulo,
+                'planilha' => $this->planilha->findOrFail($id),
             ]
         );
     }
 
-    public function filtro()
+    /**
+     * Atualiza os dados de uma planilha após reprovação.
+     *
+     * @param Request $request
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateReprovar(Request $request, $id)
     {
-        $titulo = "Pesquisar Colaborador";
-        return view('planilha.supervisor.pesquisar', ['titulo' => $titulo,]);
+        $request->validate($this->planilha->rules_reprovar(), $this->planilha->rules_reprovar());
+        $planilha = $this->planilha->findOrFail($id);
+        $planilha->update($request->all());
+        return redirect()
+            ->route('planilha-administrativo.index')
+            ->with('status', 'Registro Reprovado com sucesso.');
     }
-
-    public function resultadoPesquisaColaborador(Request $request)
-    {
-        $titulo = "Pesquisar Colaborador";
-        $termoPesquisa = $request->input('filtro');
-
-        if ($termoPesquisa) {
-            // Realizar a consulta usando o filtro 'like'
-            $colaboradores = Colaborador::where('nome', 'like', '%' . $termoPesquisa . '%')
-                ->orWhere('sobrenome', 'like', '%' . $termoPesquisa . '%')
-                ->get();
-        } else {
-            // Se nenhum termo de pesquisa foi fornecido, retornar todos os colaboradores
-            $colaboradores = Colaborador::all();
-        }
-
-        // Retornar a view com os resultados da pesquisa
-        return view('planilha.supervisor.resultado', [
-            'colaboradores' => $colaboradores,
-            'titulo' => $titulo,
-        ]);
-    }
-    public function indexAdmnistrativo($id)
-    {
-        $planilha = Planilha::with('colaborador', 'periodo', 'tipo')->findOrFail($id);
-        $comissoes = $this->getComissoes($planilha->tipo->formulario, $id);
-        $data = [
-            'planilha' => $planilha,
-            'listaComissao' => $comissoes,
-        ];
-        return $data;
-    }
-*/
+}

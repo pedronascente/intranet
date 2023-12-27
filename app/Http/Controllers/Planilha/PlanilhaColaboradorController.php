@@ -25,13 +25,23 @@ class PlanilhaColaboradorController extends Controller
         $this->planilha =  $planilha;
     }
 
+    /*
+        * planilha_status :
+        - 1 aberto
+        - 2 arquivo
+        - 3 Homologação
+        - 4 reprovado
+        *
+    */
     public function index()
     {
+        $collection =  $this->planilha->whereIn('planilha_status_id', [1, 4])
+            ->orderBy('id', 'desc')
+            ->paginate($this->paginate);
+
         return view('planilha.colaborador.index', [
             'titulo'      => $this->titulo,
-            'collections' => $this->planilha->whereIn('planilha_status_id', [1, 3, 4])
-                ->orderBy('id', 'desc')
-                ->paginate($this->paginate)
+            'collections' => $collection
         ]);
     }
 
@@ -65,10 +75,11 @@ class PlanilhaColaboradorController extends Controller
                 ->route('planilha-colaborador.index')
                 ->with('warning', "Está planilha já foi criada!");
         }
+
         $colaborador = Colaborador::findOrFail($request->colaborador_id);
         $periodo     = PlanilhaPeriodo::findOrFail($request->planilha_periodo_id);
         $tipo        = PlanilhaTipo::findOrFail($request->planilha_tipo_id);
-        $statu       = PlanilhaStatus::findOrFail(4);
+        $statu       = PlanilhaStatus::findOrFail(1);
 
         $this->planilha->colaborador()->associate($colaborador);
         $this->planilha->periodo()->associate($periodo);
@@ -86,17 +97,13 @@ class PlanilhaColaboradorController extends Controller
 
     public function edit($id)
     {
-        $titulo   = "Editar " . $this->titulo;
-        $planilha = $this->planilha->with('colaborador', 'periodo', 'tipo')->findOrFail($id);
-        $periodos = PlanilhaPeriodo::orderBy('nome', 'asc')->get();
-        $tipos    = PlanilhaTipo::orderBy('id', 'desc')->get();
         return view(
             'planilha.colaborador.edit',
             [
-                'titulo'    => $titulo,
-                'periodos'  => $periodos,
-                'tipos'     => $tipos,
-                'planilha'  => $planilha,
+                'titulo'    => "Editar " . $this->titulo,
+                'periodos'  => PlanilhaPeriodo::orderBy('nome', 'asc')->get(),
+                'tipos'     => PlanilhaTipo::orderBy('id', 'desc')->get(),
+                'planilha'  => $this->planilha->with('colaborador', 'periodo', 'tipo')->findOrFail($id),
             ]
         );
     }
@@ -106,7 +113,6 @@ class PlanilhaColaboradorController extends Controller
         $request->validate($this->planilha->rules(), $this->planilha->feedback());
         $planilha = $this->planilha->findOrFail($id);
         $planilha->update($request->all());
-
         if (isset($request->formulario) && $request->formulario == 'administrativo') {
             return redirect()
                 ->route('planilha-administrativo.index')
@@ -129,7 +135,7 @@ class PlanilhaColaboradorController extends Controller
     public function homologar($id)
     {
         $planilha = $this->planilha->findOrFail($id);
-        $planilha->planilha_status_id = 2;
+        $planilha->planilha_status_id = 3;
         $planilha->update();
         return redirect()
             ->route('planilha-colaborador.index')

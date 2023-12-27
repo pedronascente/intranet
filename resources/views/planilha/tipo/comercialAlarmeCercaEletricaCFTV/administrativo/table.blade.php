@@ -2,7 +2,7 @@
     <table class="table table-hover table-bordered  text-nowrap table-striped">
         <thead>
             <tr>
-                <th width="5%">#</th>
+                <th>#</th>
                 <th>Data</th>
                 <th>Cliente</th>
                 <th>Serviço</th>

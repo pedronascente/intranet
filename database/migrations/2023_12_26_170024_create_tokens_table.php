@@ -18,8 +18,8 @@ class CreateTokensTable extends Migration
             $table->text('token');
             $table->integer('posicao');
             $table->timestamps();
-            $table->integer('cartao_id')->unsigned();
-            $table->foreign('cartao_id')->references('id')->on('cartoes')->onDelete('cascade');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->engine = 'InnoDB';
         });
     }

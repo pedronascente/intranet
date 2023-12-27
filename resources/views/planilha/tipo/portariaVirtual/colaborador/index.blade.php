@@ -25,6 +25,7 @@
         </div>
         <div class="card-body table-responsive p-0">
             @include('planilha.tipo.portariaVirtual.colaborador.table')
+            <x-ui.modalDelete />
         </div>
     </div>
 @endsection

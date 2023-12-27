@@ -15,7 +15,7 @@
         </div>
     </section>
     <div class="card">
-        <form action="{{ route('empresa.update', $empresa->id) }}" method="POST">
+        <form action="{{ route('empresa.update', $empresa->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="card-body">
@@ -44,6 +44,17 @@
                                 <span class=" invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="customFile">Logo:</label>
+                    <div class="custom-file">
+                        <input type="file" name="imglogo" class="custom-file-input" id="customFile"
+                            class=" @error('imglogo') is-invalid @enderror" value="{{ old('imglogo') }}">
+                        <label class="custom-file-label" for="customFile"></label>
+                        @error('imglogo')
+                            <span class=" invalid-feedback">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
             </div>

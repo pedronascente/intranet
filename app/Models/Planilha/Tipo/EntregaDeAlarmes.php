@@ -5,7 +5,7 @@ namespace App\Models\Planilha\Tipo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EntregaDeAlarme extends Model
+class EntregaDeAlarmes extends Model
 {
     use HasFactory;
 

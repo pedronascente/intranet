@@ -15,7 +15,8 @@
         </div>
     </section>
     <div class="card card-default">
-        <form action="{{ route('empresa.store') }}" method="POST" name="Formulario-Empresa-create">
+        <form action="{{ route('empresa.store') }}" method="POST" enctype="multipart/form-data"
+            name="Formulario-Empresa-create">
             @csrf
             <div class="card-body">
                 <div class="form-group">
@@ -35,6 +36,17 @@
                     @error('cnpj')
                         <span class=" invalid-feedback">{{ $message }}</span>
                     @enderror
+                </div>
+                <div class="form-group">
+                    <label for="customFile">Logo:</label>
+                    <div class="custom-file">
+                        <input type="file" name="imglogo" class="custom-file-input" id="customFile"
+                            class=" @error('imglogo') is-invalid @enderror" value="{{ old('imglogo') }}">
+                        <label class="custom-file-label" for="customFile"></label>
+                        @error('imglogo')
+                            <span class=" invalid-feedback">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
             </div>
             <div class="card-footer">

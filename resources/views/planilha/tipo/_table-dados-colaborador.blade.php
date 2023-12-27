@@ -1,12 +1,12 @@
-<table class="table table-hover table-bordered text-nowrap table-striped">
+<table class="table table-hover table-bordered text-nowrap ">
     <thead>
         <tr>
-            <th>NOME</th>
-            <th>EMPRESA</th>
-            <th>MATRICULA</th>
+            <th>Nome</th>
+            <th>Empresa</th>
+            <th>Matricula</th>
             <th>CTPS</th>
-            <th>PERIODO</th>
-            <th>ANO</th>
+            <th>Periodo</th>
+            <th>Ano</th>
         </tr>
     </thead>
     <tbody>

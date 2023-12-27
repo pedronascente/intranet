@@ -22,10 +22,23 @@
             @csrf
             @method('PUT')
             <div class="card-body">
+
                 <div class="row">
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label>Status: </label>
+                            <label>Colaborador:</label>
+                            <input type="text" name="colaborador_id"
+                                class="form-control @error('colaborador_id') is-invalid @enderror"
+                                placeholder="colaborador id" value="{{ $user->colaborador_id }}">
+                            @error('colaborador_id')
+                                <span class=" invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Status:</label>
                             <select name="status" class="custom-select">
                                 <option value="on" @if ($user->status == 'on') selected @endif
                                     @if (old('status') == 'on') selected @endif>
@@ -99,11 +112,11 @@
                 <x-ui.panel-dica-boa-senha />
             </div>
             <div class="card-footer">
-                <button type="submit" class="btn bg-gradient-primary">
+                <button type="submit" class="btn  btn-sm bg-gradient-primary">
                     <i class="fas fa-save" aria-hidden="true"></i>
                     Salvar
                 </button>
-                <a href="{{ route('user.index') }}" title="Voltar" class="btn btn-danger">
+                <a href="{{ route('user.index') }}" title="Voltar" class="btn btn-sm btn-danger">
                     <i class="fa fa-reply"></i> Voltar
                 </a>
             </div>

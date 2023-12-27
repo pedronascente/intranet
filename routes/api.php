@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Settings\CartaoController;
+use App\Http\Controllers\Login\UserController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -21,12 +21,4 @@ use App\Http\Controllers\Settings\CartaoController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-});
-
-
-Route::get('/', function () {
-
-    return   [
-        'chegamos até aqui' => 'SIM'
-    ];
 });

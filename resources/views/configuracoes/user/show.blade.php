@@ -20,7 +20,6 @@
     <div class="card card-primary card-outline">
         <div class="card-body box-profile">
             <div class="text-center">
-
                 @if ($user->colaborador)
                     <img src="{{ asset('img/colaborador/' . $user->colaborador->foto . '') }}"
                         alt="{{ $user->colaborador->nome }}" width="100" class="rounded-circle">
@@ -38,27 +37,15 @@
                     <b>Status</b> <a class="float-right"> {{ $status }}</a>
                 </li>
                 <li class="list-group-item">
-                    <b>2FA</b>
-                    @if ($user->cartao)
-                        <a class="float-right btn btn-warning" href="{{ route('cartao.show', $user->cartao->id) }}"
-                            title="visualizar" class="btn btn-warning">
-                            <i class="fas  fa-eye"></i> {{ $user->cartao->nome }}
-                        </a>
-                    @else
-                        <a class="float-right btn btn-success" href="{{ route('cartao.registar', $user->id) }}"
-                            class="btn btn-info" title="2FA">
-                            Registrar 2FA
-                        </a>
-                    @endif
+                    <b>QTD. de Tokens:</b> <a class="float-right"> {{ $user->qtdToken }}</a>
                 </li>
             </ul>
         </div>
-
         <div class="card-footer">
-            <a href="{{ route('user.edit', $user->id) }}" title="Editar" class="btn btn-primary">
+            <a href="{{ route('user.edit', $user->id) }}" title="Editar" class="btn btn-sm btn-primary">
                 <i class="fas fa-edit"></i> Editar
             </a>
-            <a href="{{ route('user.index') }}" title="Voltar" class="btn btn-danger">
+            <a href="{{ route('user.index') }}" title="Voltar" class="btn btn-sm btn-danger">
                 <i class="fa fa-reply" aria-hidden="true"></i> Voltar
             </a>
         </div>

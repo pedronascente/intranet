@@ -42,22 +42,24 @@
                                 <td class="text-center">
                                     @if ($permissoes)
                                         @foreach ($permissoes as $permissao)
+                                            @if ($permissao->nome == 'Excluir')
+                                                <a href="javascript:void(0)" class="btn btn-danger btn-sm"
+                                                    data-toggle="modal" data-target="#deleteModal"
+                                                    data-route="{{ route('colaborador.destroy', $item->id) }}"
+                                                    title="Excluir Colaborador">
+                                                    <i class="fas fa-trash"></i> Excluir
+                                                </a>
+                                            @endif
                                             @if ($permissao->nome == 'Visualizar')
                                                 <a href="{{ route('colaborador.show', $item->id) }}" title="Visualizar"
-                                                    class="btn btn-warning">
-                                                    <i class="fas  fa-eye"></i> Visualizar
+                                                    class="btn btn-sm btn-primary ">
+                                                    <i class="fas fa-folder"></i> Visualizar
                                                 </a>
                                             @endif
                                             @if ($permissao->nome == 'Editar')
                                                 <a href="{{ route('colaborador.edit', $item->id) }}" title="Editar"
-                                                    class="btn btn-primary">
+                                                    class="btn btn-sm btn-info">
                                                     <i class="fas fa-edit"></i> Editar
-                                                </a>
-                                            @endif
-                                            @if ($permissao->nome == 'Excluir')
-                                                <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal"
-                                                    data-target="#deleteModal" data-id="{{ $item->id }}">
-                                                    <i class="fas fa-trash"></i> Excluir
                                                 </a>
                                             @endif
                                         @endforeach
@@ -79,5 +81,5 @@
             @endif
         </div>
     </div>
-    <x-ui.modalDelete modulo="colaborador" />
+    <x-ui.modalDelete />
 @endsection

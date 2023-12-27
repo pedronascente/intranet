@@ -23,6 +23,9 @@ class TecnicaDeRastreamentoController extends Controller
 
     public function store(Request $request)
     {
+
+        dd($request->all());
+
         $request->validate($this->tecnicaDeRastreamento->rules(), $this->tecnicaDeRastreamento->feedback());
         $objetoModel = $this->tecnicaDeRastreamento;
         $objetoModel->planilha()->associate(Planilha::findOrFail($request->planilha_id));

@@ -8,7 +8,7 @@
                 <th>Conta / Pedido</th>
                 <th>Equipe / Serviço</th>
                 <th>Inst. / Venda</th>
-                <th>Mensal</th>
+                <th>Mensal</th> 
                 <th>Comissão</th>
                 <th>Desconto </th>
             </tr>

@@ -14,8 +14,10 @@ class PlanilhaStatusSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('planilha_status')->insert(['status' => 'Aberto']);
         DB::table('planilha_status')->insert(['status' => 'Arquivado']);
         DB::table('planilha_status')->insert(['status' => 'Homologação']);
         DB::table('planilha_status')->insert(['status' => 'Reprovado']);
+        DB::table('planilha_status')->insert(['status' => 'Recuperado']);
     }
 }

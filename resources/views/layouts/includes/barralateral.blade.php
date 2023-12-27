@@ -81,7 +81,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/planilha/arquivo" class="nav-link">
+                            <a href="{{ route('planilha-administrativo.arquivo') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Arquivo</p>
                             </a>

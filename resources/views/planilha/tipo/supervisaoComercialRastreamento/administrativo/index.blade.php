@@ -27,12 +27,7 @@
             @include('planilha.tipo.supervisaoComercialRastreamento.administrativo.table')
         </div>
         <div class="card-footer">
-            <a href="" class="btn btn-success btn-sm" title="Editar comissão">
-                <i class="nav-icon fas fa-print"></i> Imprimir
-            </a>
-            <a href="{{ route('planilha-administrativo.index') }}" class="btn btn-danger btn-sm" title="Voltar">
-                <i class="fa fa-reply"></i> Voltar
-            </a>
+            <x-btns-visualizar-planilha-administrativo :planilha="$planilha" />
         </div>
     </div>
 @endsection

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Configuracoes;
 
 use App\Models\Base;
-use App\Models\User;
 use App\Models\Cargo;
 use App\Models\Empresa;
 use App\Models\Colaborador;
@@ -14,246 +13,230 @@ use App\Http\Controllers\Help\PermissaoHelp;
 
 class ColaboradorController extends Controller
 {
-    private $modulo; //id do modulo
-    private $paginate;
-    private $actionIndex;
-    private $actionShow;
+    private $modulo; // Id do módulo
     private $actionUserProfile;
     private $bases;
     private $empresas;
     private $cargos;
+    private $colaborador;
 
-    public function __construct()
+    /**
+     * Construtor da classe.
+     *
+     * @param  Colaborador  $colaborador
+     * @return void
+     */
+    public function __construct(Colaborador $colaborador)
     {
-        $this->modulo = 2;
-        $this->paginate = 10;
-        $this->actionIndex = 'App\Http\Controllers\Configuracoes\ColaboradorController@index';
-        $this->actionShow = 'App\Http\Controllers\Configuracoes\ColaboradorController@show';
+        $this->colaborador       = $colaborador;
+        $this->modulo            = 2;
         $this->actionUserProfile = 'App\Http\Controllers\Login\UserController@profile';
-        $this->bases = Base::orderBy('id', 'desc')->get();
-        $this->empresas = Empresa::orderBy('id', 'desc')->get();
-        $this->cargos = Cargo::orderBy('id', 'desc')->get();
+        $this->bases             = Base::orderBy('id', 'desc')->get();
+        $this->empresas          = Empresa::orderBy('id', 'desc')->get();
+        $this->cargos            = Cargo::orderBy('id', 'desc')->get();
     }
 
+    /**
+     * Exibe a lista de colaboradores.
+     *
+     * @return \Illuminate\View\View
+     */
     public function index()
     {
         return view('configuracoes.colaborador.index', [
-            'collection' => Colaborador::orderBy('id', 'desc')->paginate($this->paginate),
+            'collection' => $this->colaborador->orderBy('id', 'desc')->paginate(10),
             'permissoes' => PermissaoHelp::getPermissoes($this->modulo),
         ]);
     }
 
+    /**
+     * Exibe o formulário de criação de colaborador.
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function create()
     {
         if (PermissaoHelp::verificaPermissao(['permissao' => 'Criar', 'modulo' => $this->modulo])) {
             return view('configuracoes.colaborador.create', [
-                'bases' => $this->bases,
+                'bases'    => $this->bases,
                 'empresas' => $this->empresas,
-                'cargos' => $this->cargos,
-                'usuarios' => $this->getUsuariosSemColaborador(),
+                'cargos'   => $this->cargos,
             ]);
         } else {
-            return redirect()
-                ->action($this->actionIndex);
+            return redirect()->route('colaborador.index');
         }
     }
 
+    /**
+     * Armazena um novo colaborador no banco de dados.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
-        $colaborador = new Colaborador();
-        $usuario = User::find($request->user_id);
-        if (!$usuario) {
-            return redirect()
-                ->back()
-                ->withInput($request->all())
-                ->with('warning', "Informe um ID de usuário válido");
-        }
-        if ($this->validarFormulario($request)) {
-            return redirect()
-                ->back()
-                ->withInput($request->all());
+        $request->validate($this->colaborador->rules($request), $this->colaborador->feedback());
+        $colaborador = $this->colaborador;
+        $this->preencheColaborador($request, $colaborador);
+        if ($foto = $this->upload($request)) {
+            $colaborador->foto = $foto;
         } else {
-            $colaborador->nome = $request->nome;
-            $colaborador->sobrenome = $request->sobrenome;
-            $colaborador->email = $request->email;
-            $colaborador->rg = $request->rg;
-            $colaborador->cpf = $request->cpf;
-            $colaborador->cnpj = $request->cnpj;
-            $colaborador->base()->associate(Base::findOrFail($request->base_id));
-            $colaborador->empresa()->associate(Empresa::findOrFail($request->empresa_id));
-            $colaborador->cargo()->associate(Cargo::findOrFail($request->cargo_id));
-            $colaborador->user()->associate($usuario);
-            $colaborador->ramal = $request->ramal;
-            if ($foto = $this->upload($request)) {
-                $colaborador->foto = $foto;
-            } else {
-                $colaborador->foto = 'dummy-round.png';
-            }
-            $colaborador->save();
-            return redirect()
-                ->action($this->actionIndex)
-                ->with('status', "Registrado com sucesso!");
+            $colaborador->foto = 'dummy-round.png';
         }
+        $colaborador->save();
+        return redirect()->route('colaborador.index')->with('status', "Registrado com sucesso!");
     }
 
+    /**
+     * Exibe os detalhes de um colaborador específico.
+     *
+     * @param  int  $id
+     * @return \Illuminate\View\View
+     */
     public function show($id)
     {
-        return view('configuracoes.colaborador.show', ['colaborador' => Colaborador::findOrFail($id)]);
+        return view('configuracoes.colaborador.show', [
+            'colaborador' => $this->colaborador->findOrFail($id)
+        ]);
     }
 
+    /**
+     * Exibe o formulário de edição de um colaborador.
+     *
+     * @param  int  $id
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function edit($id)
     {
         if (PermissaoHelp::verificaPermissao(['permissao' => 'Editar', 'modulo' => $this->modulo])) {
             return view('configuracoes.colaborador.edit', [
-                'colaborador' => Colaborador::findOrFail($id),
-                'empresas' => $this->empresas,
-                'cargos' => $this->cargos,
-                'bases' => $this->bases,
-                'usuarios' => $this->getUsuariosSemColaborador(),
+                'colaborador' => $this->colaborador->findOrFail($id),
+                'empresas'    => $this->empresas,
+                'cargos'      => $this->cargos,
+                'bases'       => $this->bases,
             ]);
         } else {
-            return redirect()
-                ->action($this->actionIndex);
+            return redirect()->route('colaborador.index');
         }
     }
 
+    /**
+     * Exibe o formulário de edição de perfil de um colaborador.
+     *
+     * @param  int  $id
+     * @return \Illuminate\View\View
+     */
     public function editProfile($id)
     {
         return view('profile.edit', [
             'colaborador' => Colaborador::findOrFail($id),
-            'empresas' => $this->empresas,
-            'cargos' => $this->cargos,
-            'bases' => $this->bases,
-            'usuarios' => $this->getUsuariosSemColaborador(),
+            'empresas'    => $this->empresas,
+            'cargos'      => $this->cargos,
+            'bases'       => $this->bases,
         ]);
     }
 
+    /**
+     * Atualiza as informações de um colaborador no banco de dados.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(Request $request, $id)
     {
-        $colaborador = Colaborador::with('cargo', 'empresa')->findOrFail($id);
-        if ($this->validarFormulario($request, $colaborador)) {
-            return redirect()
-                ->back()
-                ->withInput($request->all());
+        $colaborador = $this->colaborador->with('cargo', 'empresa')->findOrFail($id);
+        $request->validate($this->colaborador->rules($request, $colaborador), $this->colaborador->feedback());
+        $this->preencheColaborador($request, $colaborador);
+        if ($request->hasFile('foto')) {
+            $destino = 'img/colaborador/' . $colaborador->foto;
+            if ($colaborador->foto != 'dummy-round.png' && File::exists($destino)) {
+                File::delete($destino);
+            }
+            $colaborador->foto = $this->upload($request);
+        }
+        $colaborador->update();
+        if ($request->editProfile >= 1) {
+            return redirect()->action($this->actionUserProfile)->with('status', "Registro Atualizado!");
         } else {
-            $colaborador->nome = $request->nome;
-            $colaborador->sobrenome = $request->sobrenome;
-            $colaborador->email = $request->email;
-            $colaborador->rg = $request->rg;
-            $colaborador->cpf = $request->cpf;
-            $colaborador->cnpj = $request->cnpj;
-            $colaborador->base()->associate(Base::findOrFail($request->base_id));
-            $colaborador->empresa()->associate(Empresa::findOrFail($request->empresa_id));
-            $colaborador->cargo()->associate(Cargo::findOrFail($request->cargo_id));
-            $colaborador->ramal = $request->ramal;
-            if ($request->hasFile('foto')) {
-                $destino = 'img/colaborador/' . $colaborador->foto;
-                if ($colaborador->foto != 'dummy-round.png' && File::exists($destino)) {
-                    File::delete($destino);
-                }
-                $colaborador->foto = $this->upload($request);
-            }
-
-            $colaborador->update();
-            if ($request->editProfile >= 1) {
-                return redirect()
-                    ->action($this->actionUserProfile)
-                    ->with('status', "Registro Atualizado!");
-            } else {
-                return redirect()
-                    ->action($this->actionShow, $colaborador->id)
-                    ->with('status', "Registro Atualizado!");
-            }
+            return redirect()->route('colaborador.show', $colaborador->id)->with('status', "Registro Atualizado!");
         }
     }
 
-    public function destroy(Request $request, $id)
+    /**
+     * Remove um colaborador do banco de dados.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+
+    public function destroy($id)
     {
-        $colaborador = Colaborador::with('user')->findOrFail($request->id);
-        if ($colaborador->user) {
-            return redirect()
-                ->action($this->actionShow, $request->id)
-                ->with('warning', "Este colaborador tem Usuário associado, por tanto não pode ser excluida.");
+        $colaborador = $this->colaborador->with('user')->find($id);
+
+        if (!$colaborador) {
+            return redirect()->route('colaborador.index')->with('error', "Colaborador não encontrado.");
         }
+
+        if ($colaborador->user) {
+            return redirect()->route('colaborador.show', $id)
+                ->with('warning', "Este colaborador tem Usuário associado, portanto não pode ser excluído.");
+        }
+
+        $this->deleteColaborador($colaborador);
+
+        return redirect()->route('colaborador.index')->with('status', "Registro Excluído!");
+    }
+
+    private function deleteColaborador($colaborador)
+    {
         $destino = 'img/colaborador/' . $colaborador->foto;
+
         if ($colaborador->foto != 'dummy-round.png' && File::exists($destino)) {
             File::delete($destino);
         }
+
         $colaborador->delete();
-        return redirect()
-            ->action($this->actionIndex)
-            ->with('status', "Registro Excluido!");
     }
 
+
+
+    /**
+     * Preenche um objeto Colaborador com os dados do Request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Colaborador  $colaborador
+     * @return void
+     */
+    private function preencheColaborador(Request $request, $colaborador)
+    {
+        $colaborador->base()->associate(Base::findOrFail($request->base_id));
+        $colaborador->empresa()->associate(Empresa::findOrFail($request->empresa_id));
+        $colaborador->cargo()->associate(Cargo::findOrFail($request->cargo_id));
+        $colaborador->nome      = $request->nome;
+        $colaborador->sobrenome = $request->sobrenome;
+        $colaborador->email     = $request->email;
+        $colaborador->rg        = $request->rg;
+        $colaborador->cpf       = $request->cpf;
+        $colaborador->cnpj      = $request->cnpj;
+        $colaborador->ramal     = $request->ramal;
+    }
+
+    /**
+     * Realiza o upload de uma foto.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return string|false
+     */
     private function upload(Request $request)
     {
         if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
-            $requestImagem = $request->foto;
-            $extension = $requestImagem->extension();
-            $imagemName = md5($requestImagem->getClientOriginalName() . strtotime('now')) . '.' . $extension;
+            $requestImagem  = $request->foto;
+            $extension      = $requestImagem->extension();
+            $imagemName     = md5($requestImagem->getClientOriginalName() . strtotime('now')) . '.' . $extension;
             $requestImagem->move(public_path('img/colaborador'), $imagemName);
             return $imagemName;
         }
         return false;
-    }
-
-    private function validarFormulario(Request $request, $colaborador = null)
-    {
-        if ($colaborador) {
-            if ($request->email != $colaborador->email) {
-                $validar['email'] = 'required|email|unique:colaboradores,email';
-            }
-            if ($request->cpf != $colaborador->cpf) {
-                $validar['cpf'] = 'required|max:14|unique:colaboradores,cpf';
-            }
-        } else {
-
-            $validar['email'] = 'required|email|unique:colaboradores,email';
-            $validar['cpf'] = 'required|max:14|unique:colaboradores,cpf';
-        }
-
-        if (isset($request->user_id)) {
-            $validar['user_id'] = 'required|max:4|unique:colaboradores,user_id';
-        }
-
-        $validar['nome'] = 'required|max:191|min:5';
-        $validar['ramal'] = 'required|max:4|min:2';
-        $validar['sobrenome'] = 'required|max:191|min:5';
-        $validar['rg'] = 'required|max:15';
-        $validar['base_id'] = 'required';
-        $validar['empresa_id'] = 'required';
-        $validar['cargo_id'] = 'required';
-        $validar['foto'] = [
-            'nullable',
-            'image',
-            'max:1024'
-        ];
-        $request->validate(
-            $validar,
-            [
-                'user_id.required' => 'Digite um id de usuário válido',
-                'ramal.required' => 'Campo obrigatório.',
-                'nome.required' => 'Campo obrigatório.',
-                'sobrenome.required' => 'Campo obrigatório.',
-                'email.required' => 'Digite um e-mail válido',
-                'rg.required' => 'Campo obrigatório.',
-                'cpf.required' => 'Campo obrigatório.',
-                'base_id.required' => 'Campo obrigatório.',
-                'empresa_id.required' => 'Campo obrigatório.',
-                'cargo_id.required' => 'Campo obrigatório.',
-            ]
-        );
-    }
-
-    private function getUsuariosSemColaborador()
-    {
-        $userList = null;
-        $users = User::with('colaborador')->get();
-        foreach ($users as $user) {
-            if (!$user->colaborador) {
-                $userList[] = $user;
-            }
-        }
-        return $userList;
     }
 }

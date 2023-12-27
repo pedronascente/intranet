@@ -18,8 +18,13 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->char('status', 5);
             $table->string('password');
+            $table->integer('qtdToken');
             $table->rememberToken();
             $table->timestamps();
+            $table->integer('colaborador_id')->unsigned()->unique();
+            $table->foreign('colaborador_id')->references('id')->on('colaboradores')->onDelete('cascade');
+            $table->integer('perfil_id')->unsigned();
+            $table->foreign('perfil_id')->references('id')->on('perfis');
             $table->engine = 'InnoDB';
         });
     }
