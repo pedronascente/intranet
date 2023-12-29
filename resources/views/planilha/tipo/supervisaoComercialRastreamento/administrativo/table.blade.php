@@ -24,13 +24,19 @@
                         <td>{{ $comissao->desconto_comissao }}</td>
                     </tr>
                 @endforeach
+                <tr>
+                    <td colspan="7">
+                        <div class="row">
+                            <div class="col-md-6"><b>{{ $listaComissao->total() }}</b> Registros Encontrados.</div>
+                            <div class="col-md-6 text-right">Valor Total <b>R$ {{ $valorTotalComissao }}</b></div>
+                        </div>
+                    </td>
+                </tr>
             @endif
         </tbody>
         <tfoot>
             <tr>
                 <td colspan="7">
-                    <p> <b>{{ $listaComissao->total() }}</b> Registros Encontrados. Valor Total <b>R$
-                            {{ $valorTotalComissao }}</b></p>
                     @if ($listaComissao)
                         {{ $listaComissao->links() }}
                     @endif

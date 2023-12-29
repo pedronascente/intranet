@@ -35,5 +35,10 @@
             font-size: 80%;
             color: #dc3545;
         }
+
+        ul.pagination {
+            justify-content: center !important;
+            text-aling: center
+        }
     </style>
 </head>

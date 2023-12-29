@@ -98,20 +98,25 @@ Route::resource('/cace-cftv', ComercialAlarmeCercaEletricaCFTVController::class)
 Route::resource('/comercial-rastreamento-veicular', ComercialRastreamentoVeicularController::class);
 Route::resource('/tecnica-ace-cftv', TecnicaAlarmesCercaEletricaCFTVController::class);
 Route::resource('/planilha-colaborador', PlanilhaColaboradorController::class);
+Route::resource('/planilha-administrativo', PlanlhaAdministrativoController::class);
+
 Route::prefix('/planilha-colaborador')->group(function () {
     Route::get('/{id}/homologar', [PlanilhaColaboradorController::class, 'homologar'])->name('planilha-colaborador.homologar');
+    Route::get('/{id}/comissao', [PlanilhaTipoColaboradorController::class, 'index'])->name('planilha-colaborador-tipo.index');
     Route::get('/filtro', [PlanilhaColaboradorController::class, 'filtro'])->name('planilha-colaborador.filtro');
 });
-Route::get('planilha-colaborador/{id}/comissao', [PlanilhaTipoColaboradorController::class, 'index'])->name('planilha-colaborador-tipo.index');
-Route::resource('/planilha-administrativo', PlanlhaAdministrativoController::class);
-Route::get('planilha-administrativo/{id}/comissao', [PlanilhaTipoAdministrativoController::class, 'index'])->name('planilha-administrativo-tipo.index');
+
+Route::prefix('/planilha-administrativo')->group(function () {
+    Route::get('{id}/comissao', [PlanilhaTipoAdministrativoController::class, 'index'])->name('planilha-administrativo-tipo.index');
+    Route::get('/{filtro}', [PlanlhaAdministrativoController::class, 'show'])->name('planilha-administrativo.filtro');
+    Route::get('/{id}/reprovar', [PlanlhaAdministrativoController::class, 'editReprovar'])->name('planilha-administrativo.reprovar');
+    Route::get('/{id}/arquivar', [PlanlhaAdministrativoController::class, 'arquivar'])->name('planilha-administrativo.arquivar');
+});
+
+Route::prefix('/planilha-administrativo-arquivo')->group(function () {
+    Route::get('/', [PlanlhaAdministrativoController::class, 'arquivo'])->name('planilha-administrativo.arquivo');
+    Route::put('/{id}', [PlanlhaAdministrativoController::class, 'updateReprovar'])->name('planilha-administrativo.reprovarUpdate');
+    Route::get('/{id}/recuperar', [PlanlhaAdministrativoController::class, 'recuperar'])->name('planilha-administrativo.recuperar');
+});
+
 Route::get('imprimir-pdf/{id}', [PlanilhaTipoAdministrativoController::class, 'imprimirPDF'])->name('planilha-administrativo.imprimirPDF');
-Route::get('/planilha-administrativo-busca', [PlanlhaAdministrativoController::class, 'filtro'])->name('planilha-administrativo.filtro');
-Route::get('/planilha-administrativo-arquivo', [PlanlhaAdministrativoController::class, 'arquivo'])->name('planilha-administrativo.arquivo');
-Route::get('/planilha-administrativo-arquivo/{id}/arquivar', [PlanlhaAdministrativoController::class, 'arquivar'])->name('planilha-administrativo.arquivar');
-Route::get('/planilha-administrativo-arquivo/{id}/recuperar', [PlanlhaAdministrativoController::class, 'recuperar'])->name('planilha-administrativo.recuperar');
-Route::get('/planilha-administrativo-arquivo/{id}/reprovar', [PlanlhaAdministrativoController::class, 'editReprovar'])->name('planilha-administrativo.reprovar');
-Route::put('/planilha-administrativo-arquivo/{id}', [PlanlhaAdministrativoController::class, 'updateReprovar'])->name('planilha-administrativo.reprovarUpdate');
-
-
-//Route::get('/token/posicao', [UserController::class, 'posicaoToken'])->name('user.posicao');

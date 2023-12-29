@@ -1,4 +1,4 @@
-<form action="{{ route('planilha-administrativo.filtro') }}" method="get">
+<form action="{{ $route }}" method="get">
     <div class="row">
         <div class="col-md-1">
             <div class="form-group">

@@ -48,6 +48,11 @@
                                         class="btn btn-info btn-sm" title="Editar Planilha">
                                         <i class="nav-icon fas fa-edit"></i> Editar
                                     </a>
+
+                                    <a href="{{ route('planilha-colaborador-tipo.index', $item->id) }}"
+                                        class="btn btn-primary btn-sm" title="Gerenciar Comissão">
+                                        <i class="fas fa-solid fa-plus"></i> Comissão
+                                    </a>
                                     <a href="{{ route('planilha-colaborador.homologar', $item->id, 'edit') }}"
                                         class="btn btn-success btn-sm" title="Lançar Planilha">
                                         Homologar

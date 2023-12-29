@@ -24,7 +24,7 @@ class PlanlhaAdministrativoController extends Controller
      */
     public function __construct(Planilha $planilha)
     {
-        $this->titulo   = "Planilha de comissão";
+        $this->titulo   = "Planilha";
         $this->planilha =  $planilha;
     }
 
@@ -35,8 +35,8 @@ class PlanlhaAdministrativoController extends Controller
      */
     public function index()
     {
-        return view('planilha.administrativo.index', [
-            'titulo'      => "Conferir Planilha de comissões",
+        return view('planilha.administrativo.conferir', [
+            'titulo'      => $this->titulo . " | Conferir ",
             'collections' => $this->planilha->whereIn('planilha_status_id', [3, 5])
                 ->orderBy('id', 'desc')
                 ->paginate(10)
@@ -92,39 +92,45 @@ class PlanlhaAdministrativoController extends Controller
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function filtro(Request $request)
+    public function show(Request $request, $origem)
     {
-        $ano = $request->input('ano');
+        $ano           = $request->input('ano');
         $termoPesquisa = $request->input('filtro');
+
+        if ($origem == 'conferir') {
+            $whereIn = [3, 5];
+        } else if ($origem == 'arquivado') {
+            $whereIn = [2];
+        }
+
         if ($ano) {
             $query = $this->planilha->with('colaborador', 'tipo', 'status')
-                ->whereIn('planilha_status_id', [3, 5])
+                ->whereIn('planilha_status_id', $whereIn)
                 ->where('ano', '=', $ano);
         } else {
             $query = $this->planilha->with('colaborador', 'tipo', 'status')
-                ->whereIn('planilha_status_id', [3, 5]);
+                ->whereIn('planilha_status_id', $whereIn);
         }
 
         if ($termoPesquisa) {
-            $query->where(function ($q) use ($termoPesquisa) {
-                $q->whereHas('colaborador', function ($q) use ($termoPesquisa) {
-                    $q->where('nome', 'like', '%' . $termoPesquisa . '%')
-                        ->orWhere('sobrenome', 'like', '%' . $termoPesquisa . '%');
-                })
-                    ->orWhereHas('tipo', function ($q) use ($termoPesquisa) {
-                        $q->where('nome', 'like', '%' . $termoPesquisa . '%');
-                    })
-                    ->orWhereHas('periodo', function ($q) use ($termoPesquisa) {
-                        $q->where('nome', 'like', '%' . $termoPesquisa . '%');
-                    });
-            });
+            $this->getTermoPesquisa($query, $termoPesquisa);
         }
+
         // Adicionando paginação com um número fixo de itens por página (por exemplo, 10 itens por página)
         $colaboradores = $query->paginate(10);
-        return view('planilha.administrativo.index', [
-            'titulo' => $this->titulo,
-            'collections' => $colaboradores
-        ]);
+
+        if ($origem == 'conferir') {
+            return view('planilha.administrativo.conferir', [
+                'titulo'      => $this->titulo . " | Conferir ",
+                'collections' => $colaboradores
+            ]);
+        } else if ($origem == 'arquivado') {
+
+            return view('planilha.administrativo.arquivado', [
+                'titulo'      => $this->titulo . " | Arquivado ",
+                'collections' => $colaboradores
+            ]);
+        }
     }
 
     /**
@@ -134,8 +140,8 @@ class PlanlhaAdministrativoController extends Controller
      */
     public function arquivo()
     {
-        return view('planilha.administrativo.arquivo', [
-            'titulo'      => "Arquivo",
+        return view('planilha.administrativo.arquivado', [
+            'titulo'      => $this->titulo . " | Arquivado ",
             'collections' => $this->planilha->whereIn('planilha_status_id', [2])
                 ->orderBy('id', 'desc')
                 ->paginate(10)
@@ -207,5 +213,22 @@ class PlanlhaAdministrativoController extends Controller
         return redirect()
             ->route('planilha-administrativo.index')
             ->with('status', 'Registro Reprovado com sucesso.');
+    }
+
+    private function getTermoPesquisa($query, $termoPesquisa)
+    {
+        
+        $query->where(function ($q) use ($termoPesquisa) {
+            $q->whereHas('colaborador', function ($q) use ($termoPesquisa) {
+                $q->where('nome', 'like', '%' . $termoPesquisa . '%')
+                    ->orWhere('sobrenome', 'like', '%' . $termoPesquisa . '%');
+            })
+                ->orWhereHas('tipo', function ($q) use ($termoPesquisa) {
+                    $q->where('nome', 'like', '%' . $termoPesquisa . '%');
+                })
+                ->orWhereHas('periodo', function ($q) use ($termoPesquisa) {
+                    $q->where('nome', 'like', '%' . $termoPesquisa . '%');
+                });
+        });
     }
 }

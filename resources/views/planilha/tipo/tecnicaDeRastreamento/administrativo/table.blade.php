@@ -1,5 +1,5 @@
 @if ($listaComissao->count() > 0)
-    <table class="table table-hover table-bordered  text-nowrap table-striped"> 
+    <table class="table table-hover table-bordered  text-nowrap table-striped">
         <thead>
             <tr>
                 <th>#</th>
@@ -28,13 +28,19 @@
                         </td>
                     </tr>
                 @endforeach
+                <tr>
+                    <td colspan="8">
+                        <div class="row">
+                            <div class="col-md-6"><b>{{ $listaComissao->total() }}</b> Registros Encontrados.</div>
+                            <div class="col-md-6 text-right">Valor Total <b>R$ {{ $valorTotalComissao }}</b></div>
+                        </div>
+                    </td>
+                </tr>
             @endif
         </tbody>
         <tfoot>
             <tr>
                 <td colspan="8">
-                    <p> <b>{{ $listaComissao->total() }}</b> Registros Encontrados. Valor Total <b>R$
-                            {{ $valorTotalComissao }}</b></p>
                     @if ($listaComissao)
                         {{ $listaComissao->links() }}
                     @endif
@@ -43,5 +49,5 @@
         </tfoot>
     </table>
 @else
-   <p class="text-center">Nenhum registro encontrado.</p>
+    <p class="text-center">Nenhum registro encontrado.</p>
 @endif

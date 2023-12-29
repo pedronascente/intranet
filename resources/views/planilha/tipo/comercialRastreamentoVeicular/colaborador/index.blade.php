@@ -11,7 +11,7 @@
 @endsection
 
 @section('content')
-    <div class="card">
+    <div class="card  p-3">
         <div class="card-header">
             <h4>Cadastrar comissão</h4>
         </div>
@@ -19,7 +19,7 @@
             @include('planilha.tipo.comercialRastreamentoVeicular.create')
         </div>
     </div>
-    <div class="card">
+    <div class="card  p-3">
         <div class="card-header">
             <h4>Lista de Comissões</h4>
         </div>

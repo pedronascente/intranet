@@ -25,14 +25,6 @@ class PlanilhaColaboradorController extends Controller
         $this->planilha =  $planilha;
     }
 
-    /*
-        * planilha_status :
-        - 1 aberto
-        - 2 arquivo
-        - 3 Homologação
-        - 4 reprovado
-        *
-    */
     public function index()
     {
         $collection =  $this->planilha->whereIn('planilha_status_id', [1, 4])

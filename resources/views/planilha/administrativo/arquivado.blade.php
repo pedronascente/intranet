@@ -3,9 +3,9 @@
 @section('titulo', $titulo)
 
 @section('content')
-    <div class="card">
+    <div class="card p-3">
         <div class="card-header table-responsive">
-            @include('planilha.administrativo.form-fitro')
+            <x-filtro-form-planilha :route="route('planilha-administrativo.filtro', 'arquivado')" />
         </div>
         <div class="card-body table-responsive p-0">
             <table class="table table-hover table-bordered  text-nowrap table-striped">

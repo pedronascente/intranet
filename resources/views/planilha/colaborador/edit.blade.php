@@ -11,7 +11,7 @@
 @endsection
 
 @section('content')
-    <div class="card card-default">
+    <div class="card p-3">
         <form action="{{ route('planilha-colaborador.update', $planilha->id) }}" method="POST">
             @csrf
             @method('PUT')
@@ -108,10 +108,7 @@
                     <i class="fas fa-save" aria-hidden="true"></i>
                     Salvar
                 </button>
-                <a href="{{ route('planilha-colaborador-tipo.index', $planilha->id) }}" class="btn btn-primary btn-sm"
-                    title="Cadastrar Comissão">
-                    <i class="fas fa-solid fa-plus"></i> Gerenciar Comissão
-                </a>
+                
                 <a href="{{ route('planilha-colaborador.index') }}" title="Voltar" class="btn btn-danger btn-sm">
                     <i class="fa fa-reply"></i> Voltar
                 </a>
