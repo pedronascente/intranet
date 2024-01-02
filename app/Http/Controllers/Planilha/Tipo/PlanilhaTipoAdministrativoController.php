@@ -48,10 +48,12 @@ class PlanilhaTipoAdministrativoController extends Controller
       'planilha.tipo.' . $tipo_planilha . '.administrativo.imprimir',
       [
         'planilha'           => $planilha,
-        'valorTotalComissao' => $valorTotalComissao,
+        'valorTotalComissao' => number_format($valorTotalComissao, 2, ',', '.'),
         'volpatoImage'       => $volpatoImage,
       ]
     );
+
+
     $pdf = PDF::loadHtml($view)->setOptions(['isHtml5ParserEnabled' => true, 'isPhpEnabled' => true]);
 
     // Usar o método stream para abrir no navegador
@@ -72,10 +74,13 @@ class PlanilhaTipoAdministrativoController extends Controller
 
   private function getViewWithComissaoData($tipo_planilha, $planilha, $comissaoModel)
   {
+
+    $valorTotalComissao = $comissaoModel::where('planilha_id', $planilha->id)->sum('comissao');
+
     return view('planilha.tipo.' . $tipo_planilha . '.administrativo.index', [
       'planilha'           => $planilha,
       'listaComissao'      => $comissaoModel::where('planilha_id', $planilha->id)->orderBy('id', 'desc')->paginate(10),
-      'valorTotalComissao' => $comissaoModel::where('planilha_id', $planilha->id)->sum('comissao'),
+      'valorTotalComissao' => number_format($valorTotalComissao, 2, ',', '.'),
     ]);
   }
 
@@ -213,7 +218,7 @@ class PlanilhaTipoAdministrativoController extends Controller
     return view('planilha.tipo.' . $tipo_planilha . '.administrativo.index', [
       'planilha'           => $planilha,
       'listaComissao'      => $listaComissao,
-      'valorTotalComissao' => $listaComissao->sum('comissao'),
+      'valorTotalComissao' => number_format($listaComissao->sum('comissao'), 2, ',', '.'),
     ]);
   }
-}//fim da classe.
+} //fim da classe.

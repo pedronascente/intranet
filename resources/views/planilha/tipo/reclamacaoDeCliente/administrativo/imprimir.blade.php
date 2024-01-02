@@ -19,8 +19,8 @@
                     <td>{{ \Carbon\Carbon::parse($comissao->data)->format('d/m/Y') }}</td>
                     <td>{{ $comissao->cliente }}</td>
                     <td>{{ $comissao->conta_pedido }}</td>
-                    <td>R$ {{ $comissao->comissao }}</td>
-                    <td>R$ {{ $comissao->desconto_comissao }}</td>
+                    <td>{{ 'R$ ' . number_format($comissao->comissao, 2, ',', '.') }}</td>
+                    <td>{{ 'R$ ' . number_format($comissao->desconto_comissao, 2, ',', '.') }}</td>
                 </tr>
             @endforeach
         @endif

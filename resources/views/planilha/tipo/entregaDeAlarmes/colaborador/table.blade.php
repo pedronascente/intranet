@@ -19,8 +19,9 @@
                         <td>{{ \Carbon\Carbon::parse($comissao->data)->format('d/m/Y') }}</td>
                         <td>{{ $comissao->cliente }}</td>
                         <td>{{ $comissao->conta_pedido }}</td>
-                        <td>R$ {{ $comissao->comissao }}</td>
-                        <td>R$ {{ $comissao->desconto_comissao }}</td>
+                        <td>{{ 'R$ ' . number_format($comissao->comissao, 2, ',', '.') }}</td>
+                        <td>{{ 'R$ ' . number_format($comissao->desconto_comissao, 2, ',', '.') }}</td>
+
                         <td>
                             <a href="{{ route('entrega-de-alarme.edit', $comissao->id) }}" class="btn btn-primary btn-sm"
                                 title="Editar comissão">
@@ -40,7 +41,7 @@
                 <td colspan="7">
                     <div class="row">
                         <div class="col-md-6"><b>{{ $listaComissao->total() }}</b> Registros Encontrados.</div>
-                        <div class="col-md-6 text-right">Valor Total <b>R$ {{ $valorTotalComissao }}</b></div>
+                         <div class="col-md-6 text-right"> Valor Total <b>R$ {{ $valorTotalComissao }}</b> </div>
                     </div>
                 </td>
             </tr>

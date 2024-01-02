@@ -25,10 +25,10 @@
                         <td>{{ $comissao->servico->nome }}</td>
                         <td>{{ $comissao->conta_pedido }}</td>
                         <td>{{ $comissao->meio->nome }}</td>
-                        <td>R$ {{ $comissao->ins_vendas }}</td>
-                        <td>R$ {{ $comissao->mensal }}</td>
-                        <td>R$ {{ $comissao->comissao }}</td>
-                        <td>R$ {{ $comissao->desconto_comissao }}</td>
+                        <td>{{ 'R$ ' . number_format($comissao->ins_vendas, 2, ',', '.') }}</td>
+                        <td>{{ 'R$ ' . number_format($comissao->mensal, 2, ',', '.') }}</td>
+                        <td>{{ 'R$ ' . number_format($comissao->comissao, 2, ',', '.') }}</td>
+                        <td>{{ 'R$ ' . number_format($comissao->desconto_comissao, 2, ',', '.') }}</td>
                         <td>
                             <a href="{{ route('cace-cftv.edit', $comissao->id) }}" class="btn btn-info btn-sm"
                                 title="Editar comissão">
@@ -46,7 +46,7 @@
                     <td colspan="11">
                         <div class="row">
                             <div class="col-md-6"><b>{{ $listaComissao->total() }}</b> Registros Encontrados.</div>
-                            <div class="col-md-6 text-right">Valor Total <b>R$ {{ $valorTotalComissao }}</b></div>
+                             <div class="col-md-6 text-right"> Valor Total <b>R$ {{ $valorTotalComissao }}</b> </div>
                         </div>
                     </td>
                 </tr>

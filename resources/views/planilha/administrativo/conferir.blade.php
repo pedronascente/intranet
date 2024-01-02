@@ -17,6 +17,7 @@
                         <th>Colaborador</th>
                         <th>Empresa</th>
                         <th>Planilha</th>
+                        <th>Comissão</th>
                         <th>Status</th>
                         <th width="5%" class="text-center">Permissões</th>
                     </tr>
@@ -24,6 +25,9 @@
                 <tbody>
                     @if ($collections)
                         @foreach ($collections as $item)
+                            @php
+                                $valorTotalComissao = app('App\Http\Controllers\Planilha\PlanlhaAdministrativoController')->getValorTotalComissao($item);
+                            @endphp
                             <tr class="{{ $item->status->status === 'Recuperado' ? 'bg-warning' : '' }}">
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->ano }}</td>
@@ -31,6 +35,8 @@
                                 <td>{{ $item->colaborador->nome }}</td>
                                 <td>{{ $item->colaborador->empresa->nome }}</td>
                                 <td>{{ $item->tipo->nome }}</td>
+                                <td>R$ {{ $valorTotalComissao }}</td>
+                                </td>
                                 <td>{{ $item->status->status }}</td>
                                 <td class="text-center">
                                     <a href="{{ route('planilha-administrativo.reprovar', $item->id) }}"

@@ -7,9 +7,9 @@
                 <th>Cliente</th>
                 <th>Conta / Pedido</th>
                 <th>Serviço</th>
+                <th>Consultor</th>
                 <th>Inst. / Venda</th>
                 <th>Mensal</th>
-                <th>Consultor</th>
                 <th>Comissão</th>
                 <th>Desconto </th>
                 <th width="5%" class="text-center">Permissões</th>
@@ -24,11 +24,11 @@
                         <td>{{ $comissao->cliente }}</td>
                         <td>{{ $comissao->conta_pedido }}</td>
                         <td>{{ $comissao->servico->nome }}</td>
-                        <td>{{ $comissao->ins_vendas }}</td>
-                        <td>{{ $comissao->mensal }}</td>
                         <td>{{ $comissao->consultor }}</td>
-                        <td>{{ $comissao->comissao }}</td>
-                        <td>{{ $comissao->desconto_comissao }}</td>
+                        <td>{{ 'R$ ' . number_format($comissao->ins_vendas, 2, ',', '.') }}</td>
+                        <td>{{ 'R$ ' . number_format($comissao->mensal, 2, ',', '.') }}</td>
+                        <td>{{ 'R$ ' . number_format($comissao->comissao, 2, ',', '.') }}</td>
+                        <td>{{ 'R$ ' . number_format($comissao->desconto_comissao, 2, ',', '.') }}</td>
                         <td>
                             <a href="{{ route('supervisao-cace-cftv.edit', $comissao->id) }}"
                                 class="btn btn-primary btn-sm" title="Editar comissão">
@@ -48,7 +48,7 @@
                 <td colspan="11">
                     <div class="row">
                         <div class="col-md-6"><b>{{ $listaComissao->total() }}</b> Registros Encontrados.</div>
-                        <div class="col-md-6 text-right">Valor Total <b>R$ {{ $valorTotalComissao }}</b></div>
+                        <div class="col-md-6 text-right"> Valor Total <b>R$ {{ $valorTotalComissao }}</b> </div>
                     </div>
                 </td>
             </tr>

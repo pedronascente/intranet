@@ -23,8 +23,8 @@
                     <td>{{ $comissao->conta_pedido }}</td>
                     <td>{{ $comissao->numero_os }}</td>
                     <td>{{ $comissao->servico->nome }}</td>
-                    <td>{{ $comissao->comissao }}</td>
-                    <td>{{ $comissao->desconto_comissao }}</td>
+                    <td>{{ 'R$ ' . number_format($comissao->comissao, 2, ',', '.') }}</td>
+                    <td>{{ 'R$ ' . number_format($comissao->desconto_comissao, 2, ',', '.') }}</td>
                 </tr>
             @endforeach
         @endif

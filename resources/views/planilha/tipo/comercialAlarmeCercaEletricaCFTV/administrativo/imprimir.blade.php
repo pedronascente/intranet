@@ -25,10 +25,10 @@
                     <td>{{ $comissao->servico->nome }}</td>
                     <td>{{ $comissao->conta_pedido }}</td>
                     <td>{{ $comissao->meio->nome }}</td>
-                    <td>R$ {{ $comissao->ins_vendas }}</td>
-                    <td>R$ {{ $comissao->mensal }}</td>
-                    <td>R$ {{ $comissao->comissao }}</td>
-                    <td>R$ {{ $comissao->desconto_comissao }}</td>
+                    <td>{{ 'R$ ' . number_format($comissao->ins_vendas, 2, ',', '.') }}</td>
+                    <td>{{ 'R$ ' . number_format($comissao->mensal, 2, ',', '.') }}</td>
+                    <td>{{ 'R$ ' . number_format($comissao->comissao, 2, ',', '.') }}</td>
+                    <td>{{ 'R$ ' . number_format($comissao->desconto_comissao, 2, ',', '.') }}</td>
                 </tr>
             @endforeach
         @endif

@@ -21,17 +21,17 @@
                     <td>{{ $comissao->cliente }}</td>
                     <td>{{ $comissao->id_contrato }}</td>
                     <td>{{ $comissao->placa }}</td>
-                    <td>R$ {{ $comissao->taxa_instalacao }}</td>
-                    <td>R$ {{ $comissao->mensal }}</td>
-                    <td>R$ {{ $comissao->comissao }}</td>
-                    <td>R$ {{ $comissao->desconto_comissao }}</td>
+                    <td>{{ 'R$ ' . number_format($comissao->taxa_instalacao, 2, ',', '.') }}</td>
+                    <td>{{ 'R$ ' . number_format($comissao->mensal, 2, ',', '.') }}</td>
+                    <td>{{ 'R$ ' . number_format($comissao->comissao, 2, ',', '.') }}</td>
+                    <td>{{ 'R$ ' . number_format($comissao->desconto_comissao, 2, ',', '.') }}</td>
                 </tr>
             @endforeach
             <tr>
                 <td colspan="9">
                     <div class="row">
                         <div class="col-md-6"><b>{{ $listaComissao->total() }}</b> Registros Encontrados.</div>
-                        <div class="col-md-6 text-right">Valor Total <b>R$ {{ $valorTotalComissao }}</b></div>
+                         <div class="col-md-6 text-right"> Valor Total <b>R$ {{ $valorTotalComissao }}</b> </div>
                     </div>
                 </td>
             </tr>

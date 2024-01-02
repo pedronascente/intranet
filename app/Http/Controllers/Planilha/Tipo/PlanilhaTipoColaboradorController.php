@@ -52,10 +52,10 @@ class PlanilhaTipoColaboradorController extends Controller
   private function getViewWithComissaoData($tipo_planilha, $planilha, $comissaoModel)
   {
     return view('planilha.tipo.' . $tipo_planilha . '.colaborador.index', [
-      'planilha'      => $planilha,
-      'meios'         => $this->getMeio(),
-      'servico_alarme' => $this->getServicoAlarme(),
-      'listaComissao' => $comissaoModel::where('planilha_id', $planilha->id)->orderBy('id', 'desc')->paginate(10),
+      'planilha'           => $planilha,
+      'meios'              => $this->getMeio(),
+      'servico_alarme'     => $this->getServicoAlarme(),
+      'listaComissao'      => $comissaoModel::where('planilha_id', $planilha->id)->orderBy('id', 'desc')->paginate(10),
       'valorTotalComissao' => $comissaoModel::where('planilha_id', $planilha->id)->sum('comissao'),
     ]);
   }

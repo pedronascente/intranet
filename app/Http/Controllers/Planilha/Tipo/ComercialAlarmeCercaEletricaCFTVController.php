@@ -18,8 +18,8 @@ class ComercialAlarmeCercaEletricaCFTVController extends Controller
 
     public function __construct(ComercialAlarmeCercaEletricaCFTV $comercialAlarmeCercaEletricaCFTV)
     {
-        $this->titulo = "Comercial Alarme / Cerca Elétrica / CFTV";
-        $this->planilhaTipo = new PlanilhaTipo();
+        $this->titulo                           = "Comercial Alarme / Cerca Elétrica / CFTV";
+        $this->planilhaTipo                     = new PlanilhaTipo();
         $this->comercialAlarmeCercaEletricaCFTV = $comercialAlarmeCercaEletricaCFTV;
     }
 
@@ -45,14 +45,14 @@ class ComercialAlarmeCercaEletricaCFTVController extends Controller
 
     public function edit($id)
     {
-        $comissao = $this->comercialAlarmeCercaEletricaCFTV->findOrFail($id);
+        $comissao       = $this->comercialAlarmeCercaEletricaCFTV->findOrFail($id);
         $servico_alarme = ServicoAlarme::all();
-        $meios = Meio::all();
+        $meios          = Meio::all();
         return view('planilha.tipo.comercialAlarmeCercaEletricaCFTV.edit', [
-            'titulo' => $this->titulo,
-            'comissao' => $comissao,
+            'titulo'         => $this->titulo,
+            'comissao'       => $comissao,
             'servico_alarme' => $servico_alarme,
-            'meios' => $meios,
+            'meios'          => $meios,
         ]);
     }
 
