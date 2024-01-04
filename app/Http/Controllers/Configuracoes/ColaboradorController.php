@@ -14,7 +14,6 @@ use App\Http\Controllers\Help\PermissaoHelp;
 class ColaboradorController extends Controller
 {
     private $modulo; // Id do módulo
-    private $actionUserProfile;
     private $bases;
     private $empresas;
     private $cargos;
@@ -30,7 +29,6 @@ class ColaboradorController extends Controller
     {
         $this->colaborador       = $colaborador;
         $this->modulo            = 2;
-        $this->actionUserProfile = 'App\Http\Controllers\Login\UserController@profile';
         $this->bases             = Base::orderBy('id', 'desc')->get();
         $this->empresas          = Empresa::orderBy('id', 'desc')->get();
         $this->cargos            = Cargo::orderBy('id', 'desc')->get();
@@ -126,9 +124,9 @@ class ColaboradorController extends Controller
      * @param  int  $id
      * @return \Illuminate\View\View
      */
-    public function editProfile($id)
+    public function editarMeuPerfil($id)
     {
-        return view('profile.edit', [
+        return view('meu_perfil.edit', [
             'colaborador' => Colaborador::findOrFail($id),
             'empresas'    => $this->empresas,
             'cargos'      => $this->cargos,
@@ -157,7 +155,9 @@ class ColaboradorController extends Controller
         }
         $colaborador->update();
         if ($request->editProfile >= 1) {
-            return redirect()->action($this->actionUserProfile)->with('status', "Registro Atualizado!");
+            return redirect()
+                ->route('user.meuPerfil')
+                ->with('status', "Registro Atualizado!");
         } else {
             return redirect()->route('colaborador.show', $colaborador->id)->with('status', "Registro Atualizado!");
         }
@@ -201,7 +201,7 @@ class ColaboradorController extends Controller
 
     public function showPesquisar(Request $request)
     {
-        $filtro        = $request->input('filtro');
+        $filtro = $request->input('filtro');
         
         if ($filtro) {
             $colaboradores = $this->colaborador->where('nome', 'like', '%' . $filtro . '%')->get();

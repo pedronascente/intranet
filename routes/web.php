@@ -76,9 +76,12 @@ Route::middleware(['auth', 'verificarToken', 'verificarModulos'])->group(functio
     );
 });
 
-Route::get('profile', [UserController::class, 'profile'])->name('profile');
-Route::put('profile/security/{id}', [UserController::class, 'resetPassword'])->name('user.security');
-Route::get('profile/{id}/edit', [ColaboradorController::class, 'editProfile'])->name('user.edit.profile');
+Route::prefix('/meu-perfil')->group(function () {
+    Route::get('/', [UserController::class, 'meuPerfil'])->name('user.meuPerfil');
+    Route::put('/resetar-senha/{id}', [UserController::class, 'resetarSenha'])->name('user.resetarSenha');
+    Route::get('/{id}/edit', [ColaboradorController::class, 'editarMeuPerfil'])->name('user.editarMeuPerfil');  
+});
+
 Route::get('/senha/{email}/{token}', [UserController::class, 'senhaCreate'])->name('senha');
 Route::get('/senha', [UserController::class, 'senhaSucesso']);
 Route::prefix('/recuperar')->group(function () {

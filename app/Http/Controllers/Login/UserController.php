@@ -98,7 +98,6 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $this->user->validarFormulario($request, 'update');
-
         $user         = $this->user->with('perfil')->findOrFail($id);
         $perfil       = Perfil::findOrFail($request->perfil);
 
@@ -123,11 +122,11 @@ class UserController extends Controller
         ]);
     }
 
-    public function profile(Request $request)
+    public function meuPerfil(Request $request)
     {
         if (isset($request->user()->id)) {
             $usuario = User::with('colaborador', 'perfil')->findorFail($request->user()->id);
-            return view('profile.index', [
+            return view('meu_perfil.index', [
                 'id usuario'  => $usuario->id,
                 'usuario'     => $usuario,
                 'colaborador' => $usuario->colaborador,
@@ -154,9 +153,9 @@ class UserController extends Controller
             ->with('status', "Registro excluido com sucesso!");
     }
 
-    public function resetPassword(Request $request, $id)
+    public function resetarSenha(Request $request, $id)
     {
-        $this->validarFormulario($request, 'resetPassword');
+        $this->user->validarFormulario($request, 'resetPassword');
         $usuario = User::with('colaborador')->findOrFail($id);
         if (empty(!$request->password)) {
             $usuario->password = Hash::make($request->password);
@@ -174,8 +173,6 @@ class UserController extends Controller
     {
         return view('login.recuperar_senha');
     }
-
-
 
     public function recuperarSenhaStore(Request $request)
     {

@@ -1,28 +1,22 @@
 @extends('layouts.app')
+
+@section('titulo', 'Meu Perfil')
+
+@section('breadcrumb')
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item">
+            <a href="/">Home</a>
+        </li>
+    </ol>
+@endsection
+
 @section('content')
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">Meu Perfil</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item">
-                            <a href="/">Home</a>
-                        </li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Profile Image -->
-    <div class="card card-primary card-outline">
+    <div class="card p-3">
         <div class="card-body box-profile">
             @if ($colaborador)
                 <div class="text-center">
                     <img src="{{ asset('img/colaborador/' . $colaborador->foto . '') }}" alt="{{ $colaborador->nome }}"
-                        width="100" class="rounded-circle">
+                        width="70" class="rounded-circle">
                 </div>
                 <h3 class="profile-username text-center">{{ $usuario->name }}</h3>
                 <p class="text-muted text-center">{{ $colaborador->cargo->nome }}</p>
@@ -43,61 +37,66 @@
             @endif
         </div>
     </div>
-    <div class="card card-primary">
+    <div class="card p-3">
         <div class="card-header">
-            <h3 class="card-title">Informações Pessoais</h3>
+            <h3 class="card-title"><b>Informações Pessoais</b></h3>
         </div>
         <div class="card-body">
             @if ($colaborador)
-                <strong> Nome</strong>
-                <p class="text-muted">{{ $colaborador->nome }} {{ $colaborador->sobrenome }}</p>
-                <hr>
-                <strong>Email</strong>
-                <p class="text-muted"> {{ $colaborador->email }}</p>
-                <hr>
-                <strong>RG</strong>
-                <p class="text-muted">{{ $colaborador->rg }}</p>
-                <hr>
-                <strong>CPF</strong>
-                <p class="text-muted">{{ $colaborador->cpf }}</p>
-                <hr>
-                <strong>CNPJ</strong>
+                Nome:
+                <p class="text-muted">{{ $colaborador->nome }} {{ $colaborador->sobrenome }}</p> <hr>
+                
+                Email:
+                <p class="text-muted"> {{ $colaborador->email }}</p><hr>
+                
+                RG:
+                <p class="text-muted">{{ $colaborador->rg }}</p><hr>
+
+                CPF:
+                <p class="text-muted">{{ $colaborador->cpf }}</p> <hr>
+
+                CNPJ:
                 <p class="text-muted">{{ $colaborador->cnpj }}</p>
-                <a href="{{ route('user.edit.profile', $colaborador->id) }}" class="btn bg-gradient-primary">
-                    Alterar Informaçoes
+                
+                <a href="{{ route('user.editarMeuPerfil', $colaborador->id) }}" class="btn bg-gradient-info">
+                    Editar
                 </a>
             @endif
         </div>
     </div>
-    <div class="card card-primary">
+    <div class="card p-3">
         <div class="card-header">
-            <h3 class="card-title">Informações de Acesso</h3>
+            <h3 class="card-title"> <b>2FA - Tokens de Acesso</b> </h3>
         </div>
         <div class="card-body">
-
-            <strong> 2FA</strong>
-            <p class="text-muted"></p>
-            <hr>
             <table class="table table-bordered ">
                 <thead>
-                    <th>Token</th>
-                    <th class="text-center">Posição</th>
+                    <tr>
+                        <th>Token</th>
+                        <th class="text-center">Posição</th>
+                    </tr>
                 </thead>
                 <tbody>
-
+                    @if ($usuario->tokens)
+                        @foreach ($usuario->tokens as $token )
+                            <tr class="text-center">
+                                <td>{{$token->token}}</td>
+                                <td>{{$token->posicao}}</td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
             <hr>
-
         </div>
     </div>
-    <div class="card card-primary">
+    <div class="card p-3">
         <div class="card-header">
-            <h3 class="card-title">Segurança</h3>
+            <h3 class="card-title"><b>Segurança</b> </h3>
         </div>
         <div class="card-body">
             @if ($colaborador)
-                @include('profile.resetPassword')
+                @include('meu_perfil.resetPassword')
             @endif
         </div>
     </div>
