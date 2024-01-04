@@ -17,9 +17,9 @@ class SupervisaoComercialAlarmesCercaEletricaCFTVController extends Controller
 
     public function __construct(SupervisaoComercialAlarmesCercaEletricaCFTV $scace_cftv)
     {
-        $this->titulo = "Supervisão Comercial Alarmes / Cerca Elétrica / CFTV";
+        $this->titulo       = "Supervisão Comercial Alarmes / Cerca Elétrica / CFTV";
         $this->PlanilhaTipo = new PlanilhaTipo();
-        $this->scace_cftv = $scace_cftv;
+        $this->scace_cftv   = $scace_cftv;
     }
 
     public function store(Request $request)

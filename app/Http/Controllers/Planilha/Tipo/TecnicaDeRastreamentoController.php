@@ -16,8 +16,8 @@ class TecnicaDeRastreamentoController extends Controller
 
     public function __construct(TecnicaDeRastreamento $tecnicaDeRastreamento)
     {
-        $this->titulo = "Técnica de Rastreamento";
-        $this->planilhaTipo = new PlanilhaTipo();
+        $this->titulo                = "Técnica de Rastreamento";
+        $this->planilhaTipo          = new PlanilhaTipo();
         $this->tecnicaDeRastreamento = $tecnicaDeRastreamento;
     }
 

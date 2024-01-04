@@ -188,6 +188,38 @@ class ColaboradorController extends Controller
         return redirect()->route('colaborador.index')->with('status', "Registro Excluído!");
     }
 
+    public function createPesquisar()
+    {
+        return view(
+            'configuracoes.colaborador.pesquisar.create',
+            [
+                'titulo'    => "Pesquisar Colaborador",
+            ]
+        );
+    }
+
+
+    public function showPesquisar(Request $request)
+    {
+        $filtro        = $request->input('filtro');
+        
+        if ($filtro) {
+            $colaboradores = $this->colaborador->where('nome', 'like', '%' . $filtro . '%')->get();
+        }else{
+            $colaboradores = $this->colaborador->all();
+        }
+        
+        return view(
+            'configuracoes.colaborador.pesquisar.resultado',
+            [
+                'titulo'        => "Pesquisar Colaborador",
+                'colaboradores' => $colaboradores
+            ]
+        );
+    }
+
+    /*****************************************PRIVATES**********************************************************************/
+
     private function deleteColaborador($colaborador)
     {
         $destino = 'img/colaborador/' . $colaborador->foto;
@@ -198,8 +230,6 @@ class ColaboradorController extends Controller
 
         $colaborador->delete();
     }
-
-
 
     /**
      * Preenche um objeto Colaborador com os dados do Request.

@@ -22,12 +22,12 @@ class PlanilhaColaboradorController extends Controller
     {
         $this->titulo   = "Planilha de comissão";
         $this->paginate = 10;
-        $this->planilha =  $planilha;
+        $this->planilha = $planilha;
     }
 
     public function index()
     {
-        $collection =  $this->planilha->whereIn('planilha_status_id', [1, 4])
+        $collection = $this->planilha->whereIn('planilha_status_id', [1, 4])
             ->orderBy('id', 'desc')
             ->paginate($this->paginate);
 
@@ -40,10 +40,10 @@ class PlanilhaColaboradorController extends Controller
     public function create(Request $request)
     {
         if (isset($request->user()->id)) {
-            $titulo         = "Cadastrar  " . $this->titulo;
-            $periodos       = PlanilhaPeriodo::all();
-            $tipos          = PlanilhaTipo::all();
-            $colaborador    = User::with('colaborador')->find($request->user()->id);
+            $titulo      = "Cadastrar  " . $this->titulo;
+            $periodos    = PlanilhaPeriodo::all();
+            $tipos       = PlanilhaTipo::all();
+            $colaborador = User::with('colaborador')->find($request->user()->id);
             return view(
                 'planilha.colaborador.create',
                 [
@@ -92,10 +92,10 @@ class PlanilhaColaboradorController extends Controller
         return view(
             'planilha.colaborador.edit',
             [
-                'titulo'    => "Editar " . $this->titulo,
-                'periodos'  => PlanilhaPeriodo::orderBy('nome', 'asc')->get(),
-                'tipos'     => PlanilhaTipo::orderBy('id', 'desc')->get(),
-                'planilha'  => $this->planilha->with('colaborador', 'periodo', 'tipo')->findOrFail($id),
+                'titulo'   => "Editar " . $this->titulo,
+                'periodos' => PlanilhaPeriodo::orderBy('nome', 'asc')->get(),
+                'tipos'    => PlanilhaTipo::orderBy('id', 'desc')->get(),
+                'planilha' => $this->planilha->with('colaborador', 'periodo', 'tipo')->findOrFail($id),
             ]
         );
     }

@@ -16,7 +16,7 @@ class PlanlhaAdministrativoController extends Controller
 
     public function __construct(Planilha $planilha)
     {
-        $this->titulo = "Planilha";
+        $this->titulo   = "Planilha";
         $this->planilha = $planilha;
     }
 

@@ -16,8 +16,8 @@ class SupervisaoComercialRastreamentoController extends Controller
 
     public function __construct(SupervisaoComercialRastreamento $supervisaoComercialRastreamento)
     {
-        $this->titulo = "Supervisão Comercial Rastreamento";
-        $this->planilhaTipo = new PlanilhaTipo();
+        $this->titulo                          = "Supervisão Comercial Rastreamento";
+        $this->planilhaTipo                    = new PlanilhaTipo();
         $this->supervisaoComercialRastreamento = $supervisaoComercialRastreamento;
     }
 

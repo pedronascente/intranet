@@ -16,9 +16,9 @@ class SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController extends Controller
 
     public function __construct(SupervisaoTecnicaESacAlarmesCercaEletricaCFTV $upervisaoTecnicaESacAlarmesCercaEletricaCFTV)
     {
-        $this->titulo = "Supervisão Técnica e SAC Alarmes / Cerca Elétrica / CFTV";
+        $this->titulo       = "Supervisão Técnica e SAC Alarmes / Cerca Elétrica / CFTV";
         $this->planilhaTipo = new PlanilhaTipo();
-        $this->stsace_cftv = $upervisaoTecnicaESacAlarmesCercaEletricaCFTV;
+        $this->stsace_cftv  = $upervisaoTecnicaESacAlarmesCercaEletricaCFTV;
     }
 
     public function store(Request $request)

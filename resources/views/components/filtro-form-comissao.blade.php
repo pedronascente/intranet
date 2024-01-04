@@ -1,5 +1,6 @@
 <form action="{{ $route }}" method="get">
-    <div class="row">
+    <div class=" col-md-8 offset-md-2">
+        <div class="row">
         <div class="col-md-12">
             <div class="input-group">
                 <input type="text" name="filtro" class="form-control form-control-lg" value="{{ request('filtro') }}"
@@ -11,5 +12,6 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </form>

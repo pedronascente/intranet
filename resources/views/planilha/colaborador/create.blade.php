@@ -11,7 +11,7 @@
 @endsection
 
 @section('content')
-    <div class="card card-default">
+    <div class="card">
         <form action="{{ route('planilha-colaborador.store') }}" method="POST">
             @csrf
             <div class="card-body">
@@ -107,7 +107,7 @@
                     <i class="fas fa-save" aria-hidden="true"></i>
                     Salvar
                 </button>
-                <a href="{{ route('planilha-colaborador.filtro') }}" title="Pesquisar" class="btn btn-warning btn-sm">
+                <a href="{{ route('colaborador.pesquisar') }}" title="Pesquisar" class="btn btn-warning btn-sm">
                     <i class="fa fa-search"></i> Pesquisar Colaborador
                 </a>
                 <a href="{{ route('planilha-colaborador.index') }}" title="Voltar" class="btn btn-danger  btn-sm">

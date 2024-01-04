@@ -16,8 +16,8 @@ class EntregaDeAlarmeController extends Controller
 
     public function __construct(EntregaDeAlarmes  $entregaDeAlarme)
     {
-        $this->titulo = "Entregas de Alarmes";
-        $this->planilhaTipo = new PlanilhaTipo();
+        $this->titulo          = "Entregas de Alarmes";
+        $this->planilhaTipo    = new PlanilhaTipo();
         $this->entregaDeAlarme = $entregaDeAlarme;
     }
 
@@ -48,7 +48,7 @@ class EntregaDeAlarmeController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate($this->entregaDeAlarme->rules(), $this->entregaDeAlarme->feedback());
-        $objetoModel = $this->entregaDeAlarme->findOrFail($id);
+        $objetoModel                    = $this->entregaDeAlarme->findOrFail($id);
         $objetoModel->cliente           = $request->cliente;
         $objetoModel->data              = $this->planilhaTipo->formatarData($request->data);
         $objetoModel->conta_pedido      = $request->conta_pedido;

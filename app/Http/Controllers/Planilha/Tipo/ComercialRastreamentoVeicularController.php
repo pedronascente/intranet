@@ -53,7 +53,7 @@ class ComercialRastreamentoVeicularController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate($this->comercialRastreamentoVeicular->rules(), $this->comercialRastreamentoVeicular->feedback());
-        $objetoModel = $this->comercialRastreamentoVeicular->findOrFail($id);
+        $objetoModel                    = $this->comercialRastreamentoVeicular->findOrFail($id);
         $objetoModel->data              = $this->planilhaTipo->formatarData($request->data);
         $objetoModel->cliente           = $request->cliente;
         $objetoModel->id_contrato       = $request->id_contrato;

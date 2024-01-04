@@ -17,8 +17,8 @@ class TecnicaAlarmesCercaEletricaCFTVController extends Controller
 
     public function __construct(TecnicaAlarmesCercaEletricaCFTV $tecnicaAlarmesCercaEletricaCFTV)
     {
-        $this->titulo = "Técnica Alarmes / Cerca Elétrica / CFTV";
-        $this->planilhaTipo = new PlanilhaTipo();
+        $this->titulo                          = "Técnica Alarmes / Cerca Elétrica / CFTV";
+        $this->planilhaTipo                    = new PlanilhaTipo();
         $this->tecnicaAlarmesCercaEletricaCFTV = $tecnicaAlarmesCercaEletricaCFTV;
     }
 

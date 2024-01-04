@@ -17,8 +17,8 @@ class PortariaVirtualController extends Controller
 
     public function __construct(PortariaVirtual $portariaVirtual)
     {
-        $this->titulo = "Portaria Virtual";
-        $this->planilhaTipo = new PlanilhaTipo();
+        $this->titulo          = "Portaria Virtual";
+        $this->planilhaTipo    = new PlanilhaTipo();
         $this->portariaVirtual = $portariaVirtual;
     }
 
