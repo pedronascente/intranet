@@ -64,6 +64,17 @@
             @endif
         </div>
     </div>
+    
+    <div class="card p-3">
+        <div class="card-header">
+            <h3 class="card-title"><b>Segurança</b> </h3>
+        </div>
+        <div class="card-body">
+            @if ($colaborador)
+                @include('meu_perfil.resetPassword')
+            @endif
+        </div>
+    </div>
     <div class="card p-3">
         <div class="card-header">
             <h3 class="card-title"> <b>2FA - Tokens de Acesso</b> </h3>
@@ -88,16 +99,6 @@
                 </tbody>
             </table>
             <hr>
-        </div>
-    </div>
-    <div class="card p-3">
-        <div class="card-header">
-            <h3 class="card-title"><b>Segurança</b> </h3>
-        </div>
-        <div class="card-body">
-            @if ($colaborador)
-                @include('meu_perfil.resetPassword')
-            @endif
         </div>
     </div>
 @endsection

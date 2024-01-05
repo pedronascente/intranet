@@ -11,7 +11,7 @@
 @endsection
 
 @section('content')
-    <div class="card">
+    <div class="card p-3">
         <form action="{{ route('planilha-colaborador.store') }}" method="POST">
             @csrf
             <div class="card-body">

@@ -4,9 +4,7 @@
         <img src="{{ asset('/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image  " style="opacity: .8">
         <span class="brand-text font-weight-light">Intranet</span>
     </a>
-    <!-- Sidebar -->
     <div class="sidebar">
-        <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
                 @if (Auth::check() && Auth::user()->colaborador)
@@ -47,16 +45,16 @@
                     </a>
                     <ul class="nav nav-treeview">
                         @if (session()->get('perfil'))
-@foreach (session()->get('perfil')['modulos'] as $item)
-<li class="nav-item">
+                            @foreach (session()->get('perfil')['modulos'] as $item)
+                                <li class="nav-item">
                                     <a href="{{ $item['rota'] }}"
                                         @if (Request::segment(2) == $item['slug']) class="nav-link active"  @else   class="nav-link" @endif>
                                         <i class="far fa-circle nav-icon"></i>
                                         <p> {{ $item['nome'] }}</p>
                                     </a>
                                 </li>
-@endforeach
-@endif
+                            @endforeach
+                        @endif
                     </ul>
                 </li-->
                 <li class="nav-item">
@@ -81,7 +79,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('planilha-administrativo.arquivo') }}" class="nav-link">
+                            <a href="{{ route('planilha-administrativo.arquivado') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Arquivo</p>
                             </a>

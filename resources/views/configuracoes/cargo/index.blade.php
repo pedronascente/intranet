@@ -1,23 +1,18 @@
 @extends('layouts.app')
+
+@section('titulo', "Cargos")
+
+@section('breadcrumb')
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item">
+            <a href="/configuracoes">Configurações</a> /
+            <a href="/configuracoes/cargo">cargos</a>
+        </li>
+    </ol>
+@endsection
+
 @section('content')
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">Cargos </h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item">
-                            <a href="/configuracoes">Configurações</a> /
-                            <a href="/configuracoes/cargo">cargos</a>
-                        </li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>
-    <div class="card">
+    <div class="card p-3">
         <x-botao.criar rota="cargo" :permissoes="$permissoes" />
         <div class="card-body table-responsive p-0">
             <table class="table table-hover text-nowrap table-striped">
@@ -36,13 +31,13 @@
                                     @if ($permissoes)
                                         @foreach ($permissoes as $item)
                                             @if ($item->nome == 'Editar')
-                                                <a href="{{ route('cargo.edit', $cargo->id) }}" class="btn btn-primary"
+                                                <a href="{{ route('cargo.edit', $cargo->id) }}" class="btn btn-sm btn-info"
                                                     title="Editar">
                                                     <i class="fas fa-edit"></i> Editar
                                                 </a>
                                             @endif
                                             @if ($item->nome == 'Excluir')
-                                                <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal"
+                                                <a href="javascript:void(0)" class="btn  btn-sm btn-danger" data-toggle="modal"
                                                     data-target="#deleteModal" data-id="{{ $cargo->id }}">
                                                     <i class="fas fa-trash"></i> Excluir
                                                 </a>

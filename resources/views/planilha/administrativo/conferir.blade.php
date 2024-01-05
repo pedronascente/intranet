@@ -29,7 +29,7 @@
                                 @if ($collections)
                                     @foreach ($collections as $item)
                                         @php
-                                            $valorTotalComissao = app('App\Http\Controllers\Planilha\PlanlhaAdministrativoController')->getValorTotalComissao($item);
+                                            $valorTotalComissao = app('App\Http\Controllers\Planilha\PlanilhaAdministrativoController')->getValorTotalComissao($item);
                                         @endphp
                                         <tr class="{{ $item->status->status === 'Recuperado' ? 'bg-warning' : '' }}">
                                             <td>{{ $item->id }}</td>

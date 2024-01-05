@@ -42,7 +42,7 @@
                                     <div class="col px-3">
                                         <div>
                                             <div class="float-right">
-                                                <a href="{{ route('planilha-colaborador.create') }}"
+                                                <a href="{{ route('planilha-colaborador.create','id='.$colaborador->id) }}"
                                                     title="Adicionar colaborador" class="btn btn-success btn-sm">
                                                     <i class="fas fa-solid fa-plus"></i> Adicionar
                                                 </a>

@@ -9,7 +9,7 @@ use App\Models\planilha\PlanilhaStatus;
 use App\Models\Planilha\PlanilhaPeriodo;
 use App\Models\Planilha\Tipo\PlanilhaTipo;
 
-class PlanlhaAdministrativoController extends Controller
+class PlanilhaAdministrativoController extends Controller
 {
     private $titulo;
     private $planilha;
@@ -79,7 +79,7 @@ class PlanlhaAdministrativoController extends Controller
         ]);
     }
 
-    public function arquivo()
+    public function arquivado()
     {
         $collections = $this->planilha->whereIn('planilha_status_id', [2])
             ->orderBy('id', 'desc')
