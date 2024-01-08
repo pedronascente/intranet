@@ -11,7 +11,7 @@
 @endsection
 
 @section('content')
-    <div class="card card-default">
+    <div class="card">
         <form action="{{ route('planilha-administrativo.update', $planilha->id) }}" method="POST">
             <input type="hidden" name="formulario" value="administrativo">
             @csrf

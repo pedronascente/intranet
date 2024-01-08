@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class BtnsVisualizarPlanilhaAdministrativo extends Component
+class BtnsCRUDPlanilhaAdministrativo extends Component
 {
     public $planilha;
 
@@ -25,6 +25,6 @@ class BtnsVisualizarPlanilhaAdministrativo extends Component
      */
     public function render()
     {
-        return view('components.btns-visualizar-planilha-administrativo');
+        return view('components.botao.btns-crud-planilha-administrativo');
     }
 }

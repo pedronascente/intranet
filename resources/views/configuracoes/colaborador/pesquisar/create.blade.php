@@ -11,7 +11,7 @@
 @endsection
 
 @section('content')
-    <div class="card">
+    <div class="card p-3">
         <div class="card-header">
             <form action="{{ route('colaborador.showPesquisar') }}" method="get">
                 <div class=" col-md-8 offset-md-2">
@@ -27,7 +27,6 @@
                 </div>
             </form>
         </div>
-       
         <div class="card-footer">
             <a href="{{ route('planilha-colaborador.create') }}" title="Voltar" class="btn btn-danger  btn-sm">
                 <i class="fa fa-reply"></i> Voltar

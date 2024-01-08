@@ -11,7 +11,7 @@
 @endsection
 
 @section('content')
-    <div class="card">
+    <div class="card p-3">
         <div class="card-header">
             <form action="{{ route('colaborador.showPesquisar') }}" method="get">
                 <div class=" col-md-8 offset-md-2">

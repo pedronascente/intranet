@@ -2,13 +2,21 @@
 
 @section('titulo', $titulo)
 
+@section('breadcrumb')
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item">
+            <a href="{{ route('planilha-administrativo.arquivado') }}">Planilha</a>
+        </li>
+    </ol>
+@endsection
+
 @section('content')
     <div class="card">
         <div class="card-header">
             <x-filtro-form-planilha :route="route('planilha-administrativo.filtro', 'arquivado')" />
         </div> 
-        <div class="card-body  mt-3 mb-3">
-            <div class="table-responsive">
+        <div class="card-body  ">
+            <div class="table-responsive ">
                 <table class="table table-hover table-bordered  text-nowrap table-striped">
                     <thead>
                         <tr>

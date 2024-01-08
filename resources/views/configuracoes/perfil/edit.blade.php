@@ -1,23 +1,17 @@
 @extends('layouts.app')
+
+@section('titulo', 'Perfil | Editar')
+
+@section('breadcrumb')
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item">
+           <a href="/configuracoes">Configurações</a> /
+           <a href="/configuracoes/perfil">perfil</a> 
+        </li>
+    </ol>
+@endsection
 @section('content')
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">Perfil | Editar</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item">
-                            <a href="/configuracoes">Configurações</a> /
-                            <a href="/configuracoes/perfil">perfil</a>
-                        </li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>
-    <div class="card">
+    <div class="card p-3">
         <form action="{{ route('perfil.update', $perfil->id) }}" method="POST">
             @csrf
             @method('PUT')
@@ -76,38 +70,41 @@
                                                             class="custom-control-input"
                                                             id="permissaoCheckbox{{ $modulo->id }}{{ $permissao->id }}"
                                                             value="{{ $permissao->id }}"
-                                                            @if (array_key_exists($modulo->id, $listArraypermissoes)) @foreach ($listArraypermissoes as $modusssslo => $ssss)
+                                                            @if (array_key_exists($modulo->id, $listArraypermissoes)) 
+                                                                @foreach ($listArraypermissoes as $modusssslo => $ssss)
                                                                     @if ($modusssslo == $modulo->id)
                                                                         @foreach ($ssss as $item)
                                                                             @if ($item->permissao_id == $permissao->id)
-                                                                                checked @endif
-                                                            @endforeach
-                                            @endif
-                                        @endforeach
-                                @endif
-                                >
-                                <label for="permissaoCheckbox{{ $modulo->id }}{{ $permissao->id }}"
-                                    class="custom-control-label"></label>
+                                                                                checked 
+                                                                            @endif
+                                                                        @endforeach
+                                                                    @endif
+                                                                @endforeach
+                                                            @endif
+                                                        >
+                                                        <label for="permissaoCheckbox{{ $modulo->id }}{{ $permissao->id }}"
+                                                            class="custom-control-label">
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            @endforeach
+                                        @endif
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
                 </div>
-                </td>
-                @endforeach
-                @endif
-                </tr>
-                @endforeach
-                @endif
-                </tbody>
-                </table>
             </div>
-    </div>
-    <div class="card-footer">
-        <button type="submit" class="btn bg-gradient-primary">
-            <i class="fas fa-save" aria-hidden="true"></i>
-            Salvar
-        </button>
-        <a href="{{ route('perfil.index') }}" title="Voltar" class="btn btn-danger">
-            <i class="fa fa-reply"></i> Voltar
-        </a>
-    </div>
-    </form>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-sm bg-gradient-primary">
+                    <i class="fas fa-save" aria-hidden="true"></i>
+                    Salvar
+                </button>
+                <a href="{{ route('perfil.index') }}" title="Voltar" class="btn   btn-sm btn-danger">
+                    <i class="fa fa-reply"></i> Voltar
+                </a>
+            </div>
+        </form>
     </div>
 @endsection

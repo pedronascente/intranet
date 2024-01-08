@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('titulo', 'Cadastrar Usuário')
+@section('titulo', 'Usuários | Cadastrar')
 
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
@@ -12,14 +12,32 @@
 @endsection
 
 @section('content')
-    <div class="card card-default">
+    <div class="card p-3">
         <form action="{{ route('user.store') }}" method="POST">
             @csrf
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label>Colaborador:</label>
+                            <label>QTD. de Tokens:</label>
+                            <select name="qtdToken" class="custom-select @error('qtdToken') is-invalid @enderror">
+                                <option value="">...</option>
+                                @for ($i = 1; $i <= 40; $i++)
+                                    <option value="{{ $i }}" @if (old('qtdToken') == $i) selected @endif>
+                                        {{ $i }}
+                                    </option>
+                                @endfor
+                            </select>
+                            @error('qtdToken')
+                                <span class=" invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>ID Colaborador:</label>
                             <input type="text" name="colaborador_id"
                                 class="form-control @error('colaborador_id') is-invalid @enderror"
                                 placeholder="colaborador id" value="{{ old('colaborador_id') }}">
@@ -31,7 +49,7 @@
 
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label>Status:</label>
+                            <label>Ativo:</label>
                             <select name="status" class="custom-select">
                                 <option value="on" @if (old('status') == 'on') selected @endif>
                                     Sim</option>
@@ -41,6 +59,7 @@
                         </div>
                     </div>
                 </div>
+                
                 <div class="row">
                     <div class="col-md-5">
                         <div class="form-group">
@@ -100,24 +119,7 @@
 
                 <x-ui.panel-dica-boa-senha />
 
-                <div class="row">
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label>QTD. de Tokens:</label>
-                            <select name="qtdToken" class="custom-select @error('qtdToken') is-invalid @enderror">
-                                <option value="">...</option>
-                                @for ($i = 1; $i <= 40; $i++)
-                                    <option value="{{ $i }}" @if (old('qtdToken') == $i) selected @endif>
-                                        {{ $i }}
-                                    </option>
-                                @endfor
-                            </select>
-                            @error('qtdToken')
-                                <span class=" invalid-feedback">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
+                
             </div>
             <div class="card-footer">
                 <button type="submit" class="btn bg-gradient-primary">

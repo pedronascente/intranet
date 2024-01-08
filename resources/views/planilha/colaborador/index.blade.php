@@ -3,15 +3,17 @@
 @section('titulo', $titulo)
 
 @section('content')
+    
+<div class="card p-3">
+    <div class="card-header">
+        <h3>
+            <a href="{{ route('planilha-colaborador.create') }}" class="btn btn-primary  btn-sm"
+                title="Cadastrar nova Planilha">
+                <i class="fas fa-solid fa-plus"></i> Cadastrar
+            </a>
+        </h3>
+    </div>
     <div class="card">
-        <div class="card-header">
-            <h3>
-                <a href="{{ route('planilha-colaborador.create') }}" class="btn btn-primary  btn-sm"
-                    title="Cadastrar nova Planilha">
-                    <i class="fas fa-solid fa-plus"></i> Cadastrar
-                </a>
-            </h3>
-        </div>
         <div class="card-body table-responsive p-0">
             <table class="table table-hover table-bordered text-nowrap table-striped">
                 <thead>
@@ -77,7 +79,8 @@
                     </div>
                 </div>
             @endif
-        </div>
+         </div>
     </div>
+</div>    
     <x-ui.modalDelete />
 @endsection

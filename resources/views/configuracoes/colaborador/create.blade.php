@@ -1,23 +1,18 @@
 @extends('layouts.app')
+
+@section('titulo', 'Colaborador | Cadastrar')
+
+@section('breadcrumb')
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item">
+            <a href="/configuracoes">Configurações</a> /
+            <a href="/configuracoes/colaborador">colaborador</a>
+        </li>
+    </ol>
+@endsection
+
 @section('content')
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">Colaborador | Cadastrar </h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item">
-                            <a href="/configuracoes">Configurações</a> /
-                            <a href="/configuracoes/colaborador">colaborador</a>
-                        </li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>
-    <div class="card card-default">
+    <div class="card p-3">
         <form action="{{ route('colaborador.store') }}" method="POST" enctype="multipart/form-data"
             name="Formulario-create">
             @csrf

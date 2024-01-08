@@ -1,28 +1,44 @@
 @extends('layouts.app')
+
+@section('titulo', 'Usuário | Editar')
+
+@section('breadcrumb')
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item">
+            <a href="/configuracoes">Configurações</a> /
+            <a href="/configuracoes/user">usuário</a>
+        </li>
+    </ol>
+@endsection
+
 @section('content')
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">Usuário | Editar</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item">
-                            <a href="/configuracoes">Configurações</a> /
-                            <a href="/configuracoes/user">usuário</a>
-                        </li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>
-    <div class="card card-default">
+    <div class="card p-3">
         <form action="{{ route('user.update', $user->id) }}" method="POST">
             @csrf
             @method('PUT')
             <div class="card-body">
-
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>QTD. de Tokens:</label>
+                            <select name="qtdToken" class="custom-select @error('qtdToken') is-invalid @enderror">
+                                <option value="">...</option>
+                                @for ($i = 1; $i <= 40; $i++)
+                                    <option value="{{ $i }}" 
+                                        @if ($user->qtdToken == $i)
+                                                selected 
+                                        @endif
+                                    >
+                                        {{ $i }}
+                                    </option>
+                                @endfor
+                            </select>
+                            @error('qtdToken')
+                                <span class=" invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-2">
                         <div class="form-group">
@@ -38,7 +54,7 @@
 
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label>Status:</label>
+                            <label>Ativo:</label>
                             <select name="status" class="custom-select">
                                 <option value="on" @if ($user->status == 'on') selected @endif
                                     @if (old('status') == 'on') selected @endif>

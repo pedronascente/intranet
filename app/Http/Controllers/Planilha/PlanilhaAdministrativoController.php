@@ -106,7 +106,7 @@ class PlanilhaAdministrativoController extends Controller
     public function editReprovar($id)
     {
         return view('planilha.administrativo.edit-reprovar', [
-            'titulo'   => "Reprovar " . $this->titulo,
+            'titulo'   =>  $this->titulo .  ' | Reprovar' ,
             'planilha' => $this->planilha->findOrFail($id),
         ]);
     }

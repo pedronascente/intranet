@@ -1,20 +1,23 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\botao;
 
 use Illuminate\View\Component;
 
-class FiltroFormComissao extends Component
+class BtnCadastrar extends Component
 {
-    public $route;
+    public $rota;
+    public $permissoes;
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($route)
+    public function __construct($rota, $permissoes)
     {
-        $this->route = $route;
+        $this->rota       = $rota;
+        $this->permissoes = $permissoes;
     }
 
     /**
@@ -24,7 +27,6 @@ class FiltroFormComissao extends Component
      */
     public function render()
     {
-        return view('components.filtro-form-comissao');
+        return view('components.botao.btn-cadastrar');
     }
 }
- 

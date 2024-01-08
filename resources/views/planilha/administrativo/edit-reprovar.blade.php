@@ -11,7 +11,7 @@
 @endsection
 
 @section('content')
-    <div class="card card-default">
+    <div class="card p-3">
         <form action="{{ route('planilha-administrativo.reprovarUpdate', $planilha->id) }}" method="POST">
             @csrf
             @method('PUT')
