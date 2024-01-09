@@ -92,10 +92,7 @@
                 </div>
             </div>
             <div class="card-footer">
-                <button type="submit" class="btn bg-gradient-primary btn-sm">
-                    <i class="fas fa-save" aria-hidden="true"></i>
-                    Salvar
-                </button>
+                <x-botao.btn-salvar />
                 <a href="{{ route('planilha-colaborador-tipo.index', $comissao->planilha_id) }}" title="Voltar"
                     class="btn btn-danger btn-sm">
                     <i class="fa fa-reply"></i> Voltar

@@ -30,9 +30,6 @@
         <x-ui.panel-dica-boa-senha />
     </div>
     <div class="card-footer">
-        <button type="submit" class="btn bg-gradient-primary">
-            <i class="fas fa-save" aria-hidden="true"></i>
-            Salvar
-        </button>
+        <x-botao.btn-salvar />
     </div>
 </form>

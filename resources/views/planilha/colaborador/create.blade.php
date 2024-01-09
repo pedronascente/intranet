@@ -103,10 +103,7 @@
                 </div>
             </div>
             <div class="card-footer">
-                <button type="submit" class="btn bg-gradient-primary btn-sm">
-                    <i class="fas fa-save" aria-hidden="true"></i>
-                    Salvar
-                </button>
+                <x-botao.btn-salvar />
                 <a href="{{ route('colaborador.pesquisar') }}" title="Pesquisar" class="btn btn-warning btn-sm">
                     <i class="fa fa-search"></i> Pesquisar Colaborador
                 </a>

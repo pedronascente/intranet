@@ -13,7 +13,7 @@
 
 @section('content')
    <div class="card p-3">
-        <x-botao.btn-cadastrar :rota="route('perfil.create')" :permissoes="$permissoes" />
+        <x-botao.btn-cadastrar :rota="route('user.create')" :permissoes="$permissoes" />
         <div class="card">
             <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap  table-striped">

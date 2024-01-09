@@ -115,7 +115,7 @@ class UserController extends Controller
 
     public function show($id)
     {
-        $usuario =  User::with('perfil', 'colaborador')->findOrFail($id);
+        $usuario =  User::with('perfil', 'colaborador','tokens')->findOrFail($id);
         return view('configuracoes.user.show', [
             'user' => $usuario,
             'status' => $usuario->getStatus($id),

@@ -27,7 +27,7 @@
             @include('planilha.tipo.supervisaoTecnicaESACAlarmesCercaEletricaCFTV.administrativo.table')
         </div>
         <div class="card-footer">
-            <x-btns-visualizar-planilha-administrativo :planilha="$planilha" />
+            <x-botao.btns-crud-planilha-administrativo :planilha="$planilha" />
         </div>
     </div>
 @endsection

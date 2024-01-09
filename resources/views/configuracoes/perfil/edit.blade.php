@@ -97,10 +97,7 @@
                 </div>
             </div>
             <div class="card-footer">
-                <button type="submit" class="btn btn-sm bg-gradient-primary">
-                    <i class="fas fa-save" aria-hidden="true"></i>
-                    Salvar
-                </button>
+                <x-botao.btn-salvar />
                 <a href="{{ route('perfil.index') }}" title="Voltar" class="btn   btn-sm btn-danger">
                     <i class="fa fa-reply"></i> Voltar
                 </a>

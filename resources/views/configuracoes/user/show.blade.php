@@ -29,6 +29,32 @@
                 </li>
             </ul>
         </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title"> <b> Tokens </b> </h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered ">
+                    <thead>
+                        <tr>
+                            <th>Token</th>
+                            <th class="text-center">Posição</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if ($user->tokens)
+                            @foreach ($user->tokens as $token )
+                                <tr class="text-center">
+                                    <td>{{$token->token}}</td>
+                                    <td>{{$token->posicao}}</td>
+                                </tr>
+                            @endforeach
+                        @endif
+                    </tbody>
+                </table>
+                <hr>
+            </div>
+        </div>
         <div class="card-footer">
             <a href="{{ route('user.edit', $user->id) }}" title="Editar" class="btn btn-sm btn-primary">
                 <i class="fas fa-edit"></i> Editar

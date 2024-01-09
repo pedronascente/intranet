@@ -32,10 +32,7 @@
             <div class="card-footer">
                 <input type="hidden" name="planilha_id" class="form-control" value="{{ $planilha->id }}">
                 <input type="hidden" name="planilha_status_id" class="form-control" value="4">
-                <button type="submit" class="btn btn-sm bg-gradient-primary">
-                    <i class="fas fa-save" aria-hidden="true"></i>
-                    Salvar
-                </button>
+                <x-botao.btn-salvar />
                 <a href="{{ route('planilha-administrativo.index') }}" title="Voltar" class="btn  btn-sm btn-danger">
                     <i class="fa fa-reply"></i> Voltar
                 </a>
