@@ -59,9 +59,7 @@
             <a href="{{ route('user.edit', $user->id) }}" title="Editar" class="btn btn-sm btn-primary">
                 <i class="fas fa-edit"></i> Editar
             </a>
-            <a href="{{ route('user.index') }}" title="Voltar" class="btn btn-sm btn-danger">
-                <i class="fa fa-reply" aria-hidden="true"></i> Voltar
-            </a>
+            <x-botao.btn-voltar :rota="route('user.index')" />
         </div>
     </div>
 @endsection

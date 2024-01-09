@@ -54,9 +54,7 @@
             <a href="{{ route('colaborador.edit', $colaborador->id) }}" title="Editar" class="btn btn-sm btn-primary">
                 <i class="fas fa-edit"></i> Editar
             </a>
-            <a href="{{ route('colaborador.index') }}" title="Voltar" class="btn btn-sm btn-danger">
-                <i class="fa fa-reply"></i> Voltar
-            </a>
+            <x-botao.btn-voltar :rota="route('colaborador.index')" />
         </div>
     </div>
 @endsection

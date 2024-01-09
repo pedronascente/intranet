@@ -105,10 +105,7 @@
                 <input type="hidden" name="colaborador_id" class="form-control" value="{{ $planilha->colaborador->id }}">
                 <input type="hidden" name="planilha_tipo_id" class="form-control" value="{{ $planilha->tipo->id }}">
                 <x-botao.btn-salvar />
-                
-                <a href="{{ route('planilha-colaborador.index') }}" title="Voltar" class="btn btn-danger btn-sm">
-                    <i class="fa fa-reply"></i> Voltar
-                </a>
+                <x-botao.btn-voltar :rota="route('planilha-colaborador.index')" />
             </div>
         </form>
     </div>

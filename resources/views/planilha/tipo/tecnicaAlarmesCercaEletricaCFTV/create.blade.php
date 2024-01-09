@@ -96,8 +96,6 @@
     </div>
     <div class="card-footer">
         <x-botao.btn-salvar />
-        <a href="{{ route('planilha-colaborador.index') }}" title="Voltar" class="btn btn-sm btn-danger">
-            <i class="fa fa-reply"></i> Voltar
-        </a>
+        <x-botao.btn-voltar :rota="route('planilha-colaborador.index')" />
     </div>
 </form>

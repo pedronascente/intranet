@@ -33,9 +33,7 @@
                 <input type="hidden" name="planilha_id" class="form-control" value="{{ $planilha->id }}">
                 <input type="hidden" name="planilha_status_id" class="form-control" value="4">
                 <x-botao.btn-salvar />
-                <a href="{{ route('planilha-administrativo.index') }}" title="Voltar" class="btn  btn-sm btn-danger">
-                    <i class="fa fa-reply"></i> Voltar
-                </a>
+                <x-botao.btn-voltar :rota="route('planilha-administrativo.index')" />
             </div>
         </form>
     </div>

@@ -28,9 +28,7 @@
             </form>
         </div>
         <div class="card-footer">
-            <a href="{{ route('planilha-colaborador.create') }}" title="Voltar" class="btn btn-danger  btn-sm">
-                <i class="fa fa-reply"></i> Voltar
-            </a>
+            <x-botao.btn-voltar :rota="route('planilha-colaborador.create')" />
         </div>
     </div>
 @endsection

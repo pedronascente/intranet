@@ -107,9 +107,7 @@
                 <a href="{{ route('colaborador.pesquisar') }}" title="Pesquisar" class="btn btn-warning btn-sm">
                     <i class="fa fa-search"></i> Pesquisar Colaborador
                 </a>
-                <a href="{{ route('planilha-colaborador.index') }}" title="Voltar" class="btn btn-danger  btn-sm">
-                    <i class="fa fa-reply"></i> Voltar
-                </a>
+                <x-botao.btn-voltar :rota="route('planilha-colaborador.index')" />
             </div>
         </form>
     </div>
