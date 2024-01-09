@@ -11,11 +11,12 @@
 @endsection
 
 @section('content')
+  <div class="card p-3">
     <div class="card">
         <div class="card-header">
             <x-filtro-form-planilha :route="route('planilha-administrativo.filtro', 'arquivado')" />
         </div> 
-        <div class="card-body  ">
+        <div class="card-body">
             <div class="table-responsive ">
                 <table class="table table-hover table-bordered  text-nowrap table-striped">
                     <thead>
@@ -68,4 +69,5 @@
             @endif
         </div>
     </div>
+</div>
 @endsection

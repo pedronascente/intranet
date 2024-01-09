@@ -19,6 +19,7 @@
                     <thead>
                         <tr>
                             <th>Módulo</th>
+                            <th>slug</th>
                             <th>Descrição</th>
                             <th width="5%" class="text-center">Permissões</th>
                         </tr>
@@ -28,6 +29,7 @@
                             @foreach ($collection as $item)
                                 <tr>
                                     <td>{{ $item->nome }}</td>
+                                    <td>{{ $item->slug }}</td>
                                     <td>{{ $item->descricao }}</td>
                                     <td class="text-center">
                                         @if ($permissoes)
@@ -39,8 +41,10 @@
                                                     </a>
                                                 @endif
                                                 @if ($permissao->nome == 'Excluir')
-                                                    <a href="javascript:void(0)" class="btn btn-sm btn-danger " data-toggle="modal"
-                                                        data-target="#deleteModal" data-id="{{ $item->id }}">
+                                                    <a href="javascript:void(0)" class="btn btn-danger btn-sm"
+                                                        data-toggle="modal" data-target="#deleteModal"
+                                                        data-route="{{ route('modulo.destroy', $item->id) }}"
+                                                        title="Excluir Planilha">
                                                         <i class="fas fa-trash"></i> Excluir
                                                     </a>
                                                 @endif
@@ -62,5 +66,5 @@
             </div>
         </div>
     </div>
-    <x-ui.modalDelete modulo="modulo" />
+       <x-ui.modalDelete />
 @endsection

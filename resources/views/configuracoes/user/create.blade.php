@@ -116,10 +116,7 @@
                         </div>
                     </div>
                 </div>
-
                 <x-ui.panel-dica-boa-senha />
-
-                
             </div>
             <div class="card-footer">
                 <x-botao.btn-salvar />

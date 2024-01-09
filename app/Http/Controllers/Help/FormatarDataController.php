@@ -18,4 +18,31 @@ class FormatarDataController
     }
     return $ret;
   }
+
+  public static function generateSlug($word)
+  {
+    // replace non letter or digits by divider
+    $slug = preg_replace('~[^\pL\d]+~u', '-', $word);
+
+    // transliterate
+    $slug = iconv('utf-8', 'us-ascii//TRANSLIT', $slug);
+
+    // remove unwanted characters
+    $slug = preg_replace('~[^-\w]+~', '', $slug);
+
+    // trim
+    $slug = trim($slug, '-');
+
+    // remove duplicate divider
+    $slug = preg_replace('~-+~', '-', $slug);
+
+    // lowercase
+    $slug = strtolower($slug);
+
+    if (empty($slug)) {
+      return 'n-a';
+    }
+
+    return $slug;
+  }
 }

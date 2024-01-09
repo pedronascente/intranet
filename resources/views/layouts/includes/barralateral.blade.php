@@ -57,35 +57,49 @@
                         @endif
                     </ul>
                 </li-->
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-edit"></i>
-                        <p>
-                            Comisão
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview" style="display: none;">
-                        <li class="nav-item">
-                            <a href="{{ route('planilha-colaborador.index') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Adicionar</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('planilha-administrativo.index') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Conferir</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('planilha-administrativo.arquivado') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Arquivo</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+
+                    @php
+                       //dd(session()->get('perfil')['modulos']);
+                        /*
+                        <tr>
+                        <td>
+                        <a href="{{ $item['rota'] }}">
+                        {{ $item['slug'] }}
+                        </a>
+                        </td>
+                        </tr>
+                        */
+                    @endphp
+
+                    @if (session()->get('perfil'))
+                        @foreach (session()->get('perfil')['modulos'] as $item)
+                            @if ($item['slug'] =='administrar-comissao' || $item['slug'] == 'lancar-comissao' )
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="nav-icon fas fa-edit"></i>
+                                        <p>
+                                            Comisão <i class="fas fa-angle-left right"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview" style="display: none;">
+                                        @foreach (session()->get('perfil')['modulos'] as $menu)
+                                            @if ($menu['slug'] =='administrar-comissao' || $menu['slug'] == 'lancar-comissao' )
+                                                <li class="nav-item">
+                                                    <a href="{{ route('planilha-colaborador.index') }}" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>
+                                                            {{ $menu['nome'] }}  
+                                                        </p>
+                                                    </a>
+                                                </li>
+                                            @endif
+                                        @endforeach
+                                    </ul>
+                                </li>
+                                @break;
+                            @endif
+                        @endforeach
+                    @endif
             </ul>
         </nav>
     </div>

@@ -11,7 +11,7 @@
                 @csrf
                 <div class="input-group mb-3">
                     <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
-                        placeholder="Usuário" value="admin">
+                        placeholder="Usuário" value="">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-user"></span>
@@ -23,7 +23,7 @@
                 </div>
                 <div class="input-group mb-3">
                     <input type="text" name="password" class="form-control @error('password') is-invalid @enderror"
-                        placeholder="Senha" value="Admin@188">
+                        placeholder="Senha" value="">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>

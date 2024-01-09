@@ -7,7 +7,7 @@ use App\Models\Modulo;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Help\PermissaoHelp;
-
+use App\Http\Controllers\Help\FormatarDataController;
 class ModuloController extends Controller
 {
     private $modulo; //id do modulo
@@ -42,10 +42,10 @@ class ModuloController extends Controller
     public function store(Request $request)
     {
         $this->validarFormulario($request);
-        $modulo = new Modulo;
-        $modulo->nome = $request->nome;
-        $modulo->rota = $request->rota;
-        $modulo->slug = $this->getSlug($request->rota);
+        $modulo            = new Modulo;
+        $modulo->nome      = $request->nome;
+        $modulo->rota      = $request->rota;
+        $modulo->slug      = FormatarDataController::generateSlug($request->nome);
         $modulo->descricao = $request->descricao;
         $modulo->save();
         return redirect()
@@ -71,10 +71,10 @@ class ModuloController extends Controller
     public function update(Request $request, $id)
     {
         $this->validarFormulario($request);
-        $modulo = Modulo::findOrFail($id);
-        $modulo->nome = $request->nome;
-        $modulo->rota = $request->rota;
-        $modulo->slug = $this->getSlug($request->rota);
+        $modulo            = Modulo::findOrFail($id);
+        $modulo->nome      = $request->nome;
+        $modulo->rota      = $request->rota;
+        $modulo->slug      = FormatarDataController::generateSlug($request->nome);
         $modulo->descricao = $request->descricao;
         $modulo->update();
         return redirect()
@@ -82,9 +82,9 @@ class ModuloController extends Controller
             ->with('status', "Registro Atualizado!");
     }
 
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
-        $modulo = Modulo::with('perfis')->findOrFail($request->id);
+        $modulo = Modulo::with('perfis')->findOrFail($id);
 
         if ($modulo->perfis->count() >= 1) {
             return redirect()
@@ -102,21 +102,17 @@ class ModuloController extends Controller
     {
         $request->validate(
             [
-                'nome' => 'required|max:190|min:2',
-                'rota' => 'required|max:190|min:2',
+                'tipo_menu'      => 'required|max:190|min:2',
+                'nome'      => 'required|max:190|min:2',
+                'rota'      => 'required|max:190|min:2',
                 'descricao' => 'required|max:190|min:5',
             ],
             [
-                'nome.required' => 'Campo obrigatório.',
-                'rota.required' => 'Campo obrigatório.',
+                'tipo_menu.required'      => 'Selecione um tipo de Menu',
+                'nome.required'      => 'Campo obrigatório.',
+                'rota.required'      => 'Campo obrigatório.',
                 'descricao.required' => 'Campo obrigatório.',
             ]
         );
-    }
-
-    private function getSlug($rota)
-    {
-        $slog = explode('/', $rota);
-        return $slog[2];
     }
 }

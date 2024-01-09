@@ -11,7 +11,9 @@
 @endsection
 
 @section('content')
-    <div class="card p-3">
+
+<div class="card p-3">    
+    <div class="card">
         <div class="card-header">
             <h4>Dados do colaborador</h4>
         </div>
@@ -19,8 +21,11 @@
             @include('planilha.tipo._table-dados-colaborador')
         </div>
     </div>
+</div>    
+
+<div class="card p-3">    
     <div class="card">
-        <div class="card-header table-responsive">
+        <div class="card-header table-responsive ">
             <x-filtro-form-comissao :route="route('planilha-administrativo-tipo.index', $planilha->id)" />
         </div>
         <div class="card-body table-responsive p-0">
@@ -30,4 +35,6 @@
             <x-botao.btns-crud-planilha-administrativo :planilha="$planilha" />
         </div>
     </div>
+</div>    
+
 @endsection

@@ -11,7 +11,9 @@
 @endsection
 
 @section('content')
-    <div class="card">
+
+<div class="card p-3">    
+    <div class="card">  
         <div class="card-header">
              <x-filtro-form-planilha :route="route('planilha-administrativo.filtro', 'conferir')" />
         </div>
@@ -78,6 +80,31 @@
             </div>
         </div>        
     </div>
+</div>    
+@endsection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@section('content')
+
+    
 @endsection
 
 
