@@ -20,6 +20,7 @@
                         <tr>
                             <th>Módulo</th>
                             <th>slug</th>
+                            <th>Tipo Menu</th>
                             <th>Descrição</th>
                             <th width="5%" class="text-center">Permissões</th>
                         </tr>
@@ -30,6 +31,7 @@
                                 <tr>
                                     <td>{{ $item->nome }}</td>
                                     <td>{{ $item->slug }}</td>
+                                    <td>{{ $item->tipo_menu }}</td>
                                     <td>{{ $item->descricao }}</td>
                                     <td class="text-center">
                                         @if ($permissoes)

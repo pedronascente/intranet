@@ -21,8 +21,8 @@
                     <label>Posição do menu:</label>
                     <select name="tipo_menu" class="custom-select  @error('tipo_menu') is-invalid  @enderror">
                         <option value="">...</option>
-                        <option value="menu-lateral" @if(old('tipo_menu') == 'menu-lateral') selected @endif >Lateral Esquerdo</option>
-                        <option value="menu-configuracao" @if(old('tipo_menu') == 'menu-configuracao') selected @endif>Configurações</option>
+                        <option value="menu-lateral" @if($modulo->tipo_menu == 'menu-lateral') selected @endif >Lateral Esquerdo</option>
+                        <option value="menu-configuracao" @if($modulo->tipo_menu == 'menu-configuracao') selected @endif>Configurações</option>
                     </select>
                      @error('tipo_menu')
                         <span class=" invalid-feedback">{{ $message }}</span>

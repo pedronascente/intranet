@@ -58,45 +58,44 @@
                     </ul>
                 </li-->
 
-                    @php
-                       //dd(session()->get('perfil')['modulos']);
-                        /*
-                        <tr>
-                        <td>
-                        <a href="{{ $item['rota'] }}">
-                        {{ $item['slug'] }}
-                        </a>
-                        </td>
-                        </tr>
-                        */
-                    @endphp
-
+                  
                     @if (session()->get('perfil'))
                         @foreach (session()->get('perfil')['modulos'] as $item)
-                            @if ($item['slug'] =='administrar-comissao' || $item['slug'] == 'lancar-comissao' )
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="nav-icon fas fa-edit"></i>
-                                        <p>
-                                            Comisão <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="display: none;">
-                                        @foreach (session()->get('perfil')['modulos'] as $menu)
-                                            @if ($menu['slug'] =='administrar-comissao' || $menu['slug'] == 'lancar-comissao' )
-                                                <li class="nav-item">
-                                                    <a href="{{ route('planilha-colaborador.index') }}" class="nav-link">
-                                                        <i class="far fa-circle nav-icon"></i>
-                                                        <p>
-                                                            {{ $menu['nome'] }}  
-                                                        </p>
-                                                    </a>
-                                                </li>
-                                            @endif
-                                        @endforeach
-                                    </ul>
-                                </li>
-                                @break;
+                            @if ($item['tipo_menu']=="menu-lateral")
+                                @if ($item['slug'] =='administrar-comissao' || $item['slug'] == 'lancar-comissao' )
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="nav-icon fas fa-edit"></i>
+                                            <p>
+                                                Comisão <i class="fas fa-angle-left right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview" style="display: none;">
+                                            @foreach (session()->get('perfil')['modulos'] as $menu)
+                                                @if ($menu['slug'] =='administrar-comissao' || $menu['slug'] == 'lancar-comissao' )
+                                                    <li class="nav-item">
+                                                        <a href="{{ $menu['rota'] }}" class="nav-link">
+                                                            <i class="far fa-circle nav-icon"></i>
+                                                            <p>
+                                                                {{ $menu['nome'] }}  
+                                                            </p>
+                                                        </a>
+                                                    </li>
+                                                @endif
+                                            @endforeach
+                                        </ul>
+                                    </li>
+                                    @break;
+                                 @else
+                                    <li class="nav-item">
+                                            <a href="{{ $item['rota'] }}" class="nav-link">
+                                                <i class="nav-icon fas fa-edit"></i>
+                                                <p>
+                                                    {{ $item['nome'] }}  
+                                                </p>
+                                            </a>
+                                        </li>
+                                @endif    
                             @endif
                         @endforeach
                     @endif

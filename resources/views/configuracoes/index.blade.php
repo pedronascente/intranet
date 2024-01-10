@@ -23,13 +23,15 @@
                     <tbody>
                         @if (session()->get('perfil'))
                             @foreach (session()->get('perfil')['modulos'] as $item)
-                                <tr>
-                                    <td>
-                                        <a href="{{ $item['rota'] }}">
-                                            {{ $item['nome'] }}
-                                        </a>
-                                    </td>
-                                </tr>
+                                @if ($item['tipo_menu']=="menu-configuracao")
+                                    <tr>
+                                        <td>
+                                            <a href="{{ $item['rota'] }}">
+                                                {{ $item['nome'] }}
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endif
                             @endforeach
                         @endif
                     </tbody>

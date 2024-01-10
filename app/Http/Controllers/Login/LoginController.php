@@ -85,10 +85,11 @@ class LoginController extends Controller
         if ($perfil->modulos) {
             foreach ($perfil->modulos as  $modulo) {
                 $sessaoPerfil['modulos'][] = [
-                    "id" => $modulo->id,
-                    "nome" => $modulo->nome,
-                    "rota" => $modulo->rota,
-                    "slug" => $modulo->slug,
+                    "id"        => $modulo->id,
+                    "nome"      => $modulo->nome,
+                    "rota"      => $modulo->rota,
+                    "slug"      => $modulo->slug,
+                    "tipo_menu" => $modulo->tipo_menu,
                 ];
             }
         }
