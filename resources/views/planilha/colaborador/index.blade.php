@@ -8,8 +8,8 @@
     <div class="card-header">
         <h3>
             <a href="{{ route('planilha-colaborador.create') }}" class="btn btn-primary  btn-sm"
-                title="Cadastrar nova Planilha">
-                <i class="fas fa-solid fa-plus"></i> Cadastrar
+                title="Criar Planilha">
+                <i class="fas fa-solid fa-plus"></i> Planilha
             </a>
         </h3>
     </div>

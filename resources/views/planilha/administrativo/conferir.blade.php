@@ -12,7 +12,21 @@
 
 @section('content')
 
-<div class="card p-3">    
+<div class="card p-3">  
+    <div class="card">  
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="{{ route('planilha-administrativo.arquivado') }}" class="btn btn-sm btn-info ">
+                    <i class="fas fa-folder"></i> Arquivos
+                </a>
+                <a href="{{ route('planilha-administrativo.arquivado') }}" class="btn btn-sm btn-info ">
+                    <i class="fas fa-folder"></i> Relatorio
+                </a>
+            </div>    
+        </div>
+    </div>
+    </div>
     <div class="card">  
         <div class="card-header">
              <x-filtro-form-planilha :route="route('planilha-administrativo.filtro', 'conferir')" />
