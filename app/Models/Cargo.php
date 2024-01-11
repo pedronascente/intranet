@@ -17,4 +17,24 @@ class Cargo extends Model
     {
         return $this->hasMany(Colaborador::class);
     }
+
+    public function rules($method)
+    {
+        switch ($method) {
+            case 'update':
+                return ['nome' => 'required|max:190|min:2'];
+                break;
+            case 'store':
+                return ['nome' => 'required|max:190|min:2|unique:cargos,nome'];
+                break;
+        }
+    }
+
+    public function feedback()
+    {
+        return [
+            'nome.required' => 'Campo obrigatório.',
+            'nome.unique' => 'Este nome já está sendo utilizado.',
+        ];
+    }
 }
