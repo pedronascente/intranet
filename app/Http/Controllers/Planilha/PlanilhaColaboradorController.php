@@ -36,7 +36,7 @@ class PlanilhaColaboradorController extends Controller
             ->paginate($this->paginate);
 
         return view('planilha.colaborador.index', [
-            'titulo'      => $this->titulo . " | Adicionar ",
+            'titulo'      => "Lançar Comisssão",
             'collections' => $collection
         ]);
     }
@@ -50,7 +50,7 @@ class PlanilhaColaboradorController extends Controller
     public function create(Request $request)
     {
         if (isset($request->user()->id)) {
-            $titulo      =  $this->titulo . " | Cadastrar";
+            $titulo      =  "Criar " . $this->titulo;
             $periodos    = PlanilhaPeriodo::all();
             $tipos       = PlanilhaTipo::all();
             $id          = $request->input('id') ? $request->input('id') : $request->user()->colaborador_id;
