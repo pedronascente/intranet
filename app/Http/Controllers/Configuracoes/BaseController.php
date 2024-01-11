@@ -9,110 +9,92 @@ use App\Http\Controllers\Help\PermissaoHelp;
 
 class BaseController extends Controller
 {
-    private $modulo; //id do modulo
-    private $paginate;
-    private $actionIndex;
-
-    public function __construct()
+    private $modulo_id; //id do modulo
+    private $base;
+   
+    public function __construct(Base $base)
     {
-        $this->modulo = 9; //id do modulo
-        $this->paginate = 10;
-        $this->actionIndex = 'App\Http\Controllers\Configuracoes\BaseController@index';
+        $this->base      = $base; 
+        $this->modulo_id = 9; 
     }
 
     public function index()
     {
         return view('configuracoes.base.index', [
-            'collection' => Base::orderBy('id', 'desc')->paginate($this->paginate),
-            'permissoes' => PermissaoHelp::getPermissoes($this->modulo),
+            'collection' => $this->base->orderBy('id', 'desc')->paginate(10),
+            'permissoes' => PermissaoHelp::getPermissoes($this->modulo_id),
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        if (PermissaoHelp::verificaPermissao(['permissao' => 'Criar', 'modulo' => $this->modulo])) {
+        if (PermissaoHelp::verificaPermissao([
+                'permissao' => 'Criar', 
+                'modulo' => $this->modulo_id
+            ])){
             return view('configuracoes.base.create');
         } else {
-            return redirect()
-                ->action($this->actionIndex);
+            return redirect()->route('base.index');
         }
     }
 
     public function store(Request $request)
     {
-        $this->validarFormulario($request, 'store');
-        $base = new Base();
+        $request->validate($this->base->rules('store'), $this->base->feedback());
+        $base       = $this->base;
         $base->nome = $request->nome;
         $base->save();
         return redirect()
-            ->action($this->actionIndex)
+            ->route('base.index')
             ->with('status', "Registrado com sucesso!");
     }
 
     public function edit($id)
     {
-        if (PermissaoHelp::verificaPermissao(['permissao' => 'Editar', 'modulo' => $this->modulo])) {
-            return view('configuracoes.base.edit', ['base' => Base::findOrFail($id)]);
+        if (PermissaoHelp::verificaPermissao([
+            'permissao' => 'Editar', 
+            'modulo'    => $this->modulo_id
+        ])) {
+            return view('configuracoes.base.edit', [
+                'base' => $this->base->findOrFail($id)
+            ]);
         } else {
             return redirect()
-                ->action($this->actionIndex);
+                ->route('base.index');
         }
     }
 
     public function update(Request $request, $id)
     {
-        $this->validarFormulario($request, 'update');
-        $base = Base::findOrFail($id);
+        $request->validate($this->base->rules('update'), $this->base->feedback());
+
+        $base       = $this->base->findOrFail($id);
         $base->nome = $request->nome;
         $base->update();
+        
         return redirect()
-            ->action($this->actionIndex)
+            ->route('base.index')
             ->with('status', "Registro Atualizado!");
     }
 
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
-        $base = Base::with('colaboradores')->findOrFail($request->id);
+        $base = $this->base->with('colaboradores')->findOrFail($id);
         if ($base) {
             if ($base->colaboradores->count() >= 1) {
                 return redirect()
-                    ->action($this->actionIndex)
+                    ->route('base.index')
                     ->with('warning', "Esta Base está sendo utilizada, por tanto não pode ser excluida.");
             }
             $base->delete();
+            
             return redirect()
-                ->action($this->actionIndex)
+                ->route('base.index')
                 ->with('status', "Registro Excluido!");
         } else {
             return redirect()
-                ->action($this->actionIndex)
+                ->route('base.index')
                 ->with('warning', "Registro não encontrado.");
         }
-    }
-
-    private function validarFormulario(Request $request, $method)
-    {
-        switch ($method) {
-            case 'update':
-                $regras = 'required|max:190|min:2';
-                break;
-            case 'store':
-                $regras = 'required|max:190|min:2|unique:bases,nome';
-                break;
-        }
-        $request->validate(
-            [
-                'nome' => $regras,
-            ],
-            [
-                'nome.required' => 'Campo obrigatório.',
-                'nome.unique' => 'Este nome já está sendo utilizado.',
-            ]
-        );
     }
 }
