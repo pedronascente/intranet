@@ -15,22 +15,24 @@
     <div class="card p-3">
         <form action="{{ route('perfil.store') }}" method="post">
             @csrf
-            <div class="card-body">
-                <div class="form-group">
-                    <label>Nome:</label>
-                    <input type="text" name="nome" class="form-control @error('nome') is-invalid  @enderror"
-                        placeholder="nome" value="{{ old('nome') }}">
-                    @error('nome')
-                        <span class=" invalid-feedback">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="form-group">
-                    <label>Descrição:</label>
-                    <input type="text" name="descricao" class="form-control @error('descricao') is-invalid  @enderror"
-                        placeholder="Breve descrição" value="{{ old('descricao') }}">
-                    @error('descricao')
-                        <span class=" invalid-feedback">{{ $message }}</span>
-                    @enderror
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Nome:</label>
+                        <input type="text" name="nome" class="form-control @error('nome') is-invalid  @enderror"
+                            placeholder="nome" value="{{ old('nome') }}">
+                        @error('nome')
+                            <span class=" invalid-feedback">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label>Descrição:</label>
+                        <input type="text" name="descricao" class="form-control @error('descricao') is-invalid  @enderror"
+                            placeholder="Breve descrição" value="{{ old('descricao') }}">
+                        @error('descricao')
+                            <span class=" invalid-feedback">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
             </div>
             <div class="card">

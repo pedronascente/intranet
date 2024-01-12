@@ -13,22 +13,24 @@
 
 @section('content')
     <div class="card p-3">
-        <form action="{{ route('cargo.store') }}" method="POST">
-            @csrf
-            <div class="card-body">
-                <div class="form-group">
-                    <label>Nome:</label>
-                    <input type="text" name="nome" class="form-control @error('nome') is-invalid  @enderror"
-                        placeholder="Nome">
-                    @error('nome')
-                        <span class=" invalid-feedback">{{ $message }}</span>
-                    @enderror
+        <div class="card">
+            <form action="{{ route('cargo.store') }}" method="POST">
+                @csrf
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Nome:</label>
+                        <input type="text" name="nome" class="form-control @error('nome') is-invalid  @enderror"
+                            placeholder="Nome">
+                        @error('nome')
+                            <span class=" invalid-feedback">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
-            </div>
-            <div class="card-footer">
-                <x-botao.btn-salvar />
-                <x-botao.btn-voltar :rota="route('cargo.index')" />
-            </div>
-        </form>
+                <div class="card-footer">
+                    <x-botao.btn-salvar />
+                    <x-botao.btn-voltar :rota="route('cargo.index')" />
+                </div>
+            </form>
+        </div>
     </div>
 @endsection

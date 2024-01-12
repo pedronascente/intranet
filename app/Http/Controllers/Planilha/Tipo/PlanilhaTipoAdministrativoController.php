@@ -28,18 +28,15 @@ class PlanilhaTipoAdministrativoController extends Controller
     if ($filtro) {
       return $this->getViewWithComissaoDataFiltro($tipo_planilha, $planilha, $this->getComissaoModel($tipo_planilha), $filtro);
     }
-
     return $this->getViewWithComissaoData($tipo_planilha, $planilha, $this->getComissaoModel($tipo_planilha));
   }
-
 
   public function imprimirPDF($id)
   {
     $planilha           = $this->getPlanilhaWithRelationships($id);
     $tipo_planilha      = $planilha->tipo->formulario;
     $valorTotalComissao = $this->getComissaoModel($tipo_planilha)::where('planilha_id', $planilha->id)->sum('comissao');
-
-    $img_logo = 'img/empresa/' . $planilha->colaborador->empresa->imglogo;
+    $img_logo           = ($planilha->colaborador->empresa->imglogo) ? 'img/empresa/' . $planilha->colaborador->empresa->imglogo : 'img/empresa/logo-default.jpg';
 
     // Converte a imagem em base64
     $volpatoImage = base64_encode(file_get_contents(public_path($img_logo)));

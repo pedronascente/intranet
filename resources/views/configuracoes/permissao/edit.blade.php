@@ -13,23 +13,25 @@
 
 @section('content')
     <div class="card p-3">
-        <form action="{{ route('permissao.update', $permissao->id) }}" method="POST" name="Formulario-permissao-edit">
-            @csrf
-            @method('PUT')
-            <div class="card-body">
-                <div class="form-group">
-                    <label>Nome:</label>
-                    <input type="text" name="nome" class="form-control @error('nome') is-invalid  @enderror"
-                        placeholder="nome" value="{{ $permissao->nome }}">
-                    @error('nome')
-                        <span class=" invalid-feedback">{{ $message }}</span>
-                    @enderror
+        <div class="card">
+            <form action="{{ route('permissao.update', $permissao->id) }}" method="POST" name="Formulario-permissao-edit">
+                @csrf
+                @method('PUT')
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Nome:</label>
+                        <input type="text" name="nome" class="form-control @error('nome') is-invalid  @enderror"
+                            placeholder="nome" value="{{ $permissao->nome }}">
+                        @error('nome')
+                            <span class=" invalid-feedback">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
-            </div>
-            <div class="card-footer">
-                <x-botao.btn-salvar />
-                <x-botao.btn-voltar :rota="route('permissao.index')" />
-            </div>
-        </form>
+                <div class="card-footer">
+                    <x-botao.btn-salvar />
+                    <x-botao.btn-voltar :rota="route('permissao.index')" />
+                </div>
+            </form>
+        </div>
     </div>
 @endsection

@@ -38,10 +38,7 @@
                                                     </a>
                                                 @endif
                                                 @if ($item->nome == 'Excluir')
-                                                    <a href="javascript:void(0)" class="btn btn-sm  btn-danger" data-toggle="modal"
-                                                        data-target="#deleteModal" data-id="{{ $base->id }}">
-                                                        <i class="fas fa-trash"></i> Excluir
-                                                    </a>
+                                                    <x-botao.btn-excluir :rota="route('base.destroy', $base->id)" titulo="Excluir Base" />
                                                 @endif
                                             @endforeach
                                         @endif

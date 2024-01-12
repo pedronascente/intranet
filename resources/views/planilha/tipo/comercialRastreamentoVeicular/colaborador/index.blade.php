@@ -11,21 +11,25 @@
 @endsection
 
 @section('content')
-    <div class="card  p-3">
-        <div class="card-header">
-            <h4>Cadastrar comissão</h4>
-        </div>
-        <div class="card-body table-responsive p-0">
-            @include('planilha.tipo.comercialRastreamentoVeicular.create')
+    <div class="card p-3">
+        <div class="card">
+            <div class="card-header">
+                <h4>Cadastrar comissão</h4>
+            </div>
+            <div class="card-body table-responsive p-0">
+                @include('planilha.tipo.comercialRastreamentoVeicular.create')
+            </div>
         </div>
     </div>
-    <div class="card  p-3">
-        <div class="card-header">
-            <h4>Lista de Comissões</h4>
-        </div>
-        <div class="card-body table-responsive p-0">
-            @include('planilha.tipo.comercialRastreamentoVeicular.colaborador.table')
-            <x-ui.modalDelete />
+    <div class="card p-3">
+        <div class="card">
+            <div class="card-header">
+                <h4>Lista de Comissões</h4>
+            </div>
+            <div class="card-body table-responsive p-0">
+                @include('planilha.tipo.comercialRastreamentoVeicular.colaborador.table')
+                <x-ui.modalDelete />
+            </div>
         </div>
     </div>
 @endsection

@@ -12,29 +12,31 @@
 
 @section('content')
     <div class="card p-3">
-        <form action="{{ route('planilha-administrativo.reprovarUpdate', $planilha->id) }}" method="POST">
-            @csrf
-            @method('PUT')
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label>Motivo da Reprovação:</label>
-                            <textarea name="motivo_reprovacao" rows="4" cols="50"
-                                class="form-control @error('motivo_reprovacao') is-invalid  @enderror"></textarea>
-                            @error('motivo_reprovacao')
-                                <span class=" invalid-feedback">{{ $message }}</span>
-                            @enderror
+        <div class="card">
+            <form action="{{ route('planilha-administrativo.reprovarUpdate', $planilha->id) }}" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Motivo da Reprovação:</label>
+                                <textarea name="motivo_reprovacao" rows="4" cols="50"
+                                    class="form-control @error('motivo_reprovacao') is-invalid  @enderror"></textarea>
+                                @error('motivo_reprovacao')
+                                    <span class=" invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="card-footer">
-                <input type="hidden" name="planilha_id" class="form-control" value="{{ $planilha->id }}">
-                <input type="hidden" name="planilha_status_id" class="form-control" value="4">
-                <x-botao.btn-salvar />
-                <x-botao.btn-voltar :rota="route('planilha-administrativo.index')" />
-            </div>
-        </form>
+                <div class="card-footer">
+                    <input type="hidden" name="planilha_id" class="form-control" value="{{ $planilha->id }}">
+                    <input type="hidden" name="planilha_status_id" class="form-control" value="4">
+                    <x-botao.btn-salvar />
+                    <x-botao.btn-voltar :rota="route('planilha-administrativo.index')" />
+                </div>
+            </form>
+        </div>
     </div>
 @endsection

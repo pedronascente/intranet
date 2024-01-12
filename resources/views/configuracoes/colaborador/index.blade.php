@@ -39,12 +39,7 @@
                                         @if ($permissoes)
                                             @foreach ($permissoes as $permissao)
                                                 @if ($permissao->nome == 'Excluir')
-                                                    <a href="javascript:void(0)" class="btn btn-danger btn-sm"
-                                                        data-toggle="modal" data-target="#deleteModal"
-                                                        data-route="{{ route('colaborador.destroy', $item->id) }}"
-                                                        title="Excluir Colaborador">
-                                                        <i class="fas fa-trash"></i> Excluir
-                                                    </a>
+                                                    <x-botao.btn-excluir :rota="route('colaborador.destroy', $item->id)" titulo="Excluir Colaborador" />
                                                 @endif
                                                 @if ($permissao->nome == 'Visualizar')
                                                     <a href="{{ route('colaborador.show', $item->id) }}" title="Visualizar"

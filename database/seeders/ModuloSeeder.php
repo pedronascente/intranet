@@ -16,7 +16,7 @@ class ModuloSeeder extends Seeder
         DB::table('modulos')->insert(['nome' => 'Perfil',              'rota' => '/configuracoes/perfil',        'slug' => 'perfil',               'tipo_menu' => 'menu-configuracao', 'descricao' => "Responsável por Gerenciar Perfil de usuário."]);
         DB::table('modulos')->insert(['nome' => 'Usuário',             'rota' => '/configuracoes/user',          'slug' => 'user',                 'tipo_menu' => 'menu-configuracao', 'descricao' => "Responsável por Gerenciar Usuario."]);
         DB::table('modulos')->insert(['nome' => 'Base',                'rota' => '/configuracoes/base',          'slug' => 'base',                 'tipo_menu' => 'menu-configuracao', 'descricao' => "Responsável por Criar as Bases."]);
-        DB::table('modulos')->insert(['nome' => 'Lançar Comissão',     'rota' => '/planilha/colaborador',        'slug' => 'lancar-comissao',      'tipo_menu' => 'menu-lateral',      'descricao' => "Responsável por lanças as comissões dos colaboradores."]);
-        DB::table('modulos')->insert(['nome' => 'Administrar Comissão','rota' => '/planilha-administrativo',     'slug' => 'administrar-comissao', 'tipo_menu' => 'menu-lateral',      'descricao' => "Responsável por Administrar as comissões dos colaboradores."]);
+        DB::table('modulos')->insert(['nome' => 'Lançar Comissão',     'rota' => '/comissao',        'slug' => 'lancar-comissao',      'tipo_menu' => 'menu-lateral',      'descricao' => "Responsável por lanças as comissões dos colaboradores."]);
+        DB::table('modulos')->insert(['nome' => 'Administrar Comissão','rota' => '/comissao/administrar',     'slug' => 'administrar-comissao', 'tipo_menu' => 'menu-lateral',      'descricao' => "Responsável por Administrar as comissões dos colaboradores."]);
     }
 }

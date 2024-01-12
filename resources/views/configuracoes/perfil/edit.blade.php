@@ -15,14 +15,16 @@
         <form action="{{ route('perfil.update', $perfil->id) }}" method="POST">
             @csrf
             @method('PUT')
-            <div class="card-body">
-                <div class="form-group">
-                    <label>Nome:</label>
-                    <input type="text" name="nome" class="form-control" value="{{ $perfil->nome }}">
-                </div>
-                <div class="form-group">
-                    <label>Descrição:</label>
-                    <input type="text" name="descricao" class="form-control" value="{{ $perfil->descricao }}">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Nome:</label>
+                        <input type="text" name="nome" class="form-control" value="{{ $perfil->nome }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Descrição:</label>
+                        <input type="text" name="descricao" class="form-control" value="{{ $perfil->descricao }}">
+                    </div>
                 </div>
             </div>
             <div class="card">

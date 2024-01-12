@@ -18,7 +18,7 @@
                   <div class="dropdown-divider">
                   </div>
                   <a href="{{ route('login.sair') }}" class="dropdown-item dropdown-footer">Sair</a>
-              </div>
+               </div>
           </li>
       </ul>
   </nav>

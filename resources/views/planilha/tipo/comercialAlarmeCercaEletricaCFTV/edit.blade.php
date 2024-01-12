@@ -7,6 +7,7 @@
 @endsection
 
 @section('content')
+<div class="card p-3">
     <div class="card">
         <div class="card-header">
             <h4>Editar Comissão</h4>
@@ -151,4 +152,5 @@
             </div>
         </form>
     </div>
+</div>
 @endsection
