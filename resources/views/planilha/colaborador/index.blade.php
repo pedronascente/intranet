@@ -58,12 +58,7 @@
                                         class="btn btn-success btn-sm" title="Lançar Planilha">
                                         Homologar
                                     </a>
-                                    <a href="javascript:void(0)" class="btn btn-danger btn-sm" data-toggle="modal"
-                                        data-target="#deleteModal"
-                                        data-route="{{ route('planilha-colaborador.destroy', $item->id) }}"
-                                        title="Excluir Planilha">
-                                        <i class="fas fa-trash"></i> Excluir
-                                    </a>
+                                    <x-botao.btn-excluir :rota="route('planilha-colaborador.destroy', $comissao->id)" titulo="Excluir Comissão" />
                                 </td>
                             </tr>
                         @endforeach

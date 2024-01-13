@@ -21,18 +21,12 @@
                         <td>{{ $comissao->conta_pedido }}</td>
                         <td>{{ 'R$ ' . number_format($comissao->comissao, 2, ',', '.') }}</td>
                         <td>{{ 'R$ ' . number_format($comissao->desconto_comissao, 2, ',', '.') }}</td>
-
                         <td>
                             <a href="{{ route('entrega-de-alarme.edit', $comissao->id) }}" class="btn btn-primary btn-sm"
                                 title="Editar comissão">
                                 <i class="nav-icon fas fa-edit"></i> Editar
                             </a>
-                            <a href="javascript:void(0)" class="btn btn-danger btn-sm" data-toggle="modal"
-                                data-target="#deleteModal"
-                                data-route="{{ route('entrega-de-alarme.destroy', $comissao->id) }}"
-                                title="Excluir comissão">
-                                <i class="fas fa-trash"></i> Excluir
-                            </a>
+                            <x-botao.btn-excluir :rota="route('entrega-de-alarme.destroy', $comissao->id)" titulo="Excluir Comissão" />
                         </td>
                     </tr>
                 @endforeach

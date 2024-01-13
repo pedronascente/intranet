@@ -42,12 +42,7 @@
                                                     </a>
                                                 @endif
                                                 @if ($permissao->nome == 'Excluir')
-                                                    <a href="javascript:void(0)" class="btn btn-danger btn-sm"
-                                                        data-toggle="modal" data-target="#deleteModal"
-                                                        data-route="{{ route('empresa.destroy', $item->id) }}"
-                                                        title="Excluir Planilha">
-                                                        <i class="fas fa-trash"></i> Excluir
-                                                    </a>
+                                                    <x-botao.btn-excluir :rota="route('empresa.destroy', $item->id)" titulo="Excluir Empresa" />
                                                 @endif
                                             @endforeach
                                         @endif
