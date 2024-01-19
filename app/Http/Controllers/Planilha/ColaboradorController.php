@@ -10,7 +10,7 @@ use App\Models\Planilha\Tipo\PlanilhaTipo;
 use App\Models\Planilha\PlanilhaStatus;
 use App\Models\Planilha\PlanilhaPeriodo;
 
-class PlanilhaColaboradorController extends Controller
+class ColaboradorController extends Controller
 {
     private $titulo;
     private $paginate;
@@ -83,7 +83,7 @@ class PlanilhaColaboradorController extends Controller
         // Verifica se já existe uma planilha duplicada
         if ($this->validarDuplicidade($request) >= 1) {
             return redirect()
-                ->route('planilha-colaborador.index')
+                ->route('planilha.index')
                 ->with('warning', "Esta planilha já foi criada!");
         }
 
@@ -103,7 +103,7 @@ class PlanilhaColaboradorController extends Controller
         $this->planilha->save();
 
         return redirect()
-            ->route('planilha-colaborador.index')
+            ->route('planilha.index')
             ->with('status', 'Registrado com sucesso.');
     }
 
@@ -142,12 +142,12 @@ class PlanilhaColaboradorController extends Controller
         // Redireciona para a rota apropriada com a mensagem de sucesso
         if (isset($request->formulario) && $request->formulario == 'administrativo') {
             return redirect()
-                ->route('planilha-administrativo.index')
+                ->route('comissao.administrativo.index')
                 ->with('status', 'Registro atualizado com sucesso.');
         }
 
         return redirect()
-            ->route('planilha-colaborador.index')
+            ->route('planilha.index')
             ->with('status', 'Registro atualizado com sucesso.');
     }
 
@@ -163,7 +163,7 @@ class PlanilhaColaboradorController extends Controller
         $planilha->delete();
 
         return redirect()
-            ->route('planilha-colaborador.index')
+            ->route('planilha.index')
             ->with('status', "Registro Excluído!");
     }
 
@@ -180,7 +180,7 @@ class PlanilhaColaboradorController extends Controller
         $planilha->update();
 
         return redirect()
-            ->route('planilha-colaborador.index')
+            ->route('planilha.index')
             ->with('status', "Planilha encaminhada para Homologação.");
     }
 

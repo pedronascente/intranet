@@ -142,4 +142,6 @@ class Colaborador extends Model
             'required' => 'Campo obrigatório.',
         ];
     }
+
+
 }

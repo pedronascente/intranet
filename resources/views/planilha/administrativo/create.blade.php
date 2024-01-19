@@ -5,7 +5,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
-            <a href="{{ route('planilha-colaborador.index') }}">Planilhas</a>
+            <a href="{{ route('planilha.index') }}">Planilhas</a>
         </li>
     </ol>
 @endsection
@@ -117,7 +117,7 @@
                 </div>
                 <div class="card-footer">
                     <x-botao.btn-salvar />
-                    <x-botao.btn-voltar :rota="route('planilha-colaborador.index')" />
+                    <x-botao.btn-voltar :rota="route('planilha.index')" />
                 </div>
             </form>
         </div>

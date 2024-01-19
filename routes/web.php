@@ -16,8 +16,10 @@ use App\Http\Controllers\Configuracoes\PerfilController;
 use App\Http\Controllers\Configuracoes\EmpresaController;
 use App\Http\Controllers\Configuracoes\PermissaoController;
 use App\Http\Controllers\Configuracoes\ColaboradorController;
-use App\Http\Controllers\Planilha\PlanilhaAdministrativoController;
-use App\Http\Controllers\Planilha\PlanilhaColaboradorController;
+use App\Http\Controllers\Planilha\AdministrativoController;
+use App\Http\Controllers\Planilha\ArquivoController;
+use App\Http\Controllers\Planilha\ColaboradorController as PlanilhaColaboradorController;
+use App\Http\Controllers\Planilha\RelatorioController as PlanilhaRelatorioController;
 use App\Http\Controllers\Planilha\Tipo\EntregaDeAlarmeController;
 use App\Http\Controllers\Planilha\Tipo\PortariaVirtualController;
 use App\Http\Controllers\Planilha\Tipo\ReclamacaoDeClienteController;
@@ -32,7 +34,7 @@ use App\Http\Controllers\Planilha\Tipo\SupervisaoComercialAlarmesCercaEletricaCF
 use App\Http\Controllers\Planilha\Tipo\SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController;
 
 Route::prefix('/login')->group(function () {
-    Route::get('/', [LoginController::class, 'showForm'])->name('login.form');
+    Route::get('/', [LoginController::class, 'create'])->name('login.form');
     Route::get('/logout', [LoginController::class, 'logout'])->name('login.sair');
     Route::post('/', [LoginController::class, 'login'])->name('login');
 });
@@ -52,9 +54,9 @@ Route::middleware(['auth', 'verificarToken'])->group(
     }
 );
 
-Route::middleware(['auth', 'verificarToken', 'verificarModulos'])->group(function () {
-    Route::prefix('/configuracoes')->group(
-        function () {
+Route::middleware(['auth', 'verificarToken'])->group(function () {
+    Route::prefix('/configuracoes')->group(function () {
+        Route::middleware(['verificarModulos:Perfil'])->group(function () {
             Route::prefix('/perfil')->group(function () {
                 Route::get('/desativar/{id}', [PerfilController::class, 'desativar']);
                 Route::get('/', [PerfilController::class, 'index'])->name('perfil.index');
@@ -65,103 +67,91 @@ Route::middleware(['auth', 'verificarToken', 'verificarModulos'])->group(functio
                 Route::post('/', [PerfilController::class, 'store'])->name('perfil.store');
                 Route::delete('/{id}', [PerfilController::class, 'destroy'])->name('perfil.destroy');
             });
-            Route::resource('/cargo', CargoController::class);
-            Route::resource('/colaborador', ColaboradorController::class);
-            Route::resource('/empresa', EmpresaController::class);
-            Route::resource('/permissao', PermissaoController::class);
-            Route::resource('/modulo', ModuloController::class);
-            Route::resource('/user', UserController::class);
-            Route::resource('/base', BaseController::class);
-        }
-    );
+        });        
+        Route::resource('/colaborador', ColaboradorController::class)->middleware(['verificarModulos:Colaborador']);
+        Route::resource('/empresa', EmpresaController::class)->middleware(['verificarModulos:Empresa']);
+        Route::resource('/permissao', PermissaoController::class)->middleware(['verificarModulos:Permissão']);
+        Route::resource('/modulo', ModuloController::class)->middleware(['verificarModulos:Modulo']);
+        Route::resource('/user', UserController::class)->middleware(['verificarModulos:Usuário']);
+        Route::resource('/base', BaseController::class)->middleware(['verificarModulos:Base']);
+        Route::resource('/cargo', CargoController::class)->middleware(['verificarModulos:Cargo']);
+    });
 });
 
 Route::prefix('/meu-perfil')->group(function () {
     Route::get('/', [UserController::class, 'meuPerfil'])->name('user.meuPerfil');
     Route::put('/resetar-senha/{id}', [UserController::class, 'resetarSenha'])->name('user.resetarSenha');
-    Route::get('/{id}/edit', [ColaboradorController::class, 'editarMeuPerfil'])->name('user.editarMeuPerfil');  
+    Route::get('/{id}/edit', [ColaboradorController::class, 'editarMeuPerfil'])->name('user.editarMeuPerfil');
 });
 
 Route::get('/senha/{email}/{token}', [UserController::class, 'senhaCreate'])->name('senha');
-Route::get('/senha', [UserController::class, 'senhaSucesso']);
+Route::get('/senha', [UserController::class, 'senhaSucesso'])->name('user.senhaSucesso');
 Route::prefix('/recuperar')->group(function () {
-    Route::get('/', [UserController::class, 'recuperarSenhaCreate'])->name('user.recuperar');
+    Route::get('/', [UserController::class, 'recuperarSenhaCreate'])->name('user.recuperarSenhaCreate');
     Route::post('/', [UserController::class, 'recuperarSenhaStore']);
     Route::get('/sucesso', [UserController::class, 'recuperarSenhaSucesso']);
 });
 
 
+Route::middleware(['verificarModulos:Lançar Comissão'])->group(function () {
+    Route::prefix('/comissao')->group(function () {
+        //planililha:
+        Route::resource('/planilha', PlanilhaColaboradorController::class);
+        Route::get('/planilha{planilha}/homologar', [PlanilhaColaboradorController::class, 'homologar'])->name('planilha.homologar');
 
-// Rotas para Planilha Colaborador
-/*
-Route::prefix('/planilha/colaborador')->group(function () {
-    Route::get('/', [PlanilhaColaboradorController::class, 'index'])->name('planilha-colaborador.index');
-    Route::get('/create', [PlanilhaColaboradorController::class, 'create'])->name('planilha-colaborador.create');
-    Route::get('/{id}/edit', [PlanilhaColaboradorController::class, 'edit'])->name('planilha-colaborador.edit');
-    Route::delete('/{id}', [PlanilhaColaboradorController::class, 'destroy'])->name('planilha-colaborador.destroy');
-    Route::put('/{id}', [PlanilhaColaboradorController::class, 'update'])->name('planilha-colaborador.update');
-    Route::post('/', [PlanilhaColaboradorController::class, 'store'])->name('planilha-colaborador.store');
-    Route::get('/{id}/homologar', [PlanilhaColaboradorController::class, 'homologar'])->name('planilha-colaborador.homologar');
-    Route::get('/{id}/comissao', [PlanilhaTipoColaboradorController::class, 'index'])->name('planilha-colaborador-tipo.index');
+        //pesquisar colaborador:   
+        Route::prefix('/pesquisar')->group(function () {
+            Route::get('/', [ColaboradorController::class, 'createPesquisar'])->name('colaborador.pesquisar');
+            Route::get('/resultado', [ColaboradorController::class, 'showPesquisar'])->name('colaborador.showPesquisar');
+        });
+
+        //comissoes:
+        Route::get('/{id}/plailha', [PlanilhaTipoColaboradorController::class, 'index'])->name('planilha-colaborador-tipo.index');
+        Route::resource('/reclamacao-de-cliente', ReclamacaoDeClienteController::class);
+        Route::resource('/entrega-de-alarme', EntregaDeAlarmeController::class);
+        Route::resource('/supervisao-cace-cftv', SupervisaoComercialAlarmesCercaEletricaCFTVController::class);
+        Route::resource('/supervisao-c-r', SupervisaoComercialRastreamentoController::class);
+        Route::resource('/tecnica-de-rastreamento', TecnicaDeRastreamentoController::class);
+        Route::resource('/stsace-cftv', SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController::class);
+        Route::resource('/portaria-virtual', PortariaVirtualController::class);
+        Route::resource('/cace-cftv', ComercialAlarmeCercaEletricaCFTVController::class);
+        Route::resource('/comercial-rastreamento-veicular', ComercialRastreamentoVeicularController::class);
+        Route::resource('/tecnica-ace-cftv', TecnicaAlarmesCercaEletricaCFTVController::class);
+
+    });
 });
 
-*/
+Route::middleware(['verificarModulos:Administrar Comissão'])->group(function () {
+    Route::prefix('/comissao')->group(function () {
+        Route::name('comissao.')->group(function () {
+            Route::resource('/administrativo', AdministrativoController::class);
+            Route::get('/{filtro}', [AdministrativoController::class, 'pesquisarPor'])->name('administrativo.filtro');
+        });
 
- 
-Route::prefix('/comissao')->group(function () {
-    Route::get('/', [PlanilhaColaboradorController::class, 'index'])->name('planilha-colaborador.index');
-    Route::get('/create', [PlanilhaColaboradorController::class, 'create'])->name('planilha-colaborador.create');
-    Route::get('/{id}/edit', [PlanilhaColaboradorController::class, 'edit'])->name('planilha-colaborador.edit');
-    Route::delete('/{id}', [PlanilhaColaboradorController::class, 'destroy'])->name('planilha-colaborador.destroy');
-    Route::put('/{id}', [PlanilhaColaboradorController::class, 'update'])->name('planilha-colaborador.update');
-    Route::post('/', [PlanilhaColaboradorController::class, 'store'])->name('planilha-colaborador.store');
-    Route::get('/{id}/homologar', [PlanilhaColaboradorController::class, 'homologar'])->name('planilha-colaborador.homologar');
-    Route::get('/{id}/plailha', [PlanilhaTipoColaboradorController::class, 'index'])->name('planilha-colaborador-tipo.index');
+        Route::prefix('/administrativo')->group(function () {
+            Route::prefix('/reprovar')->group(function () {
+                Route::name('comissao.')->group(function () {
+                    Route::get('/{id}', [AdministrativoController::class, 'editReprovar'])->name('administrativo.reprovar');
+                    Route::put('/{id}', [AdministrativoController::class, 'updateReprovar'])->name('administrativo.reprovarUpdate');
+                });
+            });
+            Route::get('/imprimir-pdf/{id}', [PlanilhaTipoAdministrativoController::class, 'imprimirPDF'])->name('comissao.administrativo.imprimirPDF');
+            Route::get('relatorio/buscar', [PlanilhaRelatorioController::class, 'relatorio'])->name('comissao.administrativo.relatorio');
+            Route::get('{id}/planilha', [PlanilhaTipoAdministrativoController::class, 'index'])->name('comissao.administrativo-tipo.index');
+        });
 
-    Route::resource('/reclamacao-de-cliente', ReclamacaoDeClienteController::class);
-    Route::resource('/entrega-de-alarme', EntregaDeAlarmeController::class);
-    Route::resource('/supervisao-cace-cftv', SupervisaoComercialAlarmesCercaEletricaCFTVController::class);
-    Route::resource('/supervisao-c-r', SupervisaoComercialRastreamentoController::class);
-    Route::resource('/tecnica-de-rastreamento', TecnicaDeRastreamentoController::class);
-    Route::resource('/stsace-cftv', SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController::class);
-    Route::resource('/portaria-virtual', PortariaVirtualController::class);
-    Route::resource('/cace-cftv', ComercialAlarmeCercaEletricaCFTVController::class);
-    Route::resource('/comercial-rastreamento-veicular', ComercialRastreamentoVeicularController::class);
-    Route::resource('/tecnica-ace-cftv', TecnicaAlarmesCercaEletricaCFTVController::class);
+        Route::prefix('/arquivos')->group(function () {
+            Route::get('/', [ArquivoController::class, 'index'])->name('comissao.arquivo.index');
+            Route::get('/{filtro}', [ArquivoController::class, 'pesquisarPor'])->name('comissao.arquivo.filtro');
+        });
 
-    Route::prefix('/pesquisar-colaborador')->group(function () {
-        Route::get('/',          [ColaboradorController::class, 'createPesquisar'])->name('colaborador.pesquisar');
-        Route::get('/resultado', [ColaboradorController::class, 'showPesquisar'])->name('colaborador.showPesquisar');
+        Route::name('comissao.')->group(function () {
+            Route::get('/{id}/recuperar', [ArquivoController::class, 'recuperar'])->name('administrativo.recuperar');
+            Route::get('/{id}/arquivar', [ArquivoController::class, 'arquivar'])->name('administrativo.arquivar');
+        });
     });
 });
 
 
-
-
-Route::prefix('/comissao/administrar')->group(function () {
-
-    Route::get('/',          [PlanilhaAdministrativoController::class, 'index'])->name('planilha-administrativo.index');
-    Route::get('/create',    [PlanilhaAdministrativoController::class, 'create'])->name('planilha-administrativo.create');
-    Route::post('/',         [PlanilhaAdministrativoController::class, 'store'])->name('planilha-administrativo.store');
-    Route::get('/{id}/edit', [PlanilhaAdministrativoController::class, 'edit'])->name('planilha-administrativo.edit');
-    Route::put('/{id}',      [PlanilhaAdministrativoController::class, 'update'])->name('planilha-administrativo.update');
-    //Route::get('/{id}',      [PlanilhaAdministrativoController::class, 'show'])->name('planilha-administrativo.index');
-    
-    Route::get('/{filtro}',      [PlanilhaAdministrativoController::class, 'show'])->name('planilha-administrativo.filtro');
-    Route::get('/{id}/reprovar', [PlanilhaAdministrativoController::class, 'editReprovar'])->name('planilha-administrativo.reprovar');
-    Route::get('/{id}/arquivar', [PlanilhaAdministrativoController::class, 'arquivar'])->name('planilha-administrativo.arquivar');
-    
-    Route::get('{id}/planilha',      [PlanilhaTipoAdministrativoController::class, 'index'])->name('planilha-administrativo-tipo.index');
-    Route::get('/imprimir-pdf/{id}', [PlanilhaTipoAdministrativoController::class, 'imprimirPDF'])->name('planilha-administrativo.imprimirPDF');
-    
-    Route::prefix('/arquivado')->group(function () {
-        Route::get('/', [PlanilhaAdministrativoController::class, 'arquivado'])->name('planilha-administrativo.arquivado');
-        Route::put('/{id}', [PlanilhaAdministrativoController::class, 'updateReprovar'])->name('planilha-administrativo.reprovarUpdate');
-        Route::get('/{id}/recuperar', [PlanilhaAdministrativoController::class, 'recuperar'])->name('planilha-administrativo.recuperar');
-    });
-
-});
-
-// Rotas para Planilha Administrativo Arquivo
 
 

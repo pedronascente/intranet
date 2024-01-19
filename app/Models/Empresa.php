@@ -54,4 +54,35 @@ class Empresa extends Model
             'imglogo.dimensions' => 'A imagem deve ter largura de 179px e altura de 53px.',
         ];
     }
+
+    /**
+     * Verifica a duplicidade de uma empresa com base no nome ou CNPJ.
+     *
+     * @param Request $request
+     * @return int
+     */
+    public function validarDuplicidade($request)
+    {
+        return $this->empresa->where('nome', $request->nome)
+            ->orWhere('cnpj', $request->cnpj)
+            ->get()->count();
+    }
+
+    /**
+     * Realiza o upload da imagem do logo.
+     *
+     * @param Request $request
+     * @return false|string
+     */
+    public function upload($request)
+    {
+        if ($request->hasFile('imglogo') && $request->file('imglogo')->isValid()) {
+            $requestImagem = $request->imglogo;
+            $extension     = $requestImagem->extension();
+            $imagemName    = md5($requestImagem->getClientOriginalName() . strtotime('now')) . '.' . $extension;
+            $requestImagem->move(public_path('img/empresa'), $imagemName);
+            return $imagemName;
+        }
+        return false;
+    }
 }

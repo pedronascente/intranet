@@ -3,19 +3,18 @@
 namespace App\Http\Controllers\Login;
 
 use App\Models\User;
-use App\Models\Perfil;
 use Illuminate\Http\Request;
+
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Help\FormatarDataController;
 
 class LoginController extends Controller
 {
-    private $actionCreateToken;
-
-    public function __construct()
+    private $user;
+    public function __construct(User $user)
     {
-        $this->actionCreateToken = 'App\Http\Controllers\Login\TokenController@create';
+        $this->user = $user;   
     }
     /**
      *  Mostrar formulario pro usuário fazer login.
@@ -23,10 +22,14 @@ class LoginController extends Controller
      * @param Request $request
      * @return void
      */
-    public function showForm(Request $request)
+    public function create()
     {
         $messagem = FormatarDataController::formatarData();
-        return view('login.passo_01', ['mensagem' =>   $messagem]);
+        return view('login.create_login', 
+            [
+                'mensagem' => $messagem
+            ]
+        );
     }
 
     /**
@@ -37,25 +40,20 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
-        $credenciais = $request->validate([
-            'name' => 'required',
-            'password' => 'required',
-        ], [
-            'name.required' => 'O campo usuario é obrigatório!',
-            'password.required' => 'O campo senha é obrigatório!',
-        ]);
+        $credenciais = $request->validate($this->user->rulesLogin(), $this->user->feedbackLogin());
         $credenciais['status'] = 'on';
         if (Auth::attempt($credenciais)) {
             $request->session()->regenerate();
             $usuarioLogado = $request->user();
-            $usuarioDB = User::with('tokens', 'perfil')->findOrFail($usuarioLogado->id);
-            if (!$usuarioDB->tokens) {
+            //verifica se usuario Tem Token registrado.
+            $usuario = User::with('tokens')->findOrFail($usuarioLogado->id);
+            if($usuario->tokens()->count() <1){
                 $this->logout($request);
-                return redirect()->back()->with('error', 'Você não possui um 2FA válido.');
+                return redirect()->back()->with('error', 'Você não possui um Token válido.');
             }
-            $this->criarSessaoPerfil($request, $usuarioDB->perfil->id);
-            return redirect()
-                ->action($this->actionCreateToken);
+            //Recuperar Perfil -modulos - Permissões: 
+           // $this->criarSessaoPerfil($request, $usuarioDB->perfil->id);
+            return redirect()->route('token.create');
         } else {
             return redirect()->back()->with('error', 'Usuário ou senha inválido.');
         }
@@ -73,30 +71,5 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/');
-    }
-
-    private function criarSessaoPerfil($request, $id)
-    {
-        $perfil = Perfil::with('modulos')->findOrFail($id);
-        $sessaoPerfil['dados'] = [
-            "id" => $perfil->id,
-            "nome" => $perfil->nome,
-        ];
-        if ($perfil->modulos) {
-            foreach ($perfil->modulos as  $modulo) {
-                $sessaoPerfil['modulos'][] = [
-                    "id"        => $modulo->id,
-                    "nome"      => $modulo->nome,
-                    "rota"      => $modulo->rota,
-                    "slug"      => $modulo->slug,
-                    "tipo_menu" => $modulo->tipo_menu,
-                ];
-            }
-        }
-        $permissoes = $perfil->getPermissoes($id);
-        if ($permissoes) {
-            $sessaoPerfil['permissoes']  = $permissoes;
-        }
-        $request->session()->put('perfil', $sessaoPerfil);
     }
 }

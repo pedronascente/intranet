@@ -6,37 +6,26 @@ use App\Models\Modulo;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Help\PermissaoHelp;
 use App\Http\Controllers\Help\FormatarDataController;
 class ModuloController extends Controller
 {
-    private $modulo_id; //id do modulo
-    private $paginate;
     private $modulo;
 
     public function __construct(Modulo $modulo)
     {
-        $this->modulo_id = 4;
-        $this->paginate  = 10;
-        $this->modulo    = $modulo;
+        $this->modulo = $modulo;
     }
 
     public function index()
     {
         return view('configuracoes.modulo.index', [
-            'collection' => $this->modulo->orderBy('id', 'desc')->paginate($this->paginate),
-            'permissoes' => PermissaoHelp::getPermissoes($this->modulo_id),
+            'collection' => $this->modulo->orderBy('id', 'desc')->paginate(10),
         ]);
     }
 
     public function create()
     {
-        if (PermissaoHelp::verificaPermissao(['permissao' => 'Criar', 'modulo' => $this->modulo_id])) {
-            return view('configuracoes.modulo.create');
-        } else {
-            return redirect()
-                ->route('modulo.index');
-        }
+        return view('configuracoes.modulo.create');
     }
 
     public function store(Request $request)
@@ -54,19 +43,20 @@ class ModuloController extends Controller
             ->with('status', "Registrado com sucesso!");
     }
 
-    public function show($id)
-    {
-        return view('configuracoes.modulo.show', ['modulo' => Modulo::find($id)]);
-    }
+    /*
+        public function show($id)
+        {
+            return view('configuracoes.modulo.show', [
+                'modulo' => Modulo::find($id)
+            ]);
+        }
+    */
 
     public function edit($id)
     {
-        if (PermissaoHelp::verificaPermissao(['permissao' => 'Editar', 'modulo' => $this->modulo_id])) {
-            return view('configuracoes.modulo.edit', ['modulo' => Modulo::findOrFail($id)]);
-        } else {
-            return redirect()
-                ->route('modulo.index');
-        }
+        return view('configuracoes.modulo.edit', [
+            'modulo' => Modulo::findOrFail($id)
+        ]);
     }
 
     public function update(Request $request, $id)
@@ -87,7 +77,6 @@ class ModuloController extends Controller
     public function destroy($id)
     {
         $modulo = $this->modulo->with('perfis')->findOrFail($id);
-       
         if ($modulo->perfis->count() >= 1) {
             return redirect()
                 ->route('modulo.index')

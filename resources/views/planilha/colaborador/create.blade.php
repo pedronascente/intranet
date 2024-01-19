@@ -5,7 +5,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
-            <a href="{{ route('planilha-colaborador.index') }}">Planilhas</a>
+            <a href="{{ route('planilha.index') }}">Planilhas</a>
         </li>
     </ol>
 @endsection
@@ -13,7 +13,7 @@
 @section('content')
     <div class="card p-3">
         <div class="card">
-            <form action="{{ route('planilha-colaborador.store') }}" method="POST">
+            <form action="{{ route('planilha.store') }}" method="POST">
                 @csrf
                 <div class="card-body">
                     <div class="row">
@@ -108,7 +108,7 @@
                     <a href="{{ route('colaborador.pesquisar') }}" title="Pesquisar" class="btn btn-warning btn-sm">
                         <i class="fa fa-search"></i> Pesquisar Colaborador
                     </a>
-                    <x-botao.btn-voltar :rota="route('planilha-colaborador.index')" />
+                    <x-botao.btn-voltar :rota="route('planilha.index')" />
                 </div>
             </form>
         </div>

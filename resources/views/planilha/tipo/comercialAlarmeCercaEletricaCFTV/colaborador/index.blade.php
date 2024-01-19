@@ -5,7 +5,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
-            <a href="{{ route('planilha-colaborador.index') }}">Planilha</a>
+            <a href="{{ route('planilha.index') }}">Planilha</a>
         </li>
     </ol>
 @endsection

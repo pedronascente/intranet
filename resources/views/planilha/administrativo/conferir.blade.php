@@ -5,7 +5,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
-            <a href="{{ route('planilha-administrativo.index') }}">Planilha</a>
+            <a href="{{ route('comissao.administrativo.index') }}">Planilha</a>
         </li>
     </ol>
 @endsection
@@ -17,10 +17,10 @@
     <div class="card-header">
         <div class="row">
             <div class="col-md-12">
-                <a href="{{ route('planilha-administrativo.arquivado') }}" class="btn btn-sm btn-info ">
+                <a href="{{ route('comissao.arquivo.index') }}" class="btn btn-sm btn-info ">
                     <i class="fas fa-folder"></i> Arquivos
                 </a>
-                <a href="{{ route('planilha-administrativo.arquivado') }}" class="btn btn-sm btn-info ">
+                <a href="{{ route('comissao.administrativo.relatorio') }}" class="btn btn-sm btn-info ">
                     <i class="fas fa-folder"></i> Relatorio
                 </a>
             </div>    
@@ -29,7 +29,7 @@
     </div>
     <div class="card">  
         <div class="card-header">
-             <x-filtro-form-planilha :route="route('planilha-administrativo.filtro', 'conferir')" />
+             <x-filtro-form-planilha :route="route('comissao.administrativo.filtro', 'conferir')" />
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -51,7 +51,7 @@
                         @if ($collections)
                             @foreach ($collections as $item)
                                 @php
-                                    $valorTotalComissao = app('App\Http\Controllers\Planilha\PlanilhaAdministrativoController')->getValorTotalComissao($item);
+                                    $valorTotalComissao = app('App\Http\Controllers\Planilha\AdministrativoController')->getValorTotalComissao($item);
                                 @endphp
                                 <tr class="{{ $item->status->status === 'Recuperado' ? 'bg-warning' : '' }}">
                                     <td>{{ $item->id }}</td>
@@ -64,15 +64,15 @@
                                     </td>
                                     <td>{{ $item->status->status }}</td>
                                     <td class="text-center">
-                                        <a href="{{ route('planilha-administrativo.reprovar', $item->id) }}"
+                                        <a href="{{ route('comissao.administrativo.reprovar', $item->id) }}"
                                             class="btn btn-danger btn-sm" title="Editar Planilha">
                                             <i class="nav-icon fas fa-edit"></i> Reprovar
                                         </a>
-                                        <a href="{{ route('planilha-administrativo-tipo.index', $item->id) }}"
+                                        <a href="{{ route('comissao.administrativo-tipo.index', $item->id) }}"
                                             class="btn btn-primary btn-sm" title="Conissão">
                                             <i class="fas fa-folder"></i> Visualizar
                                         </a>
-                                        <a href="{{ route('planilha-administrativo.imprimirPDF', $item->id) }}"
+                                        <a href="{{ route('comissao.administrativo.imprimirPDF', $item->id) }}"
                                             class="btn btn-success btn-sm" title="Imprimir-planilha" target="_blank">
                                             <i class="nav-icon fas fa-print"></i> Imprimir
                                         </a>
@@ -96,33 +96,3 @@
     </div>
 </div>    
 @endsection
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@section('content')
-
-    
-@endsection
-
-
-
-
-
-

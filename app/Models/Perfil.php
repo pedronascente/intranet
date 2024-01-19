@@ -40,4 +40,26 @@ class Perfil extends Model
 
         return $listArraypermissoes;
     }
+
+    public function rules(){
+        return [
+                'nome' => 'required|max:190|unique:perfis,nome',
+                'descricao' => 'required|max:190|min:3',
+        ];
+    }
+
+    public function feedback(){
+        return [
+                'nome.required' => 'Campo obrigatório.',
+                'nome.unique' => 'Este perfil já está sendo utilizado.',
+                'descricao.required' => 'Campo obrigatório.',
+        ];
+     }
+
+    public function validarDuplicidade($nome)
+    {
+        return $this->where('nome', $nome)
+            ->get()
+            ->count();
+    }
 }

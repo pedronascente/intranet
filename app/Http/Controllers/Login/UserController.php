@@ -12,23 +12,14 @@ use PHPMailer\PHPMailer\PHPMailer;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Controllers\Help\PermissaoHelp;
 
 class UserController extends Controller
 {
-    private $modulo;
-    private $actionSenhaSucesso;
-    private $actionRecuperarSenhaCreate;
-    private $actionRecuperarSenhaSucesso;
     private $user;
 
     public function __construct(User $user)
     {
-        $this->modulo = 7;
         $this->user = $user;
-        $this->actionSenhaSucesso = 'App\Http\Controllers\Login\UserController@senhaSucesso';
-        $this->actionRecuperarSenhaCreate = 'App\Http\Controllers\Login\UserController@recuperarSenhaCreate';
-        $this->actionRecuperarSenhaSucesso = 'App\Http\Controllers\Login\UserController@senhaSucesso';
     }
 
     public function index()
@@ -36,35 +27,26 @@ class UserController extends Controller
         $user =  $this->user->with('perfil')->orderBy('id', 'desc')->paginate(10);
         return view('configuracoes.user.index', [
             'collections' => $user,
-            'permissoes' => PermissaoHelp::getPermissoes($this->modulo),
         ]);
     }
 
     public function create()
     {
-        if (PermissaoHelp::verificaPermissao(
-            [
-                'permissao' => 'Criar',
-                'modulo' => $this->modulo
-            ]
-        )) {
-            return view('configuracoes.user.create', ['perfis' => Perfil::all()]);
-        } else {
-            return redirect()
-                ->routr('user.index');
-        }
+        return view('configuracoes.user.create', [
+            'perfis' => Perfil::all()
+        ]);
     }
 
     public function store(Request $request)
     {
         $this->user->validarFormulario($request, 'store');
         $user = $this->user;
-        $user->name             = $request->name;
-        $user->status           = $request->status;
-        $user->qtdToken         = $request->qtdToken;
-        $user->colaborador_id   = $request->colaborador_id;
-        $user->perfil_id        = $request->perfil;
-        $user->password         = Hash::make($request->password);
+        $user->name           = $request->name;
+        $user->status         = $request->status;
+        $user->qtdToken       = $request->qtdToken;
+        $user->colaborador_id = $request->colaborador_id;
+        $user->perfil_id      = $request->perfil;
+        $user->password       = Hash::make($request->password);
         $user->save();
 
         Token::gerarToken($user);
@@ -76,23 +58,10 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        if (PermissaoHelp::verificaPermissao(
-            [
-                'permissao' => 'Editar',
-                'modulo' => $this->modulo
-            ]
-        )) {
-            return view(
-                'configuracoes.user.edit',
-                [
-                    'user' => $this->user->findOrFail($id),
-                    'perfis' => Perfil::orderBy('id', 'desc')->get()
-                ]
-            );
-        } else {
-            return redirect()
-                ->route('user.index');
-        }
+        return view('configuracoes.user.edit', [
+            'user'   => $this->user->findOrFail($id),
+            'perfis' => Perfil::orderBy('id', 'desc')->get()
+        ]);
     }
 
     public function update(Request $request, $id)
@@ -100,14 +69,12 @@ class UserController extends Controller
         $this->user->validarFormulario($request, 'update');
         $user         = $this->user->with('perfil')->findOrFail($id);
         $perfil       = Perfil::findOrFail($request->perfil);
-
         $user->perfil()->associate($perfil)->update();
         $user->status = $request->status;
         $user->name   = $request->name;
         if (empty(!$request->password)) {
             $user->password = Hash::make($request->password);
         }
-
         return redirect()
             ->route('user.show', $user->id)
             ->with('status', "Atualizado com sucesso!");
@@ -115,7 +82,8 @@ class UserController extends Controller
 
     public function show($id)
     {
-        $usuario =  User::with('perfil', 'colaborador','tokens')->findOrFail($id);
+        $usuario =  $this->user->with('perfil', 'colaborador','tokens')
+                               ->findOrFail($id);
         return view('configuracoes.user.show', [
             'user' => $usuario,
             'status' => $usuario->getStatus($id),
@@ -125,7 +93,8 @@ class UserController extends Controller
     public function meuPerfil(Request $request)
     {
         if (isset($request->user()->id)) {
-            $usuario = User::with('colaborador', 'perfil')->findorFail($request->user()->id);
+            $usuario = $this->user->with('colaborador', 'perfil')
+                                  ->findorFail($request->user()->id);
             return view('meu_perfil.index', [
                 'id usuario'  => $usuario->id,
                 'usuario'     => $usuario,
@@ -139,9 +108,9 @@ class UserController extends Controller
         }
     }
 
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
-        $usuario = User::with('colaborador')->findOrFail($request->id);
+        $usuario = $this->user->with('colaborador')->findOrFail($id);
         if (!empty($usuario->colaborador)) {
             return redirect()
                 ->route('user.index')
@@ -166,7 +135,7 @@ class UserController extends Controller
         $request->session()->regenerateToken();
         $this->composeEmail($usuario->colaborador, 'senha_recuperada');
         return redirect()
-            ->action($this->actionSenhaSucesso);
+            ->route('user.senhaSucesso');
     }
 
     public function recuperarSenhaCreate()
@@ -185,10 +154,10 @@ class UserController extends Controller
             //enviar email :
             $this->composeEmail($colaborador, 'recuperar_senha');
             return redirect()
-                ->action($this->actionRecuperarSenhaSucesso);
+                ->route('user.senhaSucesso');
         }
         return redirect()
-            ->action($this->actionRecuperarSenhaCreate)
+            ->route('user.recuperarSenhaCreate')
             ->with('error', "Este email não está registrado!");
     }
 

@@ -12,8 +12,8 @@
 @endsection
 @section('content')
     <div class="card p-3">
-    <div class="card">
-        <div class="card-body table-responsive p-0">
+        <div class="card">
+            <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap table-striped">
                     <thead>
                         <tr>
@@ -21,13 +21,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if (session()->get('perfil'))
-                            @foreach (session()->get('perfil')['modulos'] as $item)
-                                @if ($item['tipo_menu']=="menu-configuracao")
+                        @if (session()->get('usuarioAutenticado')->perfil->modulos)
+                            @foreach (session()->get('usuarioAutenticado')->perfil->modulos as $modulo)
+                                @if ($modulo->tipo_menu=="menu-configuracao")
                                     <tr>
                                         <td>
-                                            <a href="{{ $item['rota'] }}">
-                                                {{ $item['nome'] }}
+                                            <a href="{{ $modulo->rota }}">
+                                                {{ $modulo->nome }}
                                             </a>
                                         </td>
                                     </tr>

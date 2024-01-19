@@ -5,17 +5,10 @@ namespace App\Http\Controllers\Configuracoes;
 use App\Models\Empresa;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Help\PermissaoHelp;
 
 class EmpresaController extends Controller
 {
-    /**
-     * Id do módulo
-     *
-     * @var int
-     */
-    private $modulo;
-
+    
     /**
      * Instância da Empresa
      *
@@ -31,7 +24,6 @@ class EmpresaController extends Controller
     public function __construct(Empresa $empresa)
     {
         $this->empresa = $empresa;
-        $this->modulo = 3;
     }
 
     /**
@@ -43,7 +35,6 @@ class EmpresaController extends Controller
     {
         return view('configuracoes.empresa.index', [
             'collection' => $this->empresa->orderBy('id', 'desc')->paginate(10),
-            'permissoes' => PermissaoHelp::getPermissoes($this->modulo)
         ]);
     }
 
@@ -54,14 +45,7 @@ class EmpresaController extends Controller
      */
     public function create()
     {
-        if (PermissaoHelp::verificaPermissao([
-            'permissao' => 'Criar',
-            'modulo' => $this->modulo
-        ])) {
-            return view('configuracoes.empresa.create');
-        } else {
-            return redirect()->route('empresa.index');
-        }
+        return view('configuracoes.empresa.create');
     }
 
     /**
@@ -73,18 +57,16 @@ class EmpresaController extends Controller
     public function store(Request $request)
     {
         $request->validate($this->empresa->rules('store'), $this->empresa->feedback());
-        if ($this->verificarDuplicidade($request)) {
-            return redirect()->route('empresa.index')->with('warning', 'Já existe uma empresa com este nome ou CNPJ!');
+        if ($this->validarDuplicidade($request)) {
+            return redirect()->route('empresa.index')
+                            ->with('warning', 'Já existe uma empresa com este nome ou CNPJ!');
         }
-
         $this->empresa->nome = $request->nome;
         $this->empresa->cnpj = $request->cnpj;
-        if ($imglogo = $this->upload($request)) {
+        if ($imglogo = $this->empresa->upload($request)) {
             $this->empresa->imglogo  = $imglogo;
         }
-
         $this->empresa->save();
-
         return redirect()->route('empresa.index')->with('status', 'Registrado com sucesso!');
     }
 
@@ -107,11 +89,9 @@ class EmpresaController extends Controller
      */
     public function edit($id)
     {
-        if (PermissaoHelp::verificaPermissao(['permissao' => 'Editar', 'modulo' => $this->modulo])) {
-            return view('configuracoes.empresa.edit', ['empresa' => Empresa::findOrFail($id)]);
-        } else {
-            return redirect()->route('empresa.index');
-        }
+        return view('configuracoes.empresa.edit', [
+            'empresa' => Empresa::findOrFail($id)
+        ]);
     }
 
     /**
@@ -125,28 +105,22 @@ class EmpresaController extends Controller
     {
         // Validar os dados do request de acordo com as regras definidas na model
         $request->validate($this->empresa->rules('update'), $this->empresa->feedback());
-
         // Encontrar a empresa no banco de dados pelo ID
         $empresa = $this->empresa->findOrFail($id);
-
         // Preencher os atributos da empresa com os dados do request
         $empresa->fill([
             'nome' => $request->nome,
             'cnpj' => $request->cnpj,
         ]);
-
         // Verificar se há uma nova imagem para upload
         if ($request->hasFile('imglogo') && $request->file('imglogo')->isValid()) {
             // Excluir a imagem antiga, se existir
             $this->excluirImagem($empresa->imglogo);
-
             // Fazer o upload da nova imagem
-            $empresa->imglogo = $this->upload($request);
+            $empresa->imglogo = $this->empresa->upload($request);
         }
-
         // Salvar as alterações no banco de dados
         $empresa->save();
-
         // Redirecionar de volta à lista de empresas com uma mensagem de sucesso
         return redirect()->route('empresa.index')->with('status', 'Registro Atualizado!');
     }
@@ -160,50 +134,15 @@ class EmpresaController extends Controller
     public function destroy($id)
     {
         $empresa = $this->empresa->with('colaboradores')->findOrFail($id);
-
         if ($empresa->colaboradores->count() >= 1) {
-            return redirect()->route('empresa.index')->with('warning', 'Esta empresa tem colaborador associado e não pode ser excluída.');
+            return redirect()->route('empresa.index')
+                            ->with('warning', 'Esta empresa tem colaborador associado e não pode ser excluída.');
         }
-
         // Excluir a imagem associada se existir
         $this->excluirImagem($empresa->imglogo);
-
         $empresa->delete();
-
-        return redirect()->route('empresa.index')->with('status', 'Registro Excluído!');
-    }
-
-    /**
-     * Realiza o upload da imagem do logo.
-     *
-     * @param Request $request
-     * @return false|string
-     */
-    private function upload(Request $request)
-    {
-        if ($request->hasFile('imglogo') && $request->file('imglogo')->isValid()) {
-            $requestImagem = $request->imglogo;
-            $extension     = $requestImagem->extension();
-            $imagemName    = md5($requestImagem->getClientOriginalName() . strtotime('now')) . '.' . $extension;
-            $requestImagem->move(public_path('img/empresa'), $imagemName);
-
-            return $imagemName;
-        }
-
-        return false;
-    }
-
-    /**
-     * Verifica a duplicidade de uma empresa com base no nome ou CNPJ.
-     *
-     * @param Request $request
-     * @return int
-     */
-    private function verificarDuplicidade(Request $request)
-    {
-        return $this->empresa->where('nome', $request->nome)
-            ->orWhere('cnpj', $request->cnpj)
-            ->get()->count();
+        return redirect()->route('empresa.index')
+                        ->with('status', 'Registro Excluído!');
     }
 
     /**
@@ -216,7 +155,6 @@ class EmpresaController extends Controller
     {
         if ($imagemNome) {
             $caminhoImagem = public_path('img/empresa') . '/' . $imagemNome;
-
             // Verificar se o arquivo existe antes de excluir
             if (file_exists($caminhoImagem)) {
                 unlink($caminhoImagem);

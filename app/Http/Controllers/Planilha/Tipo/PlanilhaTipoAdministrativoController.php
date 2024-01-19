@@ -19,74 +19,142 @@ class PlanilhaTipoAdministrativoController extends Controller
     $this->planilha = $planilha;
   }
 
+  /**
+   * Exibe a página de índice para uma planilha com a opção de aplicar um filtro.
+   *
+   * @param  \Illuminate\Http\Request  $request  Instância da requisição HTTP.
+   * @param  int  $id  Identificador da planilha.
+   * @return \Illuminate\Contracts\View\View
+   */
   public function index(Request $request, $id)
   {
-    $filtro        = $request->input('filtro');
-    $planilha      = $this->getPlanilhaWithRelationships($id);
+    // Obtém o termo de filtro da requisição
+    $filtro = $request->input('filtro');
+
+    // Obtém a planilha com relacionamentos
+    $planilha = $this->getPlanilhaWithRelationships($id);
+
+    // Obtém o tipo de planilha
     $tipo_planilha = $planilha->tipo->formulario;
 
+    // Verifica se há um filtro aplicado
     if ($filtro) {
+      // Se houver filtro, chama o método para gerar a visão com dados de comissão aplicando o filtro
       return $this->getViewWithComissaoDataFiltro($tipo_planilha, $planilha, $this->getComissaoModel($tipo_planilha), $filtro);
     }
+
+    // Se não houver filtro, chama o método para gerar a visão com dados de comissão sem filtro
     return $this->getViewWithComissaoData($tipo_planilha, $planilha, $this->getComissaoModel($tipo_planilha));
   }
 
+
+  /**
+   * Gera um arquivo PDF para uma planilha específica.
+   *
+   * @param  int  $id  Identificador da planilha.
+   * @return \Illuminate\Http\Response
+   */
   public function imprimirPDF($id)
   {
-    $planilha           = $this->getPlanilhaWithRelationships($id);
-    $tipo_planilha      = $planilha->tipo->formulario;
+    // Obtém a planilha com relacionamentos
+    $planilha = $this->getPlanilhaWithRelationships($id);
+
+    // Obtém o tipo de planilha
+    $tipo_planilha = $planilha->tipo->formulario;
+
+    // Obtém o valor total da comissão
     $valorTotalComissao = $this->getComissaoModel($tipo_planilha)::where('planilha_id', $planilha->id)->sum('comissao');
-    $img_logo           = ($planilha->colaborador->empresa->imglogo) ? 'img/empresa/' . $planilha->colaborador->empresa->imglogo : 'img/empresa/logo-default.jpg';
+
+    // Obtém o caminho da imagem do logo da empresa
+    $img_logo = ($planilha->colaborador->empresa->imglogo) ? 'img/empresa/' . $planilha->colaborador->empresa->imglogo : 'img/empresa/logo-default.jpg';
 
     // Converte a imagem em base64
     $volpatoImage = base64_encode(file_get_contents(public_path($img_logo)));
 
-    $view =  view(
+    // Gera a visão para o PDF
+    $view = view(
       'planilha.tipo.' . $tipo_planilha . '.administrativo.imprimir',
       [
-        'planilha'           => $planilha,
-        'valorTotalComissao' => number_format($valorTotalComissao, 2, ',', '.'),
-        'volpatoImage'       => $volpatoImage,
+        'planilha'           => $planilha, // Dados da planilha
+        'valorTotalComissao' => number_format($valorTotalComissao, 2, ',', '.'), // Valor total da comissão formatado
+        'volpatoImage'       => $volpatoImage, // Imagem da empresa convertida em base64
       ]
     );
 
-
+    // Carrega a visão HTML no PDF
     $pdf = PDF::loadHtml($view)->setOptions(['isHtml5ParserEnabled' => true, 'isPhpEnabled' => true]);
 
-    // Usar o método stream para abrir no navegador
+    // Usa o método stream para abrir no navegador
     return $pdf->stream($tipo_planilha . '.pdf');
   }
 
+  /**
+   * Obtém uma instância da planilha com seus relacionamentos.
+   *
+   * @param  int  $id  Identificador da planilha.
+   * @return \App\Models\Planilha\Planilha
+   */
   private function getPlanilhaWithRelationships($id)
   {
+    // Obtém a planilha com os relacionamentos de colaborador, período e tipo
     return $this->planilha->with('colaborador', 'periodo', 'tipo')->findOrFail($id);
   }
 
+  /**
+   * Obtém uma instância da model de comissão com base no tipo de planilha.
+   *
+   * @param  string  $tipo_planilha  Tipo de planilha.
+   * @return mixed
+   */
   private function getComissaoModel($tipo_planilha)
   {
+    // Formata o tipo de planilha para garantir consistência no namespace
     $tipo_planilha = ucfirst($tipo_planilha);
+
+    // Monta o nome da classe da model de comissão com base no tipo de planilha
     $comissaoModel = 'App\Models\Planilha\Tipo\\' . $tipo_planilha;
+
+    // Retorna uma nova instância da model de comissão
     return new $comissaoModel;
   }
 
+  /**
+   * Gera uma visão com dados de comissão para uma planilha específica.
+   *
+   * @param  string  $tipo_planilha  Tipo de planilha.
+   * @param  \App\Models\Planilha\Planilha  $planilha  Instância da planilha.
+   * @param  mixed  $comissaoModel  Instância da model de comissão.
+   * @return \Illuminate\Contracts\View\View
+   */
   private function getViewWithComissaoData($tipo_planilha, $planilha, $comissaoModel)
   {
-
+    // Obtém o valor total da comissão
     $valorTotalComissao = $comissaoModel::where('planilha_id', $planilha->id)->sum('comissao');
 
+    // Retorna a visão com dados de comissão e informações adicionais
     return view('planilha.tipo.' . $tipo_planilha . '.administrativo.index', [
-      'planilha'           => $planilha,
-      'listaComissao'      => $comissaoModel::where('planilha_id', $planilha->id)->orderBy('id', 'desc')->paginate(10),
-      'valorTotalComissao' => number_format($valorTotalComissao, 2, ',', '.'),
+      'planilha'           => $planilha, // Dados da planilha
+      'listaComissao'      => $comissaoModel::where('planilha_id', $planilha->id)->orderBy('id', 'desc')->paginate(10), // Lista de comissões paginada
+      'valorTotalComissao' => number_format($valorTotalComissao, 2, ',', '.'), // Valor total da comissão formatado
     ]);
   }
 
+  /**
+   * Obtém uma view com dados de comissão filtrados para uma planilha específica.
+   *
+   * @param string $tipo_planilha Tipo da planilha.
+   * @param Planilha $planilha Instância da planilha.
+   * @param Model $comissaoModel Modelo de comissão específico.
+   * @param string $filtro Termo de pesquisa/filtro.
+   * @return \Illuminate\Contracts\View\View View com os resultados da consulta.
+   */
   private function getViewWithComissaoDataFiltro($tipo_planilha, $planilha, $comissaoModel, $filtro)
   {
 
     // Inicializa a consulta
     $query = $comissaoModel::where('planilha_id', $planilha->id);
 
+    // Aplica condições específicas com base no tipo de planilha
     switch ($tipo_planilha) {
       case 'tecnicaAlarmesCercaEletricaCFTV':
         $query->where(function ($q) use ($filtro) {

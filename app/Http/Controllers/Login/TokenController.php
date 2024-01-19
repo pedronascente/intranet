@@ -11,7 +11,6 @@ use App\Http\Controllers\Help\FormatarDataController;
 
 class TokenController extends Controller
 {
-
     private $token;
 
     public function __construct(Token $token)
@@ -24,9 +23,9 @@ class TokenController extends Controller
         $usuariro       = User::find($request->user()->id);
         $posicaoDoToken = rand(1, $usuariro->qtdToken);
         return view(
-            'login.passo_02',
+            'login.create_token',
             [
-                'mensagem' => FormatarDataController::formatarData(),
+                'mensagem'       => FormatarDataController::formatarData(),
                 'posicaoDoToken' => $posicaoDoToken
             ]
         );
@@ -36,6 +35,7 @@ class TokenController extends Controller
     {
         if ($this->token->validarToken($request)) {
             $request->session()->put('token_validado', true);
+            $this->getAcessoUsuario($request);
             return redirect('/dashboard');
         } else {
             $request->session()->forget('token_validado');
@@ -43,5 +43,12 @@ class TokenController extends Controller
                 ->route("token.create")
                 ->with('error', "Digite um token válido!");
         }
+    }
+
+    private function getAcessoUsuario($request)
+    {
+        $usuarioLogado = $request->user();
+        $usuario       = User::with('Perfil')->findOrFail($usuarioLogado->id);
+        $request->session()->put('usuarioAutenticado', $usuario);
     }
 }

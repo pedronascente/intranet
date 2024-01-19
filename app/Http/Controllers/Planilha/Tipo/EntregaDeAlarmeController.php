@@ -25,7 +25,7 @@ class EntregaDeAlarmeController extends Controller
     {
         $request->validate($this->entregaDeAlarme->rules(), $this->entregaDeAlarme->feedback());
 
-        if ($this->validaDuplicidade($request)) {
+        if ($this->validarDuplicidade($request)) {
             // Se a comissão já existe, você pode decidir o que fazer aqui, talvez mostrar uma mensagem de erro.
             return redirect()->back()->with('error', 'Comissão já existe para os critérios fornecidos.');
         }
@@ -57,7 +57,7 @@ class EntregaDeAlarmeController extends Controller
     {
         $request->validate($this->entregaDeAlarme->rules(), $this->entregaDeAlarme->feedback());
 
-        if ($this->validaDuplicidade($request)) {
+        if ($this->validarDuplicidade($request)) {
             // Se a comissão já existe, você pode decidir o que fazer aqui, talvez mostrar uma mensagem de erro.
             return redirect()->back()->with('error', 'Comissão já existe para os critérios fornecidos.');
         }
@@ -84,7 +84,7 @@ class EntregaDeAlarmeController extends Controller
     }
 
 
-    public function validaDuplicidade($request){
+    public function validarDuplicidade($request){
       
         $existingComissao = $this->entregaDeAlarme
             ->where('cliente', $request->input('cliente'))

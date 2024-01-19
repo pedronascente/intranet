@@ -19,4 +19,21 @@ class Permissao extends Model
     {
         return $this->belongsToMany(Perfil::class);
     }
+
+    public function rules()
+    {
+        return ['nome' => 'required|max:190',];
+    }
+
+    public function feedback()
+    {
+       return ['nome.required' => 'Campo obrigatório.', ];      
+    }
+
+    public function validarDuplicidade($nome)
+    {
+        return $this->where('nome', $nome)
+                    ->get()
+                    ->count();
+    }
 }

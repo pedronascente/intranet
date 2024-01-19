@@ -5,7 +5,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
-            <a href="{{ route('planilha-administrativo.index') }}">Planilha</a>
+            <a href="{{ route('comissao.administrativo.index') }}">Planilha</a>
         </li>
     </ol>
 @endsection
@@ -13,7 +13,7 @@
 @section('content')
     <div class="card p-3">
         <div class="card">
-            <form action="{{ route('planilha-administrativo.reprovarUpdate', $planilha->id) }}" method="POST">
+            <form action="{{ route('comissao.administrativo.reprovarUpdate', $planilha->id) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="card-body">
@@ -34,7 +34,7 @@
                     <input type="hidden" name="planilha_id" class="form-control" value="{{ $planilha->id }}">
                     <input type="hidden" name="planilha_status_id" class="form-control" value="4">
                     <x-botao.btn-salvar />
-                    <x-botao.btn-voltar :rota="route('planilha-administrativo.index')" />
+                    <x-botao.btn-voltar :rota="route('comissao.administrativo.index')" />
                 </div>
             </form>
         </div>

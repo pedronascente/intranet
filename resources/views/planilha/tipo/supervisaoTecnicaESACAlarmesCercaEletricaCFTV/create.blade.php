@@ -100,6 +100,6 @@
     </div>
     <div class="card-footer">
         <x-botao.btn-salvar />
-        <x-botao.btn-voltar :rota="route('planilha-colaborador.index')" />
+        <x-botao.btn-voltar :rota="route('planilha.index')" />
     </div>
 </form>

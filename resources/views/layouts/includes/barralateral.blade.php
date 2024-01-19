@@ -1,5 +1,4 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
     <a href="/dashboard" class="brand-link">
         <img src="{{ asset('/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image  " style="opacity: .8">
         <span class="brand-text font-weight-light">Intranet</span>
@@ -23,11 +22,62 @@
                 </a>
             </div>
         </div>
-        <!-- Sidebar Menu -->
+       
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
-                <!--li class="nav-item  menu-open">
+
+                @if (session()->get('usuarioAutenticado')->perfil->modulos)
+                    @foreach (session()->get('usuarioAutenticado')->perfil->modulos as $modulo)
+                        @if ($modulo->tipo_menu=="menu-lateral")
+                            @if ($modulo->slug =='administrar-comissao' || $modulo->slug == 'lancar-comissao' )
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="nav-icon fas fa-edit"></i>
+                                        <p>
+                                            Comisão <i class="fas fa-angle-left right"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview" style="display: none;">
+                                        @foreach (session()->get('usuarioAutenticado')->perfil->modulos as $menu)
+                                            @if ($menu->slug =='administrar-comissao' || $menu->slug == 'lancar-comissao' )
+                                                <li class="nav-item">
+                                                    <a href="{{ $menu->rota }}" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>
+                                                            {{ $menu->nome }}  
+                                                        </p>
+                                                    </a>
+                                                </li>
+                                            @endif
+                                        @endforeach
+                                    </ul>
+                                </li>
+                                @break;
+                                @else
+                                <li class="nav-item">
+                                        <a href="{{ $modulo->rota }}" class="nav-link">
+                                            <i class="nav-icon fas fa-edit"></i>
+                                            <p>
+                                                {{ $item->nome }}  
+                                            </p>
+                                        </a>
+                                    </li>
+                            @endif    
+                        @endif
+                    @endforeach
+                @endif
+            </ul>
+        </nav>
+    </div>
+</aside>
+
+
+
+
+/*
+
+<!--li class="nav-item  menu-open">
                     <a href="javascript:void(0)"
                         @if (Request::segment(2) == 'modulo' ||
                                 Request::segment(2) == 'permissao' ||
@@ -57,49 +107,4 @@
                         @endif
                     </ul>
                 </li-->
-
-                  
-                    @if (session()->get('perfil'))
-                        @foreach (session()->get('perfil')['modulos'] as $item)
-                            @if ($item['tipo_menu']=="menu-lateral")
-                                @if ($item['slug'] =='administrar-comissao' || $item['slug'] == 'lancar-comissao' )
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <i class="nav-icon fas fa-edit"></i>
-                                            <p>
-                                                Comisão <i class="fas fa-angle-left right"></i>
-                                            </p>
-                                        </a>
-                                        <ul class="nav nav-treeview" style="display: none;">
-                                            @foreach (session()->get('perfil')['modulos'] as $menu)
-                                                @if ($menu['slug'] =='administrar-comissao' || $menu['slug'] == 'lancar-comissao' )
-                                                    <li class="nav-item">
-                                                        <a href="{{ $menu['rota'] }}" class="nav-link">
-                                                            <i class="far fa-circle nav-icon"></i>
-                                                            <p>
-                                                                {{ $menu['nome'] }}  
-                                                            </p>
-                                                        </a>
-                                                    </li>
-                                                @endif
-                                            @endforeach
-                                        </ul>
-                                    </li>
-                                    @break;
-                                 @else
-                                    <li class="nav-item">
-                                            <a href="{{ $item['rota'] }}" class="nav-link">
-                                                <i class="nav-icon fas fa-edit"></i>
-                                                <p>
-                                                    {{ $item['nome'] }}  
-                                                </p>
-                                            </a>
-                                        </li>
-                                @endif    
-                            @endif
-                        @endforeach
-                    @endif
-            </ul>
-        </nav>
-    </div>
-</aside>
+*/

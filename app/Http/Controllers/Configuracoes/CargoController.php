@@ -5,38 +5,30 @@ namespace App\Http\Controllers\Configuracoes;
 use App\Models\Cargo;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Help\PermissaoHelp;
-
 class CargoController extends Controller
 {
-    private $modulo; //id do modulo
+    /**
+     * Instância de Cargo
+     *
+     * @var Cargo
+     */
     private $cargo; 
     
     public function __construct(Cargo $cargo )
     {
-        $this->modulo = 1; //id do modulo
-        $this->cargo  = $cargo; 
+        $this->cargo = $cargo; 
     }
 
     public function index()
     {
         return view('configuracoes.cargo.index', [
             'collection' => $this->cargo->orderBy('id', 'desc')->paginate(10),
-            'permissoes' => PermissaoHelp::getPermissoes($this->modulo),
         ]);
     }
 
     public function create()
     {
-        if (PermissaoHelp::verificaPermissao([
-            'permissao' => 'Criar', 
-            'modulo'    => $this->modulo
-        ])){
-            return view('configuracoes.cargo.create');
-        } else {
-            return redirect()
-                ->route('cargo.index');
-        }
+        return view('configuracoes.cargo.create');
     }
 
     public function store(Request $request)
@@ -53,17 +45,9 @@ class CargoController extends Controller
 
     public function edit($id)
     {
-        if (PermissaoHelp::verificaPermissao([
-            'permissao' => 'Editar', 
-            'modulo'    => $this->modulo
-        ])) {
-            return view('configuracoes.cargo.edit', [
-                    'cargo' => $this->cargo->findOrFail($id)
-            ]);
-        } else {
-            return redirect()
-                ->route('cargo.index');;
-        }
+        return view('configuracoes.cargo.edit', [
+            'cargo' => $this->cargo->findOrFail($id)
+        ]);
     }
 
     public function update(Request $request, $id)

@@ -7,7 +7,7 @@
 <div class="card p-3">
     <div class="card-header">
         <h3>
-            <a href="{{ route('planilha-colaborador.create') }}" class="btn btn-primary  btn-sm"
+            <a href="{{ route('planilha.create') }}" class="btn btn-primary  btn-sm"
                 title="Criar Planilha">
                 <i class="fas fa-solid fa-plus"></i> Planilha
             </a>
@@ -46,7 +46,7 @@
                                     </div>
                                 </td>
                                 <td class="text-center">
-                                    <a href="{{ route('planilha-colaborador.edit', $item->id, 'edit') }}"
+                                    <a href="{{ route('planilha.edit', $item->id, 'edit') }}"
                                         class="btn btn-info btn-sm" title="Editar Planilha">
                                         <i class="nav-icon fas fa-edit"></i> Editar
                                     </a>
@@ -54,11 +54,11 @@
                                         class="btn btn-primary btn-sm" title="Gerenciar Comissão">
                                         <i class="fas fa-solid fa-plus"></i> Comissão
                                     </a>
-                                    <a href="{{ route('planilha-colaborador.homologar', $item->id, 'edit') }}"
+                                    <a href="{{ route('planilha.homologar', $item->id, 'edit') }}"
                                         class="btn btn-success btn-sm" title="Lançar Planilha">
                                         Homologar
                                     </a>
-                                    <x-botao.btn-excluir :rota="route('planilha-colaborador.destroy', $comissao->id)" titulo="Excluir Comissão" />
+                                    <x-botao.btn-excluir :rota="route('planilha.destroy', $item->id)" titulo="Excluir Comissão" />
                                 </td>
                             </tr>
                         @endforeach

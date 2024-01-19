@@ -13,7 +13,7 @@
 
 @section('content')
     <div class="card p-3">
-        <x-botao.btn-cadastrar :rota="route('empresa.create')" :permissoes="$permissoes" />
+        <x-botao.btn-cadastrar :rota="route('empresa.create')"  />
         <div class="card">
             <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap table-striped">
@@ -33,19 +33,11 @@
                                     <td>{{ $item->cnpj }}</td>
                                     <td><img src="{{ asset('/img/empresa/' . $item->imglogo) }}" width="100"></td>
                                     <td class="text-center">
-                                        @if ($permissoes)
-                                            @foreach ($permissoes as $permissao)
-                                                @if ($permissao->nome == 'Editar')
-                                                    <a href="{{ route('empresa.edit', $item->id) }}" title="Editar"
-                                                        class="btn  btn-sm btn-primary">
-                                                        <i class="fas fa-edit"></i> Editar
-                                                    </a>
-                                                @endif
-                                                @if ($permissao->nome == 'Excluir')
-                                                    <x-botao.btn-excluir :rota="route('empresa.destroy', $item->id)" titulo="Excluir Empresa" />
-                                                @endif
-                                            @endforeach
-                                        @endif
+                                         <a href="{{ route('empresa.edit', $item->id) }}" title="Editar"
+                                            class="btn  btn-sm btn-primary">
+                                            <i class="fas fa-edit"></i> Editar
+                                        </a>
+                                        <x-botao.btn-excluir :rota="route('empresa.destroy', $item->id)" titulo="Excluir Empresa" />
                                     </td>
                                 </tr>
                             @endforeach

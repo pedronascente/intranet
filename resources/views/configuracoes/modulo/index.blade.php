@@ -12,7 +12,7 @@
 
 @section('content')
     <div class="card p-3">
-        <x-botao.btn-cadastrar :rota="route('modulo.create')" :permissoes="$permissoes" />
+        <x-botao.btn-cadastrar :rota="route('modulo.create')"  />
         <div class="card">
             <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap table-striped">
@@ -34,19 +34,11 @@
                                     <td>{{ $item->tipo_menu }}</td>
                                     <td>{{ $item->descricao }}</td>
                                     <td class="text-center">
-                                        @if ($permissoes)
-                                            @foreach ($permissoes as $permissao)
-                                                @if ($permissao->nome == 'Editar')
-                                                    <a href="{{ route('modulo.edit', $item->id) }}" class="btn btn-sm btn-info"
-                                                        title="Editar">
-                                                        <i class="fas fa-edit"></i> Editar
-                                                    </a>
-                                                @endif
-                                                @if ($permissao->nome == 'Excluir')
-                                                    <x-botao.btn-excluir :rota="route('modulo.destroy', $item->id)" titulo="Excluir Modulo" />
-                                                @endif
-                                            @endforeach
-                                        @endif
+                                        <a href="{{ route('modulo.edit', $item->id) }}" class="btn btn-sm btn-info"
+                                            title="Editar">
+                                            <i class="fas fa-edit"></i> Editar
+                                        </a>
+                                        <x-botao.btn-excluir :rota="route('modulo.destroy', $item->id)" titulo="Excluir Modulo" />
                                     </td>
                                 </tr>
                             @endforeach

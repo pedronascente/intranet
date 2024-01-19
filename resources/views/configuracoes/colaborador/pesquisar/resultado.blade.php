@@ -5,7 +5,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
-            <a href="{{ route('planilha-colaborador.create') }}">Planilhas</a>
+            <a href="{{ route('planilha.create') }}">Planilhas</a>
         </li>
     </ol>
 @endsection
@@ -42,7 +42,7 @@
                                     <div class="col px-3">
                                         <div>
                                             <div class="float-right">
-                                                <a href="{{ route('planilha-colaborador.create','id='.$colaborador->id) }}"
+                                                <a href="{{ route('planilha.create','id='.$colaborador->id) }}"
                                                     title="Adicionar colaborador" class="btn btn-success btn-sm">
                                                     <i class="fas fa-solid fa-plus"></i> Adicionar
                                                 </a>
@@ -65,7 +65,7 @@
             </div>
         </div>
         <div class="card-footer">
-            <x-botao.btn-voltar :rota="route('planilha-colaborador.create')" />
+            <x-botao.btn-voltar :rota="route('planilha.create')" />
         </div>
     </div>
 @endsection

@@ -5,7 +5,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
-            <a href="{{ route('planilha-administrativo.index') }}">Planilha</a>
+            <a href="{{ route('comissao.administrativo.index') }}">Planilha</a>
         </li>
     </ol>
 @endsection
@@ -26,7 +26,7 @@
 <div class="card p-3">    
      <div class="card">
         <div class="card-header">
-            <x-filtro-form-comissao :route="route('planilha-administrativo-tipo.index', $planilha->id)" />
+            <x-filtro-form-comissao :route="route('comissao.administrativo-tipo.index', $planilha->id)" />
         </div>
         <div class="card-body table-responsive p-0">
             @include('planilha.tipo.portariaVirtual.administrativo.table')

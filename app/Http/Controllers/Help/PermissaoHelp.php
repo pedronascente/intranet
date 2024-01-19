@@ -20,6 +20,7 @@ class PermissaoHelp
         }
       }
     }
+    
     if (in_array($permissao, $ArrayLystPermissoes)) {
       return true;
     } else {

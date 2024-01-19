@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Providers\RouteServiceProvider;
 
@@ -15,9 +16,45 @@ class ControlarAcessoDosModulos
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, $modulo)
     {
+        $moduloRota   = $modulo;
+        $usuario      = session()->get('usuarioAutenticado');
+        $arrayModulos = $usuario->perfil->modulos;
+       
+       //dd($arrayModulos);
+        foreach ($arrayModulos as $modulo) {
+            if($modulo->nome == $moduloRota){
+                
+               // $permissoes = $arrayModulos->permissoes ;
+                //dd($permissoes);
+                return $next($request);
+               
+        
+                break;
+            }
+        }
+
+        return redirect()
+            ->route('dashboard.index')
+                    ->with('warning', "Você não tem permissão para acessar este Módulo.");
+           
+
+    }
+}
+
+
+/*
+
         $array_modulos = $request->session()->get('perfil');
+        
+
+        dd($array_modulos);
+
+
+
+
+
         if (isset($array_modulos['modulos'])) {
             foreach ($array_modulos['modulos'] as $rota) {
                 $arrayRotas[] =  $rota['rota'];
@@ -39,5 +76,5 @@ class ControlarAcessoDosModulos
                 ->action('App\Http\Controllers\DashboardController@index');
         }
         return $next($request);
-    }
-}
+
+*/

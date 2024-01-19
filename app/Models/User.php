@@ -46,14 +46,6 @@ class User extends Authenticatable
         return $this->belongsTo(Perfil::class);
     }
 
-    /*
-    public function cartao()
-    {
-        return $this->hasOne(Cartao::class,  'user_id', 'id');
-    }
-
-    */
-
     public function tokens()
     {
         return $this->hasMany(Token::class);
@@ -131,4 +123,22 @@ class User extends Authenticatable
             'regex:/[@$!%*#?&]/', // deve conter um caractere especial
         ];
     }
+
+
+    public function  rulesLogin()
+    {
+        return  [
+            'name' => 'required',
+            'password' => 'required',
+        ];
+    }
+    public function  feedbackLogin()
+    {
+        return  [
+            'name.required' => 'O campo usuario é obrigatório!',
+            'password.required' => 'O campo senha é obrigatório!',
+        ];
+    }
+
+
 }

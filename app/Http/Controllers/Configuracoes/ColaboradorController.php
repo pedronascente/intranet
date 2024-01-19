@@ -9,16 +9,38 @@ use App\Models\Colaborador;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
-use App\Http\Controllers\Help\PermissaoHelp;
 
 class ColaboradorController extends Controller
 {
-    private $modulo; // Id do módulo
-    private $bases;
-    private $empresas;
-    private $cargos;
+
+    /**
+     * Instância de Colaborador
+     *
+     * @var Colaborador
+     */
     private $colaborador;
 
+    /**
+     * Instância de Base
+     *
+     * @var Base
+     */
+    private $bases;
+
+    /**
+     * Instância de Empresa
+     *
+     * @var Empresa
+     */
+    private $empresas;
+
+    /**
+     * Instância de Cargo
+     *
+     * @var Cargo
+     */
+    private $cargos;
+ 
     /**
      * Construtor da classe.
      *
@@ -27,11 +49,10 @@ class ColaboradorController extends Controller
      */
     public function __construct(Colaborador $colaborador)
     {
-        $this->colaborador       = $colaborador;
-        $this->modulo            = 2;
-        $this->bases             = Base::orderBy('id', 'desc')->get();
-        $this->empresas          = Empresa::orderBy('id', 'desc')->get();
-        $this->cargos            = Cargo::orderBy('id', 'desc')->get();
+        $this->colaborador = $colaborador;
+        $this->bases       = Base::orderBy('id', 'desc')->get();
+        $this->empresas    = Empresa::orderBy('id', 'desc')->get();
+        $this->cargos      = Cargo::orderBy('id', 'desc')->get();
     }
 
     /**
@@ -43,7 +64,6 @@ class ColaboradorController extends Controller
     {
         return view('configuracoes.colaborador.index', [
             'collection' => $this->colaborador->orderBy('id', 'desc')->paginate(10),
-            'permissoes' => PermissaoHelp::getPermissoes($this->modulo),
         ]);
     }
 
@@ -54,15 +74,11 @@ class ColaboradorController extends Controller
      */
     public function create()
     {
-        if (PermissaoHelp::verificaPermissao(['permissao' => 'Criar', 'modulo' => $this->modulo])) {
-            return view('configuracoes.colaborador.create', [
-                'bases'    => $this->bases,
-                'empresas' => $this->empresas,
-                'cargos'   => $this->cargos,
-            ]);
-        } else {
-            return redirect()->route('colaborador.index');
-        }
+        return view('configuracoes.colaborador.create', [
+            'bases'    => $this->bases,
+            'empresas' => $this->empresas,
+            'cargos'   => $this->cargos,
+        ]);
     }
 
     /**
@@ -106,16 +122,12 @@ class ColaboradorController extends Controller
      */
     public function edit($id)
     {
-        if (PermissaoHelp::verificaPermissao(['permissao' => 'Editar', 'modulo' => $this->modulo])) {
-            return view('configuracoes.colaborador.edit', [
-                'colaborador' => $this->colaborador->findOrFail($id),
-                'empresas'    => $this->empresas,
-                'cargos'      => $this->cargos,
-                'bases'       => $this->bases,
-            ]);
-        } else {
-            return redirect()->route('colaborador.index');
-        }
+        return view('configuracoes.colaborador.edit', [
+            'colaborador' => $this->colaborador->findOrFail($id),
+            'empresas'    => $this->empresas,
+            'cargos'      => $this->cargos,
+            'bases'       => $this->bases,
+        ]);
     }
 
     /**
@@ -159,7 +171,8 @@ class ColaboradorController extends Controller
                 ->route('user.meuPerfil')
                 ->with('status', "Registro Atualizado!");
         } else {
-            return redirect()->route('colaborador.show', $colaborador->id)->with('status', "Registro Atualizado!");
+            return redirect()->route('colaborador.show', $colaborador->id)
+                            ->with('status', "Registro Atualizado!");
         }
     }
 
@@ -175,29 +188,27 @@ class ColaboradorController extends Controller
         $colaborador = $this->colaborador->with('user')->find($id);
 
         if (!$colaborador) {
-            return redirect()->route('colaborador.index')->with('error', "Colaborador não encontrado.");
+            return redirect()->route('colaborador.index')
+                             ->with('error', "Colaborador não encontrado.");
         }
 
         if ($colaborador->user) {
             return redirect()->route('colaborador.show', $id)
-                ->with('warning', "Este colaborador tem Usuário associado, portanto não pode ser excluído.");
+                             ->with('warning', "Este colaborador tem Usuário associado, portanto não pode ser excluído.");
         }
 
         $this->deleteColaborador($colaborador);
 
-        return redirect()->route('colaborador.index')->with('status', "Registro Excluído!");
+        return redirect()->route('colaborador.index')
+                        ->with('status', "Registro Excluído!");
     }
 
     public function createPesquisar()
     {
-        return view(
-            'configuracoes.colaborador.pesquisar.create',
-            [
-                'titulo'    => "Pesquisar Colaborador",
-            ]
-        );
+        return view('configuracoes.colaborador.pesquisar.create',[
+                'titulo' => "Pesquisar Colaborador",
+        ]);
     }
-
 
     public function showPesquisar(Request $request)
     {
@@ -209,25 +220,18 @@ class ColaboradorController extends Controller
             $colaboradores = $this->colaborador->all();
         }
         
-        return view(
-            'configuracoes.colaborador.pesquisar.resultado',
-            [
-                'titulo'        => "Pesquisar Colaborador",
-                'colaboradores' => $colaboradores
-            ]
-        );
+        return view('configuracoes.colaborador.pesquisar.resultado',[
+            'titulo'        => "Pesquisar Colaborador",
+            'colaboradores' => $colaboradores
+        ]);
     }
-
-    /*****************************************PRIVATES**********************************************************************/
 
     private function deleteColaborador($colaborador)
     {
         $destino = 'img/colaborador/' . $colaborador->foto;
-
         if ($colaborador->foto != 'dummy-round.png' && File::exists($destino)) {
             File::delete($destino);
         }
-
         $colaborador->delete();
     }
 

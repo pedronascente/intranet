@@ -9,33 +9,28 @@ use App\Http\Controllers\Help\PermissaoHelp;
 
 class BaseController extends Controller
 {
-    private $modulo_id; //id do modulo
+    /**
+     * Instância da Base
+     *
+     * @var Base
+     */
     private $base;
    
     public function __construct(Base $base)
     {
-        $this->base      = $base; 
-        $this->modulo_id = 9; 
+        $this->base = $base; 
     }
 
     public function index()
     {
         return view('configuracoes.base.index', [
             'collection' => $this->base->orderBy('id', 'desc')->paginate(10),
-            'permissoes' => PermissaoHelp::getPermissoes($this->modulo_id),
         ]);
     }
 
     public function create()
     {
-        if (PermissaoHelp::verificaPermissao([
-                'permissao' => 'Criar', 
-                'modulo' => $this->modulo_id
-            ])){
-            return view('configuracoes.base.create');
-        } else {
-            return redirect()->route('base.index');
-        }
+        return view('configuracoes.base.create');
     }
 
     public function store(Request $request)
@@ -51,27 +46,17 @@ class BaseController extends Controller
 
     public function edit($id)
     {
-        if (PermissaoHelp::verificaPermissao([
-            'permissao' => 'Editar', 
-            'modulo'    => $this->modulo_id
-        ])) {
-            return view('configuracoes.base.edit', [
-                'base' => $this->base->findOrFail($id)
-            ]);
-        } else {
-            return redirect()
-                ->route('base.index');
-        }
+        return view('configuracoes.base.edit', [
+            'base' => $this->base->findOrFail($id)
+        ]);
     }
 
     public function update(Request $request, $id)
     {
         $request->validate($this->base->rules('update'), $this->base->feedback());
-
         $base       = $this->base->findOrFail($id);
         $base->nome = $request->nome;
         $base->update();
-        
         return redirect()
             ->route('base.index')
             ->with('status', "Registro Atualizado!");
@@ -87,7 +72,6 @@ class BaseController extends Controller
                     ->with('warning', "Esta Base está sendo utilizada, por tanto não pode ser excluida.");
             }
             $base->delete();
-            
             return redirect()
                 ->route('base.index')
                 ->with('status', "Registro Excluido!");

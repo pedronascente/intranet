@@ -5,7 +5,8 @@
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
-            <a href="{{ route('planilha-administrativo.arquivado') }}">Planilha</a>
+            <a href="{{ route('comissao.arquivo.index') }}">Planilha</a> /
+            <a href="{{ route('comissao.administrativo.index') }}">Conferir</a> 
         </li>
     </ol>
 @endsection
@@ -14,7 +15,7 @@
   <div class="card p-3">
     <div class="card">
         <div class="card-header">
-            <x-filtro-form-planilha :route="route('planilha-administrativo.filtro', 'arquivado')" />
+            <x-filtro-form-planilha :route="route('comissao.arquivo.filtro', 'arquivos')" />
         </div> 
         <div class="card-body">
             <div class="table-responsive ">
@@ -36,7 +37,7 @@
                         @if ($collections)
                             @foreach ($collections as $item)
                                 @php
-                                    $valorTotalComissao = app('App\Http\Controllers\Planilha\PlanilhaAdministrativoController')->getValorTotalComissao($item);
+                                    $valorTotalComissao = app('App\Http\Controllers\Planilha\AdministrativoController')->getValorTotalComissao($item);
                                 @endphp
                                 <tr>
                                     <td>{{ $item->id }}</td>
@@ -48,7 +49,7 @@
                                     <td>R$ {{ $valorTotalComissao }}</td>
                                     <td>{{ $item->status->status }}</td>
                                     <td class="text-center">
-                                        <a href="{{ route('planilha-administrativo.recuperar', $item->id) }}"
+                                        <a href="{{ route('comissao.administrativo.recuperar', $item->id) }}"
                                             class="btn btn-primary btn-sm" title="Recuperar Planilha">
                                             Recuperar
                                         </a>
