@@ -70,16 +70,7 @@ class EmpresaController extends Controller
         return redirect()->route('empresa.index')->with('status', 'Registrado com sucesso!');
     }
 
-    /**
-     * Exibe os detalhes de uma empresa específica.
-     *
-     * @param int $id
-     * @return \Illuminate\View\View
-     */
-    public function show($id)
-    {
-        return view('configuracoes.empresa.show', ['empresa' => Empresa::find($id)]);
-    }
+
 
     /**
      * Exibe o formulário de edição de uma empresa.
@@ -160,5 +151,11 @@ class EmpresaController extends Controller
                 unlink($caminhoImagem);
             }
         }
+    }
+
+    public function show($id)
+    {
+        return redirect()
+            ->route('empresa.index');
     }
 }

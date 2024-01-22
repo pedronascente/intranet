@@ -17,7 +17,7 @@
     <div class="card-header">
         <div class="row">
             <div class="col-md-12">
-                <a href="{{ route('comissao.arquivo.index') }}" class="btn btn-sm btn-info ">
+                <a href="{{ route('comissao.administrativo.arquivo.index') }}" class="btn btn-sm btn-info ">
                     <i class="fas fa-folder"></i> Arquivos
                 </a>
                 <a href="{{ route('comissao.administrativo.relatorio') }}" class="btn btn-sm btn-info ">
@@ -29,7 +29,7 @@
     </div>
     <div class="card">  
         <div class="card-header">
-             <x-filtro-form-planilha :route="route('comissao.administrativo.filtro', 'conferir')" />
+             <x-filtro-form-planilha :route="route('comissao.administrativo.index')" />
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -68,7 +68,7 @@
                                             class="btn btn-danger btn-sm" title="Editar Planilha">
                                             <i class="nav-icon fas fa-edit"></i> Reprovar
                                         </a>
-                                        <a href="{{ route('comissao.administrativo-tipo.index', $item->id) }}"
+                                        <a href="{{ route('comissao.administrativo.tipoAdministrativo.index', $item->id) }}"
                                             class="btn btn-primary btn-sm" title="Conissão">
                                             <i class="fas fa-folder"></i> Visualizar
                                         </a>

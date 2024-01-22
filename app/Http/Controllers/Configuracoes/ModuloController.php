@@ -9,6 +9,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Help\FormatarDataController;
 class ModuloController extends Controller
 {
+    /**
+     * Instância da Modulo
+     *
+     * @var Modulo
+     */
     private $modulo;
 
     public function __construct(Modulo $modulo)
@@ -42,15 +47,6 @@ class ModuloController extends Controller
             ->route('modulo.index')
             ->with('status', "Registrado com sucesso!");
     }
-
-    /*
-        public function show($id)
-        {
-            return view('configuracoes.modulo.show', [
-                'modulo' => Modulo::find($id)
-            ]);
-        }
-    */
 
     public function edit($id)
     {
@@ -87,5 +83,11 @@ class ModuloController extends Controller
                 ->route('modulo.index')
                 ->with('status', "Registro Excluido!");
         }
+    }
+
+    public function show($id)
+    {
+        return redirect()
+            ->route('modulo.index');
     }
 }

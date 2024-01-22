@@ -19,16 +19,13 @@ class RelatorioController extends Controller
     }
 
     public function relatorio(Request $request){
-        
         $arayLisStatus = PlanilhaStatus::all();
-        
+        $collection =  $this->planilha->getRelatorio($request);
         return view('planilha.administrativo.relatorio',
         [
             'titulo'=> $this->titulo,
             'arayLisStatus'=> $arayLisStatus,
-            'collection'=>  $this->planilha->relatorioDb($request),
+            'collection'=>  $collection,
         ]);
     }
-
-    
 }

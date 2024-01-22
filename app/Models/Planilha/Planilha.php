@@ -11,6 +11,10 @@ use App\Models\Planilha\PlanilhaPeriodo;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+
+
 class Planilha extends Model
 {
     use HasFactory;
@@ -180,13 +184,12 @@ class Planilha extends Model
         ];
     }
 
-    public function relatorioDb(Request $request)
+    public function getRelatorio(Request $request)
     {
         $filtro      = $request->input('filtro');
         $status      = $request->input('status');
         $dataInicial = $request->input('data_inicial');
         $dataFinal   = $request->input('data_final');
-        $whereIn     = ($status == 'todos') ? [1, 2, 3, 4, 5] : [$status];
 
         $query = DB::table('planilhas')
         ->join('planilha_periodos', 'planilhas.planilha_periodo_id', '=', 'planilha_periodos.id')
@@ -195,12 +198,47 @@ class Planilha extends Model
         ->join('colaboradores', 'planilhas.colaborador_id', '=', 'colaboradores.id')
         ->leftJoin('comercial_alarme_cerca_eletrica_cftvs', 'planilhas.id', '=', 'comercial_alarme_cerca_eletrica_cftvs.planilha_id')
         ->leftJoin('comercial_rastreamento_veiculares', 'planilhas.id', '=', 'comercial_rastreamento_veiculares.planilha_id')
-        ->leftJoin('servico_alarmes', 'comercial_alarme_cerca_eletrica_cftvs.servico_id', '=', 'servico_alarmes.id')
+        ->leftJoin('entrega_alarmes', 'planilhas.id', '=', 'entrega_alarmes.planilha_id')
+        ->leftJoin('portaria_virtuais', 'planilhas.id', '=', 'portaria_virtuais.planilha_id')
+        ->leftJoin('reclamacao_de_clientes', 'planilhas.id', '=', 'reclamacao_de_clientes.planilha_id')
+        ->leftJoin('supervisao_comercial_alarmes_cerca_eletrica_cftvs', 'planilhas.id', '=', 'supervisao_comercial_alarmes_cerca_eletrica_cftvs.planilha_id')
+        ->leftJoin('supervisao_comercial_rastreamentos', 'planilhas.id', '=', 'supervisao_comercial_rastreamentos.planilha_id')
+        ->leftJoin('supervisao_tecnica_e_sac_alarmes_cerca_eletrica_cftvs', 'planilhas.id', '=', 'supervisao_tecnica_e_sac_alarmes_cerca_eletrica_cftvs.planilha_id')
+        ->leftJoin('tecnica_alarmes_cerca_eletrica_cftvs', 'planilhas.id', '=', 'tecnica_alarmes_cerca_eletrica_cftvs.planilha_id')
+        ->leftJoin('tecnica_de_rastreamentos', 'planilhas.id', '=', 'tecnica_de_rastreamentos.planilha_id')
+
+        ->leftJoin('servico_alarmes', 'supervisao_comercial_alarmes_cerca_eletrica_cftvs.servico_id', '=', 'servico_alarmes.id')
+        ->leftJoin('servico_alarmes as servico_alarmes1', 'comercial_alarme_cerca_eletrica_cftvs.servico_id', '=', 'servico_alarmes1.id')
+        ->leftJoin('servico_alarmes as servico_alarmes2', 'tecnica_alarmes_cerca_eletrica_cftvs.servico_id', '=', 'servico_alarmes2.id')
+
         ->where(function ($query) use ($filtro) {
             $query->where('comercial_alarme_cerca_eletrica_cftvs.cliente', 'like', '%' . $filtro . '%')
-            ->orWhere('comercial_rastreamento_veiculares.cliente', 'like', '%' . $filtro . '%');
-        })
-            ->whereIn('planilhas.planilha_status_id', $whereIn);
+                ->orWhere('comercial_rastreamento_veiculares.cliente', 'like', '%' . $filtro . '%')
+                ->orWhere('comercial_rastreamento_veiculares.placa', 'like', '%' . $filtro . '%')
+
+                ->orWhere('entrega_alarmes.cliente', 'like', '%' . $filtro . '%')
+                ->orWhere('portaria_virtuais.cliente', 'like', '%' . $filtro . '%')
+                ->orWhere('reclamacao_de_clientes.cliente', 'like', '%' . $filtro . '%')
+                ->orWhere('supervisao_comercial_alarmes_cerca_eletrica_cftvs.cliente', 'like', '%' . $filtro . '%')
+                ->orWhere('supervisao_comercial_rastreamentos.cliente', 'like', '%' . $filtro . '%')
+                ->orWhere('supervisao_tecnica_e_sac_alarmes_cerca_eletrica_cftvs.cliente', 'like', '%' . $filtro . '%')
+
+                ->orWhere('tecnica_de_rastreamentos.cliente', 'like', '%' . $filtro . '%')
+                ->orWhere('tecnica_de_rastreamentos.placa', 'like', '%' . $filtro . '%')
+              
+                ->orWhere('servico_alarmes.nome', 'like', '%' . $filtro . '%')
+                ->orWhere('servico_alarmes1.nome', 'like', '%' . $filtro . '%')
+                ->orWhere('servico_alarmes2.nome', 'like', '%' . $filtro . '%')
+
+                ->orWhere('tecnica_alarmes_cerca_eletrica_cftvs.cliente', 'like', '%' . $filtro . '%')
+                ->orWhere('tecnica_alarmes_cerca_eletrica_cftvs.numero_os', 'like', '%' . $filtro . '%');
+        });
+
+        if (($status == 'todos')) {
+            $query->whereIn('planilhas.planilha_status_id', [1, 2, 3, 4, 5]);
+        } else {
+            $query->where('planilhas.planilha_status_id', $status);
+        }
 
         // Adiciona filtro de data para comercial_alarme_cerca_eletrica_cftvs, se fornecido
         if ($dataInicial && $dataFinal) {
@@ -215,58 +253,100 @@ class Planilha extends Model
                 $q->whereBetween('comercial_rastreamento_veiculares.data', [$dataInicial, $dataFinal]);
             });
         }
-
-        // Paginação
-        $perPage = 100;
-        $result = $query->select(
+    
+        $query->select(
             'planilhas.*',
             'planilha_status.status',
             'planilha_tipos.nome as planilha',
             'planilha_periodos.nome as periodo',
             'colaboradores.nome as colaborador',
-            'servico_alarmes.nome as servico',
-            DB::raw('COALESCE(comercial_alarme_cerca_eletrica_cftvs.cliente, comercial_rastreamento_veiculares.cliente) as cliente'),
-            DB::raw('COALESCE(comercial_alarme_cerca_eletrica_cftvs.data, comercial_rastreamento_veiculares.data) as data'),
-            DB::raw('COALESCE(comercial_alarme_cerca_eletrica_cftvs.comissao, comercial_rastreamento_veiculares.comissao) as comissao'),
-            DB::raw('COALESCE(comercial_alarme_cerca_eletrica_cftvs.conta_pedido) as conta_pedido')
-        )->paginate($perPage);
+            'tecnica_alarmes_cerca_eletrica_cftvs.numero_os',
+            DB::raw('COALESCE(
+                comercial_rastreamento_veiculares.placa,
+                tecnica_de_rastreamentos.placa
+                ) as placa'),
+            DB::raw('COALESCE(
+                servico_alarmes.nome,
+                servico_alarmes1.nome,
+                servico_alarmes2.nome
+                ) as servico'),
+            DB::raw('COALESCE(
+                comercial_alarme_cerca_eletrica_cftvs.cliente,
+                comercial_rastreamento_veiculares.cliente,
+                entrega_alarmes.cliente,
+                portaria_virtuais.cliente,
+                reclamacao_de_clientes.cliente,
+                supervisao_comercial_alarmes_cerca_eletrica_cftvs.cliente,
+                supervisao_comercial_rastreamentos.cliente,
+                supervisao_tecnica_e_sac_alarmes_cerca_eletrica_cftvs.cliente,
+                tecnica_alarmes_cerca_eletrica_cftvs.cliente,
+                tecnica_de_rastreamentos.cliente
+                ) as cliente'),
+            DB::raw('COALESCE(
+                comercial_alarme_cerca_eletrica_cftvs.data,
+                comercial_rastreamento_veiculares.data,
+                entrega_alarmes.data,
+                portaria_virtuais.data,
+                reclamacao_de_clientes.data,
+                supervisao_comercial_alarmes_cerca_eletrica_cftvs.data,
+                supervisao_comercial_rastreamentos.data,
+                supervisao_tecnica_e_sac_alarmes_cerca_eletrica_cftvs.data,
+                tecnica_alarmes_cerca_eletrica_cftvs.data,
+                tecnica_de_rastreamentos.data
+                ) as data'),
+            DB::raw('COALESCE(
+                comercial_alarme_cerca_eletrica_cftvs.comissao,
+                comercial_rastreamento_veiculares.comissao,
+                entrega_alarmes.comissao,
+                portaria_virtuais.comissao,
+                reclamacao_de_clientes.comissao,
+                supervisao_comercial_alarmes_cerca_eletrica_cftvs.comissao,
+                supervisao_comercial_rastreamentos.comissao,
+                supervisao_tecnica_e_sac_alarmes_cerca_eletrica_cftvs.comissao,
+                tecnica_alarmes_cerca_eletrica_cftvs.comissao,
+                tecnica_de_rastreamentos.comissao
+                ) as comissao'),
+            DB::raw('COALESCE(
+                comercial_alarme_cerca_eletrica_cftvs.conta_pedido,
+                entrega_alarmes.conta_pedido,
+                portaria_virtuais.conta_pedido,
+                reclamacao_de_clientes.conta_pedido,
+                supervisao_comercial_alarmes_cerca_eletrica_cftvs.conta_pedido,
+                supervisao_comercial_rastreamentos.conta_pedido,
+                supervisao_tecnica_e_sac_alarmes_cerca_eletrica_cftvs.conta_pedido,
+                tecnica_alarmes_cerca_eletrica_cftvs.conta_pedido,
+                tecnica_de_rastreamentos.conta_pedido
+                ) as conta_pedido')
+        );
 
-        return $result;
+       return  $query->paginate(10)->appends([
+            'filtro' => $filtro,
+            'status' => $status,
+            'data_inicial' => $dataInicial,
+            'data_final' => $dataFinal,
+        ]);
+        
     }
 
-
-
-
-    /**
-     * Exibe a página de listagem de planilhas com base em filtros.
-     *
-     * @param  \Illuminate\Http\Request  $request  Instância da requisição HTTP.
-     * @param  string  $origem  Origem da listagem (conferir ou outra).
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function pesquisarPor(Request $request, $origem)
+    public function getPlanilha($request, $arrayPlanilhaStatusId)
     {
-        // Obtém os parâmetros da requisição
-        $ano     = $request->input('ano');
-        $filtro  = $request->input('filtro');
-        $whereIn = $origem == 'conferir' ? [3, 5] : [2];
+
+        $ano    = $request->query('ano');
+        $filtro = $request->query('filtro');
+
+        //$whereIn = $origem == 'conferir' ? [3, 5] : [2];
+        $whereIn = $arrayPlanilhaStatusId;
 
         // Inicia a consulta de planilhas com relacionamentos (colaborador, tipo, status)
         $query = $this->with('colaborador', 'tipo', 'status')->whereIn('planilha_status_id', $whereIn);
-
-        // Adiciona condição para filtrar por ano, se fornecido
         if ($ano) {
             $query->where('ano', '=', $ano);
         }
-
         // Adiciona condição para pesquisa por termo, se fornecido
         if ($filtro) {
             $this->getTermoPesquisa($query, $filtro);
         }
-
-        // Executa a consulta e obtém os resultados paginados
         return  $query->paginate(10);
-
     }
 
 

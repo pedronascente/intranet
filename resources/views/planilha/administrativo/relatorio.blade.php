@@ -5,7 +5,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
-            <a href="{{ route('comissao.arquivo.index') }}">Planilha</a>
+            <a href="{{ route('comissao.administrativo.index') }}">Planilha</a> 
         </li>
     </ol>
 @endsection
@@ -71,6 +71,7 @@
                             <th>Planilha</th>
                             <th>Conta / Pedido</th>
                             <th>Número OS</th>
+                            <th>Placa</th>
                             <th>Serviço</th>
                             <th>Comissão</th>
                             <th>Status</th>
@@ -84,13 +85,14 @@
                           @if($collection)
                             @foreach ($collection as $item)
                                 <tr>
-                                    <td>{{  $item->data }}</td>
-                                    <td>{{  $item->periodo }}</td>
-                                    <td>{{  $item->cliente }}</td>
-                                    <td>{{  $item->colaborador }}</td>
-                                    <td>{{  $item->planilha }}</td>
-                                    <td>{{  $item->conta_pedido }}</td>
-                                    <td></td>
+                                    <td>{{ \Carbon\Carbon::parse($item->data)->format('d/m/Y') }}</td>
+                                    <td>{{ $item->periodo }}</td>
+                                    <td>{{ $item->cliente }}</td>
+                                    <td>{{ $item->colaborador }}</td>
+                                    <td>{{ $item->planilha }}</td>
+                                    <td>{{ $item->conta_pedido }}</td>
+                                    <td>{{ $item->numero_os }}</td>
+                                    <td>{{ $item->placa }}</td>
                                     <td>{{ $item->servico }}</td>
                                     <td>{{ $item->comissao }}</td>     
                                     <td>{{ $item->status }}</td>     
@@ -102,10 +104,10 @@
             </div>
         </div>
         <div class="card-footer">
-            @if (@isset($collections))
+            @if (@isset($collection))
                 <div class="row">
                     <div class="col-sm-12 col-md-12">
-                        {!! $collections->links() !!}
+                        {!! $collection->links() !!}
                     </div>
                 </div>
             @endif

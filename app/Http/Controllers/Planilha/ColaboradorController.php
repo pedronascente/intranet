@@ -198,4 +198,10 @@ class ColaboradorController extends Controller
             ->where('planilha_tipo_id', $request->planilha_tipo_id)
             ->count();
     }
+
+    public function show($id)
+    {
+        return redirect()
+            ->route('planilha.index');
+    }
 }

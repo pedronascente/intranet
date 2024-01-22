@@ -5,8 +5,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
-            <a href="{{ route('comissao.arquivo.index') }}">Planilha</a> /
-            <a href="{{ route('comissao.administrativo.index') }}">Conferir</a> 
+            <a href="{{ route('comissao.administrativo.index') }}">Planilha</a> 
         </li>
     </ol>
 @endsection
@@ -15,7 +14,7 @@
   <div class="card p-3">
     <div class="card">
         <div class="card-header">
-            <x-filtro-form-planilha :route="route('comissao.arquivo.filtro', 'arquivos')" />
+            <x-filtro-form-planilha :route="route('comissao.administrativo.arquivo.index')" />
         </div> 
         <div class="card-body">
             <div class="table-responsive ">
@@ -49,7 +48,7 @@
                                     <td>R$ {{ $valorTotalComissao }}</td>
                                     <td>{{ $item->status->status }}</td>
                                     <td class="text-center">
-                                        <a href="{{ route('comissao.administrativo.recuperar', $item->id) }}"
+                                        <a href="{{ route('comissao.administrativo.arquivo.recuperar', $item->id) }}"
                                             class="btn btn-primary btn-sm" title="Recuperar Planilha">
                                             Recuperar
                                         </a>

@@ -3,7 +3,7 @@
     <i class="nav-icon fas fa-print"></i> Imprimir
 </a>
 
-<a href="{{ route('comissao.administrativo.arquivar', $planilha->id) }}" class="btn  btn-dark  btn-sm"
+<a href="{{ route('comissao.administrativo.arquivo.arquivar', $planilha->id) }}" class="btn  btn-dark  btn-sm"
     title="Arquivar Planilha">
     <i class="nav-icon fas fa-archive"></i> Arquivar
 </a>

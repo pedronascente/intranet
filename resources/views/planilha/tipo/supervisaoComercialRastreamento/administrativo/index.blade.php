@@ -26,7 +26,7 @@
 <div class="card p-3 ">    
     <div class="card">
         <div class="card-header">
-            <x-filtro-form-comissao :route="route('comissao.administrativo-tipo.index', $planilha->id)" />
+            <x-filtro-form-comissao :route="route('comissao.administrativo.tipoAdministrativo.index', $planilha->id)" />
         </div>
         <div class="card-body table-responsive p-0">
             @include('planilha.tipo.supervisaoComercialRastreamento.administrativo.table')

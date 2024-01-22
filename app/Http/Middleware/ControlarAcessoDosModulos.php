@@ -3,9 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Models\User;
 use Illuminate\Http\Request;
-use App\Providers\RouteServiceProvider;
 
 class ControlarAcessoDosModulos
 {
@@ -22,59 +20,15 @@ class ControlarAcessoDosModulos
         $usuario      = session()->get('usuarioAutenticado');
         $arrayModulos = $usuario->perfil->modulos;
        
-       //dd($arrayModulos);
         foreach ($arrayModulos as $modulo) {
-            if($modulo->nome == $moduloRota){
-                
-               // $permissoes = $arrayModulos->permissoes ;
-                //dd($permissoes);
+            if($modulo->slug == $moduloRota){  
                 return $next($request);
-               
-        
                 break;
             }
         }
 
         return redirect()
             ->route('dashboard.index')
-                    ->with('warning', "Você não tem permissão para acessar este Módulo.");
-           
-
+            ->with('warning', "Você não tem permissão para acessar este Módulo.");
     }
 }
-
-
-/*
-
-        $array_modulos = $request->session()->get('perfil');
-        
-
-        dd($array_modulos);
-
-
-
-
-
-        if (isset($array_modulos['modulos'])) {
-            foreach ($array_modulos['modulos'] as $rota) {
-                $arrayRotas[] =  $rota['rota'];
-            }
-            $url =    $request->segment(1);
-            if ($url !== '/' || $url !== 'dashboard' || $url !== 'login') {
-                $url = "/" . $request->segment(1);
-                if ($request->segment(2)) {
-                    $url .= "/" . $request->segment(2);
-                }
-                if (!in_array($url, $arrayRotas)) {
-                    return redirect()
-                        ->action('App\Http\Controllers\DashboardController@index');
-                    //->with('warning', "Você não tem permissão para acessar este Módulo.");
-                }
-            }
-        } else {
-            return redirect()
-                ->action('App\Http\Controllers\DashboardController@index');
-        }
-        return $next($request);
-
-*/

@@ -123,5 +123,11 @@ class PerfilController extends Controller
                 ->route('perfil.index')
                 ->with('status', "Registro Excluido!");
         }
-    }   
+    }
+
+    public function show($id)
+    {
+        return redirect()
+            ->route('perfil.index');
+    }
 }

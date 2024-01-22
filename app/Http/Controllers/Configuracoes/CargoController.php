@@ -83,4 +83,9 @@ class CargoController extends Controller
         }
     }
 
+    public function show($id){
+        return redirect()
+            ->route('cargo.index');
+    }
+
 }

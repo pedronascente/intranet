@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Configuracoes;
 use App\Models\Base;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Help\PermissaoHelp;
 
 class BaseController extends Controller
 {
@@ -80,5 +79,11 @@ class BaseController extends Controller
                 ->route('base.index')
                 ->with('warning', "Registro não encontrado.");
         }
+    }
+
+    public function show($id)
+    {
+        return redirect()
+            ->route('base.index');
     }
 }

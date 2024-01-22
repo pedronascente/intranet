@@ -17,22 +17,20 @@ class ArquivoController extends Controller
         $this->planilha = $planilha;
     }
 
-    /**
-     * Exibe a página de planilhas arquivadas.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function index()
+    public function index(Request $request)
     {
-        // Obtém planilhas com status 2 (Arquivada) ordenadas por ID em ordem decrescente e paginadas
-        $collections = $this->planilha
-            ->whereIn('planilha_status_id', [2])
-            ->orderBy('id', 'desc')
-            ->paginate(10);
-        // Retorna a visão (view) 'planilha.administrativo.arquivos' com os dados necessários
+        $arrayPlanilhaStatusId = [2];
+        if ($request->query('ano') || $request->query('filtro')) {
+            $collections = $this->planilha->getPlanilha($request, $arrayPlanilhaStatusId);
+        } else {
+            $collections = $this->planilha
+                ->whereIn('planilha_status_id', $arrayPlanilhaStatusId)
+                ->orderBy('id', 'desc')
+                ->paginate(10); 
+        }
         return view('planilha.administrativo.arquivos', [
-            'titulo' => $this->titulo, // Título da página
-            'collections' => $collections, // Planilhas arquivadas a serem exibidas na view
+            'titulo'      => $this->titulo,
+            'collections' => $collections,
         ]);
     }
 
@@ -61,20 +59,8 @@ class ArquivoController extends Controller
     {
         // Chama o método privado para atualizar o status da planilha para 'Recuperada para Homologação'
         $this->updateStatus($id, 5);
-
         // Redireciona para a página de listagem de planilhas administrativas
         return redirect()->route('comissao.administrativo.index')->with('status', "Planilha Recuperada para Homologação.");
-    }
-
-    public function pesquisarPor(Request $request, $origem)
-    {
-        $collections  = $this->planilha->pesquisarPor($request, $origem);
-
-        // Retorna a visão (view) com os dados necessários
-        return view('planilha.administrativo.' . $origem, [
-            'titulo' => $this->titulo . " | " . ucfirst($origem), // Título da página
-            'collections' => $collections, // Planilhas a serem exibidas na view
-        ]);
     }
     
     /**
@@ -86,10 +72,7 @@ class ArquivoController extends Controller
      */
     private function updateStatus($id, $statusId)
     {
-        // Obtém a planilha existente com base no ID fornecido
         $planilha = $this->planilha->findOrFail($id);
-
-        // Atualiza o status da planilha
         $planilha->planilha_status_id = $statusId;
         $planilha->update();
     }

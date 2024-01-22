@@ -26,8 +26,7 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
-
-                @if (session()->get('usuarioAutenticado')->perfil->modulos)
+                @if (session()->get('usuarioAutenticado'))
                     @foreach (session()->get('usuarioAutenticado')->perfil->modulos as $modulo)
                         @if ($modulo->tipo_menu=="menu-lateral")
                             @if ($modulo->slug =='administrar-comissao' || $modulo->slug == 'lancar-comissao' )
@@ -71,40 +70,3 @@
         </nav>
     </div>
 </aside>
-
-
-
-
-/*
-
-<!--li class="nav-item  menu-open">
-                    <a href="javascript:void(0)"
-                        @if (Request::segment(2) == 'modulo' ||
-                                Request::segment(2) == 'permissao' ||
-                                Request::segment(2) == 'perfil' ||
-                                Request::segment(2) == 'base' ||
-                                Request::segment(2) == 'empresa' ||
-                                Request::segment(2) == 'cargo' ||
-                                Request::segment(2) == 'colaborador' ||
-                                Request::segment(2) == 'user' ||
-                                Request::segment(2) == 'cartao') class="nav-link active"  @else   class="nav-link" @endif>
-                        <i class="nav-icon fa fa-cog" aria-hidden="true"></i>
-                        <p>
-                            Configurações <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        @if (session()->get('perfil'))
-                            @foreach (session()->get('perfil')['modulos'] as $item)
-                                <li class="nav-item">
-                                    <a href="{{ $item['rota'] }}"
-                                        @if (Request::segment(2) == $item['slug']) class="nav-link active"  @else   class="nav-link" @endif>
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p> {{ $item['nome'] }}</p>
-                                    </a>
-                                </li>
-                            @endforeach
-                        @endif
-                    </ul>
-                </li-->
-*/

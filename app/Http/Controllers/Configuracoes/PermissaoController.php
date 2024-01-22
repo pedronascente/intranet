@@ -79,5 +79,11 @@ class PermissaoController extends Controller
                 ->route('permissao.index')
                 ->with('status', "Registro Excluido!");
         }
-    }   
+    }
+
+    public function show($id)
+    {
+        return redirect()
+            ->route('permissao.index');
+    }
 }
