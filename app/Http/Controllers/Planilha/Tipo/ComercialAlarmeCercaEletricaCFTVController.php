@@ -19,10 +19,15 @@ class ComercialAlarmeCercaEletricaCFTVController extends Controller
         $this->titulo                           = "Comercial Alarme / Cerca Elétrica / CFTV";
         $this->comercialAlarmeCercaEletricaCFTV = $comercialAlarmeCercaEletricaCFTV;
     }
-
+ 
     public function store(Request $request)
     {
         $request->validate($this->comercialAlarmeCercaEletricaCFTV->rules(), $this->comercialAlarmeCercaEletricaCFTV->feedback());
+        if($this->comercialAlarmeCercaEletricaCFTV->validarComissaoDuplicada($request)>=1){
+            return redirect()
+            ->route('planilha-colaborador-tipo.index', $request->planilha_id)
+            ->with('warning', "Atenção : Duplicar comissão não é permitido!");
+        }
         $objetoModel = $this->comercialAlarmeCercaEletricaCFTV;
         $objetoModel->planilha()->associate(Planilha::find($request->planilha_id));
         $objetoModel->servico()->associate(ServicoAlarme::findOrFail($request->servico_id));
@@ -57,6 +62,13 @@ class ComercialAlarmeCercaEletricaCFTVController extends Controller
     {
         $request->validate($this->comercialAlarmeCercaEletricaCFTV->rules(), $this->comercialAlarmeCercaEletricaCFTV->feedback());
         $objetoModel = $this->comercialAlarmeCercaEletricaCFTV->findOrFail($id);
+
+        if ($this->comercialAlarmeCercaEletricaCFTV->validarComissaoDuplicada($request) >= 1) {
+            return redirect()
+                ->route('planilha-colaborador-tipo.index', $objetoModel->planilha_id)
+                ->with('status', 'Registro atualizado com sucesso.');
+        }
+
         $objetoModel->servico()->associate(ServicoAlarme::findOrFail($request->servico_id));
         $objetoModel->meio()->associate(Meio::findOrFail($request->meio_id));
         $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
@@ -67,8 +79,9 @@ class ComercialAlarmeCercaEletricaCFTVController extends Controller
         $objetoModel->comissao          = $request->comissao;
         $objetoModel->desconto_comissao = $request->desconto_comissao;
         $objetoModel->save();
+
         return redirect()
-            ->route('cace-cftv.edit', $id)
+            ->route('planilha-colaborador-tipo.index', $objetoModel->planilha_id)
             ->with('status', 'Registro atualizado com sucesso.');
     }
 
@@ -79,5 +92,5 @@ class ComercialAlarmeCercaEletricaCFTVController extends Controller
         return redirect()
             ->route('planilha-colaborador-tipo.index', $objetoModel->planilha_id)
             ->with('status', "Registrado Excluido com sucesso!");
-    }
+    }   
 }
