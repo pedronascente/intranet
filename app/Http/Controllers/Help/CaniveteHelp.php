@@ -41,7 +41,6 @@ class CaniveteHelp
       if (empty($slug)) {
         return 'n-a';
       }
-
       return $slug;
     }
 
