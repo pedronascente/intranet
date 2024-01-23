@@ -2,18 +2,12 @@
 
 namespace App\Models\Planilha;
 
-
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\planilha\PlanilhaStatus;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Planilha\PlanilhaPeriodo;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
-
 
 class Planilha extends Model
 {
@@ -184,13 +178,8 @@ class Planilha extends Model
         ];
     }
 
-    public function getRelatorio(Request $request)
+    public function getRelatorio($status, $filtro, $dataInicial, $dataFinal)
     {
-        $filtro      = $request->input('filtro');
-        $status      = $request->input('status');
-        $dataInicial = $request->input('data_inicial');
-        $dataFinal   = $request->input('data_final');
-
         $query = DB::table('planilhas')
         ->join('planilha_periodos', 'planilhas.planilha_periodo_id', '=', 'planilha_periodos.id')
         ->join('planilha_tipos', 'planilhas.planilha_tipo_id', '=', 'planilha_tipos.id')
@@ -231,29 +220,49 @@ class Planilha extends Model
                 ->orWhere('servico_alarmes2.nome', 'like', '%' . $filtro . '%')
 
                 ->orWhere('tecnica_alarmes_cerca_eletrica_cftvs.cliente', 'like', '%' . $filtro . '%')
-                ->orWhere('tecnica_alarmes_cerca_eletrica_cftvs.numero_os', 'like', '%' . $filtro . '%');
+                ->orWhere('tecnica_alarmes_cerca_eletrica_cftvs.numero_os', 'like', '%' . $filtro . '%')
+                ->orWhere('planilha_tipos.nome', 'like', '%' . $filtro . '%');
         });
 
-        if (($status == 'todos')) {
+        if (($status == 6)) {
             $query->whereIn('planilhas.planilha_status_id', [1, 2, 3, 4, 5]);
         } else {
             $query->where('planilhas.planilha_status_id', $status);
         }
 
-        // Adiciona filtro de data para comercial_alarme_cerca_eletrica_cftvs, se fornecido
         if ($dataInicial && $dataFinal) {
             $query->where(function ($q) use ($dataInicial, $dataFinal) {
                 $q->whereBetween('comercial_alarme_cerca_eletrica_cftvs.data', [$dataInicial, $dataFinal]);
             });
-        }
-
-        // Adiciona filtro de data para comercial_rastreamento_veiculares, se fornecido
-        if ($dataInicial && $dataFinal) {
             $query->orWhere(function ($q) use ($dataInicial, $dataFinal) {
                 $q->whereBetween('comercial_rastreamento_veiculares.data', [$dataInicial, $dataFinal]);
             });
+            $query->orWhere(function ($q) use ($dataInicial, $dataFinal) {
+                $q->whereBetween('entrega_alarmes.data', [$dataInicial, $dataFinal]);
+            });
+            $query->orWhere(function ($q) use ($dataInicial, $dataFinal) {
+                $q->whereBetween('portaria_virtuais.data', [$dataInicial, $dataFinal]);
+            });
+            $query->orWhere(function ($q) use ($dataInicial, $dataFinal) {
+                $q->whereBetween('reclamacao_de_clientes.data', [$dataInicial, $dataFinal]);
+            });
+            $query->orWhere(function ($q) use ($dataInicial, $dataFinal) {
+                $q->whereBetween('supervisao_comercial_alarmes_cerca_eletrica_cftvs.data', [$dataInicial, $dataFinal]);
+            });
+            $query->orWhere(function ($q) use ($dataInicial, $dataFinal) {
+                $q->whereBetween('supervisao_comercial_rastreamentos.data', [$dataInicial, $dataFinal]);
+            });
+            $query->orWhere(function ($q) use ($dataInicial, $dataFinal) {
+                $q->whereBetween('supervisao_tecnica_e_sac_alarmes_cerca_eletrica_cftvs.data', [$dataInicial, $dataFinal]);
+            });
+            $query->orWhere(function ($q) use ($dataInicial, $dataFinal) {
+                $q->whereBetween('tecnica_alarmes_cerca_eletrica_cftvs.data', [$dataInicial, $dataFinal]);
+            });
+            $query->orWhere(function ($q) use ($dataInicial, $dataFinal) {
+                $q->whereBetween('tecnica_de_rastreamentos.data', [$dataInicial, $dataFinal]);
+            });
         }
-    
+
         $query->select(
             'planilhas.*',
             'planilha_status.status',
@@ -320,10 +329,10 @@ class Planilha extends Model
         );
 
        return  $query->paginate(10)->appends([
-            'filtro' => $filtro,
-            'status' => $status,
+            'filtro'       => $filtro,
+            'status'       => $status,
             'data_inicial' => $dataInicial,
-            'data_final' => $dataFinal,
+            'data_final'   => $dataFinal,
         ]);
         
     }
@@ -349,7 +358,6 @@ class Planilha extends Model
         return  $query->paginate(10);
     }
 
-
     /**
      * Aplica uma pesquisa por termo a uma consulta Eloquent.
      *
@@ -373,5 +381,4 @@ class Planilha extends Model
                 });
         });
     }
-
 }

@@ -3,39 +3,35 @@
 namespace App\Http\Controllers\Planilha\Tipo;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\Planilha\Planilha;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Help\CaniveteHelp;
 use App\Models\Planilha\Tipo\EntregaDeAlarmes;
-use App\Models\Planilha\Tipo\PlanilhaTipo;
 
 class EntregaDeAlarmeController extends Controller
 {
     private $titulo;
-    private $planilhaTipo;
     private $entregaDeAlarme;
 
     public function __construct(EntregaDeAlarmes  $entregaDeAlarme)
     {
         $this->titulo          = "Entregas de Alarmes";
-        $this->planilhaTipo    = new PlanilhaTipo();
         $this->entregaDeAlarme = $entregaDeAlarme;
     }
 
     public function store(Request $request)
     {
         $request->validate($this->entregaDeAlarme->rules(), $this->entregaDeAlarme->feedback());
-
         if ($this->validarDuplicidade($request)) {
             // Se a comissão já existe, você pode decidir o que fazer aqui, talvez mostrar uma mensagem de erro.
             return redirect()->back()->with('error', 'Comissão já existe para os critérios fornecidos.');
         }
-
         $objetoModel = $this->entregaDeAlarme;
         $objetoModel->planilha()->associate(Planilha::findOrFail($request->planilha_id));
-        $objetoModel->cliente = $request->cliente;
-        $objetoModel->data = $this->planilhaTipo->formatarData($request->data);
-        $objetoModel->conta_pedido = $request->conta_pedido;
-        $objetoModel->comissao = $request->comissao;
+        $objetoModel->cliente           = $request->cliente;
+        $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);;
+        $objetoModel->conta_pedido      = $request->conta_pedido;
+        $objetoModel->comissao          = $request->comissao;
         $objetoModel->desconto_comissao = $request->desconto_comissao;
         $objetoModel->save();
 
@@ -43,7 +39,6 @@ class EntregaDeAlarmeController extends Controller
             ->route('planilha-colaborador-tipo.index', $request->planilha_id)
             ->with('status', 'Registrado com sucesso!');
     }
-
 
     public function edit($id)
     {
@@ -56,15 +51,13 @@ class EntregaDeAlarmeController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate($this->entregaDeAlarme->rules(), $this->entregaDeAlarme->feedback());
-
         if ($this->validarDuplicidade($request)) {
             // Se a comissão já existe, você pode decidir o que fazer aqui, talvez mostrar uma mensagem de erro.
             return redirect()->back()->with('error', 'Comissão já existe para os critérios fornecidos.');
         }
-    
         $objetoModel                    = $this->entregaDeAlarme->findOrFail($id);
         $objetoModel->cliente           = $request->cliente;
-        $objetoModel->data              = $this->planilhaTipo->formatarData($request->data);
+        $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);;
         $objetoModel->conta_pedido      = $request->conta_pedido;
         $objetoModel->comissao          = $request->comissao;
         $objetoModel->desconto_comissao = $request->desconto_comissao;
@@ -76,7 +69,7 @@ class EntregaDeAlarmeController extends Controller
 
     public function destroy($id)
     {
-        $objetoModel  = $this->entregaDeAlarme->findOrFail($id);
+        $objetoModel = $this->entregaDeAlarme->findOrFail($id);
         $objetoModel->delete();
         return redirect()
             ->route('planilha-colaborador-tipo.index', $objetoModel->planilha_id)
@@ -84,17 +77,15 @@ class EntregaDeAlarmeController extends Controller
     }
 
 
-    public function validarDuplicidade($request){
-      
+    public function validarDuplicidade($request)
+    {
         $existingComissao = $this->entregaDeAlarme
             ->where('cliente', $request->input('cliente'))
             ->where('conta_pedido', $request->input('conta_pedido'))
             ->where('comissao', $request->input('comissao'))
             ->where('desconto_comissao', $request->input('desconto_comissao'))
-            ->where('data', $this->planilhaTipo->formatarData($request->data))
+            ->where('data', CaniveteHelp::formatarDataAnoMesDia($request->data))
             ->first();
-
-        return $existingComissao;
-        
+            return $existingComissao;
     }
 }

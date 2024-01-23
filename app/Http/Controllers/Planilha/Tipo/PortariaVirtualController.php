@@ -3,22 +3,19 @@
 namespace App\Http\Controllers\Planilha\Tipo;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\Planilha\Planilha;
 use App\Models\Planilha\Tipo\Meio;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Help\CaniveteHelp;
 use App\Models\Planilha\Tipo\PortariaVirtual;
-use App\Models\Planilha\Tipo\PlanilhaTipo;
-
 class PortariaVirtualController extends Controller
 {
     private $titulo;
-    private $planilhaTipo;
     private $portariaVirtual;
 
     public function __construct(PortariaVirtual $portariaVirtual)
     {
         $this->titulo          = "Portaria Virtual";
-        $this->planilhaTipo    = new PlanilhaTipo();
         $this->portariaVirtual = $portariaVirtual;
     }
 
@@ -29,7 +26,7 @@ class PortariaVirtualController extends Controller
         $objetoModel->planilha()->associate(Planilha::find($request->planilha_id));
         $objetoModel->meio()->associate(Meio::find($request->meio_id));
         $objetoModel->cliente            = $request->cliente;
-        $objetoModel->data               = $this->planilhaTipo->formatarData($request->data);
+        $objetoModel->data               = CaniveteHelp::formatarDataAnoMesDia($request->data);
         $objetoModel->ins_vendas         = $request->ins_vendas;
         $objetoModel->mensal             = $request->mensal;
         $objetoModel->conta_pedido       = $request->conta_pedido;
@@ -59,7 +56,7 @@ class PortariaVirtualController extends Controller
         $objetoModel = $this->portariaVirtual->findOrFail($id);
         $objetoModel->meio()->associate(Meio::find($request->meio_id));
         $objetoModel->cliente            = $request->cliente;
-        $objetoModel->data               = $this->planilhaTipo->formatarData($request->data);
+        $objetoModel->data               = CaniveteHelp::formatarDataAnoMesDia($request->data);
         $objetoModel->ins_vendas         = $request->ins_vendas;
         $objetoModel->mensal             = $request->mensal;
         $objetoModel->conta_pedido       = $request->conta_pedido;

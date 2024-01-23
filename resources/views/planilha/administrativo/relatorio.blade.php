@@ -19,14 +19,19 @@
                     <div class="row">                        
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Status:</label>
-                                <select name="status" class="form-control">
-                                    <option value="todos">Todos</option>
-                                    @if ($arayLisStatus)
-                                        @foreach ($arayLisStatus as $status)
-                                             <option value="{{  $status->id }}">{{  $status->status }}</option>
+                                <label>Status:
+                                    {{ $inputStatus }}
+                                </label>
+                                <select name="status" class="form-control" required>
+                                    <option value=""> ... </option>
+                                    <option value="6" {{ ($inputStatus == 6) ? 'selected' : '' }}> Todos </option>
+                                    @if ($arrayListStatus)
+                                        @foreach ($arrayListStatus as $status)
+                                            <option value="{{ $status->id }}" {{ ($status->id == $inputStatus) ? 'selected' : '' }}>
+                                                {{ $status->status }}
+                                            </option>
                                         @endforeach
-                                     @endif   
+                                    @endif   
                                 </select>
                             </div>
                         </div>

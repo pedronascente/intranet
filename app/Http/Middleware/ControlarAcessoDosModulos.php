@@ -16,17 +16,18 @@ class ControlarAcessoDosModulos
      */
     public function handle(Request $request, Closure $next, $modulo)
     {
-        $moduloRota   = $modulo;
-        $usuario      = session()->get('usuarioAutenticado');
-        $arrayModulos = $usuario->perfil->modulos;
-       
-        foreach ($arrayModulos as $modulo) {
-            if($modulo->slug == $moduloRota){  
-                return $next($request);
-                break;
+        if(session()->get('usuarioAutenticado')){
+            $moduloRota   = $modulo;
+            $usuario      = session()->get('usuarioAutenticado');
+            $arrayModulos = $usuario->perfil->modulos;
+
+            foreach ($arrayModulos as $modulo) {
+                if ($modulo->slug == $moduloRota) {
+                    return $next($request);
+                    break;
+                }
             }
         }
-
         return redirect()
             ->route('dashboard.index')
             ->with('warning', "Você não tem permissão para acessar este Módulo.");

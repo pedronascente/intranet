@@ -3,23 +3,20 @@
 namespace App\Http\Controllers\Planilha\Tipo;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\Planilha\Planilha;
 use App\Models\Planilha\Tipo\Meio;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Help\CaniveteHelp;
 use App\Models\Planilha\Tipo\ServicoAlarme;
-use App\Models\Planilha\Tipo\PlanilhaTipo;
 use App\Models\Planilha\Tipo\ComercialAlarmeCercaEletricaCFTV;
-
 class ComercialAlarmeCercaEletricaCFTVController extends Controller
 {
     private $titulo;
-    private $planilhaTipo;
     private $comercialAlarmeCercaEletricaCFTV;
 
     public function __construct(ComercialAlarmeCercaEletricaCFTV $comercialAlarmeCercaEletricaCFTV)
     {
         $this->titulo                           = "Comercial Alarme / Cerca Elétrica / CFTV";
-        $this->planilhaTipo                     = new PlanilhaTipo();
         $this->comercialAlarmeCercaEletricaCFTV = $comercialAlarmeCercaEletricaCFTV;
     }
 
@@ -30,7 +27,7 @@ class ComercialAlarmeCercaEletricaCFTVController extends Controller
         $objetoModel->planilha()->associate(Planilha::find($request->planilha_id));
         $objetoModel->servico()->associate(ServicoAlarme::findOrFail($request->servico_id));
         $objetoModel->meio()->associate(Meio::findOrFail($request->meio_id));
-        $objetoModel->data              = $this->planilhaTipo->formatarData($request->data);
+        $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
         $objetoModel->cliente           = $request->cliente;
         $objetoModel->conta_pedido      = $request->conta_pedido;
         $objetoModel->ins_vendas        = $request->ins_vendas;
@@ -62,7 +59,7 @@ class ComercialAlarmeCercaEletricaCFTVController extends Controller
         $objetoModel = $this->comercialAlarmeCercaEletricaCFTV->findOrFail($id);
         $objetoModel->servico()->associate(ServicoAlarme::findOrFail($request->servico_id));
         $objetoModel->meio()->associate(Meio::findOrFail($request->meio_id));
-        $objetoModel->data              = $this->planilhaTipo->formatarData($request->data);
+        $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
         $objetoModel->cliente           = $request->cliente;
         $objetoModel->conta_pedido      = $request->conta_pedido;
         $objetoModel->ins_vendas        = $request->ins_vendas;

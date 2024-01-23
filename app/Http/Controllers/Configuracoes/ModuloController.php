@@ -6,7 +6,7 @@ use App\Models\Modulo;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Help\FormatarDataController;
+use App\Http\Controllers\Help\CaniveteHelp;
 class ModuloController extends Controller
 {
     /**
@@ -40,7 +40,7 @@ class ModuloController extends Controller
         $modulo->nome      = $request->nome;
         $modulo->tipo_menu = $request->tipo_menu;
         $modulo->rota      = $request->rota;
-        $modulo->slug      = FormatarDataController::generateSlug($request->nome);
+        $modulo->slug      = CaniveteHelp::generateSlug($request->nome);
         $modulo->descricao = $request->descricao;
         $modulo->save();
         return redirect()
@@ -62,7 +62,7 @@ class ModuloController extends Controller
         $modulo->nome      = $request->nome;
         $modulo->tipo_menu = $request->tipo_menu;
         $modulo->rota      = $request->rota;
-        $modulo->slug      = FormatarDataController::generateSlug($request->nome);
+        $modulo->slug      = CaniveteHelp::generateSlug($request->nome);
         $modulo->descricao = $request->descricao;
         $modulo->update();
         return redirect()

@@ -5,19 +5,16 @@ namespace App\Http\Controllers\Planilha\Tipo;
 use Illuminate\Http\Request;
 use App\Models\Planilha\Planilha;
 use App\Http\Controllers\Controller;
-use App\Models\Planilha\Tipo\PlanilhaTipo;
+use App\Http\Controllers\Help\CaniveteHelp;
 use App\Models\Planilha\Tipo\ReclamacaoDeCliente;
-
 class ReclamacaoDeClienteController extends Controller
 {
     private $titulo;
-    private $PlanilhaTipo;
     private $reclamacaoDeCliente;
 
     public function __construct(ReclamacaoDeCliente $reclamacaoDeCliente)
     {
         $this->titulo              = "Reclamação de Cliente";
-        $this->PlanilhaTipo        = new PlanilhaTipo();
         $this->reclamacaoDeCliente = $reclamacaoDeCliente;
     }
 
@@ -26,7 +23,7 @@ class ReclamacaoDeClienteController extends Controller
         $request->validate($this->reclamacaoDeCliente->rules(), $this->reclamacaoDeCliente->feedback());
         $objetoModel = $this->reclamacaoDeCliente;
         $objetoModel->planilha()->associate(Planilha::find($request->planilha_id));
-        $objetoModel->data              = $this->PlanilhaTipo->formatarData($request->data);
+        $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
         $objetoModel->cliente           = $request->cliente;
         $objetoModel->conta_pedido      = $request->conta_pedido;
         $objetoModel->comissao          = $request->comissao;
@@ -52,7 +49,7 @@ class ReclamacaoDeClienteController extends Controller
         $request->validate($this->reclamacaoDeCliente->rules(), $this->reclamacaoDeCliente->feedback());
         $objetoModel = $this->reclamacaoDeCliente->findOrFail($id);
         $objetoModel->cliente           = $request->cliente;
-        $objetoModel->data              = $this->PlanilhaTipo->formatarData($request->data);
+        $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
         $objetoModel->conta_pedido      = $request->conta_pedido;
         $objetoModel->comissao          = $request->comissao;
         $objetoModel->desconto_comissao = $request->desconto_comissao;

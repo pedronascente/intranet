@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Models\Token;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Help\FormatarDataController;
+use App\Http\Controllers\Help\CaniveteHelp;
 
 class TokenController extends Controller
 {
@@ -25,7 +25,7 @@ class TokenController extends Controller
         return view(
             'login.create_token',
             [
-                'mensagem'       => FormatarDataController::formatarData(),
+                'mensagem'       => CaniveteHelp::formatarDataLogin(),
                 'posicaoDoToken' => $posicaoDoToken
             ]
         );

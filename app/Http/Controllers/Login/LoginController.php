@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Help\FormatarDataController;
+use App\Http\Controllers\Help\CaniveteHelp;
 
 class LoginController extends Controller
 {
@@ -24,7 +24,7 @@ class LoginController extends Controller
      */
     public function create()
     {
-        $messagem = FormatarDataController::formatarData();
+        $messagem = CaniveteHelp::formatarDataLogin();
         return view('login.create_login', 
             [
                 'mensagem' => $messagem

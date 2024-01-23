@@ -3,21 +3,18 @@
 namespace App\Http\Controllers\Planilha\Tipo;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\Planilha\Planilha;
-use App\Models\Planilha\Tipo\PlanilhaTipo;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Help\CaniveteHelp;
 use App\Models\Planilha\Tipo\ComercialRastreamentoVeicular;
-
 class ComercialRastreamentoVeicularController extends Controller
 {
     private $titulo;
-    private $planilhaTipo;
     private $comercialRastreamentoVeicular;
 
     public function __construct(ComercialRastreamentoVeicular $comercialRastreamentoVeicular)
     {
         $this->titulo = "Comercial Rastreamento Veicular";
-        $this->planilhaTipo = new PlanilhaTipo();
         $this->comercialRastreamentoVeicular = $comercialRastreamentoVeicular;
     }
 
@@ -28,7 +25,7 @@ class ComercialRastreamentoVeicularController extends Controller
         $objetoModel->planilha()->associate(Planilha::findOrFail($request->planilha_id));
         $objetoModel->id_contrato       = $request->id_contrato;
         $objetoModel->cliente           = $request->cliente;
-        $objetoModel->data              = $this->planilhaTipo->formatarData($request->data);
+        $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
         $objetoModel->placa             = $request->placa;
         $objetoModel->comissao          = $request->comissao;
         $objetoModel->taxa_instalacao   = $request->taxa_instalacao;
@@ -46,7 +43,7 @@ class ComercialRastreamentoVeicularController extends Controller
         $titulo   = $this->titulo;
         return view('planilha.tipo.comercialRastreamentoVeicular.edit', [
             'comissao' => $comissao,
-            'titulo' => $titulo
+            'titulo'   => $titulo
         ]);
     }
 
@@ -54,7 +51,7 @@ class ComercialRastreamentoVeicularController extends Controller
     {
         $request->validate($this->comercialRastreamentoVeicular->rules(), $this->comercialRastreamentoVeicular->feedback());
         $objetoModel                    = $this->comercialRastreamentoVeicular->findOrFail($id);
-        $objetoModel->data              = $this->planilhaTipo->formatarData($request->data);
+        $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
         $objetoModel->cliente           = $request->cliente;
         $objetoModel->id_contrato       = $request->id_contrato;
         $objetoModel->placa             = $request->placa;

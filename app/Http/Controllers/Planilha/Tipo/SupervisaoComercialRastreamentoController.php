@@ -3,21 +3,18 @@
 namespace App\Http\Controllers\Planilha\Tipo;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\Planilha\Planilha;
-use App\Models\Planilha\Tipo\PlanilhaTipo;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Help\CaniveteHelp;
 use App\Models\Planilha\Tipo\SupervisaoComercialRastreamento;
-
 class SupervisaoComercialRastreamentoController extends Controller
 {
     private $titulo;
-    private $planilhaTipo;
     private $supervisaoComercialRastreamento;
 
     public function __construct(SupervisaoComercialRastreamento $supervisaoComercialRastreamento)
     {
         $this->titulo                          = "Supervisão Comercial Rastreamento";
-        $this->planilhaTipo                    = new PlanilhaTipo();
         $this->supervisaoComercialRastreamento = $supervisaoComercialRastreamento;
     }
 
@@ -26,7 +23,7 @@ class SupervisaoComercialRastreamentoController extends Controller
         $request->validate($this->supervisaoComercialRastreamento->rules(), $this->supervisaoComercialRastreamento->feedback());
         $objetoModel = $this->supervisaoComercialRastreamento;
         $objetoModel->planilha()->associate(Planilha::findOrFail($request->planilha_id));
-        $objetoModel->data               = $this->planilhaTipo->formatarData($request->data);
+        $objetoModel->data               = CaniveteHelp::formatarDataAnoMesDia($request->data);
         $objetoModel->cliente            = $request->cliente;
         $objetoModel->conta_pedido       = $request->conta_pedido;
         $objetoModel->total_rastreadores = $request->total_rastreadores;
@@ -51,7 +48,7 @@ class SupervisaoComercialRastreamentoController extends Controller
     {
         $request->validate($this->supervisaoComercialRastreamento->rules(), $this->supervisaoComercialRastreamento->feedback());
         $objetoModel = $this->supervisaoComercialRastreamento->findOrFail($id);
-        $objetoModel->data               = $this->planilhaTipo->formatarData($request->data);
+        $objetoModel->data               = CaniveteHelp::formatarDataAnoMesDia($request->data);
         $objetoModel->cliente            = $request->cliente;
         $objetoModel->conta_pedido       = $request->conta_pedido;
         $objetoModel->total_rastreadores = $request->total_rastreadores;
