@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+ 
 #Login
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Login\UserController;
@@ -42,6 +42,7 @@ Route::prefix('/login')->group(function () {
 Route::middleware('auth')->prefix('/token')->group(function () {
     Route::get('/', [TokenController::class, 'create'])->name('token.create');
     Route::post('/', [TokenController::class, 'store'])->name('token.store');
+    Route::get('/get-posicao-token', [TokenController::class, 'getPosicaoToken']);   
 });
 
 Route::middleware(['auth', 'verificarToken'])->group(function () {
@@ -129,3 +130,4 @@ Route::middleware(['verificarModulos:administrar-comissao'])->group(function () 
         });
     });
 });
+    

@@ -12,21 +12,20 @@ use App\Http\Controllers\Help\CaniveteHelp;
 class TokenController extends Controller
 {
     private $token;
+    private $user;
 
-    public function __construct(Token $token)
+    public function __construct(Token $token, User $user)
     {
         $this->token = $token;
+        $this->user = $user;
     }
 
-    public function create(Request $request)
+    public function create()
     {
-        $usuariro       = User::find($request->user()->id);
-        $posicaoDoToken = rand(1, $usuariro->qtdToken);
         return view(
             'login.create_token',
             [
                 'mensagem'       => CaniveteHelp::formatarDataLogin(),
-                'posicaoDoToken' => $posicaoDoToken
             ]
         );
     }
@@ -48,7 +47,15 @@ class TokenController extends Controller
     private function getAcessoUsuario($request)
     {
         $usuarioLogado = $request->user();
-        $usuario       = User::with('Perfil')->findOrFail($usuarioLogado->id);
+        $usuario       = $this->user->with('Perfil')->findOrFail($usuarioLogado->id);
         $request->session()->put('usuarioAutenticado', $usuario);
     }
+
+    public function getPosicaoToken(Request $request)
+    {
+        $usuario      = $this->user->find($request->user()->id);
+        $posicaoToken = rand(1, $usuario->qtdToken);
+        return response()->json(['posicao' => $posicaoToken]);
+    }
+
 }

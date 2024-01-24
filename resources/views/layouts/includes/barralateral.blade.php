@@ -53,7 +53,7 @@
                                     </ul>
                                 </li>
                                 @break;
-                                @else
+                            @else
                                 <li class="nav-item">
                                         <a href="{{ $modulo->rota }}" class="nav-link">
                                             <i class="nav-icon fas fa-edit"></i>
