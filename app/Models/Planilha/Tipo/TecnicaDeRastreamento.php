@@ -2,10 +2,12 @@
 
 namespace App\Models\Planilha\Tipo;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Controllers\Help\CaniveteHelp;
+use App\contracts\ValidacaoComissaoDuplicadaInterface;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class TecnicaDeRastreamento extends Model
+class TecnicaDeRastreamento extends Model implements ValidacaoComissaoDuplicadaInterface 
 {
     use HasFactory;
 
@@ -63,9 +65,35 @@ class TecnicaDeRastreamento extends Model
     public function feedback()
     {
         return [
-            'required' => 'Campo obrigatório.',
+            'required'                           => 'Campo obrigatório.',
             'comissao.regex:/^\d+(\.\d{1,2})?$/' => 'Deve ser um número decimal com até 2 casas decimais',
-            'date_format' => 'O campo data deve estar no formato válido dia/mes/ano'
+            'date_format'                        => 'O campo data deve estar no formato válido dia/mes/ano'
         ];
+    }
+
+    public function validarComissaoDuplicada($request)
+    {
+        $data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
+        $planilha_id       = $request->planilha_id;
+        $cliente           = $request->cliente;
+        $conta_pedido      = $request->conta_pedido;
+        $placa             = $request->placa;
+        $comissao          = $request->comissao;
+        $desconto_comissao = $request->desconto_comissao;
+        $observacao        = $request->observacao;
+
+        $query = $this->where('data', '=', $data);
+
+        if ($planilha_id) {
+            $query->where('planilha_id', '=', $planilha_id);
+        }
+
+        $query->where('cliente',         '=', $cliente)
+            ->where('conta_pedido',      '=', $conta_pedido)
+            ->where('placa',             '=', $placa)
+            ->where('comissao',          '=', $comissao)
+            ->where('desconto_comissao', '=', $desconto_comissao)
+            ->where('observacao',        '=', $observacao);
+        return $query->count();
     }
 }

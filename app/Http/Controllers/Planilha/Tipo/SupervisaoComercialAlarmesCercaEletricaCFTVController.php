@@ -19,12 +19,27 @@ class SupervisaoComercialAlarmesCercaEletricaCFTVController extends Controller
         $this->scace_cftv = $scace_cftv;
     }
 
+    public function index()
+    {
+        return redirect()
+            ->back();
+    }
+
+    public function show($id)
+    {
+        return redirect()
+            ->back();
+    }
+
     public function store(Request $request)
     {
         $request->validate($this->scace_cftv->rules(), $this->scace_cftv->feedback());
-        $objetoModel = $this->scace_cftv;
-        $objetoModel->planilha()->associate(Planilha::findOrFail($request->planilha_id));
-        $objetoModel->servico()->associate(ServicoAlarme::findOrFail($request->servico_id));
+        if ($this->scace_cftv->validarComissaoDuplicada($request) >= 1) {
+            return redirect()
+                ->back()
+                ->with('warning', "Atenção : Duplicar comissão não é permitido!");
+        }
+        $objetoModel                     = $this->scace_cftv;
         $objetoModel->data               = CaniveteHelp::formatarDataAnoMesDia($request->data);
         $objetoModel->cliente            = $request->cliente;
         $objetoModel->conta_pedido       = $request->conta_pedido;
@@ -33,9 +48,11 @@ class SupervisaoComercialAlarmesCercaEletricaCFTVController extends Controller
         $objetoModel->ins_vendas         = $request->ins_vendas;
         $objetoModel->comissao           = $request->comissao;
         $objetoModel->desconto_comissao  = $request->desconto_comissao;
+        $objetoModel->planilha()->associate(Planilha::findOrFail($request->planilha_id));
+        $objetoModel->servico()->associate(ServicoAlarme::findOrFail($request->servico_id));
         $objetoModel->save();
         return redirect()
-            ->route('planilha-colaborador-tipo.index', $request->planilha_id)
+            ->back()
             ->with('status', "Registrado com sucesso!");
     }
 
@@ -53,8 +70,12 @@ class SupervisaoComercialAlarmesCercaEletricaCFTVController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate($this->scace_cftv->rules(), $this->scace_cftv->feedback());
-        $objetoModel = $this->scace_cftv->findOrFail($id);
-        $objetoModel->servico()->associate(ServicoAlarme::findOrFail($request->servico_id));
+        if ($this->scace_cftv->validarComissaoDuplicada($request) >= 1) {
+            return redirect()
+                ->back()
+                ->with('warning', "Atenção : Duplicar comissão não é permitido!");
+        }
+        $objetoModel                    = $this->scace_cftv->findOrFail($id); 
         $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
         $objetoModel->cliente           = $request->cliente;
         $objetoModel->conta_pedido      = $request->conta_pedido;
@@ -63,9 +84,10 @@ class SupervisaoComercialAlarmesCercaEletricaCFTVController extends Controller
         $objetoModel->ins_vendas        = $request->ins_vendas;
         $objetoModel->comissao          = $request->comissao;
         $objetoModel->desconto_comissao = $request->desconto_comissao;
+        $objetoModel->servico()->associate(ServicoAlarme::findOrFail($request->servico_id));
         $objetoModel->save();
         return redirect()
-            ->route('supervisao-cace-cftv.edit', $id)
+            ->back()
             ->with('status', 'Registro atualizado com sucesso.');
     }
 
@@ -74,7 +96,7 @@ class SupervisaoComercialAlarmesCercaEletricaCFTVController extends Controller
         $objetoModel = $this->scace_cftv->findOrFail($id);
         $objetoModel->delete();
         return redirect()
-            ->route('planilha-colaborador-tipo.index', $objetoModel->planilha_id)
+            ->back()
             ->with('status', "Registrado Excluido com sucesso!");
     }
 }

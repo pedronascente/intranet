@@ -19,24 +19,36 @@ class EntregaDeAlarmeController extends Controller
         $this->entregaDeAlarme = $entregaDeAlarme;
     }
 
+    public function index()
+    {
+        return redirect()
+            ->back();
+    }
+
+    public function show($id)
+    {
+        return redirect()
+            ->back();
+    }
+
     public function store(Request $request)
     {
         $request->validate($this->entregaDeAlarme->rules(), $this->entregaDeAlarme->feedback());
-        if ($this->validarDuplicidade($request)) {
-            // Se a comissão já existe, você pode decidir o que fazer aqui, talvez mostrar uma mensagem de erro.
-            return redirect()->back()->with('error', 'Comissão já existe para os critérios fornecidos.');
+        if ($this->entregaDeAlarme->validarComissaoDuplicada($request) >= 1) {
+            return redirect()
+                ->back()
+                ->with('warning', "Atenção : Duplicar comissão não é permitido!");
         }
-        $objetoModel = $this->entregaDeAlarme;
-        $objetoModel->planilha()->associate(Planilha::findOrFail($request->planilha_id));
+        $objetoModel                    = $this->entregaDeAlarme;
         $objetoModel->cliente           = $request->cliente;
         $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);;
         $objetoModel->conta_pedido      = $request->conta_pedido;
         $objetoModel->comissao          = $request->comissao;
         $objetoModel->desconto_comissao = $request->desconto_comissao;
+        $objetoModel->planilha()->associate(Planilha::findOrFail($request->planilha_id));
         $objetoModel->save();
-
         return redirect()
-            ->route('planilha-colaborador-tipo.index', $request->planilha_id)
+            ->back()
             ->with('status', 'Registrado com sucesso!');
     }
 
@@ -44,16 +56,17 @@ class EntregaDeAlarmeController extends Controller
     {
         return view('planilha.tipo.entregaDeAlarmes.edit', [
             'comissao' => $this->entregaDeAlarme->findOrFail($id),
-            'titulo' => $this->titulo
+            'titulo'   => $this->titulo
         ]);
     }
 
     public function update(Request $request, $id)
     {
         $request->validate($this->entregaDeAlarme->rules(), $this->entregaDeAlarme->feedback());
-        if ($this->validarDuplicidade($request)) {
-            // Se a comissão já existe, você pode decidir o que fazer aqui, talvez mostrar uma mensagem de erro.
-            return redirect()->back()->with('error', 'Comissão já existe para os critérios fornecidos.');
+        if ($this->entregaDeAlarme->validarComissaoDuplicada($request) >= 1) {
+            return redirect()
+                ->back()
+                ->with('warning', "Atenção : Duplicar comissão não é permitido!");
         }
         $objetoModel                    = $this->entregaDeAlarme->findOrFail($id);
         $objetoModel->cliente           = $request->cliente;
@@ -63,7 +76,7 @@ class EntregaDeAlarmeController extends Controller
         $objetoModel->desconto_comissao = $request->desconto_comissao;
         $objetoModel->save();
         return redirect()
-            ->route('entrega-de-alarme.edit', $id)
+            ->back()
             ->with('status', 'Registro atualizado com sucesso.');
     }
 
@@ -72,20 +85,7 @@ class EntregaDeAlarmeController extends Controller
         $objetoModel = $this->entregaDeAlarme->findOrFail($id);
         $objetoModel->delete();
         return redirect()
-            ->route('planilha-colaborador-tipo.index', $objetoModel->planilha_id)
+            ->back()
             ->with('status', "Registro excluido com sucesso!");
-    }
-
-
-    public function validarDuplicidade($request)
-    {
-        $existingComissao = $this->entregaDeAlarme
-            ->where('cliente', $request->input('cliente'))
-            ->where('conta_pedido', $request->input('conta_pedido'))
-            ->where('comissao', $request->input('comissao'))
-            ->where('desconto_comissao', $request->input('desconto_comissao'))
-            ->where('data', CaniveteHelp::formatarDataAnoMesDia($request->data))
-            ->first();
-            return $existingComissao;
     }
 }

@@ -5,8 +5,9 @@ use App\Models\Planilha\Tipo\Meio;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\Help\CaniveteHelp;
 use App\Models\Planilha\Tipo\ServicoAlarme;
+use App\contracts\ValidacaoComissaoDuplicadaInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-class ComercialAlarmeCercaEletricaCFTV extends Model
+class ComercialAlarmeCercaEletricaCFTV extends Model implements ValidacaoComissaoDuplicadaInterface
 {
     use HasFactory;
 
@@ -105,7 +106,6 @@ class ComercialAlarmeCercaEletricaCFTV extends Model
 
     public function validarComissaoDuplicada($request)
     {
-
         $data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
         $planilha_id       = $request->planilha_id;
         $meio_id           = $request->meio_id;

@@ -18,9 +18,27 @@ class ReclamacaoDeClienteController extends Controller
         $this->reclamacaoDeCliente = $reclamacaoDeCliente;
     }
 
+    public function index()
+    {
+        return redirect()
+            ->back();
+    }
+
+    public function show($id)
+    {
+        return redirect()
+            ->back();
+    }
+
     public function store(Request $request)
     {
         $request->validate($this->reclamacaoDeCliente->rules(), $this->reclamacaoDeCliente->feedback());
+        if ($this->reclamacaoDeCliente->validarComissaoDuplicada($request) >= 1) {
+            return redirect()
+                ->back()
+                ->with('warning', "Atenção : Duplicar comissão não é permitido!");
+        }
+
         $objetoModel = $this->reclamacaoDeCliente;
         $objetoModel->planilha()->associate(Planilha::find($request->planilha_id));
         $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
@@ -29,8 +47,9 @@ class ReclamacaoDeClienteController extends Controller
         $objetoModel->comissao          = $request->comissao;
         $objetoModel->desconto_comissao = $request->desconto_comissao;
         $objetoModel->save();
+
         return redirect()
-            ->route('planilha-colaborador-tipo.index', $request->planilha_id)
+            ->back()
             ->with('status', "Registrado com sucesso!");
     }
 
@@ -40,7 +59,7 @@ class ReclamacaoDeClienteController extends Controller
         $titulo   = $this->titulo;
         return view('planilha.tipo.reclamacaoDeCliente.edit', [
             'comissao' => $comissao,
-            'titulo' => $titulo,
+            'titulo'   => $titulo,
         ]);
     }
 
@@ -48,14 +67,22 @@ class ReclamacaoDeClienteController extends Controller
     {
         $request->validate($this->reclamacaoDeCliente->rules(), $this->reclamacaoDeCliente->feedback());
         $objetoModel = $this->reclamacaoDeCliente->findOrFail($id);
+
+        if ($this->reclamacaoDeCliente->validarComissaoDuplicada($request) >= 1) {
+            return redirect()
+                ->back()
+                ->with('warning', "Atenção : Duplicar comissão não é permitido!");
+        }
+
         $objetoModel->cliente           = $request->cliente;
         $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
         $objetoModel->conta_pedido      = $request->conta_pedido;
         $objetoModel->comissao          = $request->comissao;
         $objetoModel->desconto_comissao = $request->desconto_comissao;
         $objetoModel->save();
+        
         return redirect()
-            ->route('reclamacao-de-cliente.edit', $id)
+            ->back()
             ->with('status', 'Registro atualizado com sucesso.');
     }
 
@@ -64,7 +91,7 @@ class ReclamacaoDeClienteController extends Controller
         $objetoModel = $this->reclamacaoDeCliente->findOrFail($id);
         $objetoModel->delete();
         return redirect()
-            ->route('planilha-colaborador-tipo.index', $objetoModel->planilha_id)
+            ->back()
             ->with('status', "Registrado Excluido com sucesso!");
     }
 }

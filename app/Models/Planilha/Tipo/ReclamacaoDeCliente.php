@@ -2,10 +2,11 @@
 
 namespace App\Models\Planilha\Tipo;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-class ReclamacaoDeCliente extends Model
+use App\Http\Controllers\Help\CaniveteHelp;
+use App\contracts\ValidacaoComissaoDuplicadaInterface;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+class ReclamacaoDeCliente extends Model implements ValidacaoComissaoDuplicadaInterface
 {
     use HasFactory;
 
@@ -62,5 +63,27 @@ class ReclamacaoDeCliente extends Model
             'comissao.regex:/^\d+(\.\d{1,2})?$/' => 'Deve ser um número decimal com até 2 casas decimais',
             'date_format' => 'O campo data deve estar no formato válido dia/mes/ano'
         ];
+    }
+
+    public function validarComissaoDuplicada($request)
+    {
+        $data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
+        $planilha_id       = $request->planilha_id;
+        $cliente           = $request->cliente;
+        $conta_pedido      = $request->conta_pedido;
+        $comissao          = $request->comissao;
+        $desconto_comissao = $request->desconto_comissao;
+
+        $query = $this->where('data', '=', $data);
+
+        if ($planilha_id) {
+            $query->where('planilha_id', '=', $planilha_id);
+        }
+
+        $query->where('cliente',         '=', $cliente)
+            ->where('conta_pedido',      '=', $conta_pedido)
+            ->where('comissao',          '=', $comissao)
+            ->where('desconto_comissao', '=', $desconto_comissao);
+        return $query->count();
     }
 }

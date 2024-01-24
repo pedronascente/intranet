@@ -18,11 +18,27 @@ class SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController extends Controller
         $this->stsace_cftv = $upervisaoTecnicaESacAlarmesCercaEletricaCFTV;
     }
 
+    public function index()
+    {
+        return redirect()
+            ->back();
+    }
+
+    public function show($id)
+    {
+        return redirect()
+            ->back();
+    }
+
     public function store(Request $request)
     {
         $request->validate($this->stsace_cftv->rules(), $this->stsace_cftv->feedback());
-        $objetoModel = $this->stsace_cftv;
-        $objetoModel->planilha()->associate(Planilha::find($request->planilha_id));
+        if ($this->stsace_cftv->validarComissaoDuplicada($request) >= 1) {
+            return redirect()
+                ->back()
+                ->with('warning', "Atenção : Duplicar comissão não é permitido!");
+        }
+        $objetoModel                     = $this->stsace_cftv;
         $objetoModel->data               = CaniveteHelp::formatarDataAnoMesDia($request->data);
         $objetoModel->cliente            = $request->cliente;
         $objetoModel->conta_pedido       = $request->conta_pedido;
@@ -31,17 +47,18 @@ class SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController extends Controller
         $objetoModel->mensal             = $request->mensal;
         $objetoModel->comissao           = $request->comissao;
         $objetoModel->desconto_comissao  = $request->desconto_comissao;
+        $objetoModel->planilha()->associate(Planilha::find($request->planilha_id));
         $objetoModel->save();
         return redirect()
-            ->route('planilha-colaborador-tipo.index', $request->planilha_id)
-            ->with('status', "Registrado com sucesso!");
+            ->back()
+            ->with('status', 'Registrado com sucesso!');
     }
 
     public function edit($id)
     {
         $comissao = $this->stsace_cftv->findOrFail($id);
         return view('planilha.tipo.supervisaoTecnicaESacAlarmesCercaEletricaCFTV.edit', [
-            'titulo' => $this->titulo,
+            'titulo'   => $this->titulo,
             'comissao' => $comissao,
         ]);
     }
@@ -49,7 +66,12 @@ class SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate($this->stsace_cftv->rules(), $this->stsace_cftv->feedback());
-        $objetoModel = $this->stsace_cftv->findOrFail($id);
+        if ($this->stsace_cftv->validarComissaoDuplicada($request) >= 1) {
+            return redirect()
+                ->back()
+                ->with('warning', "Atenção : Duplicar comissão não é permitido!");
+        }
+        $objetoModel                    = $this->stsace_cftv->findOrFail($id);
         $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
         $objetoModel->cliente           = $request->cliente;
         $objetoModel->conta_pedido      = $request->conta_pedido;
@@ -60,7 +82,7 @@ class SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController extends Controller
         $objetoModel->desconto_comissao = $request->desconto_comissao;
         $objetoModel->save();
         return redirect()
-            ->route('stsace-cftv.edit', $id)
+            ->back()
             ->with('status', 'Registro atualizado com sucesso.');
     }
 
@@ -69,7 +91,7 @@ class SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController extends Controller
         $objetoModel = $this->stsace_cftv->findOrFail($id);
         $objetoModel->delete();
         return redirect()
-            ->route('planilha-colaborador-tipo.index', $objetoModel->planilha_id)
+            ->back()
             ->with('status', "Registrado Excluido com sucesso!");
     }
 }

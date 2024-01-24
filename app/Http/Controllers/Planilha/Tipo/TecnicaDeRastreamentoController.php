@@ -18,14 +18,25 @@ class TecnicaDeRastreamentoController extends Controller
         $this->tecnicaDeRastreamento = $tecnicaDeRastreamento;
     }
 
+    public function index(){
+        return redirect()
+                ->back();
+    }
+
+    public function show($id){
+        return redirect()
+                ->back();
+    }
+
     public function store(Request $request)
     {
-
-        dd($request->all());
-
         $request->validate($this->tecnicaDeRastreamento->rules(), $this->tecnicaDeRastreamento->feedback());
-        $objetoModel = $this->tecnicaDeRastreamento;
-        $objetoModel->planilha()->associate(Planilha::findOrFail($request->planilha_id));
+        if ($this->tecnicaDeRastreamento->validarComissaoDuplicada($request) >= 1) {
+            return redirect()
+                ->back()
+                ->with('warning', "Atenção : Duplicar comissão não é permitido!");
+        }
+        $objetoModel                    = $this->tecnicaDeRastreamento;
         $objetoModel->cliente           = $request->cliente;
         $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
         $objetoModel->conta_pedido      = $request->conta_pedido;
@@ -33,9 +44,10 @@ class TecnicaDeRastreamentoController extends Controller
         $objetoModel->comissao          = $request->comissao;
         $objetoModel->desconto_comissao = $request->desconto_comissao;
         $objetoModel->observacao        = $request->observacao;
+        $objetoModel->planilha()->associate(Planilha::findOrFail($request->planilha_id));
         $objetoModel->save();
         return redirect()
-            ->route('planilha-colaborador-tipo.index', $request->planilha_id)
+            ->back()
             ->with('status', "Registrado com sucesso!");
     }
 
@@ -51,7 +63,12 @@ class TecnicaDeRastreamentoController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate($this->tecnicaDeRastreamento->rules(), $this->tecnicaDeRastreamento->feedback());
-        $objetoModel = $this->tecnicaDeRastreamento->findOrFail($id);
+        if ($this->tecnicaDeRastreamento->validarComissaoDuplicada($request) >= 1) {
+            return redirect()
+                ->back()
+                ->with('warning', "Atenção : Duplicar comissão não é permitido!");
+        }
+        $objetoModel                    = $this->tecnicaDeRastreamento->findOrFail($id);
         $objetoModel->cliente           = $request->cliente;
         $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
         $objetoModel->conta_pedido      = $request->conta_pedido;
@@ -61,7 +78,7 @@ class TecnicaDeRastreamentoController extends Controller
         $objetoModel->observacao        = $request->observacao;
         $objetoModel->save();
         return redirect()
-            ->route('tecnica-de-rastreamento.edit', $id)
+            ->back()
             ->with('status', 'Registro atualizado com sucesso.');
     }
 
@@ -70,7 +87,7 @@ class TecnicaDeRastreamentoController extends Controller
         $objetoModel = $this->tecnicaDeRastreamento->findOrFail($id);
         $objetoModel->delete();
         return redirect()
-            ->route('planilha-colaborador-tipo.index', $objetoModel->planilha_id)
+            ->back()
             ->with('status', "Registrado Excluido com sucesso!");
     }
 }

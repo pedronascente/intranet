@@ -19,12 +19,27 @@ class PortariaVirtualController extends Controller
         $this->portariaVirtual = $portariaVirtual;
     }
 
+    public function index()
+    {
+        return redirect()
+            ->back();
+    }
+
+    public function show($id)
+    {
+        return redirect()
+            ->back();
+    }
+
     public function store(Request $request)
     {
         $request->validate($this->portariaVirtual->rules(), $this->portariaVirtual->feedback());
-        $objetoModel = $this->portariaVirtual;
-        $objetoModel->planilha()->associate(Planilha::find($request->planilha_id));
-        $objetoModel->meio()->associate(Meio::find($request->meio_id));
+        if ($this->portariaVirtual->validarComissaoDuplicada($request) >= 1) {
+            return redirect()
+                ->back()
+                ->with('warning', "Atenção : Duplicar comissão não é permitido!");
+        }
+        $objetoModel                     = $this->portariaVirtual;
         $objetoModel->cliente            = $request->cliente;
         $objetoModel->data               = CaniveteHelp::formatarDataAnoMesDia($request->data);
         $objetoModel->ins_vendas         = $request->ins_vendas;
@@ -32,9 +47,11 @@ class PortariaVirtualController extends Controller
         $objetoModel->conta_pedido       = $request->conta_pedido;
         $objetoModel->comissao           = $request->comissao;
         $objetoModel->desconto_comissao  = $request->desconto_comissao;
+        $objetoModel->planilha()->associate(Planilha::find($request->planilha_id));
+        $objetoModel->meio()->associate(Meio::find($request->meio_id));
         $objetoModel->save();
         return redirect()
-            ->route('planilha-colaborador-tipo.index', $request->planilha_id)
+            ->back()
             ->with('status', "Registrado com sucesso!");
     }
 
@@ -45,16 +62,20 @@ class PortariaVirtualController extends Controller
         $meios    = Meio::all();
         return view('planilha.tipo.portariaVirtual.edit', [
             'comissao' => $comissao,
-            'titulo' => $titulo,
-            'meios' => $meios
+            'titulo'   => $titulo,
+            'meios'    => $meios
         ]);
     }
 
     public function update(Request $request, $id)
     {
         $request->validate($this->portariaVirtual->rules(), $this->portariaVirtual->feedback());
-        $objetoModel = $this->portariaVirtual->findOrFail($id);
-        $objetoModel->meio()->associate(Meio::find($request->meio_id));
+        if ($this->portariaVirtual->validarComissaoDuplicada($request) >= 1) {
+            return redirect()
+                ->back()
+                ->with('warning', "Atenção : Duplicar comissão não é permitido!");
+        }
+        $objetoModel                     = $this->portariaVirtual->findOrFail($id);
         $objetoModel->cliente            = $request->cliente;
         $objetoModel->data               = CaniveteHelp::formatarDataAnoMesDia($request->data);
         $objetoModel->ins_vendas         = $request->ins_vendas;
@@ -62,10 +83,11 @@ class PortariaVirtualController extends Controller
         $objetoModel->conta_pedido       = $request->conta_pedido;
         $objetoModel->comissao           = $request->comissao;
         $objetoModel->desconto_comissao  = $request->desconto_comissao;
+        $objetoModel->meio()->associate(Meio::find($request->meio_id));
         $objetoModel->save();
         return redirect()
-            ->route('portaria-virtual.edit', $id)
-            ->with('status', 'Registro atualizado com sucesso.');
+            ->back()
+            ->with('warning', "Atenção : Duplicar comissão não é permitido!");
     }
 
     public function destroy($id)
@@ -73,7 +95,7 @@ class PortariaVirtualController extends Controller
         $objetoModel = $this->portariaVirtual->findOrFail($id);
         $objetoModel->delete();
         return redirect()
-            ->route('planilha-colaborador-tipo.index', $objetoModel->planilha_id)
+            ->back()
             ->with('status', "Registrado Excluido com sucesso!");
     }
 }

@@ -14,15 +14,31 @@ class ComercialRastreamentoVeicularController extends Controller
 
     public function __construct(ComercialRastreamentoVeicular $comercialRastreamentoVeicular)
     {
-        $this->titulo = "Comercial Rastreamento Veicular";
+        $this->titulo                        = "Comercial Rastreamento Veicular";
         $this->comercialRastreamentoVeicular = $comercialRastreamentoVeicular;
+    }
+
+    public function index()
+    {
+        return redirect()
+            ->back();
+    }
+
+    public function show($id)
+    {
+        return redirect()
+            ->back();
     }
 
     public function store(Request $request)
     {
         $request->validate($this->comercialRastreamentoVeicular->rules(), $this->comercialRastreamentoVeicular->feedback());
-        $objetoModel = $this->comercialRastreamentoVeicular;
-        $objetoModel->planilha()->associate(Planilha::findOrFail($request->planilha_id));
+        if ($this->comercialRastreamentoVeicular->validarComissaoDuplicada($request) >= 1) {
+            return redirect()
+                ->back()
+                ->with('warning', "Atenção : Duplicar comissão não é permitido!");
+        }
+        $objetoModel                    = $this->comercialRastreamentoVeicular;
         $objetoModel->id_contrato       = $request->id_contrato;
         $objetoModel->cliente           = $request->cliente;
         $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
@@ -31,9 +47,10 @@ class ComercialRastreamentoVeicularController extends Controller
         $objetoModel->taxa_instalacao   = $request->taxa_instalacao;
         $objetoModel->mensal            = $request->mensal;
         $objetoModel->desconto_comissao = $request->desconto_comissao;
+        $objetoModel->planilha()->associate(Planilha::findOrFail($request->planilha_id));
         $objetoModel->save();
         return redirect()
-            ->route('planilha-colaborador-tipo.index', $request->planilha_id)
+            ->back()
             ->with('status', "Registrado com sucesso!");
     }
 
@@ -50,6 +67,11 @@ class ComercialRastreamentoVeicularController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate($this->comercialRastreamentoVeicular->rules(), $this->comercialRastreamentoVeicular->feedback());
+        if ($this->comercialRastreamentoVeicular->validarComissaoDuplicada($request) >= 1) {
+            return redirect()
+                ->back()
+                ->with('warning', "Atenção : Duplicar comissão não é permitido!");
+        }
         $objetoModel                    = $this->comercialRastreamentoVeicular->findOrFail($id);
         $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
         $objetoModel->cliente           = $request->cliente;
@@ -61,7 +83,7 @@ class ComercialRastreamentoVeicularController extends Controller
         $objetoModel->desconto_comissao = $request->desconto_comissao;
         $objetoModel->save();
         return redirect()
-            ->route('comercial-rastreamento-veicular.edit', $id)
+            ->back()
             ->with('status', 'Registro atualizado com sucesso.');
     }
 
@@ -70,7 +92,7 @@ class ComercialRastreamentoVeicularController extends Controller
         $objetoModel = $this->comercialRastreamentoVeicular->findOrFail($id);
         $objetoModel->delete();
         return redirect()
-            ->route('planilha-colaborador-tipo.index', $objetoModel->planilha_id)
+            ->back()
             ->with('status', "Registrado Excluido com sucesso!");
     }
 }
