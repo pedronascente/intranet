@@ -31,13 +31,19 @@
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label>Data:</label>
-                                <input type="text" name="data" class="form-control  @error('data') is-invalid  @enderror"
-                                    maxlength="10" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy"
-                                    data-mask="" inputmode="numeric"
-                                    value="{{ \Carbon\Carbon::parse($comissao->data)->format('d/m/Y') ?? old('data') }}">
-                                @error('data')
-                                    <span class=" invalid-feedback">{{ $message }}</span>
-                                @enderror
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                                    </div>
+                                    <input type="text" name="data"
+                                        class="form-control  @error('data') is-invalid  @enderror"
+                                        data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask=""
+                                        inputmode="numeric"
+                                        value="{{ \Carbon\Carbon::parse($comissao->data)->format('d/m/Y') ?? old('data') }}">
+                                    @error('data')
+                                        <span class=" invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
                             </div>
                         </div>
                     </div>

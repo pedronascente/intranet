@@ -3,7 +3,7 @@
     @csrf
     <div class="card-body">
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-md-10">
                 <div class="form-group">
                     <label>Cliente:</label>
                     <input type="text" name="cliente" maxlength="190"
@@ -14,7 +14,7 @@
                     @enderror
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group">
                     <label>Data:</label>
                     <div class="input-group">
