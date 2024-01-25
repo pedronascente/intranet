@@ -131,7 +131,6 @@ class Planilha extends Model
     {
         return [
             'ctps'                => 'required|max:20',
-            'matricula'           => 'required|max:20',
             'ano'                 => 'required|max:4',
             'planilha_periodo_id' => 'exists:planilha_periodos,id',
             'planilha_tipo_id'    => 'exists:planilha_tipos,id',
@@ -147,7 +146,6 @@ class Planilha extends Model
     {
         return  [
             'required'                   => 'Campo obrigatório.',
-            'matricula.unique'           => 'Campo obrigatório.',
             'ano.required'               => 'Campo obrigatório.',
             'planilha_periodo_id.exists' => 'O Período informado não existe.',
             'planilha_tipo_id.exists'    => 'O Tipo de planilha informado não existe.',

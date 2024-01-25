@@ -56,9 +56,7 @@ class ColaboradorController extends Controller
             $id          = $request->input('id') ? $request->input('id') : $request->user()->colaborador_id;
             $colaborador = Colaborador::find($id);
 
-            return view(
-                'planilha.colaborador.create',
-                [
+            return view('planilha.colaborador.create',[
                     'titulo'      => $titulo,
                     'periodos'    => $periodos,
                     'tipos'       => $tipos,
@@ -98,7 +96,7 @@ class ColaboradorController extends Controller
         $this->planilha->tipo()->associate($tipo);
         $this->planilha->status()->associate($status);
         $this->planilha->ctps      = $request->ctps;
-        $this->planilha->matricula = $request->matricula;
+        $this->planilha->matricula = $colaborador->numero_matricula;
         $this->planilha->ano       = $request->ano;
         $this->planilha->save();
 

@@ -30,28 +30,10 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>CTPS:</label>
-                                <input type="text" name="ctps" maxlength="20"
-                                    class="form-control @error('ctps') is-invalid  @enderror" placeholder="Ctps"
-                                    value="{{ old('ctps') }}">
-                                @error('ctps')
-                                    <span class=" invalid-feedback">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
                                 <label>Matricula:</label>
-                                <input type="text" name="matricula" maxlength="20"
-                                    class="form-control @error('matricula') is-invalid  @enderror" placeholder="Matricula"
-                                    value="{{ old('matricula') }}">
-                                @error('matricula')
-                                    <span class=" invalid-feedback">{{ $message }}</span>
-                                @enderror
+                                <input type="text" maxlength="20" class="form-control"  value="{{  $colaborador->numero_matricula }}" disabled>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Planilha:</label>
@@ -67,6 +49,19 @@
                                     @endif
                                 </select>
                                 @error('planilha_tipo_id')
+                                    <span class=" invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>CTPS:</label>
+                                <input type="text" name="ctps" maxlength="20"
+                                    class="form-control @error('ctps') is-invalid  @enderror" placeholder="Ctps"
+                                    value="{{ old('ctps') }}">
+                                @error('ctps')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>

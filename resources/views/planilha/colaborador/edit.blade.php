@@ -29,28 +29,11 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>CTPS:</label>
-                                <input type="text" name="ctps" maxlength="20"
-                                    class="form-control @error('ctps') is-invalid  @enderror" placeholder="Ctps"
-                                    value="{{ $planilha->ctps }}">
-                                @error('ctps')
-                                    <span class=" invalid-feedback">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
                                 <label>Matricula:</label>
-                                <input type="text" name="matricula"
-                                    class="form-control @error('matricula') is-invalid  @enderror" placeholder="Matricula"
-                                    value="{{ $planilha->matricula }}">
-                                @error('matricula')
-                                    <span class=" invalid-feedback">{{ $message }}</span>
-                                @enderror
+                                <input type="text" name="matricula"  class="form-control " 
+                                    value="{{ $planilha->matricula }}" disabled>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Planilha:</label>
@@ -67,9 +50,22 @@
                                 @error('planlha_tipo_id')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
+                            </div>                            
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                           <div class="form-group">
+                                <label>CTPS:</label>
+                                <input type="text" name="ctps" maxlength="20"
+                                    class="form-control @error('ctps') is-invalid  @enderror" placeholder="Ctps"
+                                    value="{{ $planilha->ctps }}">
+                                @error('ctps')
+                                    <span class=" invalid-feedback">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label>Ano:</label>
                                 <input type="text" name="ano" maxlength="4"
@@ -80,7 +76,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label>Periodo:</label>
                                 <select name="planilha_periodo_id"
