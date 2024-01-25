@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('titulo', 'Colaborador | Cadastrar')
+@section('titulo', $titulo)
 
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
             <a href="/configuracoes">Configurações</a> /
-            <a href="/configuracoes/colaborador">colaborador</a>
+            <a href="{{ route('colaborador.index') }}">colaborador</a>
         </li>
     </ol>
 @endsection
@@ -19,11 +19,22 @@
                 @csrf
                 <div class="card-body">
                     <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Número da Matricula:</label>
+                                <input type="text" name="numero_matricula" maxlength="10"
+                                    class="form-control @error('numero_matricula') is-invalid  @enderror" placeholder="000000000"
+                                    value="{{ old('numero_matricula') }}">
+                                @error('numero_matricula')
+                                    <span class=" invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label>Ramal:</label>
                                 <input type="text" name="ramal" maxlength="4"
-                                    class="form-control @error('ramal') is-invalid  @enderror" placeholder="Ramal"
+                                    class="form-control @error('ramal') is-invalid  @enderror" placeholder="0000"
                                     value="{{ old('ramal') }}">
                                 @error('ramal')
                                     <span class=" invalid-feedback">{{ $message }}</span>

@@ -63,6 +63,7 @@ class ColaboradorController extends Controller
     public function index()
     {
         return view('configuracoes.colaborador.index', [
+            'titulo' => "Lista dos Colaboradores",
             'collection' => $this->colaborador->orderBy('id', 'desc')->paginate(10),
         ]);
     }
@@ -75,6 +76,7 @@ class ColaboradorController extends Controller
     public function create()
     {
         return view('configuracoes.colaborador.create', [
+            'titulo'    => "Cadastrar Colaborador",
             'bases'    => $this->bases,
             'empresas' => $this->empresas,
             'cargos'   => $this->cargos,
@@ -110,6 +112,7 @@ class ColaboradorController extends Controller
     public function show($id)
     {
         return view('configuracoes.colaborador.show', [
+            'titulo'      => "Visualizar Colaborador",
             'colaborador' => $this->colaborador->findOrFail($id)
         ]);
     }
@@ -123,6 +126,7 @@ class ColaboradorController extends Controller
     public function edit($id)
     {
         return view('configuracoes.colaborador.edit', [
+            'titulo'      => "Editar Colaborador",
             'colaborador' => $this->colaborador->findOrFail($id),
             'empresas'    => $this->empresas,
             'cargos'      => $this->cargos,
@@ -247,13 +251,14 @@ class ColaboradorController extends Controller
         $colaborador->base()->associate(Base::findOrFail($request->base_id));
         $colaborador->empresa()->associate(Empresa::findOrFail($request->empresa_id));
         $colaborador->cargo()->associate(Cargo::findOrFail($request->cargo_id));
-        $colaborador->nome      = $request->nome;
-        $colaborador->sobrenome = $request->sobrenome;
-        $colaborador->email     = $request->email;
-        $colaborador->rg        = $request->rg;
-        $colaborador->cpf       = $request->cpf;
-        $colaborador->cnpj      = $request->cnpj;
-        $colaborador->ramal     = $request->ramal;
+        $colaborador->nome             = $request->nome;
+        $colaborador->sobrenome        = $request->sobrenome;
+        $colaborador->email            = $request->email;
+        $colaborador->rg               = $request->rg;
+        $colaborador->cpf              = $request->cpf;
+        $colaborador->cnpj             = $request->cnpj;
+        $colaborador->ramal            = $request->ramal;
+        $colaborador->numero_matricula = $request->numero_matricula;
     }
 
     /**

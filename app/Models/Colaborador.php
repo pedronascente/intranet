@@ -34,6 +34,7 @@ class Colaborador extends Model
         'cnpj',
         'foto',
         'ramal',
+        'nuemro_matricula',
     ];
 
     /**
@@ -93,9 +94,9 @@ class Colaborador extends Model
      * @param  \App\Models\Colaborador|null  $colaborador
      * @return array
      */
+
     public function rules($request, $colaborador = null)
     {
-        // ... lógica para definir regras de validação ...
         if ($colaborador) {
             if ($request->email != $colaborador->email) {
                 $validar['email'] = 'required|email|unique:colaboradores,email';
@@ -104,7 +105,6 @@ class Colaborador extends Model
                 $validar['cpf'] = 'required|max:14|unique:colaboradores,cpf';
             }
         } else {
-
             $validar['email'] = 'required|email|unique:colaboradores,email';
             $validar['cpf'] = 'required|max:14|unique:colaboradores,cpf';
         }
@@ -113,20 +113,19 @@ class Colaborador extends Model
             $validar['user_id'] = 'required|max:4|unique:colaboradores,user_id';
         }
 
-
-        $validar['nome']       = 'required|max:191|min:2';
-        $validar['ramal']      = 'required|max:4|min:2';
-        $validar['sobrenome']  = 'required|max:191|min:5';
-        $validar['rg']         = 'required|max:15';
-        $validar['base_id']    = 'required';
-        $validar['empresa_id'] = 'required';
-        $validar['cargo_id']   = 'required';
-        $validar['foto']       = [
+        $validar['nome']             = 'required|min:2|max:191';
+        $validar['ramal']            = 'required|integer|min:1|max:9999';
+        $validar['sobrenome']        = 'required|min:5|max:191';
+        $validar['rg']               = 'required|max:15';
+        $validar['numero_matricula'] = 'required|integer|min:1|max:9999999999';
+        $validar['base_id']          = 'required';
+        $validar['empresa_id']       = 'required';
+        $validar['cargo_id']         = 'required';
+        $validar['foto']             = [
             'nullable',
             'image',
             'max:1024'
         ];
-
 
         return $validar;
     }

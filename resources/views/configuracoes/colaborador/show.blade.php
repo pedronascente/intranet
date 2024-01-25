@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('titulo', 'Colaborador | Visualizar')
+@section('titulo', $titulo)
 
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
             <a href="/configuracoes">Configurações</a> /
-            <a href="/configuracoes/colaborador">colaborador</a>
+            <a href="{{ route('colaborador.index') }}">colaborador</a>
         </li>
     </ol>
 @endsection
@@ -22,8 +22,9 @@
         <p class="text-muted text-center">{{ $colaborador->cargo->nome }}</p>
         <table class="table table-md">
             <tr>
-                <td colspan="1"><b>Ramal</b><br> {{ $colaborador->ramal }}</td>
-                <td colspan="2"><b>Email</b><br> {{ $colaborador->email }}</td>
+                <td><b>Ramal</b><br> {{ $colaborador->ramal }}</td>
+                <td><b>Email</b><br> {{ $colaborador->email }}</td>
+                <td><b>Matricula</b><br> {{ $colaborador->numero_matricula }}</td>
             </tr>
             <tr>
                 <td><b>Rg</b> <br>{{ $colaborador->rg }}</td>

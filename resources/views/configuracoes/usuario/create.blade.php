@@ -6,7 +6,7 @@
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
             <a href="/configuracoes">Configurações</a> /
-            <a href="{{ route('user.index') }}">usuário</a>
+            <a href="{{ route('usuario.index') }}">usuário</a>
         </li>
     </ol>
 @endsection
@@ -14,9 +14,8 @@
 @section('content')
     <div class="card p-3">
         <div class="card">
-            <form action="{{ route('user.update', $user->id) }}" method="POST">
+            <form action="{{ route('usuario.store') }}" method="POST">
                 @csrf
-                @method('PUT')
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-2">
@@ -25,11 +24,7 @@
                                 <select name="qtdToken" class="custom-select @error('qtdToken') is-invalid @enderror">
                                     <option value="">...</option>
                                     @for ($i = 1; $i <= 40; $i++)
-                                        <option value="{{ $i }}" 
-                                            @if ($user->qtdToken == $i)
-                                                    selected 
-                                            @endif
-                                        >
+                                        <option value="{{ $i }}" @if (old('qtdToken') == $i) selected @endif>
                                             {{ $i }}
                                         </option>
                                     @endfor
@@ -43,29 +38,29 @@
                     <div class="row">
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label>Colaborador:</label>
+                                <label>ID Colaborador:</label>
                                 <input type="text" name="colaborador_id"
                                     class="form-control @error('colaborador_id') is-invalid @enderror"
-                                    placeholder="colaborador id" value="{{ $user->colaborador_id }}">
+                                    placeholder="colaborador id" value="{{ old('colaborador_id') }}">
                                 @error('colaborador_id')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
+
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label>Ativo:</label>
                                 <select name="status" class="custom-select">
-                                    <option value="on" @if ($user->status == 'on') selected @endif
-                                        @if (old('status') == 'on') selected @endif>
-                                        Ativo</option>
-                                    <option value="off" @if ($user->status == 'off') selected @endif
-                                        @if (old('status') == 'off') selected @endif>
-                                        Inativo</option>
+                                    <option value="on" @if (old('status') == 'on') selected @endif>
+                                        Sim</option>
+                                    <option value="off" @if (old('status') == 'off') selected @endif>
+                                        Não</option>
                                 </select>
                             </div>
                         </div>
                     </div>
+                    
                     <div class="row">
                         <div class="col-md-5">
                             <div class="form-group">
@@ -74,8 +69,7 @@
                                     <option value="">Selecione...</option>
                                     @if ($perfis)
                                         @foreach ($perfis as $item)
-                                            <option value="{{ $item->id }} "
-                                                @if ($user->perfil->id == $item->id) selected @endif
+                                            <option value="{{ $item->id }}"
                                                 @if (old('perfil')) selected @endif>
                                                 {{ $item->nome }}</option>
                                         @endforeach
@@ -92,7 +86,7 @@
                             <div class="form-group">
                                 <label>Usuário:</label>
                                 <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
-                                    placeholder="nome" value="{{ $user->name }}">
+                                    placeholder="Nome" value="{{ old('name') }}">
                                 @error('name')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -127,7 +121,7 @@
                 </div>
                 <div class="card-footer">
                     <x-botao.btn-salvar />
-                    <x-botao.btn-voltar :rota="route('user.index')" />
+                    <x-botao.btn-voltar :rota="route('usuario.index')" />
                 </div>
             </form>
         </div>

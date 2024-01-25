@@ -27,14 +27,14 @@ class UserController extends Controller
         $user = $this->user->with('perfil')
                             ->orderBy('id', 'desc')
                             ->paginate(10);
-        return view('configuracoes.user.index', [
+        return view('configuracoes.usuario.index', [
             'collections' => $user,
         ]);
     }
 
     public function create()
     {
-        return view('configuracoes.user.create', [
+        return view('configuracoes.usuario.create', [
             'titulo' => 'Cadastrar usário',
             'perfis' => Perfil::all()
         ]);
@@ -55,13 +55,13 @@ class UserController extends Controller
         Token::gerarToken($user->user_id, $request->qtdToken);
 
         return redirect()
-            ->route('user.index')
+            ->route('usuario.index')
             ->with('status', "Registrado com sucesso!");
     }
 
     public function edit($id)
     {
-        return view('configuracoes.user.edit', [
+        return view('configuracoes.usuario.edit', [
             'titulo' => "Editar usuário",
             'user'   => $this->user->findOrFail($id),
             'perfis' => Perfil::orderBy('id', 'desc')->get()
@@ -92,17 +92,17 @@ class UserController extends Controller
         $user->save();
         
         return redirect()
-            ->route('user.show', $user->id)
+            ->route('usuario.show', $user->id)
             ->with('status', "Atualizado com sucesso!");
     }
 
     public function show($id)
     {
-        $usuario =  $this->user->with('perfil', 'colaborador','tokens')
+        $usuario = $this->user->with('perfil', 'colaborador','tokens')
                                ->findOrFail($id);
-        return view('configuracoes.user.show', [
+        return view('configuracoes.usuario.show', [
             'titulo' => 'Visualizar usuário',
-            'user' => $usuario,
+            'user'   => $usuario,
             'status' => $usuario->getStatus($id),
         ]);
     }
@@ -130,12 +130,12 @@ class UserController extends Controller
         $usuario = $this->user->with('colaborador')->findOrFail($id);
         if (!empty($usuario->colaborador)) {
             return redirect()
-                ->route('user.index')
+                ->route('usuario.index')
                 ->with('warning', "Não foi possivel escluir!, Este usuario está sendo associado a um colaborador.");
         }
         $usuario->delete();
         return redirect()
-            ->route('user.index')
+            ->route('usuario.index')
             ->with('status', "Registro excluido com sucesso!");
     }
 
@@ -152,7 +152,7 @@ class UserController extends Controller
         $request->session()->regenerateToken();
         $this->composeEmail($usuario->colaborador, 'senha_recuperada');
         return redirect()
-            ->route('user.senhaSucesso');
+            ->route('usuario.senhaSucesso');
     }
 
     public function recuperarSenhaCreate()

@@ -6,7 +6,7 @@
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
             <a href="/configuracoes">Configurações</a> /
-            <a href="/configuracoes/user">usuário</a>
+            <a href="{{ route('usuario.index') }}">usuário</a>
         </li>
     </ol>
 @endsection
@@ -56,10 +56,10 @@
             </div>
         </div>
         <div class="card-footer">
-            <a href="{{ route('user.edit', $user->id) }}" title="Editar" class="btn btn-sm btn-primary">
+            <a href="{{ route('usuario.edit', $user->id) }}" title="Editar" class="btn btn-sm btn-primary">
                 <i class="fas fa-edit"></i> Editar
             </a>
-            <x-botao.btn-voltar :rota="route('user.index')" />
+            <x-botao.btn-voltar :rota="route('usuario.index')" />
         </div>
     </div>
 @endsection

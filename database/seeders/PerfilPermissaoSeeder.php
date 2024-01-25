@@ -51,5 +51,9 @@ class PerfilPermissaoSeeder extends Seeder
         DB::TABLE('perfil_permissao')->INSERT(['modulo_id' => 9, 'perfil_id' => 1, 'permissao_id' => 2]);
         DB::TABLE('perfil_permissao')->INSERT(['modulo_id' => 9, 'perfil_id' => 1, 'permissao_id' => 3]);
         DB::TABLE('perfil_permissao')->INSERT(['modulo_id' => 9, 'perfil_id' => 1, 'permissao_id' => 4]);
+        DB::TABLE('perfil_permissao')->INSERT(['modulo_id' => 10, 'perfil_id' => 1, 'permissao_id' => 1]);
+        DB::TABLE('perfil_permissao')->INSERT(['modulo_id' => 10, 'perfil_id' => 1, 'permissao_id' => 2]);
+        DB::TABLE('perfil_permissao')->INSERT(['modulo_id' => 10, 'perfil_id' => 1, 'permissao_id' => 3]);
+        DB::TABLE('perfil_permissao')->INSERT(['modulo_id' => 10, 'perfil_id' => 1, 'permissao_id' => 4]);
     }
 }

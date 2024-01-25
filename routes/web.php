@@ -63,7 +63,7 @@ Route::middleware(['auth', 'verificarToken'])->group(function () {
         Route::resource('/empresa', EmpresaController::class)->middleware(['verificarModulos:empresa']);
         Route::resource('/permissao', PermissaoController::class)->middleware(['verificarModulos:permissao']);
         Route::resource('/modulo', ModuloController::class)->middleware(['verificarModulos:modulo']);
-        Route::resource('/user', UserController::class)->middleware(['verificarModulos:usuario']);
+        Route::resource('/usuario', UserController::class)->middleware(['verificarModulos:usuario']);
         Route::resource('/base', BaseController::class)->middleware(['verificarModulos:base']);
         Route::resource('/cargo', CargoController::class)->middleware(['verificarModulos:cargo']);
     });
@@ -86,6 +86,10 @@ Route::prefix('/recuperar')->group(function () {
 
 Route::middleware(['verificarModulos:lancar-comissao'])->group(function () {
     Route::prefix('/comissao')->group(function () {
+        Route::get('/', function(){
+            return redirect()->route('planilha.index');
+        });
+        
         //planililha:
         Route::resource('/planilha', PlanilhaColaboradorController::class);
         Route::get('/planilha{planilha}/homologar', [PlanilhaColaboradorController::class, 'homologar'])->name('planilha.homologar');
@@ -111,6 +115,9 @@ Route::middleware(['verificarModulos:lancar-comissao'])->group(function () {
 
 Route::middleware(['verificarModulos:administrar-comissao'])->group(function () {
     Route::prefix('/comissao-administrativo')->group(function () {
+        Route::get('/', function () {
+            return redirect()->route('comissao.administrativo.index');
+        });
         Route::name('comissao.')->group(function () {
             Route::resource('/administrativo', AdministrativoController::class);
             Route::name('administrativo.')->group(function () {
@@ -130,4 +137,3 @@ Route::middleware(['verificarModulos:administrar-comissao'])->group(function () 
         });
     });
 });
-    

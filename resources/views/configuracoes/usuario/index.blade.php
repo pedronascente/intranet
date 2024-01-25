@@ -6,14 +6,14 @@
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
             <a href="/configuracoes">Configurações</a> /
-            <a href="/configuracoes/user">usuário</a>
+            <a href="{{ route('usuario.index') }}">usuário</a>
        </li>
     </ol>
 @endsection
 
 @section('content')
    <div class="card p-3">
-        <x-botao.btn-cadastrar :rota="route('user.create')" />
+        <x-botao.btn-cadastrar :rota="route('usuario.create')" />
         <div class="card">
             <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap  table-striped">
@@ -41,16 +41,16 @@
                                         @endif
                                     </td>
                                     <td class="text-center">                                       
-                                        <a href="{{ route('user.show', $item->id) }}" title="Visualizar"
+                                        <a href="{{ route('usuario.show', $item->id) }}" title="Visualizar"
                                                     class="btn btn-sm btn-primary">
                                                 <i class="fas fa-folder"></i> Visualizar
                                         </a>
-                                        <a href="{{ route('user.edit', $item->id) }}" 
+                                        <a href="{{ route('usuario.edit', $item->id) }}" 
                                                 class="btn  btn-sm btn-info"
                                                 title="Editar">
                                                     <i class="fas fa-edit"></i> Editar
                                         </a>
-                                        <x-botao.btn-excluir :rota="route('user.destroy', $item->id)" titulo="Excluir Usuário" />    
+                                        <x-botao.btn-excluir :rota="route('usuario.destroy', $item->id)" titulo="Excluir Usuário" />    
                                     </td>
                                 </tr>
                             @endforeach
