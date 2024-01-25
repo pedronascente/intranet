@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('titulo', 'Usuário | Editar')
+@section('titulo', $titulo)
 
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
             <a href="/configuracoes">Configurações</a> /
-            <a href="/configuracoes/user">usuário</a>
+            <a href="{{ route('user.index') }}">usuário</a>
         </li>
     </ol>
 @endsection

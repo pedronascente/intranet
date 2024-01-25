@@ -24,7 +24,9 @@ class UserController extends Controller
 
     public function index()
     {
-        $user =  $this->user->with('perfil')->orderBy('id', 'desc')->paginate(10);
+        $user = $this->user->with('perfil')
+                            ->orderBy('id', 'desc')
+                            ->paginate(10);
         return view('configuracoes.user.index', [
             'collections' => $user,
         ]);
@@ -33,6 +35,7 @@ class UserController extends Controller
     public function create()
     {
         return view('configuracoes.user.create', [
+            'titulo' => 'Cadastrar usário',
             'perfis' => Perfil::all()
         ]);
     }
@@ -40,7 +43,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->user->validarFormulario($request, 'store');
-        $user = $this->user;
+        $user                 = $this->user;
         $user->name           = $request->name;
         $user->status         = $request->status;
         $user->qtdToken       = $request->qtdToken;
@@ -49,7 +52,7 @@ class UserController extends Controller
         $user->password       = Hash::make($request->password);
         $user->save();
 
-        Token::gerarToken($user);
+        Token::gerarToken($user->user_id, $request->qtdToken);
 
         return redirect()
             ->route('user.index')
@@ -59,22 +62,35 @@ class UserController extends Controller
     public function edit($id)
     {
         return view('configuracoes.user.edit', [
+            'titulo' => "Editar usuário",
             'user'   => $this->user->findOrFail($id),
             'perfis' => Perfil::orderBy('id', 'desc')->get()
+            
         ]);
     }
 
     public function update(Request $request, $id)
     {
+
         $this->user->validarFormulario($request, 'update');
         $user         = $this->user->with('perfil')->findOrFail($id);
         $perfil       = Perfil::findOrFail($request->perfil);
-        $user->perfil()->associate($perfil)->update();
-        $user->status = $request->status;
-        $user->name   = $request->name;
+
+        if ($user->qtdToken != $request->qtdToken) {
+            Token::gerarToken($id, $request->qtdToken);
+        }
+
+        $user->status  = $request->status;
+        $user->name     = $request->name;
+        $user->qtdToken = $request->qtdToken; 
+        $user->perfil()->associate($perfil);
+        
         if (empty(!$request->password)) {
             $user->password = Hash::make($request->password);
         }
+
+        $user->save();
+        
         return redirect()
             ->route('user.show', $user->id)
             ->with('status', "Atualizado com sucesso!");
@@ -85,6 +101,7 @@ class UserController extends Controller
         $usuario =  $this->user->with('perfil', 'colaborador','tokens')
                                ->findOrFail($id);
         return view('configuracoes.user.show', [
+            'titulo' => 'Visualizar usuário',
             'user' => $usuario,
             'status' => $usuario->getStatus($id),
         ]);

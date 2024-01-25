@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('titulo', 'Usuário | Visualizar')
+@section('titulo', $titulo)
 
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">

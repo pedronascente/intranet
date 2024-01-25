@@ -20,17 +20,21 @@ class Token extends Model
         return $this->belongsTo(User::class);
     }
 
-    public static function gerarToken($user)
+    public static function gerarToken($user_id, $qtdToken)
     {
-        $token = Token::where('user_id', $user->id)->get();
-        if ($token->count()) {
-            Token::where('user_id', $user->id)->delete();
+        $token = Token::where('user_id', $user_id)->get();
+        
+        if ($token->count()>=1) {
+            Token::where('user_id', $user_id)->delete();
         }
-        for ($i = 1; $i <= $user->qtdToken; $i++) {
+
+        //criar novos tokens :
+        for ($i = 1; $i <= $qtdToken; $i++) {
             $t =  new Token();
             $t->setServidorAttribute(substr(md5(time() . rand(10, 100)), 0, 8));
-            $t->posicao  = $i;
-            $t->user()->associate($user)->save();
+            $t->posicao = $i;
+            $t->user_id = $user_id;
+            $t->save();
         }
     }
 
