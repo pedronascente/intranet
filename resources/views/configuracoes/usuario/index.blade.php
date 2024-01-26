@@ -45,11 +45,7 @@
                                                     class="btn btn-sm btn-primary">
                                                 <i class="fas fa-folder"></i> Visualizar
                                         </a>
-                                        <a href="{{ route('usuario.edit', $item->id) }}" 
-                                                class="btn  btn-sm btn-info"
-                                                title="Editar">
-                                                    <i class="fas fa-edit"></i> Editar
-                                        </a>
+                                        <x-botao.btn-editar :rota="route('usuario.edit', $item->id)"/>
                                         <x-botao.btn-excluir :rota="route('usuario.destroy', $item->id)" titulo="Excluir Usuário" />    
                                     </td>
                                 </tr>

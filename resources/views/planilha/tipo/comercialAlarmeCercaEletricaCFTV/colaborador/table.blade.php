@@ -30,10 +30,7 @@
                         <td>{{ 'R$ ' . number_format($comissao->comissao, 2, ',', '.') }}</td>
                         <td>{{ 'R$ ' . number_format($comissao->desconto_comissao, 2, ',', '.') }}</td>
                         <td>
-                            <a href="{{ route('cace-cftv.edit', $comissao->id) }}" class="btn btn-info btn-sm"
-                                title="Editar comissão">
-                                <i class="nav-icon fas fa-edit"></i> Editar
-                            </a>
+                            <x-botao.btn-editar :rota="route('cace-cftv.edit', $comissao->id)"/>
                             <x-botao.btn-excluir :rota="route('cace-cftv.destroy', $comissao->id)" titulo="Excluir Comissão" />
                         </td>
                     </tr>

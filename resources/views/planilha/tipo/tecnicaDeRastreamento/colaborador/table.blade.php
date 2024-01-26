@@ -28,10 +28,7 @@
                             {{ $comissao->observacao }}
                         </td>
                         <td>
-                            <a href="{{ route('tecnica-de-rastreamento.edit', $comissao->id) }}"
-                                class="btn btn-primary btn-sm" title="Editar comissão">
-                                <i class="nav-icon fas fa-edit"></i> Editar
-                            </a>
+                            <x-botao.btn-editar :rota="route('tecnica-de-rastreamento.edit', $comissao->id)"/>
                             <x-botao.btn-excluir :rota="route('tecnica-de-rastreamento.destroy', $comissao->id)" titulo="Excluir Comissão" />
                         </td>
                     </tr>

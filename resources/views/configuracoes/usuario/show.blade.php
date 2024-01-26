@@ -56,9 +56,7 @@
             </div>
         </div>
         <div class="card-footer">
-            <a href="{{ route('usuario.edit', $user->id) }}" title="Editar" class="btn btn-sm btn-primary">
-                <i class="fas fa-edit"></i> Editar
-            </a>
+            <x-botao.btn-editar :rota="route('usuario.edit', $user->id)"/>
             <x-botao.btn-voltar :rota="route('usuario.index')" />
         </div>
     </div>

@@ -22,10 +22,7 @@
                         <td>{{ 'R$ ' . number_format($comissao->comissao, 2, ',', '.') }}</td>
                         <td>{{ 'R$ ' . number_format($comissao->desconto_comissao, 2, ',', '.') }}</td>
                         <td>
-                            <a href="{{ route('reclamacao-de-cliente.edit', $comissao->id) }}"
-                                class="btn btn-primary btn-sm" title="Editar comissão">
-                                <i class="nav-icon fas fa-edit"></i> Editar
-                            </a>
+                            <x-botao.btn-editar :rota="route('reclamacao-de-cliente.edit', $comissao->id)"/>
                             <x-botao.btn-excluir :rota="route('reclamacao-de-cliente.destroy', $comissao->id)" titulo="Excluir Comissão" />
                         </td>
                     </tr>

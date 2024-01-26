@@ -34,10 +34,7 @@
                                     <td>{{ $item->tipo_menu }}</td>
                                     <td>{{ $item->descricao }}</td>
                                     <td class="text-center">
-                                        <a href="{{ route('modulo.edit', $item->id) }}" class="btn btn-sm btn-info"
-                                            title="Editar">
-                                            <i class="fas fa-edit"></i> Editar
-                                        </a>
+                                        <x-botao.btn-editar :rota="route('modulo.edit', $modulo->id)"/>
                                         <x-botao.btn-excluir :rota="route('modulo.destroy', $item->id)" titulo="Excluir Modulo" />
                                     </td>
                                 </tr>

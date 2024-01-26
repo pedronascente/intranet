@@ -29,10 +29,7 @@
                                 <tr>
                                     <td>{{ $item->nome }}</td>
                                     <td class="text-center">
-                                       <a href="{{ route('permissao.edit', $item->id) }}" class="btn  btn-sm btn-primary"
-                                            title="Editar">
-                                            <i class="fas fa-edit"></i> Editar
-                                        </a>
+                                        <x-botao.btn-editar :rota="route('permissao.edit', $item->id)"/>
                                         <x-botao.btn-excluir :rota="route('permissao.destroy', $item->id)" titulo="Excluir Permissão" />  
                                     </td>
                                 </tr>

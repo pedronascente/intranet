@@ -38,15 +38,11 @@
                                     <td>{{ $item->numero_matricula }}</td>
                                     <td>{{ $item->nome }} {{ $item->sobrenome }}</td>
                                     <td class="text-center">
-                                        
                                         <a href="{{ route('colaborador.show', $item->id) }}" title="Visualizar"
                                             class="btn btn-sm btn-primary ">
                                             <i class="fas fa-folder"></i> Visualizar
                                         </a>
-                                        <a href="{{ route('colaborador.edit', $item->id) }}" title="Editar"
-                                            class="btn btn-sm btn-info">
-                                            <i class="fas fa-edit"></i> Editar
-                                        </a>
+                                        <x-botao.btn-editar :rota="route('colaborador.edit', $item->id)"/>
                                         <x-botao.btn-excluir :rota="route('colaborador.destroy', $item->id)" titulo="Excluir Colaborador" />
                                     </td>
                                 </tr>

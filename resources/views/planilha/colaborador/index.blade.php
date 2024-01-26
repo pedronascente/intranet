@@ -46,10 +46,7 @@
                                     </div>
                                 </td>
                                 <td class="text-center">
-                                    <a href="{{ route('planilha.edit', $item->id, 'edit') }}"
-                                        class="btn btn-info btn-sm" title="Editar Planilha">
-                                        <i class="nav-icon fas fa-edit"></i> Editar
-                                    </a>
+                                    <x-botao.btn-editar :rota="route('planilha.edit', $item->id)"/>
                                     <a href="{{ route('planilha-colaborador-tipo.index', $item->id) }}"
                                         class="btn btn-primary btn-sm" title="Gerenciar Comissão">
                                         <i class="fas fa-solid fa-plus"></i> Comissão

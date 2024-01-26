@@ -29,11 +29,7 @@
                                 <tr>
                                     <td>{{ $cargo->nome }}</td>
                                     <td class="text-center">
-                                        <a href="{{ route('cargo.edit', $cargo->id) }}" 
-                                            class="btn btn-sm btn-info"
-                                            title="Editar">
-                                            <i class="fas fa-edit"></i> Editar
-                                        </a>
+                                         <x-botao.btn-editar :rota="route('cargo.edit', $cargo->id)"/>
                                          <x-botao.btn-excluir :rota="route('cargo.destroy', $cargo->id)" titulo="Excluir Cargo" />
                                     </td>
                                 </tr>

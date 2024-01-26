@@ -33,10 +33,7 @@
                                     <td>{{ $item->cnpj }}</td>
                                     <td><img src="{{ asset('/img/empresa/' . $item->imglogo) }}" width="100"></td>
                                     <td class="text-center">
-                                         <a href="{{ route('empresa.edit', $item->id) }}" title="Editar"
-                                            class="btn  btn-sm btn-primary">
-                                            <i class="fas fa-edit"></i> Editar
-                                        </a>
+                                        <x-botao.btn-editar :rota="route('empresa.edit', $empresa->id)"/>
                                         <x-botao.btn-excluir :rota="route('empresa.destroy', $item->id)" titulo="Excluir Empresa" />
                                     </td>
                                 </tr>

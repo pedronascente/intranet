@@ -52,9 +52,7 @@
             @endif
         </table>
         <div class="card-footer">
-            <a href="{{ route('colaborador.edit', $colaborador->id) }}" title="Editar" class="btn btn-sm btn-primary">
-                <i class="fas fa-edit"></i> Editar
-            </a>
+            <x-botao.btn-editar :rota="route('colaborador.edit', $colaborador->id)"/>
             <x-botao.btn-voltar :rota="route('colaborador.index')" />
         </div>
     </div>
