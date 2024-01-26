@@ -68,9 +68,13 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Ano:</label>
-                                <input type="text" name="ano" maxlength="4"
-                                    class="form-control @error('ano') is-invalid  @enderror" placeholder="Ano"
-                                    value="{{ $planilha->ano }}">
+                                <select name="ano" class="form-control  @error('ano') is-invalid  @enderror">
+                                    <option value="">Ano</option>
+                                    @for ($ano = date('Y'); $ano >= 2020; $ano--)
+                                        <option value="{{ $ano }}" {{ $planilha->ano == $ano ? 'selected' : '' }}>
+                                            {{ $ano }}</option>
+                                    @endfor
+                                </select>
                                 @error('ano')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
