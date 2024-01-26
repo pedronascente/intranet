@@ -219,11 +219,13 @@ class Planilha extends Model
 
                 ->orWhere('tecnica_alarmes_cerca_eletrica_cftvs.cliente', 'like', '%' . $filtro . '%')
                 ->orWhere('tecnica_alarmes_cerca_eletrica_cftvs.numero_os', 'like', '%' . $filtro . '%')
-                ->orWhere('planilha_tipos.nome', 'like', '%' . $filtro . '%');
+                ->orWhere('planilha_tipos.nome', 'like', '%' . $filtro . '%')
+                ->orWhere('colaboradores.nome', 'like', '%' . $filtro . '%')
+                ->orWhere('colaboradores.numero_matricula', 'like', '%' . $filtro . '%');
         });
 
         if (($status == 6)) {
-            $query->whereIn('planilhas.planilha_status_id', [1, 2, 3, 4, 5]);
+            $query->whereIn('planilhas.planilha_status_id', [1, 2, 3, 4, 5]);           
         } else {
             $query->where('planilhas.planilha_status_id', $status);
         }
@@ -267,6 +269,7 @@ class Planilha extends Model
             'planilha_tipos.nome as planilha',
             'planilha_periodos.nome as periodo',
             'colaboradores.nome as colaborador',
+            'colaboradores.numero_matricula',
             'tecnica_alarmes_cerca_eletrica_cftvs.numero_os',
             DB::raw('COALESCE(
                 comercial_rastreamento_veiculares.placa,
@@ -340,16 +343,12 @@ class Planilha extends Model
 
         $ano    = $request->query('ano');
         $filtro = $request->query('filtro');
-
         //$whereIn = $origem == 'conferir' ? [3, 5] : [2];
         $whereIn = $arrayPlanilhaStatusId;
-
-        // Inicia a consulta de planilhas com relacionamentos (colaborador, tipo, status)
         $query = $this->with('colaborador', 'tipo', 'status')->whereIn('planilha_status_id', $whereIn);
         if ($ano) {
             $query->where('ano', '=', $ano);
         }
-        // Adiciona condição para pesquisa por termo, se fornecido
         if ($filtro) {
             $this->getTermoPesquisa($query, $filtro);
         }
@@ -365,11 +364,11 @@ class Planilha extends Model
      */
     private function getTermoPesquisa($query, $termoPesquisa)
     {
-        // Adiciona condições à consulta para pesquisar por termo nos campos relevantes
         $query->where(function ($q) use ($termoPesquisa) {
             $q->whereHas('colaborador', function ($q) use ($termoPesquisa) {
                 $q->where('nome', 'like', '%' . $termoPesquisa . '%')
-                ->orWhere('sobrenome', 'like', '%' . $termoPesquisa . '%');
+                ->orWhere('sobrenome', 'like', '%' . $termoPesquisa . '%')
+                ->orWhere('numero_matricula', 'like', '%' . $termoPesquisa . '%');
             })
                 ->orWhereHas('tipo', function ($q) use ($termoPesquisa) {
                     $q->where('nome', 'like', '%' . $termoPesquisa . '%');
