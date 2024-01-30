@@ -3,7 +3,7 @@
 @section('titulo', $titulo)
 
 @section('breadcrumb')
-    @include('planilha.tipo._breadcrumb')
+    @include('planilha.tipo._breadcrumb_administrativo')
 @endsection
 
 @section('content')
@@ -12,7 +12,7 @@
             <div class="card-header">
                 <h4>Editar Comissão</h4>
             </div>
-            <form action="{{ route('entrega-de-alarme.update', $comissao->id) }}" method="POST" name="formulario-edit">
+            <form action="{{ route('reclamacao-de-cliente.update', $comissao->id) }}" method="POST" name="formulario-edit">
                 @csrf
                 @method('PUT')
                 <div class="card-body">
@@ -22,7 +22,7 @@
                                 <label>Cliente:</label>
                                 <input type="text" name="cliente" maxlength="190"
                                     class="form-control @error('cliente') is-invalid  @enderror" placeholder="Cliente"
-                                    value="{{ $comissao->cliente ?? old(cliente) }}">
+                                    value="{{ $comissao->cliente ?? old(cliente) }} ">
                                 @error('cliente')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -53,7 +53,7 @@
                                 <label>Conta:</label>
                                 <input type="text" name="conta_pedido" maxlength="50"
                                     class="form-control @error('conta_pedido') is-invalid  @enderror" placeholder="Conta"
-                                    value="{{ $comissao->conta_pedido ?? old(conta_pedido) }}">
+                                    value="{{ $comissao->conta_pedido ?? old(conta_pedido) }} ">
                                 @error('conta_pedido')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -64,7 +64,7 @@
                                 <label>Comissão:</label>
                                 <input type="text" name="comissao" maxlength="9"
                                     class="form-control @error('comissao') is-invalid  @enderror" placeholder="0"
-                                    value="{{ $comissao->comissao ?? old(comissao) }}">
+                                    value="{{ $comissao->comissao ?? old(comissao) }} ">
                                 @error('comissao')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -75,7 +75,7 @@
                                 <label>Desconto:</label>
                                 <input type="text" name="desconto_comissao" maxlength="9"
                                     class="form-control @error('desconto_comissao') is-invalid  @enderror" placeholder="0"
-                                    value="{{ $comissao->desconto_comissao ?? old(desconto_comissao) }}">
+                                    value="{{ $comissao->desconto_comissao ?? old(desconto_comissao) }} ">
                                 @error('desconto_comissao')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -85,7 +85,7 @@
                 </div>
                 <div class="card-footer">
                     <x-botao.btn-salvar />
-                    <x-botao.btn-voltar :rota="route('planilha-colaborador-tipo.index', $comissao->planilha_id)" />
+                    <x-botao.btn-voltar :rota="route('comissao.administrativo.tipoAdministrativo.index',$comissao->planilha_id)" />
                 </div>
             </form>
         </div>

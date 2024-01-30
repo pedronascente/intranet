@@ -11,6 +11,7 @@
                 <th>Mensal</th>
                 <th>Comissão</th>
                 <th>Desconto </th>
+                <th width="5%" class="text-center">Permissões</th>
             </tr>
         </thead>
         <tbody>
@@ -26,10 +27,13 @@
                         <td>{{ 'R$ ' . number_format($comissao->mensal, 2, ',', '.') }}</td>
                         <td>{{ 'R$ ' . number_format($comissao->comissao, 2, ',', '.') }}</td>
                         <td>{{ 'R$ ' . number_format($comissao->desconto_comissao, 2, ',', '.') }}</td>
+                         <td>
+                            <x-botao.btn-editar :rota="route('comissao.administrativo.editarComissaoAdministrativo', ['planilha' => $comissao->planilha_id, 'comissao' => $comissao->id])"/>
+                        </td>
                     </tr>
                 @endforeach
                 <tr>
-                    <td colspan="9">
+                    <td colspan="10">
                         <div class="row">
                             <div class="col-md-6"><b>{{ $listaComissao->total() }}</b> Registros Encontrados.</div>
                             <div class="col-md-6 text-right"> Valor Total <b>R$ {{ $valorTotalComissao }}</b> </div>
@@ -40,7 +44,7 @@
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="9">
+                <td colspan="10">
                     @if ($listaComissao)
                         {{ $listaComissao->links() }}
                     @endif

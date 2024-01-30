@@ -42,7 +42,7 @@ Route::prefix('/login')->group(function () {
 Route::middleware('auth')->prefix('/token')->group(function () {
     Route::get('/', [TokenController::class, 'create'])->name('token.create');
     Route::post('/', [TokenController::class, 'store'])->name('token.store');
-    Route::get('/get-posicao-token', [TokenController::class, 'getPosicaoToken']);   
+    Route::get('/get-posicao-token', [TokenController::class, 'getPosicaoToken']);
 });
 
 Route::middleware(['auth', 'verificarToken'])->group(function () {
@@ -86,10 +86,10 @@ Route::prefix('/recuperar')->group(function () {
 
 Route::middleware(['verificarModulos:lancar-comissao'])->group(function () {
     Route::prefix('/comissao')->group(function () {
-        Route::get('/', function(){
+        Route::get('/', function () {
             return redirect()->route('planilha.index');
         });
-        
+
         //planililha:
         Route::resource('/planilha', PlanilhaColaboradorController::class);
         Route::get('/planilha{planilha}/homologar', [PlanilhaColaboradorController::class, 'homologar'])->name('planilha.homologar');
@@ -133,6 +133,7 @@ Route::middleware(['verificarModulos:administrar-comissao'])->group(function () 
                 Route::get('/imprimir-pdf/{id}', [PlanilhaTipoAdministrativoController::class, 'imprimirPDF'])->name('imprimirPDF');
                 Route::get('{id}/planilha', [PlanilhaTipoAdministrativoController::class, 'index'])->name('tipoAdministrativo.index');
                 Route::get('relatorio/buscar', [PlanilhaRelatorioController::class, 'relatorio'])->name('relatorio');
+                Route::get('{planilha}/{comissao}/editarComissaoAdministrativo', [AdministrativoController::class, 'editarComissaoAdministrativo'])->name('editarComissaoAdministrativo'); 
             });
         });
     });

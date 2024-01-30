@@ -4,10 +4,22 @@ namespace App\Http\Controllers\Planilha;
 
 use Illuminate\Http\Request;
 use App\Models\Planilha\Planilha;
+use App\Models\Planilha\Tipo\Meio;
 use App\Http\Controllers\Controller;
 use App\Models\planilha\PlanilhaStatus;
 use App\Models\Planilha\PlanilhaPeriodo;
 use App\Models\Planilha\Tipo\PlanilhaTipo;
+use App\Models\Planilha\Tipo\ServicoAlarme;
+use App\Models\Planilha\Tipo\PortariaVirtual;
+use App\Models\Planilha\Tipo\EntregaDeAlarmes;
+use App\Models\Planilha\Tipo\ReclamacaoDeCliente;
+use App\Models\Planilha\Tipo\TecnicaDeRastreamento;
+use App\Models\Planilha\Tipo\ComercialRastreamentoVeicular;
+use App\Models\Planilha\Tipo\SupervisaoComercialRastreamento;
+use App\Models\Planilha\Tipo\TecnicaAlarmesCercaEletricaCFTV;
+use App\Models\Planilha\Tipo\ComercialAlarmeCercaEletricaCFTV;
+use App\Models\Planilha\Tipo\SupervisaoComercialAlarmesCercaEletricaCFTV;
+use App\Models\Planilha\Tipo\SupervisaoTecnicaESacAlarmesCercaEletricaCFTV;
 
 class AdministrativoController extends Controller
 {
@@ -28,85 +40,62 @@ class AdministrativoController extends Controller
         }else{
             $collections = $this->planilha
                 ->whereIn('planilha_status_id', $arrayPlanilhaStatusId)
-                ->orderBy('id', 'desc') // Ordena as planilhas pelo ID em ordem decrescente
-                ->paginate(10); // Paginação para exibir 10 resultados por página
+                ->orderBy('id', 'desc') 
+                ->paginate(10); 
         }
-        // Retorna a visão (view) 'planilha.administrativo.conferir' com os dados necessários
         return view('planilha.administrativo.conferir', [
-            'titulo'      => "Conferir " . $this->titulo, // Título da página
-            'collections' => $collections, // Planilhas a serem exibidas na view
+            'titulo'      => "Conferir " . $this->titulo, 
+            'collections' => $collections, 
         ]);
     }
 
-    /**
-     * Exibe a página de edição para uma planilha específica.
-     *
-     * @param  int  $id  Identificador da planilha a ser editada.
-     * @return \Illuminate\Contracts\View\View
-     */
     public function edit($id)
     {
-        // Obtém a planilha com relacionamentos (colaborador, período, tipo) com base no ID fornecido
-        $planilha = $this->planilha->with('colaborador', 'periodo', 'tipo')->findOrFail($id);
-        // Retorna a visão (view) 'planilha.administrativo.edit' com os dados necessários
+        $planilha = $this->planilha->with('colaborador', 'periodo', 'tipo')
+                         ->findOrFail($id);
+       
         return view('planilha.administrativo.edit', [
-            'titulo'   => "Editar " . $this->titulo, // Título da página
-            'planilha' => $planilha, // Planilha a ser editada
-            'periodos' => PlanilhaPeriodo::orderBy('nome', 'asc')->get(), // Lista de períodos para dropdown
-            'tipos'    => PlanilhaTipo::orderBy('id', 'desc')->get(), // Lista de tipos de planilha para dropdown
-            'status'   => PlanilhaStatus::orderBy('id', 'asc')->get(), // Lista de status de planilha para dropdown
+            'titulo'   => "Editar " . $this->titulo, 
+            'planilha' => $planilha, 
+            'periodos' => PlanilhaPeriodo::orderBy('nome', 'asc')->get(), 
+            'tipos'    => PlanilhaTipo::orderBy('id', 'desc')->get(), 
+            'status'   => PlanilhaStatus::orderBy('id', 'asc')->get(), 
         ]);
     }
 
-    /**
-     * Atualiza uma planilha existente com os dados fornecidos.
-     *
-     * @param  \Illuminate\Http\Request  $request  Instância da requisição HTTP.
-     * @param  int  $id  Identificador da planilha a ser atualizada.
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function update(Request $request, $id)
     {
-        // Valida os dados da requisição com base nas regras definidas na model da planilha
         $request->validate($this->planilha->rules(), $this->planilha->feedback());
-        // Obtém a planilha existente com base no ID fornecido
         $planilha = $this->planilha->findOrFail($id);
-        // Atualiza os dados da planilha com os dados da requisição
         $planilha->update($request->all());
-        // Determina o nome da rota para redirecionamento com base no formulário
         $routeName = $request->formulario == 'administrativo' ? 'comissao.administrativo.index' : 'planilha.index';
-        // Redireciona para a rota apropriada com uma mensagem de status
         return redirect()->route($routeName)->with('status', 'Registro atualizado com sucesso.');
     }
 
     public function editReprovar($id)
     {
         return view('planilha.administrativo.edit-reprovar', [
-            'titulo'   =>  "Reprovar  " . $this->titulo , // Título da página
-            'planilha' => $this->planilha->findOrFail($id), // Planilha a ser reprovada
+            'titulo'   =>  "Reprovar  " . $this->titulo , 
+            'planilha' => $this->planilha->findOrFail($id), 
         ]);
     }
 
     public function updateReprovar(Request $request, $id)
     {
-        // Valida os dados da requisição com base nas regras definidas na model da planilha
         $request->validate($this->planilha->rules_reprovar(), $this->planilha->rules_reprovar());
-        // Obtém a planilha existente com base no ID fornecido
         $planilha = $this->planilha->findOrFail($id);
-        // Atualiza os dados da planilha com os dados da requisição
         $planilha->update($request->all());
-        // Redireciona para a página de listagem de planilhas administrativas
-        return redirect()->route('comissao.administrativo.index')->with('status', 'Registro Reprovado com sucesso.');
+        return redirect()
+                    ->route('comissao.administrativo.index')
+                    ->with('status', 'Registro Reprovado com sucesso.');
     }
 
     public function getValorTotalComissao(Planilha $planilha)
     {
-        // Obtém o tipo de planilha associado à planilha (se existir)
         $tipoPlanilha = optional($planilha->tipo)->formulario;
-        // Calcula o valor total da comissão com base no tipo de planilha
         if ($tipoPlanilha) {
             $comissaoModel = $this->getComissaoModel($tipoPlanilha);
-            $valor = $comissaoModel::where('planilha_id', $planilha->id)->sum('comissao');
+            $valor         = $comissaoModel::where('planilha_id', $planilha->id)->sum('comissao');
             return number_format($valor, 2, ',', '.');
         }
         return 0;
@@ -114,11 +103,8 @@ class AdministrativoController extends Controller
 
     private function getComissaoModel($tipo_planilha)
     {
-        // Formata o tipo de planilha para garantir consistência no namespace
         $tipo_planilha = ucfirst($tipo_planilha);
-        // Monta o nome da classe da model de comissão com base no tipo de planilha
         $comissaoModel = 'App\Models\Planilha\Tipo\\' . $tipo_planilha;
-        // Retorna uma nova instância da model de comissão
         return new $comissaoModel;
     }
 
@@ -126,5 +112,65 @@ class AdministrativoController extends Controller
     {
         return redirect()
             ->route('comissao.administrativo.index');
+    }
+
+    /*
+     * Usuário administrativo:
+    */
+    public function editarComissaoAdministrativo($planilha,$comissao)
+    {
+        $id             = $comissao;
+        $meio           = Meio::all();
+        $planilha       = $this->planilha->with('tipo')->findOrFail($planilha);
+        $servico_alarme = ServicoAlarme::all();
+        
+        if($planilha->tipo->formulario == 'comercialAlarmeCercaEletricaCFTV'){
+            $titulo   = $planilha->tipo->nome;
+            $comissao = ComercialAlarmeCercaEletricaCFTV::findOrFail($id);
+            $pageView = 'planilha.tipo.comercialAlarmeCercaEletricaCFTV.administrativo.edit';
+        }else if($planilha->tipo->formulario == 'comercialRastreamentoVeicular'){
+            $titulo   = $planilha->tipo->nome;
+            $comissao = ComercialRastreamentoVeicular::findOrFail($id);
+            $pageView = 'planilha.tipo.comercialRastreamentoVeicular.administrativo.edit';
+        }else if($planilha->tipo->formulario == 'entregaDeAlarmes'){
+            $titulo   = $planilha->tipo->nome;
+            $comissao = EntregaDeAlarmes::findOrFail($id);
+            $pageView = 'planilha.tipo.entregaDeAlarmes.administrativo.edit';
+        }else if($planilha->tipo->formulario == 'portariaVirtual'){
+            $titulo   = $planilha->tipo->nome;
+            $comissao = PortariaVirtual::findOrFail($id);
+            $pageView = 'planilha.tipo.portariaVirtual.administrativo.edit';
+        }else if($planilha->tipo->formulario == 'reclamacaoDeCliente'){
+            $titulo   = $planilha->tipo->nome;
+            $comissao = ReclamacaoDeCliente::findOrFail($id);
+            $pageView = 'planilha.tipo.reclamacaoDeCliente.administrativo.edit';
+        }else if($planilha->tipo->formulario == 'supervisaoComercialAlarmesCercaEletricaCFTV'){
+            $titulo   = $planilha->tipo->nome;
+            $comissao = SupervisaoComercialAlarmesCercaEletricaCFTV::findOrFail($id);
+            $pageView = 'planilha.tipo.supervisaoComercialAlarmesCercaEletricaCFTV.administrativo.edit';
+        }else if($planilha->tipo->formulario == 'supervisaoComercialRastreamento'){
+            $titulo   = $planilha->tipo->nome;
+            $comissao = SupervisaoComercialRastreamento::findOrFail($id);
+            $pageView = 'planilha.tipo.supervisaoComercialRastreamento.administrativo.edit';
+        }else if($planilha->tipo->formulario == 'supervisaoTecnicaESACAlarmesCercaEletricaCFTV'){
+            $titulo   = $planilha->tipo->nome;
+            $comissao = SupervisaoTecnicaESacAlarmesCercaEletricaCFTV::findOrFail($id);
+            $pageView = 'planilha.tipo.supervisaoTecnicaESACAlarmesCercaEletricaCFTV.administrativo.edit';
+        }else if($planilha->tipo->formulario == 'tecnicaAlarmesCercaEletricaCFTV'){
+            $titulo   = $planilha->tipo->nome;
+            $comissao = TecnicaAlarmesCercaEletricaCFTV::findOrFail($id);
+            $pageView = 'planilha.tipo.tecnicaAlarmesCercaEletricaCFTV.administrativo.edit';
+        }else if($planilha->tipo->formulario == 'tecnicaDeRastreamento'){
+            $titulo   = $planilha->tipo->nome;
+            $comissao = TecnicaDeRastreamento::findOrFail($id);
+            $pageView = 'planilha.tipo.tecnicaDeRastreamento.administrativo.edit';
+        }
+       
+        return view($pageView, [
+            'titulo'         => $titulo,
+            'comissao'       => $comissao,
+            'servico_alarme' => $servico_alarme,
+            'meio'           => $meio,
+        ]);
     }
 }

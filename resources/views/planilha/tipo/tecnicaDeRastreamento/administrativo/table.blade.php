@@ -10,6 +10,7 @@
                 <th>Comissão</th>
                 <th>Desconto</th>
                 <th>Observação</th>
+                <th width="5%" class="text-center">Permissões</th>
             </tr>
         </thead>
         <tbody>
@@ -26,10 +27,13 @@
                         <td>
                             {{ $comissao->observacao }}
                         </td>
+                        <td>
+                            <x-botao.btn-editar :rota="route('comissao.administrativo.editarComissaoAdministrativo', ['planilha' => $comissao->planilha_id, 'comissao' => $comissao->id])"/>
+                        </td>
                     </tr>
                 @endforeach
                 <tr>
-                    <td colspan="8">
+                    <td colspan="9">
                         <div class="row">
                             <div class="col-md-6"><b>{{ $listaComissao->total() }}</b> Registros Encontrados.</div>
                             <div class="col-md-6 text-right"> Valor Total <b>R$ {{ $valorTotalComissao }}</b> </div>
@@ -40,7 +44,7 @@
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="8">
+                <td colspan="9">
                     @if ($listaComissao)
                         {{ $listaComissao->links() }}
                     @endif

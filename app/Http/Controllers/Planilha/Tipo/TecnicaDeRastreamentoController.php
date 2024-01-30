@@ -62,6 +62,7 @@ class TecnicaDeRastreamentoController extends Controller
 
     public function update(Request $request, $id)
     {
+
         $request->validate($this->tecnicaDeRastreamento->rules(), $this->tecnicaDeRastreamento->feedback());
         if ($this->tecnicaDeRastreamento->validarComissaoDuplicada($request) >= 1) {
             return redirect()
@@ -77,6 +78,9 @@ class TecnicaDeRastreamentoController extends Controller
         $objetoModel->desconto_comissao = $request->desconto_comissao;
         $objetoModel->observacao        = $request->observacao;
         $objetoModel->save();
+
+
+
         return redirect()
             ->back()
             ->with('status', 'Registro atualizado com sucesso.');

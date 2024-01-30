@@ -3,7 +3,7 @@
 @section('titulo', $titulo)
 
 @section('breadcrumb')
-    @include('planilha.tipo._breadcrumb')
+     @include('planilha.tipo._breadcrumb_administrativo')
 @endsection
 
 @section('content')
@@ -12,15 +12,16 @@
             <div class="card-header">
                 <h4>Editar Comissão</h4>
             </div>
-            <form action="{{ route('portaria-virtual.update', $comissao->id) }}" method="POST" name="formulario-edit">
+            <form action="{{ route('comercial-rastreamento-veicular.update', $comissao->id) }}" method="POST"
+                name="formulario-edit">
                 @csrf
                 @method('PUT')
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-10">
+                        <div class="col-md-8">
                             <div class="form-group">
                                 <label>Cliente:</label>
-                                <input type="text" name="cliente" maxlength="190"
+                                <input type="text" name="cliente" maxlength="200"
                                     class="form-control @error('cliente') is-invalid  @enderror" placeholder="Cliente"
                                     value="{{ $comissao->cliente ?? old(cliente) }} ">
                                 @error('cliente')
@@ -46,41 +47,47 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>ID Contrato:</label>
+                                <input type="text" name="id_contrato" maxlength=""
+                                    class="form-control @error('id_contrato') is-invalid  @enderror" placeholder="ID Contrato"
+                                    @if (old('id_contrato')) value="{{ 'id_contrato' }}" 
+                                    @elseif ($comissao->id_contrato)
+                                        value="{{ $comissao->id_contrato }}" @endif>
+                                @error('id_contrato')
+                                    <span class=" invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Meio:</label>
-                                <select name="meio_id" class="form-control @error('meio_id') is-invalid @enderror">
-                                    <option value="">Selecione</option>
-                                    @isset($meios)
-                                        @foreach ($meios as $meio)
-                                            <option value="{{ $meio->id }}"
-                                                {{ ($comissao->meio->id ?? old('meio_id')) == $meio->id ? 'selected' : '' }}>
-                                                {{ $meio->nome }}
-                                            </option>
-                                        @endforeach
-                                    @endisset
-                                </select>
-                                @error('meio_id')
-                                    <span class="invalid-feedback">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Ins./Vendas :</label>
-                                <input type="text" name="ins_vendas" maxlength="9"
-                                    class="form-control @error('ins_vendas') is-invalid  @enderror" placeholder="0"
-                                    value="{{ $comissao->ins_vendas ?? old(ins_vendas) }} ">
-                                @error('ins_vendas')
+                                <label>Placa:</label>
+                                <input type="text" name="placa" maxlength="10"
+                                    class="form-control @error('placa') is-invalid  @enderror" placeholder="Placa"
+                                    value="{{ $comissao->placa ?? old(placa) }}">
+                                @error('placa')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Mensal :</label>
+                                <label>Taxa Instalação:</label>
+                                <input type="text" name="taxa_instalacao" maxlength="10"
+                                    class="form-control @error('taxa_instalacao') is-invalid  @enderror"
+                                    placeholder="Taxa Instalação"
+                                    value="{{ $comissao->taxa_instalacao ?? old(taxa_instalacao) }} ">
+                                @error('taxa_instalacao')
+                                    <span class=" invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Mensal:</label>
                                 <input type="text" name="mensal" maxlength="9"
                                     class="form-control @error('mensal') is-invalid  @enderror" placeholder="0"
                                     value="{{ $comissao->mensal ?? old(mensal) }} ">
@@ -93,19 +100,8 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Conta:</label>
-                                <input type="text" name="conta_pedido" maxlength="50"
-                                    class="form-control @error('conta_pedido') is-invalid  @enderror" placeholder="Conta"
-                                    value="{{ $comissao->conta_pedido ?? old(conta_pedido) }} ">
-                                @error('conta_pedido')
-                                    <span class=" invalid-feedback">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
                                 <label>Comissão:</label>
-                                <input type="text" name="comissao" maxlength="9"
+                                <input type="text" name="comissao" maxlength="10"
                                     class="form-control @error('comissao') is-invalid  @enderror" placeholder="0"
                                     value="{{ $comissao->comissao ?? old(comissao) }} ">
                                 @error('comissao')
@@ -116,7 +112,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Desconto:</label>
-                                <input type="text" name="desconto_comissao" maxlength="9"
+                                <input type="text" name="desconto_comissao" maxlength="10"
                                     class="form-control @error('desconto_comissao') is-invalid  @enderror" placeholder="0"
                                     value="{{ $comissao->desconto_comissao ?? old(desconto_comissao) }} ">
                                 @error('desconto_comissao')
@@ -128,7 +124,7 @@
                 </div>
                 <div class="card-footer">
                     <x-botao.btn-salvar />
-                    <x-botao.btn-voltar :rota="route('planilha-colaborador-tipo.index', $comissao->planilha_id)" />
+                    <x-botao.btn-voltar :rota="route('comissao.administrativo.tipoAdministrativo.index',$comissao->planilha_id)" />
                 </div>
             </form>
         </div>

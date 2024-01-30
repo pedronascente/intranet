@@ -17,7 +17,7 @@
                 <h4>Cadastrar comissão</h4>
             </div>
             <div class="card-body table-responsive p-0">
-                @include('planilha.tipo.supervisaoTecnicaESACAlarmesCercaEletricaCFTV.create')
+                @include('planilha.tipo.supervisaoTecnicaESACAlarmesCercaEletricaCFTV.colaborador.create')
             </div>
         </div>
     </div>

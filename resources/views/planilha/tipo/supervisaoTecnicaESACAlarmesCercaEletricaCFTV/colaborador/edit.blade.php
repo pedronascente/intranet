@@ -3,7 +3,7 @@
 @section('titulo', $titulo)
 
 @section('breadcrumb')
-    @include('planilha.tipo._breadcrumb')
+     @include('planilha.tipo._breadcrumb_colaborador')
 @endsection
 
 @section('content')

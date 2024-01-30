@@ -58,7 +58,7 @@ class ComercialRastreamentoVeicularController extends Controller
     {
         $comissao = $this->comercialRastreamentoVeicular->findOrFail($id);
         $titulo   = $this->titulo;
-        return view('planilha.tipo.comercialRastreamentoVeicular.edit', [
+        return view('planilha.tipo.comercialRastreamentoVeicular.colaborador.edit', [
             'comissao' => $comissao,
             'titulo'   => $titulo
         ]);

@@ -3,7 +3,7 @@
 @section('titulo', $titulo)
 
 @section('breadcrumb')
-    @include('planilha.tipo._breadcrumb')
+     @include('planilha.tipo._breadcrumb_administrativo')
 @endsection
 
 @section('content')
@@ -140,7 +140,7 @@
                 </div>
                 <div class="card-footer">
                     <x-botao.btn-salvar />
-                    <x-botao.btn-voltar :rota="route('planilha-colaborador-tipo.index', $comissao->planilha_id)" />
+                    <x-botao.btn-voltar :rota="route('comissao.administrativo.tipoAdministrativo.index',$comissao->planilha_id)" />
                 </div>
             </form>
         </div>

@@ -3,7 +3,7 @@
 @section('titulo', $titulo)
 
 @section('breadcrumb')
-    @include('planilha.tipo._breadcrumb')
+    @include('planilha.tipo._breadcrumb_administrativo')
 @endsection
 
 @section('content')
@@ -12,7 +12,7 @@
             <div class="card-header">
                 <h4>Editar Comissão</h4>
             </div>
-            <form action="{{ route('supervisao-c-r.update', $comissao->id) }}" method="POST" name="formulario-edit">
+            <form action="{{ route('stsace-cftv.update', $comissao->id) }}" method="POST" name="formulario-edit">
                 @csrf
                 @method('PUT')
                 <div class="card-body">
@@ -48,9 +48,9 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
-                                <label>Conta:</label>
+                                <label>Conta / Pedido:</label>
                                 <input type="text" name="conta_pedido" maxlength="50"
                                     class="form-control @error('conta_pedido') is-invalid  @enderror" placeholder="Conta"
                                     value="{{ $comissao->conta_pedido ?? old(conta_pedido) }} ">
@@ -59,21 +59,43 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
-                                <label>Total de Rastreadores:</label>
-                                <input type="text" name="total_rastreadores" maxlength="10"
-                                    class="form-control @error('total_rastreadores') is-invalid  @enderror"
-                                    placeholder="Total Rastreadores"
-                                    value="{{ $comissao->total_rastreadores ?? old(total_rastreadores) }} ">
-                                @error('total_rastreadores')
+                                <label>Equip /Serviço:</label>
+                                <input type="text" name="equipe_servico" maxlength="190"
+                                    class="form-control @error('equipe_servico') is-invalid  @enderror"
+                                    placeholder="Equipe Servico"
+                                    value="{{ $comissao->equipe_servico ?? old(equipe_servico) }} ">
+                                @error('equipe_servico')
+                                    <span class=" invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Ins. / Vendas:</label>
+                                <input type="text" name="ins_vendas" maxlength="9"
+                                    class="form-control @error('ins_vendas') is-invalid  @enderror" placeholder="ins_vendas"
+                                    value="{{ $comissao->ins_vendas ?? old(ins_vendas) }} ">
+                                @error('ins_vendas')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Mensal:</label>
+                                <input type="text" name="mensal" maxlength="9"
+                                    class="form-control @error('mensal') is-invalid  @enderror" placeholder="mensal"
+                                    value="{{ $comissao->mensal ?? old(mensal) }} ">
+                                @error('mensal')
+                                    <span class=" invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label>Comissão:</label>
                                 <input type="text" name="comissao" maxlength="9"
@@ -84,7 +106,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label>Desconto:</label>
                                 <input type="text" name="desconto_comissao" maxlength="9"
@@ -100,7 +122,7 @@
                 </div>
                 <div class="card-footer">
                     <x-botao.btn-salvar />
-                    <x-botao.btn-voltar :rota="route('planilha-colaborador-tipo.index', $comissao->planilha_id)" />
+                    <x-botao.btn-voltar :rota="route('comissao.administrativo.tipoAdministrativo.index',$comissao->planilha_id)" />
                 </div>
             </form>
         </div>
