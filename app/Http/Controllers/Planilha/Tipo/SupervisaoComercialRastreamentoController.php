@@ -55,7 +55,7 @@ class SupervisaoComercialRastreamentoController extends Controller
     public function edit($id)
     {
         $comissao = $this->supervisaoComercialRastreamento->findOrFail($id);
-        return view('planilha.tipo.supervisaoComercialRastreamento.edit', [
+        return view('planilha.tipo.supervisaoComercialRastreamento.colaborador.edit', [
             'titulo'   => $this->titulo,
             'comissao' => $comissao,
         ]);

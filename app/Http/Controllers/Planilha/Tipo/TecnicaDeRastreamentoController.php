@@ -54,7 +54,7 @@ class TecnicaDeRastreamentoController extends Controller
     public function edit($id)
     {
         $comissao = $this->tecnicaDeRastreamento->findOrFail($id);
-        return view('planilha.tipo.tecnicaDeRastreamento.edit', [
+        return view('planilha.tipo.tecnicaDeRastreamento.colaborador.edit', [
             'comissao' => $comissao,
             'titulo'   => $this->titulo
         ]);

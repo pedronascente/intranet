@@ -57,7 +57,7 @@ class ReclamacaoDeClienteController extends Controller
     {
         $comissao = $this->reclamacaoDeCliente->findOrFail($id);
         $titulo   = $this->titulo;
-        return view('planilha.tipo.reclamacaoDeCliente.edit', [
+        return view('planilha.tipo.reclamacaoDeCliente.colaborador.edit', [
             'comissao' => $comissao,
             'titulo'   => $titulo,
         ]);

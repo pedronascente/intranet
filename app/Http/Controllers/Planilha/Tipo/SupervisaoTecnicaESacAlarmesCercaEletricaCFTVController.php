@@ -57,7 +57,7 @@ class SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController extends Controller
     public function edit($id)
     {
         $comissao = $this->stsace_cftv->findOrFail($id);
-        return view('planilha.tipo.supervisaoTecnicaESacAlarmesCercaEletricaCFTV.edit', [
+        return view('planilha.tipo.supervisaoTecnicaESacAlarmesCercaEletricaCFTV.colaborador.edit', [
             'titulo'   => $this->titulo,
             'comissao' => $comissao,
         ]);

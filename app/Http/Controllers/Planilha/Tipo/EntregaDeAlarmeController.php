@@ -54,7 +54,7 @@ class EntregaDeAlarmeController extends Controller
 
     public function edit($id)
     {
-        return view('planilha.tipo.entregaDeAlarmes.edit', [
+        return view('planilha.tipo.entregaDeAlarmes.colaborador.edit', [
             'comissao' => $this->entregaDeAlarme->findOrFail($id),
             'titulo'   => $this->titulo
         ]);

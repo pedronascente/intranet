@@ -60,7 +60,7 @@ class SupervisaoComercialAlarmesCercaEletricaCFTVController extends Controller
     {
         $comissao       = $this->scace_cftv->findOrFail($id);
         $servico_alarme = ServicoAlarme::all();
-        return view('planilha.tipo.supervisaoComercialAlarmesCercaEletricaCFTV.edit', [
+        return view('planilha.tipo.supervisaoComercialAlarmesCercaEletricaCFTV.colaborador.edit', [
             'titulo'         => $this->titulo,
             'comissao'       => $comissao,
             'servico_alarme' => $servico_alarme,

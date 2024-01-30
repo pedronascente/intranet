@@ -61,7 +61,7 @@ class ComercialAlarmeCercaEletricaCFTVController extends Controller
         $comissao       = $this->comercialAlarmeCercaEletricaCFTV->findOrFail($id);
         $servico_alarme = ServicoAlarme::all();
         $meios          = Meio::all();
-        return view('planilha.tipo.comercialAlarmeCercaEletricaCFTV.edit', [
+        return view('planilha.tipo.comercialAlarmeCercaEletricaCFTV.colaborador.edit', [
             'titulo'         => $this->titulo,
             'comissao'       => $comissao,
             'servico_alarme' => $servico_alarme,

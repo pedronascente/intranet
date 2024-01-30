@@ -60,7 +60,7 @@ class PortariaVirtualController extends Controller
         $comissao = $this->portariaVirtual->findOrFail($id);
         $titulo   = $this->titulo;
         $meios    = Meio::all();
-        return view('planilha.tipo.portariaVirtual.edit', [
+        return view('planilha.tipo.portariaVirtual.colaborador.edit', [
             'comissao' => $comissao,
             'titulo'   => $titulo,
             'meios'    => $meios
