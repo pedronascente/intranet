@@ -17,6 +17,7 @@ class CreateMeiosTable extends Migration
             $table->increments('id');
             $table->string('nome');
             $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
 

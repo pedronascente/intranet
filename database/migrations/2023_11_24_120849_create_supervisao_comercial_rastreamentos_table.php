@@ -24,6 +24,7 @@ class CreateSupervisaoComercialRastreamentosTable extends Migration
             $table->timestamps();
             $table->unsignedInteger("planilha_id");
             $table->foreign('planilha_id', 'fk_scr_cftv_planilha')->references('id')->on('planilhas')->onDelete('cascade');
+            $table->engine = 'InnoDB';
         });
     }
 

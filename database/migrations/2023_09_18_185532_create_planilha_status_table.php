@@ -17,6 +17,7 @@ class CreatePlanilhaStatusTable extends Migration
             $table->increments('id');
             $table->string('status');
             $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
 

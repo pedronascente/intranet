@@ -23,6 +23,7 @@ class CreateReclamacaoDeClientesTable extends Migration
             $table->timestamps();
             $table->unsignedInteger("planilha_id");
             $table->foreign('planilha_id')->references('id')->on('planilhas')->onDelete('cascade');
+            $table->engine = 'InnoDB';
         });
     }
 

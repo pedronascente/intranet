@@ -17,6 +17,7 @@ class CreateLogAcessoTable extends Migration
             $table->bigIncrements('id');
             $table->string('log', 200);
             $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
 

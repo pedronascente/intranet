@@ -22,6 +22,7 @@ class CreatePlanilhasTable extends Migration
             $table->integer("colaborador_id")->unsigned();
             $table->foreign('colaborador_id')->references('id')->on('colaboradores');
 
+            $table->timestamps();
             $table->integer("planilha_status_id")->unsigned();
             $table->foreign('planilha_status_id')->references('id')->on('planilha_status');
 
@@ -30,7 +31,8 @@ class CreatePlanilhasTable extends Migration
 
             $table->integer("planilha_tipo_id")->unsigned();
             $table->foreign('planilha_tipo_id')->references('id')->on('planilha_tipos');
-            $table->timestamps();
+            
+            $table->engine = 'InnoDB';
         });
     }
 
