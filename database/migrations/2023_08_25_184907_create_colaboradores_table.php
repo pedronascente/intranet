@@ -24,7 +24,7 @@ class CreateColaboradoresTable extends Migration
             $table->char('cnpj', 20)->nullable()->unique();
             $table->text('foto')->nullable();
             $table->char('ramal', 4);
-            $table->integer('numero_matricula');
+            $table->integer('numero_matricula')->unique();;
             $table->timestamps();
             $table->integer('base_id')->unsigned();
             $table->foreign('base_id')->references('id')->on('bases');

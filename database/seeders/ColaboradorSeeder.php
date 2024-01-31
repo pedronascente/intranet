@@ -10,19 +10,21 @@ class ColaboradorSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('colaboradores')->insert([
-            'base_id'          => 1,
-            'empresa_id'       => 1,
-            'cargo_id'         => 1,
-            'nome'             => Str::random(10),
-            'sobrenome'        => ' de tal ' . Str::random(3),
-            'email'            => 'nascente3d@gmail.com',
-            'rg'               => '777777777777777',
-            'cpf'              => '348.211.190/13',
-            'cnpj'             => '15.626.983/0001-43',
-            'foto'             => 'dummy-round.png',
-            'ramal'            => 521,
-            'numero_matricula' => 100001,
-        ]);
+        for($i=1; $i<=100; $i++){
+            DB::table('colaboradores')->insert([
+                'base_id'          => 1,
+                'empresa_id'       => 1,
+                'cargo_id'         => 1,
+                'nome'             => Str::random(10),
+                'sobrenome'        => ' de' . Str::random(3),
+                'email'            =>  Str::random(6).'d@gmail.com',
+                'rg'               => '777777777777'.$i,
+                'cpf'              => $i.'.211.190/13',
+                'cnpj'             => '15.' . $i . '.983/0001-43',
+                'foto'             => 'dummy-round.png',
+                'ramal'            => '5'.$i,
+                'numero_matricula' => '10000'.$i,
+            ]);
+        }
     }
 }

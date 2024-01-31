@@ -34,7 +34,7 @@
                                     <td>{{ $item->tipo_menu }}</td>
                                     <td>{{ $item->descricao }}</td>
                                     <td class="text-center">
-                                        <x-botao.btn-editar :rota="route('modulo.edit', $modulo->id)"/>
+                                        <x-botao.btn-editar :rota="route('modulo.edit', $item->id)"/>
                                         <x-botao.btn-excluir :rota="route('modulo.destroy', $item->id)" titulo="Excluir Modulo" />
                                     </td>
                                 </tr>

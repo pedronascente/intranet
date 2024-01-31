@@ -21,6 +21,8 @@ class ControlarAcessoDosModulos
             $usuario      = session()->get('usuarioAutenticado');
             $arrayModulos = $usuario->perfil->modulos;
 
+
+
             foreach ($arrayModulos as $modulo) {
                 if ($modulo->slug == $moduloRota) {
                     return $next($request);

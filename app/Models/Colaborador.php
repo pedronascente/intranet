@@ -117,7 +117,7 @@ class Colaborador extends Model
         $validar['ramal']            = 'required|integer|min:1|max:9999';
         $validar['sobrenome']        = 'required|min:5|max:191';
         $validar['rg']               = 'required|max:15';
-        $validar['numero_matricula'] = 'required|integer|min:1|max:9999999999';
+        $validar['numero_matricula'] = 'required|integer|min:1|max:9999999999|unique:colaboradores,numero_matricula';
         $validar['base_id']          = 'required';
         $validar['empresa_id']       = 'required';
         $validar['cargo_id']         = 'required';
