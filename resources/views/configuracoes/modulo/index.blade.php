@@ -19,8 +19,9 @@
                     <thead>
                         <tr>
                             <th>Módulo</th>
+                            <th>Categoria</th>
+                            <th>Posição do menu</th>
                             <th>slug</th>
-                            <th>Tipo Menu</th>
                             <th>Descrição</th>
                             <th width="5%" class="text-center">Permissões</th>
                         </tr>
@@ -30,8 +31,9 @@
                             @foreach ($collection as $item)
                                 <tr>
                                     <td>{{ $item->nome }}</td>
+                                    <td>{{ $item->categoria->nome }}</td>
+                                    <td>{{ $item->posicao->nome }}</td>
                                     <td>{{ $item->slug }}</td>
-                                    <td>{{ $item->tipo_menu }}</td>
                                     <td>{{ $item->descricao }}</td>
                                     <td class="text-center">
                                         <x-botao.btn-editar :rota="route('modulo.edit', $item->id)"/>

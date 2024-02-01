@@ -9,17 +9,16 @@ use App\Http\Controllers\Login\LoginController;
 use App\Http\Controllers\Login\TokenController;
 
 #Configuracoes
+use App\Http\Controllers\Planilha\ArquivoController;
 use App\Http\Controllers\Configuracoes\BaseController;
 use App\Http\Controllers\Configuracoes\CargoController;
 use App\Http\Controllers\Configuracoes\ModuloController;
 use App\Http\Controllers\Configuracoes\PerfilController;
 use App\Http\Controllers\Configuracoes\EmpresaController;
 use App\Http\Controllers\Configuracoes\PermissaoController;
-use App\Http\Controllers\Configuracoes\ColaboradorController;
 use App\Http\Controllers\Planilha\AdministrativoController;
-use App\Http\Controllers\Planilha\ArquivoController;
-use App\Http\Controllers\Planilha\ColaboradorController as PlanilhaColaboradorController;
-use App\Http\Controllers\Planilha\RelatorioController as PlanilhaRelatorioController;
+use App\Http\Controllers\Configuracoes\ColaboradorController;
+use App\Http\Controllers\Configuracoes\ConfiguracaoController;
 use App\Http\Controllers\Planilha\Tipo\EntregaDeAlarmeController;
 use App\Http\Controllers\Planilha\Tipo\PortariaVirtualController;
 use App\Http\Controllers\Planilha\Tipo\ReclamacaoDeClienteController;
@@ -30,6 +29,8 @@ use App\Http\Controllers\Planilha\Tipo\ComercialRastreamentoVeicularController;
 use App\Http\Controllers\Planilha\Tipo\SupervisaoComercialRastreamentoController;
 use App\Http\Controllers\Planilha\Tipo\TecnicaAlarmesCercaEletricaCFTVController;
 use App\Http\Controllers\Planilha\Tipo\ComercialAlarmeCercaEletricaCFTVController;
+use App\Http\Controllers\Planilha\RelatorioController as PlanilhaRelatorioController;
+use App\Http\Controllers\Planilha\ColaboradorController as PlanilhaColaboradorController;
 use App\Http\Controllers\Planilha\Tipo\SupervisaoComercialAlarmesCercaEletricaCFTVController;
 use App\Http\Controllers\Planilha\Tipo\SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController;
 
@@ -48,9 +49,7 @@ Route::middleware('auth')->prefix('/token')->group(function () {
 Route::middleware(['auth', 'verificarToken'])->group(function () {
     Route::redirect('/', '/dashboard', 301);
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
-    Route::get('/configuracoes', function () {
-        return view('configuracoes.index');
-    })->name('configuracoes');
+    Route::get('/configuracoes', [ConfiguracaoController::class, 'index'])->name('configuracoes.index');
 });
 
 Route::middleware(['auth', 'verificarToken'])->group(function () {

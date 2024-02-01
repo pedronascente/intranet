@@ -25,7 +25,7 @@ class TokenController extends Controller
         return view(
             'login.create_token',
             [
-                'mensagem'       => CaniveteHelp::formatarDataLogin(),
+                'mensagem' => CaniveteHelp::formatarDataLogin(),
             ]
         );
     }

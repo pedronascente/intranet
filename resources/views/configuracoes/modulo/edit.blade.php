@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('titulo', 'Módulo | Editar')
+@section('titulo', $titulo)
 
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
@@ -18,14 +18,35 @@
                 @csrf
                 @method('PUT')
                 <div class="card-body">
+                     <div class="form-group">
+                        <label>Categoria:</label>
+                        <select name="modulo_categoria_id" class="custom-select @error('modulo_categoria_id') is-invalid  @enderror">
+                            <option value="">...</option>
+                            @if($modulo_categorias)
+                                @foreach ( $modulo_categorias as $categoria)
+                                   <option value="{{ $categoria->id }}" @if( $categoria->id == $modulo->categoria->id) selected @endif >
+                                       {{ $categoria->nome }}  
+                                   </option>             
+                                @endforeach
+                            @endif
+                        </select>
+                        @error('modulo_categoria_id')
+                            <span class=" invalid-feedback">{{ $message }}</span>
+                        @enderror
+                    </div>
                     <div class="form-group">
                         <label>Posição do menu:</label>
-                        <select name="tipo_menu" class="custom-select  @error('tipo_menu') is-invalid  @enderror">
+                        <select name="modulo_posicao_id" class="custom-select  @error('modulo_posicao_id') is-invalid  @enderror">
                             <option value="">...</option>
-                            <option value="menu-lateral" @if($modulo->tipo_menu == 'menu-lateral') selected @endif >Lateral Esquerdo</option>
-                            <option value="menu-configuracao" @if($modulo->tipo_menu == 'menu-configuracao') selected @endif>Configurações</option>
+                            @if($modulo_posicoes)
+                                @foreach ( $modulo_posicoes as $posicao)
+                                   <option value="{{ $posicao->id }}" @if($posicao->id ==$modulo->posicao->id ) selected @endif>
+                                       {{ $posicao->nome }}  
+                                   </option>             
+                                @endforeach
+                            @endif
                         </select>
-                        @error('tipo_menu')
+                        @error('modulo_posicao_id')
                             <span class=" invalid-feedback">{{ $message }}</span>
                         @enderror
                     </div>

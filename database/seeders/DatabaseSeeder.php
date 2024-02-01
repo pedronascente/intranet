@@ -10,7 +10,7 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
         $this->call([
-            ModuloSeeder::class,
+           
             PermissaoSeeder::class,
             PerfilSeeder::class,
             BaseSeeder::class,
@@ -19,6 +19,9 @@ class DatabaseSeeder extends Seeder
             ColaboradorSeeder::class,
             UserSeeder::class,
             TokenSeeder::class,
+            ModuloPosicoesSeeder::class,
+            ModuloCategoriasSeeder::class,
+            ModuloSeeder::class,
             ModuloPerfilSeeder::class,
             PerfilPermissaoSeeder::class,
             MeioSeeder::class,

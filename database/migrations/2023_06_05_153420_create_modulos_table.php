@@ -13,9 +13,12 @@ class CreateModulosTable extends Migration
             $table->string('nome')->unique();
             $table->string('rota');
             $table->string('slug');
-            $table->string('tipo_menu');
             $table->string('descricao');
             $table->timestamps();
+            $table->unsignedInteger('modulo_posicao_id')->nullable();
+            $table->foreign('modulo_posicao_id')->references('id')->on('modulo_posicoes');
+            $table->unsignedInteger('modulo_categoria_id')->nullable();
+            $table->foreign('modulo_categoria_id')->references('id')->on('modulo_categorias');
             $table->engine = 'InnoDB';
         });
     }

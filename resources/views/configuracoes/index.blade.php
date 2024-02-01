@@ -12,31 +12,25 @@
 @endsection
 @section('content')
     <div class="card p-3">
-        <div class="card">
-            <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap table-striped">
-                    <thead>
-                        <tr>
-                            <th><i class="nav-icon fa fa-cog" aria-hidden="true"></i> Menu</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (session()->get('usuarioAutenticado')->perfil->modulos)
-                            @foreach (session()->get('usuarioAutenticado')->perfil->modulos as $modulo)
-                                @if ($modulo->tipo_menu=="menu-configuracao")
-                                    <tr>
-                                        <td>
-                                            <a href="{{ $modulo->rota }}">
-                                                {{ $modulo->nome }}
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @endif
-                            @endforeach
-                        @endif
-                    </tbody>
-                </table>
-            </div>
+        <div class="header">
+            <i class="nav-icon fa fa-cog" aria-hidden="true"></i> Menu de Configurações
+        </div>
+        <div class="card-body">
+            @if ($ModuloCategoria)
+                @foreach ($ModuloCategoria as $categoria)
+                    <ul>
+                        <li> {{  $categoria->nome}}
+                            <ul>
+                                @foreach ( $categoria->modulos as $modulo)
+                                    <li>
+                                        <a href="{{  $modulo->rota  }}">{{ $modulo->nome }}</a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </li>
+                    </ul>
+                @endforeach
+            @endif   
         </div>
     </div>
 @endsection
