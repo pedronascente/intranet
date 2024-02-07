@@ -33,7 +33,7 @@
                                     <td>{{ $item->cnpj }}</td>
                                     <td><img src="{{ asset('/img/empresa/' . $item->imglogo) }}" width="100"></td>
                                     <td class="text-center">
-                                        <x-botao.btn-editar :rota="route('empresa.edit', $empresa->id)"/>
+                                        <x-botao.btn-editar :rota="route('empresa.edit', $item->id)"/>
                                         <x-botao.btn-excluir :rota="route('empresa.destroy', $item->id)" titulo="Excluir Empresa" />
                                     </td>
                                 </tr>

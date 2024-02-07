@@ -1,48 +1,54 @@
 @extends('layouts.login')
 @section('content')
-    <div class="login-logo">
-        <img src="{{ asset('/dist/img/intraNet.png') }}" class=" mr-3 " style="width:200px" alt="intraNet.png">
+@php
+        /*
+        *  [ VARIAVEI DE TESTE ]
+        */
+        $deBugpToken = config('app.teste_token');
+@endphp
+<div class="login-logo">
+    <img src="{{ asset('/dist/img/intraNet.png') }}" class=" mr-3 " style="width:200px" alt="intraNet.png">
+</div>
+<div class="card">
+    <div class="card-body login-card-body">
+        <h1>{{ $mensagem }}!</h1>
+        <p>
+            para continuar insira seu <b>Token</b>
+        </p>
+        <form action="{{ route('token.store') }}" method="post">
+            @csrf
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" value=""  id="posicaoDoToken-hidden" disabled="true">
+                <input type="hidden" name="posicaoDoToken"    id="posicaoDoToken-value" value="">
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-address-card"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <input type="text" name="token" class="form-control" placeholder="Token" value="{{ $deBugpToken }}">
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-lock"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+                </div>
+                <div class="col-6">
+                    <div id="timer" style="font-size:25px"></div>
+                </div>
+            </div>
+        </form>
+        <p class="mt-3 mb-1">
+        </p>
     </div>
-    <div class="card">
-        <div class="card-body login-card-body">
-            <h1>{{ $mensagem }}!</h1>
-            <p>
-                para continuar insira seu <b>Token</b>
-            </p>
-            <form action="{{ route('token.store') }}" method="post">
-                @csrf
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" value=""  id="posicaoDoToken-hidden" disabled="true">
-                    <input type="hidden" name="posicaoDoToken"    id="posicaoDoToken-value" value="">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-address-card"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="input-group mb-3">
-                    <input type="text" name="token" class="form-control" placeholder="Token" value="">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-lock"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <button type="submit" class="btn btn-primary btn-block">Entrar</button>
-                    </div>
-                    <div class="col-6">
-                        <div id="timer" style="font-size:25px"></div>
-                    </div>
-                </div>
-            </form>
-            <p class="mt-3 mb-1">
-            </p>
-        </div>
-    </div>
+</div>
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
     function startTimer(duration, display) {
         var timer = duration;
@@ -51,13 +57,10 @@
         var intervalId = setInterval(function() {
             minutes = parseInt(timer / 60, 10);
             seconds = parseInt(timer % 60, 10);
-
             minutes = minutes < 10 ? "0" + minutes : minutes;
             seconds = seconds < 10 ? "0" + seconds : seconds;
-
             display.textContent = minutes + ':' + seconds;
             console.log(seconds);
-
             if (--timer < 0) {
                 timer = duration;
                 // Chama a função para fazer a requisição AJAX quando o contador zerar
@@ -93,6 +96,4 @@
     }
 
 </script>
-
-
 @endsection

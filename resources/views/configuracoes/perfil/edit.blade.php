@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('titulo', 'Perfil | Editar')
+@section('titulo', 'Editar Perfil')
 
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
@@ -10,88 +10,86 @@
         </li>
     </ol>
 @endsection
+
 @section('content')
     <div class="card p-3">
-        <form action="{{ route('perfil.update', $perfil->id) }}" method="POST">
+        <form action="{{ route('perfil.update',$perfil->id) }}" method="post">
             @csrf
             @method('PUT')
             <div class="card">
                 <div class="card-body">
                     <div class="form-group">
                         <label>Nome:</label>
-                        <input type="text" name="nome" class="form-control" value="{{ $perfil->nome }}">
+                        <input type="text" name="nome" class="form-control @error('nome') is-invalid  @enderror"
+                            placeholder="nome" value="{{ $perfil->nome }}">
+                        @error('nome')
+                            <span class=" invalid-feedback">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label>Descrição:</label>
-                        <input type="text" name="descricao" class="form-control" value="{{ $perfil->descricao }}">
+                        <input type="text" name="descricao" class="form-control @error('descricao') is-invalid  @enderror"
+                            placeholder="Breve descrição" value="{{ $perfil->descricao }}">
+                        @error('descricao')
+                            <span class=" invalid-feedback">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
             </div>
-            <div class="card">
+            <div class="card"> 
                 <div class="card-body table-responsive p-0">
-                    <table class="table table-hover  table-striped">
+                    <table class="table table-bordered table-hover dataTable dtr-inline">
                         <thead>
                             <tr>
-                                <th colspan="3"></th>
-                                <th width="5%" colspan="{{ count($permissoes) }}" class="text-center">
-                                    Permissões Gerais
+                                <th width="20%">Permissão</th>
+                                <th>
+                                    Modulo
+                                    @error('ArrayListModulos')
+                                    <span class=" invalid-feedback">{{ $message }}</span>
+                                    @enderror
                                 </th>
-                            </tr>
-                            <tr>
-                                <th>Permissões</th>
-                                <th>Modulo</th>
                                 <th>Descrição</th>
-                                @if ($permissoes)
-                                    @foreach ($permissoes as $permissao)
-                                        <th class="text-center">{{ $permissao->nome }}</th>
-                                    @endforeach
-                                @endif
+                                @foreach ($listarPermissoes as $permissao)
+                                    <th class="text-center">{{ $permissao->nome }}</th>
+                                @endforeach
                             </tr>
                         </thead>
                         <tbody>
-                            @if ($modulos)
-                                @foreach ($modulos as $k => $modulo)
-                                    <tr>
-                                        <td class="text-center">
-                                            <div class="custom-control custom-checkbox">
-                                                <input class="custom-control-input" type="checkbox"
-                                                    id="moduloCheckbox{{ $modulo->id }}" value="{{ $modulo->id }}"
-                                                    name="modulos[]" @if (in_array($modulo->id, $listArrayModulos)) checked @endif>
-                                                <label for="moduloCheckbox{{ $modulo->id }}"
-                                                    class="custom-control-label"></label>
-                                            </div>
-                                        </td>
-                                        <td>{{ $modulo->nome }}</td>
-                                        <td>{{ $modulo->descricao }}</td>
-                                        @if ($permissoes)
-                                            @foreach ($permissoes as $permissao)
+                            @if($listarCategoriasEseusModulos)
+                                @foreach ($listarCategoriasEseusModulos as $categoria)
+                                    @php $firstModule = true; @endphp <!-- Flag para controlar a primeira linha de módulo -->
+                                    @foreach ($categoria->modulos as $modulo)
+                                        <tr>
+                                            @if($firstModule)
+                                                <!-- Mescla a célula de Permissão apenas na primeira linha do módulo -->
+                                                <td rowspan="{{ count($categoria->modulos) }}">
+                                                    <b>{{ $categoria->nome }}</b>
+                                                </td>
+                                                @php $firstModule = false; @endphp
+                                            @endif
+                                            <td class="p-3">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input class="custom-control-input" type="checkbox" id="moduloCheckbox{{ $modulo->id }}" value="{{ $modulo->id }}" name="ArrayListModulos[]" {{ in_array($modulo->id, $listarModulosAssociados) ? 'checked' : '' }}>
+                                                    <label for="moduloCheckbox{{ $modulo->id }}" class="custom-control-label">
+                                                        {{ $modulo->nome }}
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td>{{ $modulo->descricao }}</td>
+                                            @foreach ($listarPermissoes as $permissao)
                                                 <td class="text-center">
                                                     <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox"
-                                                            name="permissoes[{{ $modulo->id }}][]permissao[]"
-                                                            class="custom-control-input"
-                                                            id="permissaoCheckbox{{ $modulo->id }}{{ $permissao->id }}"
-                                                            value="{{ $permissao->id }}"
-                                                            @if (array_key_exists($modulo->id, $listArraypermissoes)) 
-                                                                @foreach ($listArraypermissoes as $modusssslo => $ssss)
-                                                                    @if ($modusssslo == $modulo->id)
-                                                                        @foreach ($ssss as $item)
-                                                                            @if ($item->permissao_id == $permissao->id)
-                                                                                checked 
-                                                                            @endif
-                                                                        @endforeach
-                                                                    @endif
-                                                                @endforeach
-                                                            @endif
-                                                        >
-                                                        <label for="permissaoCheckbox{{ $modulo->id }}{{ $permissao->id }}"
-                                                            class="custom-control-label">
-                                                        </label>
+                                                        @php
+                                                            $moduloEncontrado = $perfil->modulos->find($modulo->id);
+                                                            $permissoesDoModulo = $moduloEncontrado ? $moduloEncontrado->permissoes->pluck('id')->toArray() : [];
+                                                        @endphp
+                                                        <input type="checkbox" name="ArrayListPermissoes[{{ $modulo->id }}][]" value="{{ $permissao->id }}" class="custom-control-input" id="permissaoCheckbox{{ $modulo->id }}{{ $permissao->id }}" {{ in_array($permissao->id, $permissoesDoModulo) ? 'checked' : '' }}>
+                                                        <label for="permissaoCheckbox{{ $modulo->id }}{{ $permissao->id }}" class="custom-control-label"></label>
                                                     </div>
                                                 </td>
                                             @endforeach
-                                        @endif
-                                    </tr>
+                                        </tr>
+                                    @endforeach
                                 @endforeach
                             @endif
                         </tbody>

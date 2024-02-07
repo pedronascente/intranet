@@ -37,7 +37,7 @@ class ModuloSeeder extends Seeder
             'rota'                => '/configuracoes/modulo',        
             'slug'                => 'modulo',                
             'descricao'           => "Responsável por Gerenciar Modulo.",
-            'modulo_categoria_id' => 3,
+            'modulo_categoria_id' => 4,
             'modulo_posicao_id'   => 2,  
         ]);
         DB::table('modulos')->insert([
@@ -45,7 +45,7 @@ class ModuloSeeder extends Seeder
             'rota'                => '/configuracoes/permissao',     
             'slug'                => 'permissao',             
             'descricao'           => "Responsável por Gerenciar Permissão.",
-            'modulo_categoria_id' => 3,
+            'modulo_categoria_id' => 4,
             'modulo_posicao_id'   => 2,  
         ]);
         DB::table('modulos')->insert([
@@ -53,7 +53,7 @@ class ModuloSeeder extends Seeder
             'rota'                => '/configuracoes/perfil',        
             'slug'                => 'perfil',                
             'descricao'           => "Responsável por Gerenciar Perfil de usuário.",
-            'modulo_categoria_id' => 3,
+            'modulo_categoria_id' => 4,
             'modulo_posicao_id'   => 2,  
         ]);
         DB::table('modulos')->insert([

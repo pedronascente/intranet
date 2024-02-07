@@ -6,7 +6,10 @@ use App\Models\Modulo;
 
 use App\Models\Perfil;
 use App\Models\Permissao;
+use App\Models\ModuloPerfil;
 use Illuminate\Http\Request;
+use App\Models\ModuloCategoria;
+use App\Models\ModuloPermissao;
 use App\Http\Controllers\Controller;
 
 class PerfilController extends Controller
@@ -21,94 +24,133 @@ class PerfilController extends Controller
     public function index()
     {
         return view('configuracoes.perfil.index', [
-            'collections' => $this->perfil->orderBy('id', 'desc')->paginate(10),
+            'listarPerfis' => $this->perfil->orderBy('id', 'desc')->paginate(10),
         ]);
     }
 
     public function create()
     {
+        $ModuloCategoria = ModuloCategoria::with('modulos')->get();
+        $Permissao       = Permissao::all();
         return view('configuracoes.perfil.create', [
-            'modulos'    => Modulo::all(), 
-            'permissoes' => Permissao::all()
+            'listarCategoriasEseusModulos' => $ModuloCategoria, 
+            'listarPermissoes'             => $Permissao
         ]);
     }
 
     public function store(Request $request)
     {
-        $request->validate($this->perfil->rules(), $this->perfil->feedback());
-        if ($this->perfil->validarDuplicidade($request->nome)) {
-            return redirect()
-                ->route('perfil.create')
-                ->with('warning', "Já existe um Perfil com este nome");
-        }
+        $this->validarRequisitos($request);
 
-        if (!$request->modulos) {
-            return redirect()
-                ->route('perfil.create')
-                ->with('error', "Selecione pelo menos um modulo, e uma permissão para continuar.");
-        }
-
-        $perfil            = $this->perfil;
-        $perfil->nome      = $request->nome;
-        $perfil->descricao = $request->descricao;
-        $perfil->save();
-
-        if ($request->modulos) {
-            foreach ($request->modulos as $m) {
-                $perfil->modulos()->attach($m);
+        // Criando o perfil
+        $perfil = $this->perfil->create([
+            'nome'       => $request->nome,
+            'descricao' => $request->descricao,
+        ]);
+        // Associando os módulos selecionados ao perfil
+        if ($request->ArrayListModulos) {
+            foreach ($request->ArrayListModulos as $moduloId) {
+                $modulo = Modulo::find($moduloId);
+                if ($modulo) {
+                    // Criando a relação entre o módulo e o perfil.
+                    ModuloPerfil::create([
+                        'perfil_id' => $perfil->id,
+                        'modulo_id' => $moduloId,
+                    ]);
+                    // Associando as permissões selecionadas à relação entre módulo e perfil
+                    if ($request->ArrayListPermissoes && isset($request->ArrayListPermissoes[$moduloId])) {
+                        $permissoes = Permissao::find($request->ArrayListPermissoes[$moduloId]);
+                        if ($permissoes) {
+                            foreach ($permissoes as $permissaoId) {
+                                // Criando a relação entre permissão e a relação entre módulo e perfil
+                                ModuloPermissao::create([
+                                    'perfil_id'    => $perfil->id,
+                                    'modulo_id'    => $moduloId,
+                                    'permissao_id' => $permissaoId->id,
+                                ]);
+                            }
+                        }
+                    }        
+                }
             }
         }
-        if ($request->permissoes) {
-            foreach ($request->permissoes as $modulo => $permissoes) {
-                $perfil->permissoes()->attach($permissoes, ['modulo_id' => $modulo]);
-            }
-        }
+
         return redirect()
-            ->route('perfil.index')
-            ->with('success', "Registrado com sucesso.");
+        ->route('perfil.index')
+        ->with('status', "Perfil registrado com sucesso.");
     }
 
+    /*
+        1- Listar todas os modulos
+        2- Listar todas as categorias e seus modulos relacionados
+        3- Listar todas as permissões
+        4- buscar os dados do perfil apartir pelo id, e listar seus modulos relacionados
+
+    */
     public function edit($id)
     {
-        $listArrayModulos     = [];
-        $modulos              =  Modulo::all();
-        $permissoes           = Permissao::all();
-        $perfil               = $this->perfil->with('modulos', 'permissoes')->findOrFail($id);
-        $listArraypermissoes  = $this->perfil->getPermissoes($id)->toArray();
-        foreach ($perfil->modulos as  $value) {
-            $listArrayModulos[] = $value->id;
-        }
+        // Obter o perfil com seus módulos associados e suas permissões específicas
+        $perfil = Perfil::with(['modulos.permissoes' => function ($query) use ($id) {
+            $query->whereHas('modulos_associados', function ($q) use ($id) {
+                $q->where('perfil_id', $id);
+            });
+        }])->findOrFail($id);
+
+        $listarModulosAssociados = $perfil->modulos->pluck('id')->toArray();
+        // Obter todas as categorias de módulos com seus módulos associados
+        $moduloCategorias = ModuloCategoria::with('modulos')->get();
+        $Permissao = Permissao::all();
+
+        // Retorna a view com os dados necessários
         return view('configuracoes.perfil.edit', [
-            'modulos'             => $modulos,
-            'permissoes'          => $permissoes,
-            'perfil'              => $perfil,
-            'listArrayModulos'    => $listArrayModulos,
-            'listArraypermissoes' =>  $listArraypermissoes,
+            'perfil'                       => $perfil,
+            'listarCategoriasEseusModulos' => $moduloCategorias,
+            'listarPermissoes'             => $Permissao,
+            'listarModulosAssociados'      => $listarModulosAssociados,
         ]);
     }
 
     public function update(Request $request, $id)
     {
-        $perfil            = $this->perfil->with('modulos', 'permissoes')->findOrFail($id);
-        $perfil->nome      = $request->nome;
-        $perfil->descricao = $request->descricao;
-        $perfil->update();
+        // Validar os dados da requisição
+        $request->validate([
+            'nome' => 'required|max:190',
+            'descricao' => 'required|max:255',
+            'ArrayListModulos' => 'array',
+            'ArrayListPermissoes' => 'array',
+        ]);
+
+        // Buscar o perfil pelo ID
+        $perfil = $this->perfil->findOrFail($id);
+
+        // Atualizar os dados do perfil
+        $perfil->update([
+            'nome' => $request->nome,
+            'descricao' => $request->descricao,
+        ]);
+
+        // Remover as associações existentes de módulos e permissões
         $perfil->modulos()->detach();
         $perfil->permissoes()->detach();
-        if ($request->modulos) {
-            foreach ($request->modulos as $m) {
-                $perfil->modulos()->attach($m);
+
+        // Associar os módulos selecionados ao perfil
+        if ($request->ArrayListModulos) {
+            $perfil->modulos()->attach($request->ArrayListModulos);
+        }
+
+        // Associar as permissões selecionadas aos módulos associados ao perfil
+        if ($request->ArrayListPermissoes) {
+            foreach ($request->ArrayListPermissoes as $moduloId => $permissoes) {
+                $perfil->permissoes()->attach($permissoes, ['modulo_id' => $moduloId]);
             }
         }
-        if ($request->permissoes) {
-            foreach ($request->permissoes as $modulo => $permissoes) {
-                $perfil->permissoes()->attach($permissoes, ['modulo_id' => $modulo]);
-            }
-        }
+
+        // Redirecionar de volta para a página de edição com uma mensagem de sucesso
         return redirect()
             ->route('perfil.edit', $id)
-            ->with('status',"Registro Atualizado!");
+            ->with('status', "Registro atualizado com sucesso!");
     }
+
 
     public function destroy($id)
     {
@@ -129,5 +171,20 @@ class PerfilController extends Controller
     {
         return redirect()
             ->route('perfil.index');
+    }
+
+    private function validarRequisitos($request){
+        $request->validate($this->perfil->rules(), $this->perfil->feedback());
+        
+        if ($this->perfil->validarPerfilDuplicado($request->nome)) {
+            return redirect()
+                ->back()
+                ->with('warning', "Já existe um Perfil com este nome");
+        }
+        if (!$request->ArrayListModulos) {
+            return redirect()
+                ->back()
+                ->with('error', "Selecione pelo menos um modulo, e uma permissão para continuar.");
+        }
     }
 }

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Help;
 
 class PermissaoHelp
 {
-
   public static function verificaPermissao($data)
   {
     $permissao = $data['permissao'];
@@ -27,7 +26,8 @@ class PermissaoHelp
       return false;
     }
   }
-
+}
+  /*
   public static function getPermissoes($modulo)
   {
     $p = null;
@@ -42,3 +42,4 @@ class PermissaoHelp
     return $p;
   }
 }
+  */

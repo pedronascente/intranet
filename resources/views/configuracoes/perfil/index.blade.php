@@ -25,8 +25,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if ($collections)
-                            @foreach ($collections as $item)
+                        @if ($listarPerfis) 
+                            @foreach ($listarPerfis as $item)
                                 <tr>
                                     <td>{{ $item->nome }}</td>
                                     <td>{{ $item->descricao }}</td>

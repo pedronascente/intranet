@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePerfilPermissaoTable extends Migration
+class CreateModuloPermissaoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreatePerfilPermissaoTable extends Migration
      */
     public function up()
     {
-        Schema::create('perfil_permissao', function (Blueprint $table) {
-            $table->integer('modulo_id')->unsigned();
+        Schema::create('modulo_permissao', function (Blueprint $table) {
             $table->integer('perfil_id')->unsigned();
-            $table->foreign('perfil_id')->references('id')->on('perfis')->onDelete('cascade');
+            $table->integer('modulo_id')->unsigned();
             $table->integer('permissao_id')->unsigned();
-            $table->foreign('permissao_id')->references('id')->on('permissoes')->onDelete('cascade');
             $table->timestamps();
+            $table->foreign('perfil_id')->references('id')->on('perfis')->onDelete('cascade');
+            $table->foreign('modulo_id')->references('id')->on('modulos')->onDelete('cascade');
+            $table->foreign('permissao_id')->references('id')->on('permissoes')->onDelete('cascade');
             $table->engine = 'InnoDB';
         });
     }
@@ -31,6 +32,6 @@ class CreatePerfilPermissaoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('perfil_permissao');
+        Schema::dropIfExists('modulo_permissao');
     }
 }

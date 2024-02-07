@@ -12,6 +12,6 @@ class ModuloCategoria extends Model
 
     public function modulos()
     {
-        return $this->hasMany(Modulo::class);
+        return $this->hasMany(Modulo::class, 'modulo_categoria_id','id');
     }
 }

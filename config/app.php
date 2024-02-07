@@ -234,4 +234,17 @@ return [
         'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | DADOS DE ACESSO DE TESTE
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    'teste_login'   => env('TESTE_LOGIN'),
+    'teste_pass'    => env('TESTE_PASS'),
+    'teste_posicao' => env('TESTE_POSICAO'),
+    'teste_token'   => env('TESTE_TOKEN'),
+
 ];

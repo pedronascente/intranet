@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Modulo extends Model
 {
     use HasFactory;
-
+    protected $table = "modulos";
+    
     public function perfis()
     {
         return $this->belongsToMany(Perfil::class);
@@ -21,6 +22,11 @@ class Modulo extends Model
     public function categoria()
     {
         return $this->belongsTo(ModuloCategoria::class,'modulo_categoria_id', 'id');
+    }
+
+    public function permissoes()
+    {
+        return $this->belongsToMany(Permissao::class);
     }
 
     public function rules()

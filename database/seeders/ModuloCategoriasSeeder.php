@@ -25,5 +25,10 @@ class ModuloCategoriasSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+        DB::table('modulo_categorias')->insert([
+            'nome' => 'Perfil',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 }

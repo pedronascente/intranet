@@ -15,8 +15,8 @@ class CreateModuloPerfilTable extends Migration
     {
         Schema::create('modulo_perfil', function (Blueprint $table) {
             $table->integer('perfil_id')->unsigned();
-            $table->foreign('perfil_id')->references('id')->on('perfis')->onDelete('cascade');
             $table->integer('modulo_id')->unsigned();
+            $table->foreign('perfil_id')->references('id')->on('perfis')->onDelete('cascade');
             $table->foreign('modulo_id')->references('id')->on('modulos')->onDelete('cascade');
             $table->timestamps();
             $table->engine = 'InnoDB';

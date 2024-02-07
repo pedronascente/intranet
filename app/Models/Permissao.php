@@ -15,11 +15,7 @@ class Permissao extends Model
 
     protected $table = 'permissoes';
 
-    public function perfis()
-    {
-        return $this->belongsToMany(Perfil::class);
-    }
-
+    
     public function rules()
     {
         return ['nome' => 'required|max:190',];
@@ -36,4 +32,11 @@ class Permissao extends Model
                     ->get()
                     ->count();
     }
+
+    public function modulos_associados()
+    {
+        return $this->belongsToMany(Modulo::class, 'modulo_permissao', 'permissao_id', 'modulo_id');
+    }
+
+
 }

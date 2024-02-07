@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('titulo', 'Perfil | Cadastrar')
+@section('titulo', 'Cadastrar Perfil')
 
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
@@ -35,59 +35,56 @@
                     </div>
                 </div>
             </div>
-            <div class="card">
+            <div class="card"> 
                 <div class="card-body table-responsive p-0">
-                    <table class="table table-hover  table-striped">
+                    <table class="table table-bordered table-hover dataTable dtr-inline">
                         <thead>
                             <tr>
-                                <th colspan="3"></th>
-                                <th width="5%" colspan="{{ count($permissoes) }}" class="text-center">
-                                    Permissões Gerais
+                                <th width="20%">Permissão</th>
+                                <th>
+                                    Modulo
+                                    @error('ArrayListModulos')
+                                    <span class=" invalid-feedback">{{ $message }}</span>
+                                    @enderror
                                 </th>
-                            </tr>
-                            <tr>
-                                <th width="5%" >Permissões</th>
-                                <th>Modulo</th>
                                 <th>Descrição</th>
-                                @if ($permissoes)
-                                    @foreach ($permissoes as $permissao)
-                                        <th class="text-center">{{ $permissao->nome }}</th>
-                                    @endforeach
-                                @endif
+                                @foreach ($listarPermissoes as $permissao)
+                                    <th class="text-center">{{ $permissao->nome }}</th>
+                                @endforeach
                             </tr>
                         </thead>
                         <tbody>
-                            @if ($modulos)
-                                @foreach ($modulos as $modulo)
-                                    <tr>
-                                        <td class="text-center">
-                                            <div class="custom-control custom-checkbox">
-                                                <input class="custom-control-input" type="checkbox"
-                                                    id="moduloCheckbox{{ $modulo->id }}" value="{{ $modulo->id }}"
-                                                    name="modulos[]">
-                                                <label for="moduloCheckbox{{ $modulo->id }}"
-                                                    class="custom-control-label"></label>
-                                            </div>
-                                        </td>
-                                        <td>{{ $modulo->nome }}</td>
-                                        <td>{{ $modulo->descricao }}</td>
-                                        @if ($permissoes)
-                                            @foreach ($permissoes as $permissao)
+                            @if($listarCategoriasEseusModulos)
+                                @foreach ($listarCategoriasEseusModulos as $categoria)
+                                    @php $firstModule = true; @endphp <!-- Flag para controlar a primeira linha de módulo -->
+                                    @foreach ($categoria->modulos as $modulo)
+                                        <tr>
+                                            @if($firstModule)
+                                                <!-- Mescla a célula de Permissão apenas na primeira linha do módulo -->
+                                                <td rowspan="{{ count($categoria->modulos) }}">
+                                                    <b>{{ $categoria->nome }}</b>
+                                                </td>
+                                                @php $firstModule = false; @endphp
+                                            @endif
+                                            <td class="p-3">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input class="custom-control-input" type="checkbox" id="moduloCheckbox{{ $modulo->id }}" value="{{ $modulo->id }}" name="ArrayListModulos[]">
+                                                    <label for="moduloCheckbox{{ $modulo->id }}" class="custom-control-label">
+                                                        {{ $modulo->nome }}
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td>{{ $modulo->descricao }}</td>
+                                            @foreach ($listarPermissoes as $permissao)
                                                 <td class="text-center">
                                                     <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox"
-                                                            name="permissoes[{{ $modulo->id }}][]permissao[]"
-                                                            value="{{ $permissao->id }}" class="custom-control-input"
-                                                            id="permissaoCheckbox{{ $modulo->id }}{{ $permissao->id }}">
-                                                        <label
-                                                            for="permissaoCheckbox{{ $modulo->id }}{{ $permissao->id }}"
-                                                            class="custom-control-label">
-                                                        </label>
+                                                        <input type="checkbox" name="ArrayListPermissoes[{{ $modulo->id }}][]ArrayListPermissoes[]" value="{{ $permissao->id }}" class="custom-control-input" id="permissaoCheckbox{{ $modulo->id }}{{ $permissao->id }}">
+                                                        <label for="permissaoCheckbox{{ $modulo->id }}{{ $permissao->id }}" class="custom-control-label"></label>
                                                     </div>
                                                 </td>
                                             @endforeach
-                                        @endif
-                                    </tr>
+                                        </tr>
+                                    @endforeach
                                 @endforeach
                             @endif
                         </tbody>
