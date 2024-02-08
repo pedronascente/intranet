@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('titulo', 'Cargo | Cadastrar')
+@section('titulo',$titulo)
 
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
             <a href="/configuracoes">Configurações</a> /
-            <a href="/configuracoes/cargo">cargos</a>
+            <a href="{{ route('cargo.index') }}">cargos</a>
         </li>
     </ol>
 @endsection

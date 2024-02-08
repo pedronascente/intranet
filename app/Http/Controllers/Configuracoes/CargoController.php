@@ -28,7 +28,8 @@ class CargoController extends Controller
 
     public function create()
     {
-        return view('configuracoes.cargo.create');
+        $titulo = "Cadastrar Cargo"; 
+        return view('configuracoes.cargo.create',['titulo'=>$titulo]);
     }
 
     public function store(Request $request)
@@ -45,8 +46,12 @@ class CargoController extends Controller
 
     public function edit($id)
     {
+        $titulo = "Editar Cargo";
+        $cargo  = $this->cargo->findOrFail($id);
+
         return view('configuracoes.cargo.edit', [
-            'cargo' => $this->cargo->findOrFail($id)
+            'titulo'=> $titulo, 
+            'cargo'=> $cargo,
         ]);
     }
 
@@ -87,5 +92,4 @@ class CargoController extends Controller
         return redirect()
             ->route('cargo.index');
     }
-
 }
