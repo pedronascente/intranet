@@ -29,7 +29,8 @@ class BaseController extends Controller
 
     public function create()
     {
-        return view('configuracoes.base.create');
+        $titulo = "Cadastrar Base";
+        return view('configuracoes.base.create',['titulo'=>$titulo]);
     }
 
     public function store(Request $request)
@@ -45,8 +46,11 @@ class BaseController extends Controller
 
     public function edit($id)
     {
+        $Base   = $this->base->findOrFail($id);
+        $titulo = 'Editar Base';
         return view('configuracoes.base.edit', [
-            'base' => $this->base->findOrFail($id)
+            'titulo' => $titulo,
+            'base'   => $Base 
         ]);
     }
 
