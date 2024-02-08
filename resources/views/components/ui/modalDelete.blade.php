@@ -8,14 +8,14 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p class=" text-center"> Confirma a exclusão do registro?</p>
+                <p class=" text-center"> Confirma a exclusão do registro ?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary  btn-sm" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-secondary  btn-sm" data-dismiss="modal">  <i class="fa fa-reply"></i> Cancelar</button>
                 <form id="deleteForm" action="" method="post">
                     @method('DELETE')
                     @csrf
-                    <button type="submit" class="btn btn-danger btn-sm">Deletar</button>
+                    <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Excluir</button>
                 </form>
             </div>
         </div>
