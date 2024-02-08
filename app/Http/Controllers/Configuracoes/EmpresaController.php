@@ -30,7 +30,7 @@ class EmpresaController extends Controller
     public function create()
     {
         $titulo = "Cadastrar Empresa";
-        return view('configuracoes.empresa.create',['titulo', $titulo]);
+        return view('configuracoes.empresa.create',['titulo'=> $titulo]);
     }
 
     public function store(Request $request)
