@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('titulo', 'Permissão | Editar')
+@section('titulo', $titulo)
 
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
            <a href="/configuracoes">Configurações</a> /
-           <a href="/configuracoes/permissao">permissão</a>
+           <a href="{{ route('permissao.index') }}">permissão</a>
         </li>
     </ol>
 @endsection
@@ -14,7 +14,7 @@
 @section('content')
     <div class="card p-3">
         <div class="card">
-            <form action="{{ route('permissao.update', $permissao->id) }}" method="POST" name="Formulario-permissao-edit">
+            <form action="{{ route('permissao.update', $permissao->id) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="card-body">

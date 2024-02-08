@@ -1,19 +1,19 @@
 @extends('layouts.app')
 
-@section('titulo', 'Permissão | Cadastrar')
+@section('titulo', $titulo)
 
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
            <a href="/configuracoes">Configurações</a> /
-           <a href="/configuracoes/permissao">permissão</a>
+           <a href="{{ route('permissao.index') }}">permissão</a>
         </li>
     </ol>
 @endsection
 @section('content')
     <div class="card p-3">
         <div class="card">
-            <form action="{{ route('permissao.store') }}" method="POST" name="Formulario-permissao-create">
+            <form action="{{ route('permissao.store') }}" method="POST">
                 @csrf
                 <div class="card-body">
                     <div class="row">

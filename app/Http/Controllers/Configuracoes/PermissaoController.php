@@ -29,7 +29,8 @@ class PermissaoController extends Controller
 
     public function create()
     {
-        return view('configuracoes.permissao.create');
+        $titulo = "Cadastrar Permissão";
+        return view('configuracoes.permissao.create',['titulo'=> $titulo]);
     }
 
     public function store(Request $request)
@@ -49,9 +50,12 @@ class PermissaoController extends Controller
     }
 
     public function edit($id)
-    {
+    {   
+        $titulo    = "Editar Permissão";
+        $Permissao = $this->permissao->findOrFail($id);
         return view('configuracoes.permissao.edit', [
-            'permissao' => $this->permissao->findOrFail($id)
+            'titulo'    => $titulo,
+            'permissao' => $Permissao
         ]);
     }
 
