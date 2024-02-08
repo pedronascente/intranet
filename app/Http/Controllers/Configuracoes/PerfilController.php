@@ -80,13 +80,6 @@ class PerfilController extends Controller
         ->with('status', "Perfil registrado com sucesso.");
     }
 
-    /*
-        1- Listar todas os modulos
-        2- Listar todas as categorias e seus modulos relacionados
-        3- Listar todas as permissões
-        4- buscar os dados do perfil apartir pelo id, e listar seus modulos relacionados
-
-    */
     public function edit($id)
     {
         // Obter o perfil com seus módulos associados e suas permissões específicas
@@ -116,8 +109,6 @@ class PerfilController extends Controller
         $request->validate([
             'nome' => 'required|max:190',
             'descricao' => 'required|max:255',
-            'ArrayListModulos' => 'array',
-            'ArrayListPermissoes' => 'array',
         ]);
 
         // Buscar o perfil pelo ID
@@ -128,20 +119,24 @@ class PerfilController extends Controller
             'nome' => $request->nome,
             'descricao' => $request->descricao,
         ]);
-
         // Remover as associações existentes de módulos e permissões
         $perfil->modulos()->detach();
         $perfil->permissoes()->detach();
 
         // Associar os módulos selecionados ao perfil
         if ($request->ArrayListModulos) {
+           
             $perfil->modulos()->attach($request->ArrayListModulos);
         }
 
         // Associar as permissões selecionadas aos módulos associados ao perfil
-        if ($request->ArrayListPermissoes) {
+        if ($request->ArrayListModulos && $request->ArrayListPermissoes) {
+           //    dd($request->ArrayListPermissoes);
             foreach ($request->ArrayListPermissoes as $moduloId => $permissoes) {
-                $perfil->permissoes()->attach($permissoes, ['modulo_id' => $moduloId]);
+                if(in_array($moduloId, $request->ArrayListModulos)){
+                    $perfil->permissoes()->attach($permissoes, ['modulo_id' => $moduloId]);
+                }
+                
             }
         }
 
