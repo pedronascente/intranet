@@ -19,53 +19,42 @@
                     @if (Auth::check())
                         {{ Auth::user()->name }}
                     @endif
-                </a>
+                </a> 
             </div>
         </div>
-       
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
-                @if (session()->get('usuarioAutenticado'))
-                    @foreach (session()->get('usuarioAutenticado')->perfil->modulos as $modulo)
-                        @if ($modulo->tipo_menu=="menu-lateral")
-                            @if ($modulo->slug =='administrar-comissao' || $modulo->slug == 'lancar-comissao' )
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="nav-icon fas fa-edit"></i>
-                                        <p>
-                                            Comisão <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="display: none;">
-                                        @foreach (session()->get('usuarioAutenticado')->perfil->modulos as $menu)
-                                            @if ($menu->slug =='administrar-comissao' || $menu->slug == 'lancar-comissao' )
-                                                <li class="nav-item">
-                                                    <a href="{{ $menu->rota }}" class="nav-link">
-                                                        <i class="far fa-circle nav-icon"></i>
-                                                        <p>
-                                                            {{ $menu->nome }}  
-                                                        </p>
-                                                    </a>
-                                                </li>
-                                            @endif
-                                        @endforeach
-                                    </ul>
-                                </li>
-                                @break;
-                            @else
-                                <li class="nav-item">
-                                        <a href="{{ $modulo->rota }}" class="nav-link">
-                                            <i class="nav-icon fas fa-edit"></i>
-                                            <p>
-                                                {{ $item->nome }}  
-                                            </p>
-                                        </a>
-                                    </li>
-                            @endif    
+                @php
+                    $modulosDoUsuarioAutenticadoId = session()->get('modulosDoUsuarioAutenticadoId');
+                    $categoriasDoUsuarioAutenticadoNome = session()->get('categoriasDoUsuarioAutenticadoNome');
+                @endphp
+                @if (session()->get('MenuBarraLateral'))
+                    @foreach (session()->get('MenuBarraLateral') as $categoria)
+                        @if(in_array($categoria->nome,$categoriasDoUsuarioAutenticadoNome))
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-edit"></i>
+                                    <p>{{  $categoria->nome }}<i class="fas fa-angle-left right"></i></p>
+                                </a>
+                                <ul class="nav nav-treeview" style="display: none;">
+                                    @foreach ( $categoria->modulos as $modulo)
+                                        @if (in_array($modulo->id, $modulosDoUsuarioAutenticadoId))
+                                            <li class="nav-item">
+                                                <a href="{{ $modulo->rota }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>
+                                                        {{ $modulo->nome  }}  
+                                                    </p>
+                                                </a>
+                                            </li>
+                                    @endif
+                                    @endforeach
+                                </ul>
+                            </li>
                         @endif
                     @endforeach
-                @endif
+                @endif   
             </ul>
         </nav>
     </div>

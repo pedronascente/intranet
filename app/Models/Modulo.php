@@ -19,6 +19,7 @@ class Modulo extends Model
     {
         return $this->belongsTo(ModuloPosicao::class, 'modulo_posicao_id', 'id');
     }
+    
     public function categoria()
     {
         return $this->belongsTo(ModuloCategoria::class,'modulo_categoria_id', 'id');

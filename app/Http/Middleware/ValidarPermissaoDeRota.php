@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class ControlarAcessoDosModulos
+class ValidarPermissaoDeRota
 {
     /**
      * Handle an incoming request.
@@ -16,22 +16,17 @@ class ControlarAcessoDosModulos
      */
     public function handle(Request $request, Closure $next, $modulo)
     {
-        if(session()->get('usuarioAutenticado')){
-            $moduloRota   = $modulo;
-            $usuario      = session()->get('usuarioAutenticado');
-            $arrayModulos = $usuario->perfil->modulos;
-
-
-
-            foreach ($arrayModulos as $modulo) {
-                if ($modulo->slug == $moduloRota) {
-                    return $next($request);
-                    break;
-                }
+        if(session()->get('modulosDoUsuarioAutenticadoSlug')){
+            $moduloDaRota                    = $modulo;
+            $modulosDoUsuarioAutenticadoSlug = session()->get('modulosDoUsuarioAutenticadoSlug');
+            
+            if (in_array($moduloDaRota, $modulosDoUsuarioAutenticadoSlug)) {
+                return $next($request);
             }
         }
+
         return redirect()
             ->route('dashboard.index')
-            ->with('warning', "Você não tem permissão para acessar este Módulo.");
+            ->with('error', "Você não tem permissão para acessar este Módulo.");
     }
 }

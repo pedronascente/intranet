@@ -8,10 +8,25 @@ use Illuminate\Database\Eloquent\Model;
 class ModuloCategoria extends Model
 {
     use HasFactory;
-    protected $table= 'modulo_categorias';
+    protected $table = 'modulo_categorias';
 
     public function modulos()
     {
-        return $this->hasMany(Modulo::class, 'modulo_categoria_id','id');
+        return $this->hasMany(Modulo::class);
+    }
+
+    public static function getCategoriasEseusModulos($id){
+      
+        $ModuloCategoria = ModuloCategoria::has('modulos')
+        ->whereHas('modulos', function ($query) use ($id) {
+            $query->where('modulo_posicao_id', $id);
+        })
+        ->with(['modulos' => function ($query) use ($id) {
+            $query->where('modulo_posicao_id', $id);
+        }])
+        ->get();
+        return $ModuloCategoria; 
     }
 }
+
+

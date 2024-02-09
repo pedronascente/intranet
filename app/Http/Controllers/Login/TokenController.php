@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Login;
 //use App\Models\Cartao;
 use App\Models\User;
 use App\Models\Token;
+use App\Models\Modulo;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Help\CaniveteHelp;
@@ -17,17 +18,14 @@ class TokenController extends Controller
     public function __construct(Token $token, User $user)
     {
         $this->token = $token;
-        $this->user = $user;
+        $this->user  = $user;
     }
 
     public function create()
     {
-        return view(
-            'login.create_token',
-            [
-                'mensagem' => CaniveteHelp::formatarDataLogin(),
-            ]
-        );
+        return view('login.create_token',[
+            'mensagem' => CaniveteHelp::formatarDataLogin(),
+        ]);
     }
 
     public function store(Request $request)
@@ -41,14 +39,24 @@ class TokenController extends Controller
             return redirect()
                 ->route("token.create")
                 ->with('error', "Digite um token válido!");
-        }
+        } 
     }
 
     private function getAcessoUsuario($request)
     {
-        $usuarioLogado = $request->user();
-        $usuario       = $this->user->with('Perfil')->findOrFail($usuarioLogado->id);
-        $request->session()->put('usuarioAutenticado', $usuario);
+        $usuarioAutenticado              = $request->user();
+        $perfilDoUsuarioAutenticado      = $this->user->with('Perfil.modulos')->findOrFail($usuarioAutenticado->id);
+        $modulosDoUsuarioAutenticadoId   = $perfilDoUsuarioAutenticado->perfil->modulos->pluck('id')->toArray();
+        $modulosDoUsuarioAutenticadoSlug = $perfilDoUsuarioAutenticado->perfil->modulos->pluck('slug')->toArray();
+        //Extrair categorias:
+        foreach ($modulosDoUsuarioAutenticadoId as $modulo_id) {
+            $Modulo = Modulo::with('categoria')->find($modulo_id);
+            $categoriasDoUsuarioAutenticadoNome[] = $Modulo->categoria->nome;
+        }
+
+        $request->session()->put('categoriasDoUsuarioAutenticadoNome', $categoriasDoUsuarioAutenticadoNome);
+        $request->session()->put('modulosDoUsuarioAutenticadoId', $modulosDoUsuarioAutenticadoId);
+        $request->session()->put('modulosDoUsuarioAutenticadoSlug', $modulosDoUsuarioAutenticadoSlug);
     }
 
     public function getPosicaoToken(Request $request)
@@ -57,5 +65,4 @@ class TokenController extends Controller
         $posicaoToken = rand(1, $usuario->qtdToken);
         return response()->json(['posicao' => $posicaoToken]);
     }
-
 }

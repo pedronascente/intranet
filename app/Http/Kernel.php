@@ -66,7 +66,9 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'verificarToken' => \App\Http\Middleware\ControlarAcessoDasRotas::class,
-        'verificarModulos' => \App\Http\Middleware\ControlarAcessoDosModulos::class,
+        'validarToken' => \App\Http\Middleware\ValidarToken::class,
+        'validarPermissaoDeRota' => \App\Http\Middleware\ValidarPermissaoDeRota::class,
+        'gerarMenuDaBarraLateral' => \App\Http\Middleware\GerarMenuDaBarraLateral::class,
     ];
 }
+ 

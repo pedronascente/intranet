@@ -46,25 +46,25 @@ Route::middleware('auth')->prefix('/token')->group(function () {
     Route::get('/get-posicao-token', [TokenController::class, 'getPosicaoToken']);
 });
 
-Route::middleware(['auth', 'verificarToken'])->group(function () {
+Route::middleware(['auth','validarToken', 'gerarMenuDaBarraLateral'])->group(function () {
     Route::redirect('/', '/dashboard', 301);
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
-    Route::get('/configuracoes', [ConfiguracaoController::class, 'index'])->name('configuracoes.index');
+    Route::get('/configuracoes', [ConfiguracaoController::class, 'index'])->middleware(['validarPermissaoDeRota:configuracoes'])->name('configuracoes.index');
 });
 
-Route::middleware(['auth', 'verificarToken'])->group(function () {
+Route::middleware(['auth', 'validarToken'])->group(function () {
     Route::prefix('/configuracoes')->group(function () {
-        Route::middleware(['verificarModulos:perfil'])->group(function () {
+        Route::middleware(['validarPermissaoDeRota:perfil'])->group(function () {
             Route::resource('/perfil', PerfilController::class);
             Route::get('perfil/desativar/{id}', [PerfilController::class, 'desativar'])->name('perfil.desativar');
         });
-        Route::resource('/colaborador', ColaboradorController::class)->middleware(['verificarModulos:colaborador']);
-        Route::resource('/empresa', EmpresaController::class)->middleware(['verificarModulos:empresa']);
-        Route::resource('/permissao', PermissaoController::class)->middleware(['verificarModulos:permissao']);
-        Route::resource('/modulo', ModuloController::class)->middleware(['verificarModulos:modulo']);
-        Route::resource('/usuario', UserController::class)->middleware(['verificarModulos:usuario']);
-        Route::resource('/base', BaseController::class)->middleware(['verificarModulos:base']);
-        Route::resource('/cargo', CargoController::class)->middleware(['verificarModulos:cargo']);
+        Route::resource('/colaborador', ColaboradorController::class)->middleware(['validarPermissaoDeRota:colaborador']);
+        Route::resource('/empresa', EmpresaController::class)->middleware(['validarPermissaoDeRota:empresa']);
+        Route::resource('/permissao', PermissaoController::class)->middleware(['validarPermissaoDeRota:permissao']);
+        Route::resource('/modulo', ModuloController::class)->middleware(['validarPermissaoDeRota:modulo']);
+        Route::resource('/usuario', UserController::class)->middleware(['validarPermissaoDeRota:usuario']);
+        Route::resource('/base', BaseController::class)->middleware(['validarPermissaoDeRota:base']);
+        Route::resource('/cargo', CargoController::class)->middleware(['validarPermissaoDeRota:cargo']);
     });
 });
 
@@ -76,19 +76,17 @@ Route::prefix('/meu-perfil')->group(function () {
 
 Route::get('/senha/{email}/{token}', [UserController::class, 'senhaCreate'])->name('senha');
 Route::get('/senha', [UserController::class, 'senhaSucesso'])->name('user.senhaSucesso');
-
 Route::prefix('/recuperar')->group(function () {
     Route::get('/', [UserController::class, 'recuperarSenhaCreate'])->name('user.recuperarSenhaCreate');
     Route::post('/', [UserController::class, 'recuperarSenhaStore']);
     Route::get('/sucesso', [UserController::class, 'recuperarSenhaSucesso']);
 });
 
-Route::middleware(['verificarModulos:lancar-comissao'])->group(function () {
+Route::middleware(['validarPermissaoDeRota:lancar-comissao'])->group(function () {
     Route::prefix('/comissao')->group(function () {
         Route::get('/', function () {
             return redirect()->route('planilha.index');
         });
-
         //planililha:
         Route::resource('/planilha', PlanilhaColaboradorController::class);
         Route::get('/planilha{planilha}/homologar', [PlanilhaColaboradorController::class, 'homologar'])->name('planilha.homologar');
@@ -112,7 +110,7 @@ Route::middleware(['verificarModulos:lancar-comissao'])->group(function () {
     });
 });
 
-Route::middleware(['verificarModulos:administrar-comissao'])->group(function () {
+Route::middleware(['validarPermissaoDeRota:administrar-comissao'])->group(function () {
     Route::prefix('/comissao-administrativo')->group(function () {
         Route::get('/', function () {
             return redirect()->route('comissao.administrativo.index');
