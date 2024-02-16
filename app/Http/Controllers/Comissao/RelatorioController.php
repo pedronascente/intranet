@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Comissao;
 
 use Illuminate\Http\Request;
-use App\Models\Planilha\Planilha;
+use App\Models\Comissao\Planilha;
 use App\Http\Controllers\Controller;
-use App\Models\planilha\PlanilhaStatus;
+use App\Models\Comissao\PlanilhaStatus;
 use App\Http\Controllers\Help\CaniveteHelp;
 class RelatorioController extends Controller
 {

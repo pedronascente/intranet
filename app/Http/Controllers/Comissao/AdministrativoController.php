@@ -3,23 +3,23 @@
 namespace App\Http\Controllers\Comissao;
 
 use Illuminate\Http\Request;
-use App\Models\Planilha\Planilha;
-use App\Models\Planilha\Tipo\Meio;
+use App\Models\Comissao\Planilha;
+use App\Models\Comissao\Tipo\Meio;
 use App\Http\Controllers\Controller;
-use App\Models\planilha\PlanilhaStatus;
-use App\Models\Planilha\PlanilhaPeriodo;
-use App\Models\Planilha\Tipo\PlanilhaTipo;
-use App\Models\Planilha\Tipo\ServicoAlarme;
-use App\Models\Planilha\Tipo\PortariaVirtual;
-use App\Models\Planilha\Tipo\EntregaDeAlarmes;
-use App\Models\Planilha\Tipo\ReclamacaoDeCliente;
-use App\Models\Planilha\Tipo\TecnicaDeRastreamento;
-use App\Models\Planilha\Tipo\ComercialRastreamentoVeicular;
-use App\Models\Planilha\Tipo\SupervisaoComercialRastreamento;
-use App\Models\Planilha\Tipo\TecnicaAlarmesCercaEletricaCFTV;
-use App\Models\Planilha\Tipo\ComercialAlarmeCercaEletricaCFTV;
-use App\Models\Planilha\Tipo\SupervisaoComercialAlarmesCercaEletricaCFTV;
-use App\Models\Planilha\Tipo\SupervisaoTecnicaESacAlarmesCercaEletricaCFTV;
+use App\Models\Comissao\PlanilhaStatus;
+use App\Models\Comissao\PlanilhaPeriodo;
+use App\Models\Comissao\Tipo\PlanilhaTipo;
+use App\Models\Comissao\Tipo\ServicoAlarme;
+use App\Models\Comissao\Tipo\PortariaVirtual;
+use App\Models\Comissao\Tipo\EntregaDeAlarmes;
+use App\Models\Comissao\Tipo\ReclamacaoDeCliente;
+use App\Models\Comissao\Tipo\TecnicaDeRastreamento;
+use App\Models\Comissao\Tipo\ComercialRastreamentoVeicular;
+use App\Models\Comissao\Tipo\SupervisaoComercialRastreamento;
+use App\Models\Comissao\Tipo\TecnicaAlarmesCercaEletricaCFTV;
+use App\Models\Comissao\Tipo\ComercialAlarmeCercaEletricaCFTV;
+use App\Models\Comissao\Tipo\SupervisaoComercialAlarmesCercaEletricaCFTV;
+use App\Models\Comissao\Tipo\SupervisaoTecnicaESacAlarmesCercaEletricaCFTV;
 
 class AdministrativoController extends Controller
 {
@@ -104,7 +104,7 @@ class AdministrativoController extends Controller
     private function getComissaoModel($tipo_planilha)
     {
         $tipo_planilha = ucfirst($tipo_planilha);
-        $comissaoModel = 'App\Models\Planilha\Tipo\\' . $tipo_planilha;
+        $comissaoModel = 'App\Models\Comissao\Tipo\\' . $tipo_planilha;
         return new $comissaoModel;
     }
 

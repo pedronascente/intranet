@@ -1,37 +1,42 @@
 <?php
 
-namespace App\Models\Planilha\Tipo;
+namespace App\Models\Comissao\Tipo;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\Help\CaniveteHelp;
 use App\contracts\ValidacaoComissaoDuplicadaInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-class EntregaDeAlarmes extends Model implements ValidacaoComissaoDuplicadaInterface
+
+class TecnicaDeRastreamento extends Model implements ValidacaoComissaoDuplicadaInterface 
 {
     use HasFactory;
 
-    protected $table = "entrega_alarmes";
+    protected $table = "tecnica_de_rastreamentos";
 
     protected $fillable   = [
         'cliente',
         'data',
         'conta_pedido',
+        'placa',
         'comissao',
-        'desconto_comissao'
+        'desconto_comissao',
+        'observacao',
+        'planilha_id'
     ];
 
     public function planilha()
     {
-        return $this->belongsTo(\App\Models\Planilha\Planilha::class);
+        return $this->belongsTo(\App\Models\Comissao\Planilha::class);
     }
 
     public function rules()
     {
         return [
-            'cliente' => 'required|min:2|max:200',
-            'data' => 'required|date_format:d/m/Y', // Validar o formato da data
+            'cliente'      => 'required|min:2|max:200',
+            'data'         => 'required|date_format:d/m/Y', // Validar o formato da data
             'conta_pedido' => 'required|max:50',
-            'comissao' => [
+            'placa'        => 'required|max:10',
+            'comissao'     => [
                 'required',
                 'numeric',
                 'regex:/^\d+(\.\d{1,2})?$/',
@@ -60,9 +65,9 @@ class EntregaDeAlarmes extends Model implements ValidacaoComissaoDuplicadaInterf
     public function feedback()
     {
         return [
-            'required' => 'Campo obrigatório.',
+            'required'                           => 'Campo obrigatório.',
             'comissao.regex:/^\d+(\.\d{1,2})?$/' => 'Deve ser um número decimal com até 2 casas decimais',
-            'date_format' => 'O campo data deve estar no formato válido dia/mes/ano'
+            'date_format'                        => 'O campo data deve estar no formato válido dia/mes/ano'
         ];
     }
 
@@ -72,8 +77,10 @@ class EntregaDeAlarmes extends Model implements ValidacaoComissaoDuplicadaInterf
         $planilha_id       = $request->planilha_id;
         $cliente           = $request->cliente;
         $conta_pedido      = $request->conta_pedido;
+        $placa             = $request->placa;
         $comissao          = $request->comissao;
         $desconto_comissao = $request->desconto_comissao;
+        $observacao        = $request->observacao;
 
         $query = $this->where('data', '=', $data);
 
@@ -83,8 +90,10 @@ class EntregaDeAlarmes extends Model implements ValidacaoComissaoDuplicadaInterf
 
         $query->where('cliente',         '=', $cliente)
             ->where('conta_pedido',      '=', $conta_pedido)
+            ->where('placa',             '=', $placa)
             ->where('comissao',          '=', $comissao)
-            ->where('desconto_comissao', '=', $desconto_comissao);
+            ->where('desconto_comissao', '=', $desconto_comissao)
+            ->where('observacao',        '=', $observacao);
         return $query->count();
     }
 }

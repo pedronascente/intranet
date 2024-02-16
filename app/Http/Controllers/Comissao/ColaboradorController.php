@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Comissao;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use App\Models\Colaborador;
-use App\Models\Planilha\Planilha;
-use App\Models\Planilha\Tipo\PlanilhaTipo;
-use App\Models\Planilha\PlanilhaStatus;
-use App\Models\Planilha\PlanilhaPeriodo;
+use App\Models\Comissao\Planilha;
+use App\Models\Comissao\Tipo\PlanilhaTipo;
+use App\Models\Comissao\PlanilhaStatus;
+use App\Models\Comissao\PlanilhaPeriodo;
 
 class ColaboradorController extends Controller
 {

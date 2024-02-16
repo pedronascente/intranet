@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Planilha\Tipo;
+namespace App\Models\Comissao\Tipo;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\Help\CaniveteHelp;
@@ -21,7 +21,7 @@ class ReclamacaoDeCliente extends Model implements ValidacaoComissaoDuplicadaInt
 
     public function planilha()
     {
-        return $this->belongsTo(\App\Models\Planilha\Planilha::class);
+        return $this->belongsTo(\App\Models\Comissao\Planilha::class);
     }
 
     public function rules()

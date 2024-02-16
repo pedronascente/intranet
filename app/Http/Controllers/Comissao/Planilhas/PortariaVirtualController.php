@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Comissao\Planilhas;
 
 use Illuminate\Http\Request;
-use App\Models\Planilha\Planilha;
-use App\Models\Planilha\Tipo\Meio;
+use App\Models\Comissao\Planilha;
+use App\Models\Comissao\Tipo\Meio;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Help\CaniveteHelp;
-use App\Models\Planilha\Tipo\PortariaVirtual;
+use App\Models\Comissao\Tipo\PortariaVirtual;
 class PortariaVirtualController extends Controller
 {
     private $titulo;

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Comissao\Planilhas;
 
 use Illuminate\Http\Request;
-use App\Models\Planilha\Planilha;
+use App\Models\Comissao\Planilha;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Help\CaniveteHelp;
-use App\Models\Planilha\Tipo\ReclamacaoDeCliente;
+use App\Models\Comissao\Tipo\ReclamacaoDeCliente;
 class ReclamacaoDeClienteController extends Controller
 {
     private $titulo;

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Comissao;
 
 use Illuminate\Http\Request;
-use App\Models\Planilha\Planilha;
+use App\Models\Comissao\Planilha;
 use App\Http\Controllers\Controller;
 
 class ArquivoController extends Controller

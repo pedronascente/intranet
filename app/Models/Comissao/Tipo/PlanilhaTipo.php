@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Planilha\Tipo;
+namespace App\Models\Comissao\Tipo;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +15,6 @@ class PlanilhaTipo extends Model
 
     public function planilha()
     {
-        return $this->hasOne(App\Models\Planilha\Planilha::class);
+        return $this->hasOne(App\Models\Comissao\Planilha::class);
     }
 }

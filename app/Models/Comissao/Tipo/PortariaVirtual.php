@@ -1,49 +1,67 @@
 <?php
 
-namespace App\Models\Planilha\Tipo;
+namespace App\Models\Comissao\Tipo;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\Help\CaniveteHelp;
 use App\contracts\ValidacaoComissaoDuplicadaInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class SupervisaoTecnicaESacAlarmesCercaEletricaCFTV extends Model implements ValidacaoComissaoDuplicadaInterface 
+class PortariaVirtual extends Model implements ValidacaoComissaoDuplicadaInterface
 {
     use HasFactory;
 
-    protected $table = 'supervisao_tecnica_e_sac_alarmes_cerca_eletrica_cftvs';
+    protected $table = "portaria_virtuais";
 
     protected $fillable = [
-        'cliente',
-        'data',
-        'conta_pedido',
-        'equipe_servico',
-        'ins_vendas',
-        'mensal',
-        'comissao',
-        'desconto_comissao',
-        'planilha_id'
+        "planilha_id",
+        "cliente",
+        "data",
+        "ins_vendas",
+        "mensal",
+        "conta_pedido",
+        "comissao",
+        "desconto_comissao",
+        "meio_id",
     ];
 
     public function planilha()
     {
-        return $this->belongsTo(\App\Models\Planilha\Planilha::class);
+        return $this->belongsTo(\App\Models\Comissao\Planilha::class);
+    }
+
+    public function meio()
+    {
+        return $this->belongsTo(Meio::class);
     }
 
     public function rules()
     {
-        return [
-            'cliente' => 'required|min:2|max:200',
-            'data' => 'required|date_format:d/m/Y',
+        return  [
+            'cliente'      => 'required|min:2|max:200',
+            'data'         => 'required|date_format:d/m/Y', // Validar o formato da data
             'conta_pedido' => 'required|max:50',
-            'equipe_servico' => 'required|max:200',
-            'servico_id' => 'exists:servico_alarmes,id',
+            'meio_id'      => 'exists:meios,id',
+            'comissao'     => [
+                'required',
+                'numeric',
+                'regex:/^\d+(\.\d{1,2})?$/',
+                function ($attribute, $value, $fail) {
+                    if (
+                        $value < 0 || $value > 9999999.99
+                    ) {
+                        $fail("O campo $attribute deve estar entre 0 e 9999999.99");
+                    }
+                },
+            ],
             'ins_vendas' => [
                 'required',
                 'numeric',
                 'regex:/^\d+(\.\d{1,2})?$/',
                 function ($attribute, $value, $fail) {
-                    if ($value < 0 || $value > 9999999.99) {
+                    if (
+                        $value < 0 || $value > 9999999.99
+                    ) {
                         $fail("O campo $attribute deve estar entre 0 e 9999999.99");
                     }
                 },
@@ -53,17 +71,9 @@ class SupervisaoTecnicaESacAlarmesCercaEletricaCFTV extends Model implements Val
                 'numeric',
                 'regex:/^\d+(\.\d{1,2})?$/',
                 function ($attribute, $value, $fail) {
-                    if ($value < 0 || $value > 9999999.99) {
-                        $fail("O campo $attribute deve estar entre 0 e 9999999.99");
-                    }
-                },
-            ],
-            'comissao' => [
-                'required',
-                'numeric',
-                'regex:/^\d+(\.\d{1,2})?$/',
-                function ($attribute, $value, $fail) {
-                    if ($value < 0 || $value > 9999999.99) {
+                    if (
+                        $value < 0 || $value > 9999999.99
+                    ) {
                         $fail("O campo $attribute deve estar entre 0 e 9999999.99");
                     }
                 },
@@ -72,7 +82,9 @@ class SupervisaoTecnicaESacAlarmesCercaEletricaCFTV extends Model implements Val
                 'numeric',
                 'regex:/^\d+(\.\d{1,2})?$/',
                 function ($attribute, $value, $fail) {
-                    if ($value < 0 || $value > 9999999.99) {
+                    if (
+                        $value < 0 || $value > 9999999.99
+                    ) {
                         $fail("O campo $attribute deve estar entre 0 e 9999999.99");
                     }
                 },
@@ -83,22 +95,22 @@ class SupervisaoTecnicaESacAlarmesCercaEletricaCFTV extends Model implements Val
     public function feedback()
     {
         return [
-            'servico_id.exists' => 'O Serviço informado não existe.',
-            'required' => 'Campo obrigatório.',
+            'meio_id.exists'                     => 'O meio informado não existe.',
+            'required'                           => 'Campo obrigatório.',
             'comissao.regex:/^\d+(\.\d{1,2})?$/' => 'Deve ser um número decimal com até 2 casas decimais',
-            'date_format' => 'O campo data deve estar no formato válido d/m/Y',
+            'date_format'                        => 'O campo data deve estar no formato válido dia/mes/ano'
         ];
     }
-
+    
     public function validarComissaoDuplicada($request)
     {
         $data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
         $planilha_id       = $request->planilha_id;
         $cliente           = $request->cliente;
-        $conta_pedido      = $request->conta_pedido;
-        $equipe_servico    = $request->equipe_servico;
+        $meio_id           = $request->meio_id;
         $ins_vendas        = $request->ins_vendas;
         $mensal            = $request->mensal;
+        $conta_pedido      = $request->conta_pedido;
         $comissao          = $request->comissao;
         $desconto_comissao = $request->desconto_comissao;
 
@@ -109,10 +121,10 @@ class SupervisaoTecnicaESacAlarmesCercaEletricaCFTV extends Model implements Val
         }
 
         $query->where('cliente',         '=', $cliente)
-            ->where('conta_pedido',      '=', $conta_pedido)
-            ->where('equipe_servico',    '=', $equipe_servico)
+            ->where('meio_id',           '=', $meio_id)
             ->where('ins_vendas',        '=', $ins_vendas)
             ->where('mensal',            '=', $mensal)
+            ->where('conta_pedido',      '=', $conta_pedido)
             ->where('comissao',          '=', $comissao)
             ->where('desconto_comissao', '=', $desconto_comissao);
         return $query->count();

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Comissao\Planilhas;
 
 use App\Http\Controllers\Controller;
-use App\Models\Planilha\Planilha;
-use App\Models\Planilha\Tipo\Meio;
-use App\Models\Planilha\Tipo\ServicoAlarme;
+use App\Models\Comissao\Planilha;
+use App\Models\Comissao\Tipo\Meio;
+use App\Models\Comissao\Tipo\ServicoAlarme;
 
 class PlanilhaTipoColaboradorController extends Controller
 {
@@ -36,7 +36,7 @@ class PlanilhaTipoColaboradorController extends Controller
     $tipo_planilha = ucfirst($tipo_planilha);
 
     // Formar o nome completo da classe
-    $comissaoModel = 'App\Models\Planilha\Tipo\\' . $tipo_planilha;
+    $comissaoModel = 'App\Models\Comissao\Tipo\\' . $tipo_planilha;
 
     return new $comissaoModel;
   }
@@ -45,7 +45,7 @@ class PlanilhaTipoColaboradorController extends Controller
    * Retorna a vista com os dados de comissão para o tipo de planilha especificado.
    *
    * @param string $tipo_planilha
-   * @param \App\Models\Planilha\Planilha $planilha
+   * @param \App\Models\Comissao\Planilha $planilha
    * @param \Illuminate\Database\Eloquent\Model $comissaoModel
    * @return \Illuminate\View\View
    */

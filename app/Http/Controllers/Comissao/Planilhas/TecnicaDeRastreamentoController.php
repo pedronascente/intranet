@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Comissao\Planilhas;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Planilha\Planilha;
-use App\Models\Planilha\Tipo\TecnicaDeRastreamento;
+use App\Models\Comissao\Planilha;
+use App\Models\Comissao\Tipo\TecnicaDeRastreamento;
 use App\Http\Controllers\Help\CaniveteHelp;
 class TecnicaDeRastreamentoController extends Controller
 {

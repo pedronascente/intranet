@@ -84,7 +84,7 @@ class Colaborador extends Model
      */
     public function planilhas()
     {
-        return $this->hasMany(\App\Models\planilha\Planilha::class);
+        return $this->hasMany(\App\Models\Comissao\Planilha::class);
     }
 
     /**

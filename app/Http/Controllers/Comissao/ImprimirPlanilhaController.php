@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Comissao;
 
 use PDF;
-use App\Models\Planilha\Planilha;
+use App\Models\Comissao\Planilha;
 use App\Http\Controllers\Controller;
 
 class ImprimirPlanilhaController extends Controller
@@ -59,7 +59,7 @@ class ImprimirPlanilhaController extends Controller
      * Obtém uma instância da planilha com seus relacionamentos.
      *
      * @param  int  $id  Identificador da planilha.
-     * @return \App\Models\Planilha\Planilha
+     * @return \App\Models\Comissao\Planilha
      */
     private function getPlanilhaWithRelationships($id)
     {
@@ -79,7 +79,7 @@ class ImprimirPlanilhaController extends Controller
         $tipo_planilha = ucfirst($tipo_planilha);
 
         // Monta o nome da classe da model de comissão com base no tipo de planilha
-        $comissaoModel = 'App\Models\Planilha\Tipo\\' . $tipo_planilha;
+        $comissaoModel = 'App\Models\Comissao\Tipo\\' . $tipo_planilha;
 
         // Retorna uma nova instância da model de comissão
         return new $comissaoModel;

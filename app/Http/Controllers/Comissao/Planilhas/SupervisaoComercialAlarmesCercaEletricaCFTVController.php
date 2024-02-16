@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Comissao\Planilhas;
 
 use Illuminate\Http\Request;
-use App\Models\Planilha\Planilha;
+use App\Models\Comissao\Planilha;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Help\CaniveteHelp;
-use App\Models\Planilha\Tipo\ServicoAlarme;
-use App\Models\Planilha\Tipo\SupervisaoComercialAlarmesCercaEletricaCFTV;
+use App\Models\Comissao\Tipo\ServicoAlarme;
+use App\Models\Comissao\Tipo\SupervisaoComercialAlarmesCercaEletricaCFTV;
 class SupervisaoComercialAlarmesCercaEletricaCFTVController extends Controller
 {
     private $titulo;
