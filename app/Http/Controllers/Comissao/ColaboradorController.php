@@ -6,10 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use App\Models\Colaborador;
 use App\Models\Comissao\Planilha;
-use App\Models\Comissao\Tipo\PlanilhaTipo;
+use App\Models\Comissao\Planilhas\PlanilhaTipo;
 use App\Models\Comissao\PlanilhaStatus;
 use App\Models\Comissao\PlanilhaPeriodo;
-
 class ColaboradorController extends Controller
 {
     private $titulo;
@@ -35,7 +34,7 @@ class ColaboradorController extends Controller
             ->orderBy('id', 'desc')
             ->paginate($this->paginate);
 
-        return view('planilha.colaborador.index', [
+        return view('comissao.colaborador.index', [
             'titulo'      => "Lançar Comisssão",
             'collections' => $collection
         ]);
@@ -56,7 +55,7 @@ class ColaboradorController extends Controller
             $id          = $request->input('id') ? $request->input('id') : $request->user()->colaborador_id;
             $colaborador = Colaborador::find($id);
 
-            return view('planilha.colaborador.create',[
+            return view('comissao.colaborador.create',[
                     'titulo'      => $titulo,
                     'periodos'    => $periodos,
                     'tipos'       => $tipos,
@@ -114,7 +113,7 @@ class ColaboradorController extends Controller
     public function edit($id)
     {
         return view(
-            'planilha.colaborador.edit',
+            'comissao.colaborador.edit',
             [
                 'titulo'   => "Editar " . $this->titulo,
                 'periodos' => PlanilhaPeriodo::orderBy('nome', 'asc')->get(),

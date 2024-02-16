@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Comissao\Planilha;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Help\CaniveteHelp;
-use App\Models\Comissao\Tipo\EntregaDeAlarmes;
+use App\Models\Comissao\Planilhas\EntregaDeAlarmes;
 
 class EntregaDeAlarmeController extends Controller
 {
@@ -15,7 +15,7 @@ class EntregaDeAlarmeController extends Controller
 
     public function __construct(EntregaDeAlarmes  $entregaDeAlarme)
     {
-        $this->titulo          = "Entregas de Alarmes";
+        $this->titulo = "Entregas de Alarmes";
         $this->entregaDeAlarme = $entregaDeAlarme;
     }
 
@@ -39,14 +39,8 @@ class EntregaDeAlarmeController extends Controller
                 ->back()
                 ->with('warning', "Atenção : Duplicar comissão não é permitido!");
         }
-        $objetoModel                    = $this->entregaDeAlarme;
-        $objetoModel->cliente           = $request->cliente;
-        $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);;
-        $objetoModel->conta_pedido      = $request->conta_pedido;
-        $objetoModel->comissao          = $request->comissao;
-        $objetoModel->desconto_comissao = $request->desconto_comissao;
-        $objetoModel->planilha()->associate(Planilha::findOrFail($request->planilha_id));
-        $objetoModel->save();
+        $objetoModel = $this->entregaDeAlarme;
+        $this->preencherAtributosDoObjeto($request, $objetoModel);
         return redirect()
             ->back()
             ->with('status', 'Registrado com sucesso!');
@@ -54,7 +48,7 @@ class EntregaDeAlarmeController extends Controller
 
     public function edit($id)
     {
-        return view('planilha.tipo.entregaDeAlarmes.colaborador.edit', [
+        return view('comissao.planilhas.entregaDeAlarmes.colaborador.edit', [
             'comissao' => $this->entregaDeAlarme->findOrFail($id),
             'titulo'   => $this->titulo
         ]);
@@ -68,13 +62,8 @@ class EntregaDeAlarmeController extends Controller
                 ->back()
                 ->with('warning', "Atenção : Duplicar comissão não é permitido!");
         }
-        $objetoModel                    = $this->entregaDeAlarme->findOrFail($id);
-        $objetoModel->cliente           = $request->cliente;
-        $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);;
-        $objetoModel->conta_pedido      = $request->conta_pedido;
-        $objetoModel->comissao          = $request->comissao;
-        $objetoModel->desconto_comissao = $request->desconto_comissao;
-        $objetoModel->save();
+        $objetoModel = $this->entregaDeAlarme->findOrFail($id);
+        $this->preencherAtributosDoObjeto($request, $objetoModel);
         return redirect()
             ->back()
             ->with('status', 'Registro atualizado com sucesso.');
@@ -87,5 +76,19 @@ class EntregaDeAlarmeController extends Controller
         return redirect()
             ->back()
             ->with('status', "Registro excluido com sucesso!");
+    }
+
+    private function preencherAtributosDoObjeto(Request $request, $objetoModel){
+        $objetoModel->cliente           = $request->cliente;
+        $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);;
+        $objetoModel->conta_pedido      = $request->conta_pedido;
+        $objetoModel->comissao          = $request->comissao;
+        $objetoModel->desconto_comissao = $request->desconto_comissao;
+       
+        if($request->planilha_id){
+            $objetoModel->planilha()->associate(Planilha::findOrFail($request->planilha_id));
+        }
+
+        $objetoModel->save();
     }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Comissao\Planilhas;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Comissao\Planilha;
-use App\Models\Comissao\Tipo\TecnicaDeRastreamento;
+use App\Models\Comissao\Planilhas\TecnicaDeRastreamento;
 use App\Http\Controllers\Help\CaniveteHelp;
 class TecnicaDeRastreamentoController extends Controller
 {
@@ -54,7 +54,7 @@ class TecnicaDeRastreamentoController extends Controller
     public function edit($id)
     {
         $comissao = $this->tecnicaDeRastreamento->findOrFail($id);
-        return view('planilha.tipo.tecnicaDeRastreamento.colaborador.edit', [
+        return view('comissao.planilhas.tecnicaDeRastreamento.colaborador.edit', [
             'comissao' => $comissao,
             'titulo'   => $this->titulo
         ]);
@@ -62,7 +62,6 @@ class TecnicaDeRastreamentoController extends Controller
 
     public function update(Request $request, $id)
     {
-
         $request->validate($this->tecnicaDeRastreamento->rules(), $this->tecnicaDeRastreamento->feedback());
         if ($this->tecnicaDeRastreamento->validarComissaoDuplicada($request) >= 1) {
             return redirect()
@@ -78,9 +77,6 @@ class TecnicaDeRastreamentoController extends Controller
         $objetoModel->desconto_comissao = $request->desconto_comissao;
         $objetoModel->observacao        = $request->observacao;
         $objetoModel->save();
-
-
-
         return redirect()
             ->back()
             ->with('status', 'Registro atualizado com sucesso.');

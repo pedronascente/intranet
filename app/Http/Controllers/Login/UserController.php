@@ -171,10 +171,10 @@ class UserController extends Controller
             //enviar email :
             $this->composeEmail($colaborador, 'recuperar_senha');
             return redirect()
-                ->route('user.senhaSucesso');
+                ->route('usuario.senhaSucesso');
         }
         return redirect()
-            ->route('user.recuperarSenhaCreate')
+            ->route('usuario.recuperarSenhaCreate')
             ->with('error', "Este email não está registrado!");
     }
 

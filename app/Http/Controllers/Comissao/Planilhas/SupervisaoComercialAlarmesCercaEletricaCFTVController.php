@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Comissao\Planilha;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Help\CaniveteHelp;
-use App\Models\Comissao\Tipo\ServicoAlarme;
-use App\Models\Comissao\Tipo\SupervisaoComercialAlarmesCercaEletricaCFTV;
+use App\Models\Comissao\Planilhas\ServicoAlarme;
+use App\Models\Comissao\Planilhas\SupervisaoComercialAlarmesCercaEletricaCFTV;
 class SupervisaoComercialAlarmesCercaEletricaCFTVController extends Controller
 {
     private $titulo;
@@ -60,7 +60,7 @@ class SupervisaoComercialAlarmesCercaEletricaCFTVController extends Controller
     {
         $comissao       = $this->scace_cftv->findOrFail($id);
         $servico_alarme = ServicoAlarme::all();
-        return view('planilha.tipo.supervisaoComercialAlarmesCercaEletricaCFTV.colaborador.edit', [
+        return view('comissao.planilhas.supervisaoComercialAlarmesCercaEletricaCFTV.colaborador.edit', [
             'titulo'         => $this->titulo,
             'comissao'       => $comissao,
             'servico_alarme' => $servico_alarme,

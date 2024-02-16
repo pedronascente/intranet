@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Comissao\Planilha;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Help\CaniveteHelp;
-use App\Models\Comissao\Tipo\SupervisaoTecnicaESacAlarmesCercaEletricaCFTV;
+use App\Models\Comissao\Planilhas\SupervisaoTecnicaESacAlarmesCercaEletricaCFTV;
 class SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController extends Controller
 {
     private $titulo;
@@ -57,7 +57,7 @@ class SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController extends Controller
     public function edit($id)
     {
         $comissao = $this->stsace_cftv->findOrFail($id);
-        return view('planilha.tipo.supervisaoTecnicaESacAlarmesCercaEletricaCFTV.colaborador.edit', [
+        return view('comissao.planilhas.supervisaoTecnicaESacAlarmesCercaEletricaCFTV.colaborador.edit', [
             'titulo'   => $this->titulo,
             'comissao' => $comissao,
         ]);

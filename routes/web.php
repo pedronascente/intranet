@@ -70,15 +70,15 @@ Route::middleware(['auth', 'validarToken'])->group(function () {
 });
 
 Route::prefix('/meu-perfil')->group(function () {
-    Route::get('/', [UserController::class, 'meuPerfil'])->name('user.meuPerfil');
-    Route::put('/resetar-senha/{id}', [UserController::class, 'resetarSenha'])->name('user.resetarSenha');
-    Route::get('/{id}/edit', [ColaboradorController::class, 'editarMeuPerfil'])->name('user.editarMeuPerfil');
+    Route::get('/', [UserController::class, 'meuPerfil'])->name('usuario.meuPerfil');
+    Route::put('/resetar-senha/{id}', [UserController::class, 'resetarSenha'])->name('usuario.resetarSenha');
+    Route::get('/{id}/edit', [ColaboradorController::class, 'editarMeuPerfil'])->name('usuario.editarMeuPerfil');
 });
 
 Route::get('/senha/{email}/{token}', [UserController::class, 'senhaCreate'])->name('senha');
-Route::get('/senha', [UserController::class, 'senhaSucesso'])->name('user.senhaSucesso');
+Route::get('/senha', [UserController::class, 'senhaSucesso'])->name('usuario.senhaSucesso');
 Route::prefix('/recuperar')->group(function () {
-    Route::get('/', [UserController::class, 'recuperarSenhaCreate'])->name('user.recuperarSenhaCreate');
+    Route::get('/', [UserController::class, 'recuperarSenhaCreate'])->name('usuario.recuperarSenhaCreate');
     Route::post('/', [UserController::class, 'recuperarSenhaStore']);
     Route::get('/sucesso', [UserController::class, 'recuperarSenhaSucesso']);
 });

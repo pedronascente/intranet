@@ -116,8 +116,10 @@ class Colaborador extends Model
         $validar['nome']             = 'required|min:2|max:191';
         $validar['ramal']            = 'required|integer|min:1|max:9999';
         $validar['sobrenome']        = 'required|min:5|max:191';
+        if ($request->_method != "PUT") {
+            $validar['numero_matricula'] = 'required|integer|min:1|max:9999999999|unique:colaboradores,numero_matricula';
+        }     
         $validar['rg']               = 'required|max:15';
-        $validar['numero_matricula'] = 'required|integer|min:1|max:9999999999|unique:colaboradores,numero_matricula';
         $validar['base_id']          = 'required';
         $validar['empresa_id']       = 'required';
         $validar['cargo_id']         = 'required';
@@ -141,6 +143,4 @@ class Colaborador extends Model
             'required' => 'Campo obrigatório.',
         ];
     }
-
-
 }

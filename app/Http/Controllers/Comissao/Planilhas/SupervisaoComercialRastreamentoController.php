@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Comissao\Planilha;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Help\CaniveteHelp;
-use App\Models\Comissao\Tipo\SupervisaoComercialRastreamento;
+use App\Models\Comissao\Planilhas\SupervisaoComercialRastreamento;
 class SupervisaoComercialRastreamentoController extends Controller
 {
     private $titulo;
@@ -55,7 +55,7 @@ class SupervisaoComercialRastreamentoController extends Controller
     public function edit($id)
     {
         $comissao = $this->supervisaoComercialRastreamento->findOrFail($id);
-        return view('planilha.tipo.supervisaoComercialRastreamento.colaborador.edit', [
+        return view('comissao.planilhas.supervisaoComercialRastreamento.colaborador.edit', [
             'titulo'   => $this->titulo,
             'comissao' => $comissao,
         ]);

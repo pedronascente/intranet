@@ -71,7 +71,7 @@ class PlanilhaTipoAdministrativoController extends Controller
     $tipo_planilha = ucfirst($tipo_planilha);
 
     // Monta o nome da classe da model de comissão com base no tipo de planilha
-    $comissaoModel = 'App\Models\Comissao\Tipo\\' . $tipo_planilha;
+    $comissaoModel = 'App\Models\Comissao\Planilhas\\' . $tipo_planilha;
 
     // Retorna uma nova instância da model de comissão
     return new $comissaoModel;
@@ -91,7 +91,7 @@ class PlanilhaTipoAdministrativoController extends Controller
     $valorTotalComissao = $comissaoModel::where('planilha_id', $planilha->id)->sum('comissao');
 
     // Retorna a visão com dados de comissão e informações adicionais
-    return view('planilha.tipo.' . $tipo_planilha . '.administrativo.index', [
+    return view('comissao.planilhas.' . $tipo_planilha . '.administrativo.index', [
       'planilha'           => $planilha, // Dados da planilha
       'listaComissao'      => $comissaoModel::where('planilha_id', $planilha->id)->orderBy('id', 'desc')->paginate(10), // Lista de comissões paginada
       'valorTotalComissao' => number_format($valorTotalComissao, 2, ',', '.'), // Valor total da comissão formatado
@@ -239,7 +239,7 @@ class PlanilhaTipoAdministrativoController extends Controller
     // Finaliza a consulta e obtém os resultados agrupados por planilha_id
     $listaComissao = $query->orderBy('id', 'desc')->paginate(10);
 
-    return view('planilha.tipo.' . $tipo_planilha . '.administrativo.index', [
+    return view('comissao.planilhas.' . $tipo_planilha . '.administrativo.index', [
       'planilha'           => $planilha,
       'listaComissao'      => $listaComissao,
       'valorTotalComissao' => number_format($listaComissao->sum('comissao'), 2, ',', '.'),

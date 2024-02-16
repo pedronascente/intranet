@@ -4,7 +4,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Meu Perfil | Editar </h1>
+                    <h1 class="m-0">Editar Meu Perfil  </h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -17,8 +17,7 @@
         </div>
     </section>
     <div class="card">
-        <form action="{{ route('colaborador.update', $colaborador->id) }}" method="POST" enctype="multipart/form-data"
-            name="Formulario-update">
+        <form action="{{ route('colaborador.update', $colaborador->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="card-body">
@@ -26,8 +25,11 @@
                     <div class="col-md-2">
                         <div class="form-group">
                             <label>Ramal:</label>
-                            <input type="text" name="ramal" maxlength="4" class="form-control " placeholder="Ramal"
-                                value="{{ $colaborador->ramal }}">
+                            <input type="text" name="ramal" maxlength="4" class="form-control @error('ramal') is-invalid  @enderror" placeholder="Ramal"
+                                value="{{ $colaborador->ramal}}">
+                                @error('ramal')
+                                    <span class=" invalid-feedback">{{ $message }}</span>
+                                @enderror
                         </div>
                     </div>
                 </div>
@@ -168,10 +170,8 @@
             </div>
             <div class="card-footer">
                 <input type="hidden" name="editProfile" value="1">
-                <button type="submit" class="btn bg-gradient-primary">
-                    <i class="fas fa-save" aria-hidden="true"></i>
-                    Editar
-                </button>
+                <input type="hidden" name="numero_matricula" maxlength="10" value="{{ $colaborador->numero_matricula }}">  
+                <x-botao.btn-salvar />
             </div>
         </form>
     </div>

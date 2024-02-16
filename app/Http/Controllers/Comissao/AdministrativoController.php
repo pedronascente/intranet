@@ -4,22 +4,22 @@ namespace App\Http\Controllers\Comissao;
 
 use Illuminate\Http\Request;
 use App\Models\Comissao\Planilha;
-use App\Models\Comissao\Tipo\Meio;
+use App\Models\Comissao\Planilhas\Meio;
 use App\Http\Controllers\Controller;
 use App\Models\Comissao\PlanilhaStatus;
 use App\Models\Comissao\PlanilhaPeriodo;
-use App\Models\Comissao\Tipo\PlanilhaTipo;
-use App\Models\Comissao\Tipo\ServicoAlarme;
-use App\Models\Comissao\Tipo\PortariaVirtual;
-use App\Models\Comissao\Tipo\EntregaDeAlarmes;
-use App\Models\Comissao\Tipo\ReclamacaoDeCliente;
-use App\Models\Comissao\Tipo\TecnicaDeRastreamento;
-use App\Models\Comissao\Tipo\ComercialRastreamentoVeicular;
-use App\Models\Comissao\Tipo\SupervisaoComercialRastreamento;
-use App\Models\Comissao\Tipo\TecnicaAlarmesCercaEletricaCFTV;
-use App\Models\Comissao\Tipo\ComercialAlarmeCercaEletricaCFTV;
-use App\Models\Comissao\Tipo\SupervisaoComercialAlarmesCercaEletricaCFTV;
-use App\Models\Comissao\Tipo\SupervisaoTecnicaESacAlarmesCercaEletricaCFTV;
+use App\Models\Comissao\Planilhas\PlanilhaTipo;
+use App\Models\Comissao\Planilhas\ServicoAlarme;
+use App\Models\Comissao\Planilhas\PortariaVirtual;
+use App\Models\Comissao\Planilhas\EntregaDeAlarmes;
+use App\Models\Comissao\Planilhas\ReclamacaoDeCliente;
+use App\Models\Comissao\Planilhas\TecnicaDeRastreamento;
+use App\Models\Comissao\Planilhas\ComercialRastreamentoVeicular;
+use App\Models\Comissao\Planilhas\SupervisaoComercialRastreamento;
+use App\Models\Comissao\Planilhas\TecnicaAlarmesCercaEletricaCFTV;
+use App\Models\Comissao\Planilhas\ComercialAlarmeCercaEletricaCFTV;
+use App\Models\Comissao\Planilhas\SupervisaoComercialAlarmesCercaEletricaCFTV;
+use App\Models\Comissao\Planilhas\SupervisaoTecnicaESacAlarmesCercaEletricaCFTV;
 
 class AdministrativoController extends Controller
 {
@@ -43,7 +43,7 @@ class AdministrativoController extends Controller
                 ->orderBy('id', 'desc') 
                 ->paginate(10); 
         }
-        return view('planilha.administrativo.conferir', [
+        return view('comissao.administrativo.conferir', [
             'titulo'      => "Conferir " . $this->titulo, 
             'collections' => $collections, 
         ]);
@@ -54,7 +54,7 @@ class AdministrativoController extends Controller
         $planilha = $this->planilha->with('colaborador', 'periodo', 'tipo')
                          ->findOrFail($id);
        
-        return view('planilha.administrativo.edit', [
+        return view('comissao.administrativo.edit', [
             'titulo'   => "Editar " . $this->titulo, 
             'planilha' => $planilha, 
             'periodos' => PlanilhaPeriodo::orderBy('nome', 'asc')->get(), 
@@ -74,7 +74,7 @@ class AdministrativoController extends Controller
 
     public function editReprovar($id)
     {
-        return view('planilha.administrativo.edit-reprovar', [
+        return view('comissao.administrativo.edit-reprovar', [
             'titulo'   =>  "Reprovar  " . $this->titulo , 
             'planilha' => $this->planilha->findOrFail($id), 
         ]);
@@ -104,7 +104,7 @@ class AdministrativoController extends Controller
     private function getComissaoModel($tipo_planilha)
     {
         $tipo_planilha = ucfirst($tipo_planilha);
-        $comissaoModel = 'App\Models\Comissao\Tipo\\' . $tipo_planilha;
+        $comissaoModel = 'App\Models\Comissao\Planilhas\\' . $tipo_planilha;
         return new $comissaoModel;
     }
 
@@ -127,43 +127,43 @@ class AdministrativoController extends Controller
         if($planilha->tipo->formulario == 'comercialAlarmeCercaEletricaCFTV'){
             $titulo   = $planilha->tipo->nome;
             $comissao = ComercialAlarmeCercaEletricaCFTV::findOrFail($id);
-            $pageView = 'planilha.tipo.comercialAlarmeCercaEletricaCFTV.administrativo.edit';
+            $pageView = 'comissao.planilhas.comercialAlarmeCercaEletricaCFTV.administrativo.edit';
         }else if($planilha->tipo->formulario == 'comercialRastreamentoVeicular'){
             $titulo   = $planilha->tipo->nome;
             $comissao = ComercialRastreamentoVeicular::findOrFail($id);
-            $pageView = 'planilha.tipo.comercialRastreamentoVeicular.administrativo.edit';
+            $pageView = 'comissao.planilhas.comercialRastreamentoVeicular.administrativo.edit';
         }else if($planilha->tipo->formulario == 'entregaDeAlarmes'){
             $titulo   = $planilha->tipo->nome;
             $comissao = EntregaDeAlarmes::findOrFail($id);
-            $pageView = 'planilha.tipo.entregaDeAlarmes.administrativo.edit';
+            $pageView = 'comissao.planilhas.entregaDeAlarmes.administrativo.edit';
         }else if($planilha->tipo->formulario == 'portariaVirtual'){
             $titulo   = $planilha->tipo->nome;
             $comissao = PortariaVirtual::findOrFail($id);
-            $pageView = 'planilha.tipo.portariaVirtual.administrativo.edit';
+            $pageView = 'comissao.planilhas.portariaVirtual.administrativo.edit';
         }else if($planilha->tipo->formulario == 'reclamacaoDeCliente'){
             $titulo   = $planilha->tipo->nome;
             $comissao = ReclamacaoDeCliente::findOrFail($id);
-            $pageView = 'planilha.tipo.reclamacaoDeCliente.administrativo.edit';
+            $pageView = 'comissao.planilhas.reclamacaoDeCliente.administrativo.edit';
         }else if($planilha->tipo->formulario == 'supervisaoComercialAlarmesCercaEletricaCFTV'){
             $titulo   = $planilha->tipo->nome;
             $comissao = SupervisaoComercialAlarmesCercaEletricaCFTV::findOrFail($id);
-            $pageView = 'planilha.tipo.supervisaoComercialAlarmesCercaEletricaCFTV.administrativo.edit';
+            $pageView = 'comissao.planilhas.supervisaoComercialAlarmesCercaEletricaCFTV.administrativo.edit';
         }else if($planilha->tipo->formulario == 'supervisaoComercialRastreamento'){
             $titulo   = $planilha->tipo->nome;
             $comissao = SupervisaoComercialRastreamento::findOrFail($id);
-            $pageView = 'planilha.tipo.supervisaoComercialRastreamento.administrativo.edit';
+            $pageView = 'comissao.planilhas.supervisaoComercialRastreamento.administrativo.edit';
         }else if($planilha->tipo->formulario == 'supervisaoTecnicaESACAlarmesCercaEletricaCFTV'){
             $titulo   = $planilha->tipo->nome;
             $comissao = SupervisaoTecnicaESacAlarmesCercaEletricaCFTV::findOrFail($id);
-            $pageView = 'planilha.tipo.supervisaoTecnicaESACAlarmesCercaEletricaCFTV.administrativo.edit';
+            $pageView = 'comissao.planilhas.supervisaoTecnicaESACAlarmesCercaEletricaCFTV.administrativo.edit';
         }else if($planilha->tipo->formulario == 'tecnicaAlarmesCercaEletricaCFTV'){
             $titulo   = $planilha->tipo->nome;
             $comissao = TecnicaAlarmesCercaEletricaCFTV::findOrFail($id);
-            $pageView = 'planilha.tipo.tecnicaAlarmesCercaEletricaCFTV.administrativo.edit';
+            $pageView = 'comissao.planilhas.tecnicaAlarmesCercaEletricaCFTV.administrativo.edit';
         }else if($planilha->tipo->formulario == 'tecnicaDeRastreamento'){
             $titulo   = $planilha->tipo->nome;
             $comissao = TecnicaDeRastreamento::findOrFail($id);
-            $pageView = 'planilha.tipo.tecnicaDeRastreamento.administrativo.edit';
+            $pageView = 'comissao.planilhas.tecnicaDeRastreamento.administrativo.edit';
         }
        
         return view($pageView, [

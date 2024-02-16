@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Comissao\Planilha;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Help\CaniveteHelp;
-use App\Models\Comissao\Tipo\ServicoAlarme;
-use App\Models\Comissao\Tipo\TecnicaAlarmesCercaEletricaCFTV;
+use App\Models\Comissao\Planilhas\ServicoAlarme;
+use App\Models\Comissao\Planilhas\TecnicaAlarmesCercaEletricaCFTV;
 
 class TecnicaAlarmesCercaEletricaCFTVController extends Controller
 {
@@ -40,7 +40,6 @@ class TecnicaAlarmesCercaEletricaCFTVController extends Controller
                 ->back()
                 ->with('warning', "Atenção : Duplicar comissão não é permitido!");
         }
-       
         $objetoModel                    = $this->tecnicaAlarmesCercaEletricaCFTV;
         $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
         $objetoModel->cliente           = $request->cliente;
@@ -60,7 +59,7 @@ class TecnicaAlarmesCercaEletricaCFTVController extends Controller
     {
         $comissao       = $this->tecnicaAlarmesCercaEletricaCFTV->findOrFail($id);
         $servico_alarme = ServicoAlarme::all();
-        return view('planilha.tipo.tecnicaAlarmesCercaEletricaCFTV.colaborador.edit', [
+        return view('comissao.planilhas.tecnicaAlarmesCercaEletricaCFTV.colaborador.edit', [
             'titulo'         => $this->titulo,
             'comissao'       => $comissao,
             'servico_alarme' => $servico_alarme,

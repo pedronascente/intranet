@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Comissao\Planilhas;
 
 use Illuminate\Http\Request;
 use App\Models\Comissao\Planilha;
-use App\Models\Comissao\Tipo\Meio;
+use App\Models\Comissao\Planilhas\Meio;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Help\CaniveteHelp;
-use App\Models\Comissao\Tipo\PortariaVirtual;
+use App\Models\Comissao\Planilhas\PortariaVirtual;
 class PortariaVirtualController extends Controller
 {
     private $titulo;
@@ -15,7 +15,7 @@ class PortariaVirtualController extends Controller
 
     public function __construct(PortariaVirtual $portariaVirtual)
     {
-        $this->titulo          = "Portaria Virtual";
+        $this->titulo = "Portaria Virtual";
         $this->portariaVirtual = $portariaVirtual;
     }
 
@@ -39,17 +39,8 @@ class PortariaVirtualController extends Controller
                 ->back()
                 ->with('warning', "Atenção : Duplicar comissão não é permitido!");
         }
-        $objetoModel                     = $this->portariaVirtual;
-        $objetoModel->cliente            = $request->cliente;
-        $objetoModel->data               = CaniveteHelp::formatarDataAnoMesDia($request->data);
-        $objetoModel->ins_vendas         = $request->ins_vendas;
-        $objetoModel->mensal             = $request->mensal;
-        $objetoModel->conta_pedido       = $request->conta_pedido;
-        $objetoModel->comissao           = $request->comissao;
-        $objetoModel->desconto_comissao  = $request->desconto_comissao;
-        $objetoModel->planilha()->associate(Planilha::find($request->planilha_id));
-        $objetoModel->meio()->associate(Meio::find($request->meio_id));
-        $objetoModel->save();
+        $objetoModel = $this->portariaVirtual;
+        $this->preencherAtributosDoObjeto($request, $objetoModel);
         return redirect()
             ->back()
             ->with('status', "Registrado com sucesso!");
@@ -60,7 +51,7 @@ class PortariaVirtualController extends Controller
         $comissao = $this->portariaVirtual->findOrFail($id);
         $titulo   = $this->titulo;
         $meios    = Meio::all();
-        return view('planilha.tipo.portariaVirtual.colaborador.edit', [
+        return view('comissao.planilhas.portariaVirtual.colaborador.edit', [
             'comissao' => $comissao,
             'titulo'   => $titulo,
             'meios'    => $meios
@@ -75,19 +66,11 @@ class PortariaVirtualController extends Controller
                 ->back()
                 ->with('warning', "Atenção : Duplicar comissão não é permitido!");
         }
-        $objetoModel                     = $this->portariaVirtual->findOrFail($id);
-        $objetoModel->cliente            = $request->cliente;
-        $objetoModel->data               = CaniveteHelp::formatarDataAnoMesDia($request->data);
-        $objetoModel->ins_vendas         = $request->ins_vendas;
-        $objetoModel->mensal             = $request->mensal;
-        $objetoModel->conta_pedido       = $request->conta_pedido;
-        $objetoModel->comissao           = $request->comissao;
-        $objetoModel->desconto_comissao  = $request->desconto_comissao;
-        $objetoModel->meio()->associate(Meio::find($request->meio_id));
-        $objetoModel->save();
+        $objetoModel = $this->portariaVirtual->findOrFail($id);
+        $this->preencherAtributosDoObjeto($request, $objetoModel);
         return redirect()
             ->back()
-            ->with('warning', "Atenção : Duplicar comissão não é permitido!");
+            ->with('status', "Registro atualizado com sucesso!");
     }
 
     public function destroy($id)
@@ -97,5 +80,23 @@ class PortariaVirtualController extends Controller
         return redirect()
             ->back()
             ->with('status', "Registrado Excluido com sucesso!");
+    }
+
+    private function preencherAtributosDoObjeto(Request $request, $objetoModel)
+    {
+        $objetoModel->cliente            = $request->cliente;
+        $objetoModel->data               = CaniveteHelp::formatarDataAnoMesDia($request->data);
+        $objetoModel->ins_vendas         = $request->ins_vendas;
+        $objetoModel->mensal             = $request->mensal;
+        $objetoModel->conta_pedido       = $request->conta_pedido;
+        $objetoModel->comissao           = $request->comissao;
+        $objetoModel->desconto_comissao  = $request->desconto_comissao;
+        $objetoModel->meio()->associate(Meio::find($request->meio_id));
+        
+        if($request->planilha_id){
+            $objetoModel->planilha()->associate(Planilha::find($request->planilha_id));
+        }
+        
+        $objetoModel->save();
     }
 }

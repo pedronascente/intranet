@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Comissao\Planilha;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Help\CaniveteHelp;
-use App\Models\Comissao\Tipo\ReclamacaoDeCliente;
+use App\Models\Comissao\Planilhas\ReclamacaoDeCliente;
 class ReclamacaoDeClienteController extends Controller
 {
     private $titulo;
@@ -14,7 +14,7 @@ class ReclamacaoDeClienteController extends Controller
 
     public function __construct(ReclamacaoDeCliente $reclamacaoDeCliente)
     {
-        $this->titulo              = "Reclamação de Cliente";
+        $this->titulo = "Reclamação de Cliente";
         $this->reclamacaoDeCliente = $reclamacaoDeCliente;
     }
 
@@ -57,7 +57,7 @@ class ReclamacaoDeClienteController extends Controller
     {
         $comissao = $this->reclamacaoDeCliente->findOrFail($id);
         $titulo   = $this->titulo;
-        return view('planilha.tipo.reclamacaoDeCliente.colaborador.edit', [
+        return view('comissao.planilhas.reclamacaoDeCliente.colaborador.edit', [
             'comissao' => $comissao,
             'titulo'   => $titulo,
         ]);

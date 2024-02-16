@@ -26,7 +26,7 @@ class RelatorioController extends Controller
         $arrayListStatus = PlanilhaStatus::all();
         $collection      = $this->planilha->getRelatorio($status, $filtro, $dataInicial, $dataFinal);
        
-        return view('planilha.administrativo.relatorio',
+        return view('comissao.administrativo.relatorio',
         [
             'titulo'          => $this->titulo,
             'arrayListStatus' => $arrayListStatus,

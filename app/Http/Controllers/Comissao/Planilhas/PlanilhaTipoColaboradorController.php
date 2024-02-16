@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Comissao\Planilhas;
 
 use App\Http\Controllers\Controller;
 use App\Models\Comissao\Planilha;
-use App\Models\Comissao\Tipo\Meio;
-use App\Models\Comissao\Tipo\ServicoAlarme;
+use App\Models\Comissao\Planilhas\Meio;
+use App\Models\Comissao\Planilhas\ServicoAlarme;
 
 class PlanilhaTipoColaboradorController extends Controller
 {
@@ -36,7 +36,7 @@ class PlanilhaTipoColaboradorController extends Controller
     $tipo_planilha = ucfirst($tipo_planilha);
 
     // Formar o nome completo da classe
-    $comissaoModel = 'App\Models\Comissao\Tipo\\' . $tipo_planilha;
+    $comissaoModel = 'App\Models\Comissao\Planilhas\\' . $tipo_planilha;
 
     return new $comissaoModel;
   }
@@ -54,7 +54,7 @@ class PlanilhaTipoColaboradorController extends Controller
     $valorTotalComissao = $comissaoModel::where('planilha_id', $planilha->id)->sum('comissao');
     $valorTotalComissao = number_format($valorTotalComissao, 2, ',', '.');
 
-    return view('planilha.tipo.' . $tipo_planilha . '.colaborador.index', [
+    return view('comissao.planilhas.' . $tipo_planilha . '.colaborador.index', [
       'planilha'           => $planilha,
       'meios'              => $this->getMeio(),
       'servico_alarme'     => $this->getServicoAlarme(),

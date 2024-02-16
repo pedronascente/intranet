@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Comissao\Planilha;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Help\CaniveteHelp;
-use App\Models\Comissao\Tipo\ComercialRastreamentoVeicular;
+use App\Models\Comissao\Planilhas\ComercialRastreamentoVeicular;
 class ComercialRastreamentoVeicularController extends Controller
 {
     private $titulo;
@@ -14,7 +14,7 @@ class ComercialRastreamentoVeicularController extends Controller
 
     public function __construct(ComercialRastreamentoVeicular $comercialRastreamentoVeicular)
     {
-        $this->titulo                        = "Comercial Rastreamento Veicular";
+        $this->titulo = "Comercial Rastreamento Veicular";
         $this->comercialRastreamentoVeicular = $comercialRastreamentoVeicular;
     }
 
@@ -38,17 +38,8 @@ class ComercialRastreamentoVeicularController extends Controller
                 ->back()
                 ->with('warning', "Atenção : Duplicar comissão não é permitido!");
         }
-        $objetoModel                    = $this->comercialRastreamentoVeicular;
-        $objetoModel->id_contrato       = $request->id_contrato;
-        $objetoModel->cliente           = $request->cliente;
-        $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
-        $objetoModel->placa             = $request->placa;
-        $objetoModel->comissao          = $request->comissao;
-        $objetoModel->taxa_instalacao   = $request->taxa_instalacao;
-        $objetoModel->mensal            = $request->mensal;
-        $objetoModel->desconto_comissao = $request->desconto_comissao;
-        $objetoModel->planilha()->associate(Planilha::findOrFail($request->planilha_id));
-        $objetoModel->save();
+        $objetoModel = $this->comercialRastreamentoVeicular;
+        $this->preencherAtributosDoObjeto($request, $objetoModel);
         return redirect()
             ->back()
             ->with('status', "Registrado com sucesso!");
@@ -58,7 +49,7 @@ class ComercialRastreamentoVeicularController extends Controller
     {
         $comissao = $this->comercialRastreamentoVeicular->findOrFail($id);
         $titulo   = $this->titulo;
-        return view('planilha.tipo.comercialRastreamentoVeicular.colaborador.edit', [
+        return view('comissao.planilhas.comercialRastreamentoVeicular.colaborador.edit', [
             'comissao' => $comissao,
             'titulo'   => $titulo
         ]);
@@ -72,16 +63,8 @@ class ComercialRastreamentoVeicularController extends Controller
                 ->back()
                 ->with('warning', "Atenção : Duplicar comissão não é permitido!");
         }
-        $objetoModel                    = $this->comercialRastreamentoVeicular->findOrFail($id);
-        $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
-        $objetoModel->cliente           = $request->cliente;
-        $objetoModel->id_contrato       = $request->id_contrato;
-        $objetoModel->placa             = $request->placa;
-        $objetoModel->taxa_instalacao   = $request->taxa_instalacao;
-        $objetoModel->mensal            = $request->mensal;
-        $objetoModel->comissao          = $request->comissao;
-        $objetoModel->desconto_comissao = $request->desconto_comissao;
-        $objetoModel->save();
+        $objetoModel = $this->comercialRastreamentoVeicular->findOrFail($id);
+        $this->preencherAtributosDoObjeto($request, $objetoModel);
         return redirect()
             ->back()
             ->with('status', 'Registro atualizado com sucesso.');
@@ -94,5 +77,23 @@ class ComercialRastreamentoVeicularController extends Controller
         return redirect()
             ->back()
             ->with('status', "Registrado Excluido com sucesso!");
+    }
+
+    private function preencherAtributosDoObjeto(Request $request, $objetoModel)
+    {
+        $objetoModel->id_contrato       = $request->id_contrato;
+        $objetoModel->cliente           = $request->cliente;
+        $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
+        $objetoModel->placa             = $request->placa;
+        $objetoModel->comissao          = $request->comissao;
+        $objetoModel->taxa_instalacao   = $request->taxa_instalacao;
+        $objetoModel->mensal            = $request->mensal;
+        $objetoModel->desconto_comissao = $request->desconto_comissao;
+            
+        if($request->planilha_id){
+                    $objetoModel->planilha()->associate(Planilha::findOrFail($request->planilha_id));
+        }
+
+        $objetoModel->save();
     }
 }

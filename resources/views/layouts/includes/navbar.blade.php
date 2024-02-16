@@ -14,7 +14,7 @@
                   <a href="{{ route('configuracoes.index') }}" class="dropdown-item dropdown-footer">Configurações</a>
                   <div class="dropdown-divider">
                   </div>
-                  <a href="{{ route('user.meuPerfil') }}" class="dropdown-item dropdown-footer">Meu Perfil</a>
+                  <a href="{{ route('usuario.meuPerfil') }}" class="dropdown-item dropdown-footer">Meu Perfil</a>
                   <div class="dropdown-divider">
                   </div>
                   <a href="{{ route('login.sair') }}" class="dropdown-item dropdown-footer">Sair</a>

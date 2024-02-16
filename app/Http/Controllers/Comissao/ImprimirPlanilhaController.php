@@ -40,7 +40,7 @@ class ImprimirPlanilhaController extends Controller
 
         // Gera a visão para o PDF
         $view = view(
-            'planilha.tipo.' . $tipo_planilha . '.administrativo.imprimir',
+            'comissao.planilhas.' . $tipo_planilha . '.administrativo.imprimir',
             [
                 'planilha'           => $planilha, // Dados da planilha
                 'valorTotalComissao' => number_format($valorTotalComissao, 2, ',', '.'), // Valor total da comissão formatado
@@ -79,7 +79,7 @@ class ImprimirPlanilhaController extends Controller
         $tipo_planilha = ucfirst($tipo_planilha);
 
         // Monta o nome da classe da model de comissão com base no tipo de planilha
-        $comissaoModel = 'App\Models\Comissao\Tipo\\' . $tipo_planilha;
+        $comissaoModel = 'App\Models\Comissao\Planilhas\\' . $tipo_planilha;
 
         // Retorna uma nova instância da model de comissão
         return new $comissaoModel;

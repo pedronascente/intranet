@@ -28,7 +28,7 @@ class ArquivoController extends Controller
                 ->orderBy('id', 'desc')
                 ->paginate(10); 
         }
-        return view('planilha.administrativo.arquivos', [
+        return view('comissao.administrativo.arquivos', [
             'titulo'      => $this->titulo,
             'collections' => $collections,
         ]);

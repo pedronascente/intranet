@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Comissao\Planilhas;
 
 use Illuminate\Http\Request;
 use App\Models\Comissao\Planilha;
-use App\Models\Comissao\Tipo\Meio;
+use App\Models\Comissao\Planilhas\Meio;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Help\CaniveteHelp;
-use App\Models\Comissao\Tipo\ServicoAlarme;
-use App\Models\Comissao\Tipo\ComercialAlarmeCercaEletricaCFTV;
+use App\Models\Comissao\Planilhas\ServicoAlarme;
+use App\Models\Comissao\Planilhas\ComercialAlarmeCercaEletricaCFTV;
 class ComercialAlarmeCercaEletricaCFTVController extends Controller
 {
     private $titulo;
@@ -16,7 +16,7 @@ class ComercialAlarmeCercaEletricaCFTVController extends Controller
 
     public function __construct(ComercialAlarmeCercaEletricaCFTV $comercialAlarmeCercaEletricaCFTV)
     {
-        $this->titulo                           = "Comercial Alarme / Cerca Elétrica / CFTV";
+        $this->titulo = "Comercial Alarme / Cerca Elétrica / CFTV";
         $this->comercialAlarmeCercaEletricaCFTV = $comercialAlarmeCercaEletricaCFTV;
     }
     public function index()
@@ -39,18 +39,8 @@ class ComercialAlarmeCercaEletricaCFTVController extends Controller
                 ->back()
                 ->with('warning', "Atenção : Duplicar comissão não é permitido!");
         }
-        $objetoModel                    = $this->comercialAlarmeCercaEletricaCFTV;
-        $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
-        $objetoModel->cliente           = $request->cliente;
-        $objetoModel->conta_pedido      = $request->conta_pedido;
-        $objetoModel->ins_vendas        = $request->ins_vendas;
-        $objetoModel->mensal            = $request->mensal;
-        $objetoModel->comissao          = $request->comissao;
-        $objetoModel->desconto_comissao = $request->desconto_comissao;
-        $objetoModel->planilha()->associate(Planilha::find($request->planilha_id));
-        $objetoModel->servico()->associate(ServicoAlarme::findOrFail($request->servico_id));
-        $objetoModel->meio()->associate(Meio::findOrFail($request->meio_id));
-        $objetoModel->save();
+        $objetoModel = $this->comercialAlarmeCercaEletricaCFTV;
+        $this->preencherAtributosDoObjeto($request, $objetoModel);
         return redirect()
             ->back()
             ->with('status', "Registrado com sucesso!");
@@ -58,10 +48,11 @@ class ComercialAlarmeCercaEletricaCFTVController extends Controller
 
     public function edit($id)
     {
-        $comissao       = $this->comercialAlarmeCercaEletricaCFTV->findOrFail($id);
+        $comissao = $this->comercialAlarmeCercaEletricaCFTV->findOrFail($id);
         $servico_alarme = ServicoAlarme::all();
-        $meios          = Meio::all();
-        return view('planilha.tipo.comercialAlarmeCercaEletricaCFTV.colaborador.edit', [
+        $meios = Meio::all();
+
+        return view('comissao.planilhas.comercialAlarmeCercaEletricaCFTV.colaborador.edit', [
             'titulo'         => $this->titulo,
             'comissao'       => $comissao,
             'servico_alarme' => $servico_alarme,
@@ -77,17 +68,8 @@ class ComercialAlarmeCercaEletricaCFTVController extends Controller
                 ->back()
                 ->with('warning', "Atenção : Duplicar comissão não é permitido!");
         }
-        $objetoModel                    = $this->comercialAlarmeCercaEletricaCFTV->findOrFail($id);       
-        $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
-        $objetoModel->cliente           = $request->cliente;
-        $objetoModel->conta_pedido      = $request->conta_pedido;
-        $objetoModel->ins_vendas        = $request->ins_vendas;
-        $objetoModel->mensal            = $request->mensal;
-        $objetoModel->comissao          = $request->comissao;
-        $objetoModel->desconto_comissao = $request->desconto_comissao;
-        $objetoModel->servico()->associate(ServicoAlarme::findOrFail($request->servico_id));
-        $objetoModel->meio()->associate(Meio::findOrFail($request->meio_id));
-        $objetoModel->save();
+        $objetoModel = $this->comercialAlarmeCercaEletricaCFTV->findOrFail($id);       
+        $this->preencherAtributosDoObjeto($request, $objetoModel);
         return redirect()
             ->back()
             ->with('status', 'Registro atualizado com sucesso.');
@@ -101,4 +83,20 @@ class ComercialAlarmeCercaEletricaCFTVController extends Controller
             ->back()
             ->with('status', "Registrado Excluido com sucesso!");
     }   
+
+    private function preencherAtributosDoObjeto(Request $request, $objetoModel){
+        $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
+        $objetoModel->cliente           = $request->cliente;
+        $objetoModel->conta_pedido      = $request->conta_pedido;
+        $objetoModel->ins_vendas        = $request->ins_vendas;
+        $objetoModel->mensal            = $request->mensal;
+        $objetoModel->comissao          = $request->comissao;
+        $objetoModel->desconto_comissao = $request->desconto_comissao;
+        $objetoModel->servico()->associate(ServicoAlarme::findOrFail($request->servico_id));
+        $objetoModel->meio()->associate(Meio::findOrFail($request->meio_id));
+        if($request->planilha_id){
+            $objetoModel->planilha()->associate(Planilha::find($request->planilha_id));
+        }
+        $objetoModel->save();
+    }
 }
