@@ -9,30 +9,31 @@ use App\Http\Controllers\Login\LoginController;
 use App\Http\Controllers\Login\TokenController;
 
 #Configuracoes
-use App\Http\Controllers\Planilha\ArquivoController;
+use App\Http\Controllers\Comissao\ArquivoController;
 use App\Http\Controllers\Configuracoes\BaseController;
 use App\Http\Controllers\Configuracoes\CargoController;
 use App\Http\Controllers\Configuracoes\ModuloController;
 use App\Http\Controllers\Configuracoes\PerfilController;
 use App\Http\Controllers\Configuracoes\EmpresaController;
+use App\Http\Controllers\Comissao\AdministrativoController;
 use App\Http\Controllers\Configuracoes\PermissaoController;
-use App\Http\Controllers\Planilha\AdministrativoController;
+use App\Http\Controllers\Comissao\ImprimirPlanilhaController;
 use App\Http\Controllers\Configuracoes\ColaboradorController;
 use App\Http\Controllers\Configuracoes\ConfiguracaoController;
-use App\Http\Controllers\Planilha\Tipo\EntregaDeAlarmeController;
-use App\Http\Controllers\Planilha\Tipo\PortariaVirtualController;
-use App\Http\Controllers\Planilha\Tipo\ReclamacaoDeClienteController;
-use App\Http\Controllers\Planilha\Tipo\TecnicaDeRastreamentoController;
-use App\Http\Controllers\Planilha\Tipo\PlanilhaTipoColaboradorController;
-use App\Http\Controllers\Planilha\Tipo\PlanilhaTipoAdministrativoController;
-use App\Http\Controllers\Planilha\Tipo\ComercialRastreamentoVeicularController;
-use App\Http\Controllers\Planilha\Tipo\SupervisaoComercialRastreamentoController;
-use App\Http\Controllers\Planilha\Tipo\TecnicaAlarmesCercaEletricaCFTVController;
-use App\Http\Controllers\Planilha\Tipo\ComercialAlarmeCercaEletricaCFTVController;
-use App\Http\Controllers\Planilha\RelatorioController as PlanilhaRelatorioController;
-use App\Http\Controllers\Planilha\ColaboradorController as PlanilhaColaboradorController;
-use App\Http\Controllers\Planilha\Tipo\SupervisaoComercialAlarmesCercaEletricaCFTVController;
-use App\Http\Controllers\Planilha\Tipo\SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController;
+use App\Http\Controllers\Comissao\Planilhas\EntregaDeAlarmeController;
+use App\Http\Controllers\Comissao\Planilhas\PortariaVirtualController;
+use App\Http\Controllers\Comissao\Planilhas\ReclamacaoDeClienteController;
+use App\Http\Controllers\Comissao\Planilhas\TecnicaDeRastreamentoController;
+use App\Http\Controllers\Comissao\Planilhas\PlanilhaTipoColaboradorController;
+use App\Http\Controllers\Comissao\Planilhas\PlanilhaTipoAdministrativoController;
+use App\Http\Controllers\Comissao\Planilhas\ComercialRastreamentoVeicularController;
+use App\Http\Controllers\Comissao\RelatorioController as PlanilhaRelatorioController;
+use App\Http\Controllers\Comissao\Planilhas\SupervisaoComercialRastreamentoController;
+use App\Http\Controllers\Comissao\Planilhas\TecnicaAlarmesCercaEletricaCFTVController;
+use App\Http\Controllers\Comissao\Planilhas\ComercialAlarmeCercaEletricaCFTVController;
+use App\Http\Controllers\Comissao\ColaboradorController as PlanilhaColaboradorController;
+use App\Http\Controllers\Comissao\Planilhas\SupervisaoComercialAlarmesCercaEletricaCFTVController;
+use App\Http\Controllers\Comissao\Planilhas\SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController;
 
 Route::prefix('/login')->group(function () {
     Route::get('/', [LoginController::class, 'create'])->name('login.form');
@@ -127,7 +128,7 @@ Route::middleware(['validarPermissaoDeRota:administrar-comissao'])->group(functi
                     Route::get('/{id}/reprovar', [AdministrativoController::class, 'editReprovar'])->name('reprovar');
                     Route::put('/{id}', [AdministrativoController::class, 'updateReprovar'])->name('reprovarUpdate');
                 });
-                Route::get('/imprimir-pdf/{id}', [PlanilhaTipoAdministrativoController::class, 'imprimirPDF'])->name('imprimirPDF');
+                Route::get('/imprimir-pdf/{id}', [ImprimirPlanilhaController::class, 'imprimirPDF'])->name('imprimirPDF');
                 Route::get('{id}/planilha', [PlanilhaTipoAdministrativoController::class, 'index'])->name('tipoAdministrativo.index');
                 Route::get('relatorio/buscar', [PlanilhaRelatorioController::class, 'relatorio'])->name('relatorio');
                 Route::get('{planilha}/{comissao}/editarComissaoAdministrativo', [AdministrativoController::class, 'editarComissaoAdministrativo'])->name('editarComissaoAdministrativo'); 

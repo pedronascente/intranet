@@ -1,24 +1,25 @@
 <?php
 
-namespace App\Http\Controllers\Planilha\Tipo;
+namespace App\Http\Controllers\Comissao\Planilhas;
 
 use Illuminate\Http\Request;
 use App\Models\Planilha\Planilha;
-use App\Models\Planilha\Tipo\Meio;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Help\CaniveteHelp;
 use App\Models\Planilha\Tipo\ServicoAlarme;
-use App\Models\Planilha\Tipo\ComercialAlarmeCercaEletricaCFTV;
-class ComercialAlarmeCercaEletricaCFTVController extends Controller
+use App\Models\planilha\Tipo\TecnicaAlarmesCercaEletricaCFTV;
+
+class TecnicaAlarmesCercaEletricaCFTVController extends Controller
 {
     private $titulo;
-    private $comercialAlarmeCercaEletricaCFTV;
+    private $tecnicaAlarmesCercaEletricaCFTV;
 
-    public function __construct(ComercialAlarmeCercaEletricaCFTV $comercialAlarmeCercaEletricaCFTV)
+    public function __construct(TecnicaAlarmesCercaEletricaCFTV $tecnicaAlarmesCercaEletricaCFTV)
     {
-        $this->titulo                           = "Comercial Alarme / Cerca Elétrica / CFTV";
-        $this->comercialAlarmeCercaEletricaCFTV = $comercialAlarmeCercaEletricaCFTV;
+        $this->titulo                          = "Técnica Alarmes / Cerca Elétrica / CFTV";
+        $this->tecnicaAlarmesCercaEletricaCFTV = $tecnicaAlarmesCercaEletricaCFTV;
     }
+
     public function index()
     {
         return redirect()
@@ -33,23 +34,22 @@ class ComercialAlarmeCercaEletricaCFTVController extends Controller
     
     public function store(Request $request)
     {
-        $request->validate($this->comercialAlarmeCercaEletricaCFTV->rules(), $this->comercialAlarmeCercaEletricaCFTV->feedback());
-        if($this->comercialAlarmeCercaEletricaCFTV->validarComissaoDuplicada($request)>=1){
+        $request->validate($this->tecnicaAlarmesCercaEletricaCFTV->rules(), $this->tecnicaAlarmesCercaEletricaCFTV->feedback());
+        if ($this->tecnicaAlarmesCercaEletricaCFTV->validarComissaoDuplicada($request) >= 1) {
             return redirect()
                 ->back()
                 ->with('warning', "Atenção : Duplicar comissão não é permitido!");
         }
-        $objetoModel                    = $this->comercialAlarmeCercaEletricaCFTV;
+       
+        $objetoModel                    = $this->tecnicaAlarmesCercaEletricaCFTV;
         $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
         $objetoModel->cliente           = $request->cliente;
         $objetoModel->conta_pedido      = $request->conta_pedido;
-        $objetoModel->ins_vendas        = $request->ins_vendas;
-        $objetoModel->mensal            = $request->mensal;
+        $objetoModel->numero_os         = $request->numero_os;
         $objetoModel->comissao          = $request->comissao;
         $objetoModel->desconto_comissao = $request->desconto_comissao;
         $objetoModel->planilha()->associate(Planilha::find($request->planilha_id));
-        $objetoModel->servico()->associate(ServicoAlarme::findOrFail($request->servico_id));
-        $objetoModel->meio()->associate(Meio::findOrFail($request->meio_id));
+        $objetoModel->servico()->associate(ServicoAlarme::find($request->servico_id));
         $objetoModel->save();
         return redirect()
             ->back()
@@ -58,35 +58,31 @@ class ComercialAlarmeCercaEletricaCFTVController extends Controller
 
     public function edit($id)
     {
-        $comissao       = $this->comercialAlarmeCercaEletricaCFTV->findOrFail($id);
+        $comissao       = $this->tecnicaAlarmesCercaEletricaCFTV->findOrFail($id);
         $servico_alarme = ServicoAlarme::all();
-        $meios          = Meio::all();
-        return view('planilha.tipo.comercialAlarmeCercaEletricaCFTV.colaborador.edit', [
+        return view('planilha.tipo.tecnicaAlarmesCercaEletricaCFTV.colaborador.edit', [
             'titulo'         => $this->titulo,
             'comissao'       => $comissao,
             'servico_alarme' => $servico_alarme,
-            'meios'          => $meios,
         ]);
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate($this->comercialAlarmeCercaEletricaCFTV->rules(), $this->comercialAlarmeCercaEletricaCFTV->feedback());
-        if ($this->comercialAlarmeCercaEletricaCFTV->validarComissaoDuplicada($request) >= 1) {
+        $request->validate($this->tecnicaAlarmesCercaEletricaCFTV->rules(), $this->tecnicaAlarmesCercaEletricaCFTV->feedback());
+        if ($this->tecnicaAlarmesCercaEletricaCFTV->validarComissaoDuplicada($request) >= 1) {
             return redirect()
                 ->back()
                 ->with('warning', "Atenção : Duplicar comissão não é permitido!");
         }
-        $objetoModel                    = $this->comercialAlarmeCercaEletricaCFTV->findOrFail($id);       
+        $objetoModel                    = $this->tecnicaAlarmesCercaEletricaCFTV->findOrFail($id);
         $objetoModel->data              = CaniveteHelp::formatarDataAnoMesDia($request->data);
         $objetoModel->cliente           = $request->cliente;
         $objetoModel->conta_pedido      = $request->conta_pedido;
-        $objetoModel->ins_vendas        = $request->ins_vendas;
-        $objetoModel->mensal            = $request->mensal;
+        $objetoModel->numero_os         = $request->numero_os;
         $objetoModel->comissao          = $request->comissao;
         $objetoModel->desconto_comissao = $request->desconto_comissao;
-        $objetoModel->servico()->associate(ServicoAlarme::findOrFail($request->servico_id));
-        $objetoModel->meio()->associate(Meio::findOrFail($request->meio_id));
+        $objetoModel->servico()->associate(ServicoAlarme::find($request->servico_id));
         $objetoModel->save();
         return redirect()
             ->back()
@@ -95,10 +91,10 @@ class ComercialAlarmeCercaEletricaCFTVController extends Controller
 
     public function destroy($id)
     {
-        $objetoModel = $this->comercialAlarmeCercaEletricaCFTV->findOrFail($id);
+        $objetoModel = $this->tecnicaAlarmesCercaEletricaCFTV->findOrFail($id);
         $objetoModel->delete();
         return redirect()
             ->back()
-            ->with('status', "Registrado Excluido com sucesso!");
-    }   
+            ->with('status', "Registro excluido com sucesso!");
+    }
 }

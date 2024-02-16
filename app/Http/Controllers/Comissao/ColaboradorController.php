@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Planilha;
+namespace App\Http\Controllers\Comissao;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;

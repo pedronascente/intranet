@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Planilha\Tipo;
+namespace App\Http\Controllers\Comissao\Planilhas;
 
 use PDF;
 use Illuminate\Http\Request;
@@ -45,47 +45,6 @@ class PlanilhaTipoAdministrativoController extends Controller
 
     // Se não houver filtro, chama o método para gerar a visão com dados de comissão sem filtro
     return $this->getViewWithComissaoData($tipo_planilha, $planilha, $this->getComissaoModel($tipo_planilha));
-  }
-
-
-  /**
-   * Gera um arquivo PDF para uma planilha específica.
-   *
-   * @param  int  $id  Identificador da planilha.
-   * @return \Illuminate\Http\Response
-   */
-  public function imprimirPDF($id)
-  {
-    // Obtém a planilha com relacionamentos
-    $planilha = $this->getPlanilhaWithRelationships($id);
-
-    // Obtém o tipo de planilha
-    $tipo_planilha = $planilha->tipo->formulario;
-
-    // Obtém o valor total da comissão
-    $valorTotalComissao = $this->getComissaoModel($tipo_planilha)::where('planilha_id', $planilha->id)->sum('comissao');
-
-    // Obtém o caminho da imagem do logo da empresa
-    $img_logo = ($planilha->colaborador->empresa->imglogo) ? 'img/empresa/' . $planilha->colaborador->empresa->imglogo : 'img/empresa/logo-default.jpg';
-
-    // Converte a imagem em base64
-    $volpatoImage = base64_encode(file_get_contents(public_path($img_logo)));
-
-    // Gera a visão para o PDF
-    $view = view(
-      'planilha.tipo.' . $tipo_planilha . '.administrativo.imprimir',
-      [
-        'planilha'           => $planilha, // Dados da planilha
-        'valorTotalComissao' => number_format($valorTotalComissao, 2, ',', '.'), // Valor total da comissão formatado
-        'volpatoImage'       => $volpatoImage, // Imagem da empresa convertida em base64
-      ]
-    );
-
-    // Carrega a visão HTML no PDF
-    $pdf = PDF::loadHtml($view)->setOptions(['isHtml5ParserEnabled' => true, 'isPhpEnabled' => true]);
-
-    // Usa o método stream para abrir no navegador
-    return $pdf->stream($tipo_planilha . '.pdf');
   }
 
   /**

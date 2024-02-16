@@ -36,7 +36,7 @@
                         @if ($collections)
                             @foreach ($collections as $item)
                                 @php
-                                    $valorTotalComissao = app('App\Http\Controllers\Planilha\AdministrativoController')->getValorTotalComissao($item);
+                                    $valorTotalComissao = app('App\Http\Controllers\Comissao\AdministrativoController')->getValorTotalComissao($item);
                                 @endphp
                                 <tr>
                                     <td>{{ $item->id }}</td>

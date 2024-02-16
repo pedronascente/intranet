@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\planilha;
+namespace App\Http\Controllers\Comissao;
 
 use Illuminate\Http\Request;
 use App\Models\Planilha\Planilha;
