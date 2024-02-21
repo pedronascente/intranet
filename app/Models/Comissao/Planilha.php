@@ -3,12 +3,22 @@
 namespace App\Models\Comissao;
 
 use Illuminate\Support\Facades\DB;
+use App\Models\Colaborador\Colaborador;
 use App\Models\Comissao\PlanilhaStatus;
 use Illuminate\Database\Eloquent\Model;
+
 use App\Models\Comissao\PlanilhaPeriodo;
-
+use App\Models\Comissao\Planilhas\PlanilhaTipo;
+use App\Models\Comissao\Planilhas\PortariaVirtual;
+use App\Models\Comissao\Planilhas\EntregaDeAlarmes;
+use App\Models\Comissao\Planilhas\ReclamacaoDeCliente;
+use App\Models\Comissao\Planilhas\TecnicaDeRastreamento;
+use App\Models\Comissao\Planilhas\ComercialRastreamentoVeicular;
+use App\Models\Comissao\Planilhas\SupervisaoComercialRastreamento;
+use App\Models\Comissao\Planilhas\TecnicaAlarmesCercaEletricaCFTV;
+use App\Models\Comissao\Planilhas\ComercialAlarmeCercaEletricaCFTV;
+use App\Models\Comissao\Planilhas\SupervisaoComercialAlarmesCercaEletricaCFTV;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
 class Planilha extends Model
 {
     use HasFactory;
@@ -45,7 +55,7 @@ class Planilha extends Model
      */
     public function tipo()
     {
-        return $this->belongsTo(\App\Models\Comissao\Planilhas\PlanilhaTipo::class, 'planilha_tipo_id', 'id');
+        return $this->belongsTo(PlanilhaTipo::class, 'planilha_tipo_id', 'id');
     }
 
     /**
@@ -65,7 +75,7 @@ class Planilha extends Model
      */
     public function colaborador()
     {
-        return $this->belongsTo(\App\Models\Colaborador::class);
+        return $this->belongsTo(Colaborador::class);
     }
 
     /**
@@ -74,52 +84,52 @@ class Planilha extends Model
      */
     public function comercialAlarmeCercaEletricaCFTV()
     {
-        return $this->hasMany(\App\Models\Comissao\Planilhas\ComercialAlarmeCercaEletricaCFTV::class);
+        return $this->hasMany(ComercialAlarmeCercaEletricaCFTV::class);
     }
 
     public function comercialRastreamentoVeicular()
     {
-        return $this->hasMany(\App\Models\Comissao\Planilhas\ComercialRastreamentoVeicular::class);
+        return $this->hasMany(ComercialRastreamentoVeicular::class);
     }
 
     public function entregaDeAlarmes()
     {
-        return $this->hasMany(\App\Models\Comissao\Planilhas\EntregaDeAlarmes::class);
+        return $this->hasMany(EntregaDeAlarmes::class);
     }
 
     public function portariaVirtual()
     {
-        return $this->hasMany(\App\Models\Comissao\Planilhas\PortariaVirtual::class);
+        return $this->hasMany(PortariaVirtual::class);
     }
 
     public function reclamacaoDeCliente()
     {
-        return $this->hasMany(\App\Models\Comissao\Planilhas\ReclamacaoDeCliente::class);
+        return $this->hasMany(ReclamacaoDeCliente::class);
     }
 
     public function supervisaoComercialAlarmesCercaEletricaCFTV()
     {
-        return $this->hasMany(\App\Models\Comissao\Planilhas\supervisaoComercialAlarmesCercaEletricaCFTV::class);
+        return $this->hasMany(SupervisaoComercialAlarmesCercaEletricaCFTV::class);
     }
 
     public function supervisaoComercialRastreamento()
     {
-        return $this->hasMany(\App\Models\Comissao\Planilhas\SupervisaoComercialRastreamento::class);
+        return $this->hasMany(SupervisaoComercialRastreamento::class);
     }
 
     public function supervisaoTecnicaESACAlarmesCercaEletricaCFTV()
     {
-        return $this->hasMany(\App\Models\Comissao\Planilhas\SupervisaoTecnicaESACAlarmesCercaEletricaCFTV::class);
+        return $this->hasMany(SupervisaoTecnicaESACAlarmesCercaEletricaCFTV::class);
     }
 
     public function tecnicaAlarmesCercaEletricaCFTV()
     {
-        return $this->hasMany(\App\Models\Comissao\Planilhas\TecnicaAlarmesCercaEletricaCFTV::class);
+        return $this->hasMany(TecnicaAlarmesCercaEletricaCFTV::class);
     }
 
     public function tecnicaDeRastreamento()
     {
-        return $this->hasMany(\App\Models\Comissao\Planilhas\TecnicaDeRastreamento::class);
+        return $this->hasMany(TecnicaDeRastreamento::class);
     }
 
     /**

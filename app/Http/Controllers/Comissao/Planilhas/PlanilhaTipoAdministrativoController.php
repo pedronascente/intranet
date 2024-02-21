@@ -13,10 +13,15 @@ use App\Http\Controllers\Controller;
 class PlanilhaTipoAdministrativoController extends Controller
 {
   private $planilha;
+  private $arrayListPermissoesDoModuloDaRota;
 
   public function __construct(Planilha $planilha)
   {
     $this->planilha = $planilha;
+    $this->middleware(function ($request, $next) {
+      $this->arrayListPermissoesDoModuloDaRota = session()->get('permissoesDoModuloDaRota');
+      return $next($request);
+    });
   }
 
   /**
@@ -28,6 +33,9 @@ class PlanilhaTipoAdministrativoController extends Controller
    */
   public function index(Request $request, $id)
   {
+
+    
+
     // Obtém o termo de filtro da requisição
     $filtro = $request->input('filtro');
 
@@ -92,9 +100,10 @@ class PlanilhaTipoAdministrativoController extends Controller
 
     // Retorna a visão com dados de comissão e informações adicionais
     return view('comissao.planilhas.' . $tipo_planilha . '.administrativo.index', [
-      'planilha'           => $planilha, // Dados da planilha
-      'listaComissao'      => $comissaoModel::where('planilha_id', $planilha->id)->orderBy('id', 'desc')->paginate(10), // Lista de comissões paginada
-      'valorTotalComissao' => number_format($valorTotalComissao, 2, ',', '.'), // Valor total da comissão formatado
+      'planilha' => $planilha, // Dados da planilha
+      'listaComissao' => $comissaoModel::where('planilha_id', $planilha->id)->orderBy('id', 'desc')->paginate(10), // Lista de comissões paginada
+      'valorTotalComissao' => number_format($valorTotalComissao, 2, ',', '.'),
+      'arrayListPermissoesDoModuloDaRota' => $this->arrayListPermissoesDoModuloDaRota,
     ]);
   }
 
@@ -239,10 +248,12 @@ class PlanilhaTipoAdministrativoController extends Controller
     // Finaliza a consulta e obtém os resultados agrupados por planilha_id
     $listaComissao = $query->orderBy('id', 'desc')->paginate(10);
 
+
     return view('comissao.planilhas.' . $tipo_planilha . '.administrativo.index', [
       'planilha'           => $planilha,
       'listaComissao'      => $listaComissao,
       'valorTotalComissao' => number_format($listaComissao->sum('comissao'), 2, ',', '.'),
+      'arrayListPermissoesDoModuloDaRota' => $this->arrayListPermissoesDoModuloDaRota,
     ]);
   }
 } //fim da classe.

@@ -7,15 +7,17 @@ use Illuminate\View\Component;
 class BtnCadastrar extends Component
 {
     public $rota;
+    public $arrayListPermissoesDoModuloDaRota;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($rota)
+    public function __construct($rota, $arrayListPermissoesDoModuloDaRota)
     {
         $this->rota = $rota;
+        $this->arrayListPermissoesDoModuloDaRota = $arrayListPermissoesDoModuloDaRota;
     }
 
     /**

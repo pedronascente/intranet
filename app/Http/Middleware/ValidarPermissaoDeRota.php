@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Modulo;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -17,10 +18,13 @@ class ValidarPermissaoDeRota
     public function handle(Request $request, Closure $next, $modulo)
     {
         if(session()->get('modulosDoUsuarioAutenticadoSlug')){
-            $moduloDaRota                    = $modulo;
+            $moduloDaRota = $modulo;
             $modulosDoUsuarioAutenticadoSlug = session()->get('modulosDoUsuarioAutenticadoSlug');
-            
+          
             if (in_array($moduloDaRota, $modulosDoUsuarioAutenticadoSlug)) {
+                $Modulo = Modulo::with('permissoes')->where('slug','=', $moduloDaRota)->first();
+                $ArrayListPermissoes = $Modulo->permissoes->pluck('nome')->toArray();
+                $request->session()->put('permissoesDoModuloDaRota', $ArrayListPermissoes);
                 return $next($request);
             }
         }

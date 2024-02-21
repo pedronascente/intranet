@@ -1,25 +1,31 @@
-<?php
 
+
+<?php
 use Illuminate\Support\Facades\Route;
  
-#Login
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MeuPerfilController;
+
 use App\Http\Controllers\Login\UserController;
 use App\Http\Controllers\Login\LoginController;
 use App\Http\Controllers\Login\TokenController;
 
-#Configuracoes
-use App\Http\Controllers\Comissao\ArquivoController;
-use App\Http\Controllers\Configuracoes\BaseController;
-use App\Http\Controllers\Configuracoes\CargoController;
+use App\Http\Controllers\Colaborador\BaseController;
+use App\Http\Controllers\Colaborador\CargoController;
+use App\Http\Controllers\Colaborador\EmpresaController;
+use App\Http\Controllers\Colaborador\ColaboradorController;
+
 use App\Http\Controllers\Configuracoes\ModuloController;
 use App\Http\Controllers\Configuracoes\PerfilController;
-use App\Http\Controllers\Configuracoes\EmpresaController;
-use App\Http\Controllers\Comissao\AdministrativoController;
-use App\Http\Controllers\Configuracoes\PermissaoController;
-use App\Http\Controllers\Comissao\ImprimirPlanilhaController;
-use App\Http\Controllers\Configuracoes\ColaboradorController;
 use App\Http\Controllers\Configuracoes\ConfiguracaoController;
+use App\Http\Controllers\Configuracoes\PermissaoController;
+
+use App\Http\Controllers\Comissao\ArquivoController;
+use App\Http\Controllers\Comissao\ImprimirPlanilhaController;
+use App\Http\Controllers\Comissao\AdministrativoController;
+use App\Http\Controllers\Comissao\PlanilhaController;
+use App\Http\Controllers\Comissao\RelatorioController as PlanilhaRelatorioController;
+
 use App\Http\Controllers\Comissao\Planilhas\EntregaDeAlarmeController;
 use App\Http\Controllers\Comissao\Planilhas\PortariaVirtualController;
 use App\Http\Controllers\Comissao\Planilhas\ReclamacaoDeClienteController;
@@ -27,11 +33,9 @@ use App\Http\Controllers\Comissao\Planilhas\TecnicaDeRastreamentoController;
 use App\Http\Controllers\Comissao\Planilhas\PlanilhaTipoColaboradorController;
 use App\Http\Controllers\Comissao\Planilhas\PlanilhaTipoAdministrativoController;
 use App\Http\Controllers\Comissao\Planilhas\ComercialRastreamentoVeicularController;
-use App\Http\Controllers\Comissao\RelatorioController as PlanilhaRelatorioController;
 use App\Http\Controllers\Comissao\Planilhas\SupervisaoComercialRastreamentoController;
 use App\Http\Controllers\Comissao\Planilhas\TecnicaAlarmesCercaEletricaCFTVController;
 use App\Http\Controllers\Comissao\Planilhas\ComercialAlarmeCercaEletricaCFTVController;
-use App\Http\Controllers\Comissao\ColaboradorController as PlanilhaColaboradorController;
 use App\Http\Controllers\Comissao\Planilhas\SupervisaoComercialAlarmesCercaEletricaCFTVController;
 use App\Http\Controllers\Comissao\Planilhas\SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController;
 
@@ -54,43 +58,45 @@ Route::middleware(['auth','validarToken', 'gerarMenuDaBarraLateral'])->group(fun
 });
 
 Route::middleware(['auth', 'validarToken'])->group(function () {
-    Route::prefix('/configuracoes')->group(function () {
-        Route::middleware(['validarPermissaoDeRota:perfil'])->group(function () {
-            Route::resource('/perfil', PerfilController::class);
-            Route::get('perfil/desativar/{id}', [PerfilController::class, 'desativar'])->name('perfil.desativar');
-        });
-        Route::resource('/colaborador', ColaboradorController::class)->middleware(['validarPermissaoDeRota:colaborador']);
-        Route::resource('/empresa', EmpresaController::class)->middleware(['validarPermissaoDeRota:empresa']);
-        Route::resource('/permissao', PermissaoController::class)->middleware(['validarPermissaoDeRota:permissao']);
-        Route::resource('/modulo', ModuloController::class)->middleware(['validarPermissaoDeRota:modulo']);
-        Route::resource('/usuario', UserController::class)->middleware(['validarPermissaoDeRota:usuario']);
-        Route::resource('/base', BaseController::class)->middleware(['validarPermissaoDeRota:base']);
-        Route::resource('/cargo', CargoController::class)->middleware(['validarPermissaoDeRota:cargo']);
-    });
+    Route::resource('/colaborador', ColaboradorController::class)->middleware(['validarPermissaoDeRota:colaborador']);
+    Route::resource('/cargo', CargoController::class)->middleware(['validarPermissaoDeRota:cargo']);
+    Route::resource('/empresa', EmpresaController::class)->middleware(['validarPermissaoDeRota:empresa']);
+    Route::resource('/base', BaseController::class)->middleware(['validarPermissaoDeRota:base']);
+    Route::resource('/permissao', PermissaoController::class)->middleware(['validarPermissaoDeRota:permissao']);
+    Route::resource('/modulo', ModuloController::class)->middleware(['validarPermissaoDeRota:modulo']);
+    Route::resource('/usuario', UserController::class)->middleware(['validarPermissaoDeRota:usuario']);
+    Route::middleware(['validarPermissaoDeRota:perfil'])->group(function () {
+        Route::resource('/perfil', PerfilController::class);
+        Route::get('perfil/desativar/{id}', [PerfilController::class, 'desativar'])->name('perfil.desativar');
+    });      
 });
 
 Route::prefix('/meu-perfil')->group(function () {
-    Route::get('/', [UserController::class, 'meuPerfil'])->name('usuario.meuPerfil');
+    Route::get('/', [MeuPerfilController::class, 'index'])->name('meuPerfil.index');
+    Route::get('/{id}/edit', [MeuPerfilController::class, 'edit'])->name('meuPerfil.edit');
+    Route::put('/{id}', [MeuPerfilController::class, 'update'])->name('meuPerfil.update');
     Route::put('/resetar-senha/{id}', [UserController::class, 'resetarSenha'])->name('usuario.resetarSenha');
-    Route::get('/{id}/edit', [ColaboradorController::class, 'editarMeuPerfil'])->name('usuario.editarMeuPerfil');
 });
 
 Route::get('/senha/{email}/{token}', [UserController::class, 'senhaCreate'])->name('senha');
 Route::get('/senha', [UserController::class, 'senhaSucesso'])->name('usuario.senhaSucesso');
+
 Route::prefix('/recuperar')->group(function () {
     Route::get('/', [UserController::class, 'recuperarSenhaCreate'])->name('usuario.recuperarSenhaCreate');
     Route::post('/', [UserController::class, 'recuperarSenhaStore']);
-    Route::get('/sucesso', [UserController::class, 'recuperarSenhaSucesso']);
+    Route::get('/sucesso', [UserController::class, 'recuperarSenhaSucesso'])->name('usuario.recuperarSenhaSucesso');
 });
 
 Route::middleware(['validarPermissaoDeRota:lancar-comissao'])->group(function () {
+    //planililha:
+    Route::resource('/planilha', PlanilhaController::class);
+    Route::get('/planilha{planilha}/homologar', [PlanilhaController::class, 'homologar'])->name('planilha.homologar');
+    
     Route::prefix('/comissao')->group(function () {
         Route::get('/', function () {
             return redirect()->route('planilha.index');
         });
-        //planililha:
-        Route::resource('/planilha', PlanilhaColaboradorController::class);
-        Route::get('/planilha{planilha}/homologar', [PlanilhaColaboradorController::class, 'homologar'])->name('planilha.homologar');
+        
         //pesquisar colaborador:   
         Route::prefix('/pesquisar')->group(function () {
             Route::get('/', [ColaboradorController::class, 'createPesquisar'])->name('colaborador.pesquisar');

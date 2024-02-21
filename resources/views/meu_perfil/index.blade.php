@@ -58,7 +58,7 @@
                 CNPJ:
                 <p class="text-muted">{{ $colaborador->cnpj }}</p>
                 
-                <a href="{{ route('usuario.editarMeuPerfil', $colaborador->id) }}" class="btn bg-gradient-info">
+                <a href="{{ route('meuPerfil.edit', $colaborador->id) }}" class="btn bg-gradient-info">
                     Editar
                 </a>
             @endif

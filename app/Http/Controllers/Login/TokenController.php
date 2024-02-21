@@ -45,9 +45,15 @@ class TokenController extends Controller
     private function getAcessoUsuario($request)
     {
         $usuarioAutenticado              = $request->user();
+
         $perfilDoUsuarioAutenticado      = $this->user->with('Perfil.modulos')->findOrFail($usuarioAutenticado->id);
+       
         $modulosDoUsuarioAutenticadoId   = $perfilDoUsuarioAutenticado->perfil->modulos->pluck('id')->toArray();
+
         $modulosDoUsuarioAutenticadoSlug = $perfilDoUsuarioAutenticado->perfil->modulos->pluck('slug')->toArray();
+
+
+      //  dd($modulosDoUsuarioAutenticadoId);
         //Extrair categorias:
         foreach ($modulosDoUsuarioAutenticadoId as $modulo_id) {
             $Modulo = Modulo::with('categoria')->find($modulo_id);

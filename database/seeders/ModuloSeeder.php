@@ -10,7 +10,7 @@ class ModuloSeeder extends Seeder
     {
         DB::table('modulos')->insert([
             'nome'                => 'Cargo',               
-            'rota'                => '/configuracoes/cargo',         
+            'rota'                => '/cargo',         
             'slug'                => 'cargo',                 
             'descricao'           => "Responsável por Gerenciar Cargo.",
             'modulo_categoria_id' => 2,
@@ -18,7 +18,7 @@ class ModuloSeeder extends Seeder
         ]);
         DB::table('modulos')->insert([
             'nome'                => 'Colaborador',         
-            'rota'                => '/configuracoes/colaborador',   
+            'rota'                => '/colaborador',   
             'slug'                => 'colaborador',           
             'descricao'           => "Responsável por Gerenciar Colaborador.",
             'modulo_categoria_id' => 2,
@@ -26,7 +26,7 @@ class ModuloSeeder extends Seeder
         ]);
         DB::table('modulos')->insert([
             'nome'                => 'Empresa',             
-            'rota'                => '/configuracoes/empresa',       
+            'rota'                => '/empresa',       
             'slug'                => 'empresa',               
             'descricao'           => "Responsável por Gerenciar Empresa.",
             'modulo_categoria_id' => 2,
@@ -34,7 +34,7 @@ class ModuloSeeder extends Seeder
         ]);
         DB::table('modulos')->insert([
             'nome'                => 'Modulos',             
-            'rota'                => '/configuracoes/modulo',        
+            'rota'                => '/modulo',        
             'slug'                => 'modulo',                
             'descricao'           => "Responsável por Gerenciar Modulo.",
             'modulo_categoria_id' => 4,
@@ -42,7 +42,7 @@ class ModuloSeeder extends Seeder
         ]);
         DB::table('modulos')->insert([
             'nome'                => 'Permissão',           
-            'rota'                => '/configuracoes/permissao',     
+            'rota'                => '/permissao',     
             'slug'                => 'permissao',             
             'descricao'           => "Responsável por Gerenciar Permissão.",
             'modulo_categoria_id' => 4,
@@ -50,7 +50,7 @@ class ModuloSeeder extends Seeder
         ]);
         DB::table('modulos')->insert([
             'nome'                => 'Perfil',              
-            'rota'                => '/configuracoes/perfil',        
+            'rota'                => '/perfil',        
             'slug'                => 'perfil',                
             'descricao'           => "Responsável por Gerenciar Perfil de usuário.",
             'modulo_categoria_id' => 4,
@@ -58,7 +58,7 @@ class ModuloSeeder extends Seeder
         ]);
         DB::table('modulos')->insert([
             'nome'                => 'Usuário',             
-            'rota'                => '/configuracoes/usuario',       
+            'rota'                => '/usuario',       
             'slug'                => 'usuario',                  
             'descricao'           => "Responsável por Gerenciar Usuario.",
             'modulo_categoria_id' => 3,
@@ -66,7 +66,7 @@ class ModuloSeeder extends Seeder
         ]);
         DB::table('modulos')->insert([
             'nome'                => 'Base',                
-            'rota'                => '/configuracoes/base',          
+            'rota'                => '/base',          
             'slug'                => 'base',                  
             'descricao'           => "Responsável por Criar as Bases.",
             'modulo_categoria_id' => 2,
@@ -87,6 +87,14 @@ class ModuloSeeder extends Seeder
             'descricao'           => "Responsável por Administrar as comissões dos colaboradores.",
             'modulo_categoria_id' => 1,
             'modulo_posicao_id'   => 1,   
+        ]);
+        DB::table('modulos')->insert([
+            'nome'                => 'Configurações',
+            'rota'                => '/configuracoes',     
+            'slug'                => 'configuracoes',
+            'descricao'           => "Responsável por mostrar os links de navegações, do módulos de configurações do sistema",
+            'modulo_categoria_id' => 3,
+            'modulo_posicao_id'   => 2,   
         ]);
     }
 } 

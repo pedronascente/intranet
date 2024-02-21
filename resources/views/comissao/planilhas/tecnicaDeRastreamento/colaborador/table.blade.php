@@ -28,8 +28,8 @@
                             {{ $comissao->observacao }}
                         </td>
                         <td>
-                            <x-botao.btn-editar :rota="route('tecnica-de-rastreamento.edit', $comissao->id)"/>
-                            <x-botao.btn-excluir :rota="route('tecnica-de-rastreamento.destroy', $comissao->id)" titulo="Excluir Comissão" />
+                            <x-botao.btn-editar :rota="route('tecnica-de-rastreamento.edit', $comissao->id)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota"/>
+                            <x-botao.btn-excluir :rota="route('tecnica-de-rastreamento.destroy', $comissao->id)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota"/>
                         </td>
                     </tr>
                 @endforeach

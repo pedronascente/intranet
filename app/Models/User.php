@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Support\Facades\DB;
+use App\Models\Colaborador\Colaborador;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -66,26 +67,34 @@ class User extends Authenticatable
     }
 
     /**
-     * Responsavel por validar formulario
+     * Responsável por validar formulário de usuário
      *
      * @param Request $request
-     * @param [object] $usuario
+     * @param string $tipo
      * @return void
      */
-    public function validarFormulario($request, $tipo)
+    public function validarFormulario( $request, string $tipo)
     {
         switch ($tipo) {
             case 'store':
-                $request->validate([
-                    'colaborador_id' => ['required', 'integer'],
+                $rules = [
+                    'colaborador_id' => ['required', 'integer', 'unique:users', function ($attribute, $value, $fail) {
+                        if (!Colaborador::where('id', $value)->exists()) {
+                            $fail('O ID do colaborador fornecido não existe.');
+                        }
+                    }],
                     'qtdToken' => ['required', 'string'],
                     'status' => ['required', 'string'],
                     'perfil' => ['required'],
                     'name' => ['required', 'string', 'max:255'],
                     'password_confirmation' => ['required'],
                     'password' => $this->getRegraPassword(),
-                ]);
-                break;
+                ];
+
+                $feedback = $this->feedback();
+
+                $request->validate($rules, $feedback);
+            break;
             case 'update':
                 $regras =  [
                     'colaborador_id' => ['required', 'integer'],
@@ -100,13 +109,14 @@ class User extends Authenticatable
                     ]);
                 }
                 $request->validate($regras);
-                break;
+            
+            break;
             case 'resetPassword':
                 $request->validate([
                     'password_confirmation' => ['required'],
                     'password' => $this->getRegraPassword(),
                 ]);
-                break;
+            break;
         }
     }
 
@@ -116,14 +126,29 @@ class User extends Authenticatable
             'required',
             'confirmed',
             'string',
-            'min:6',              // deve ter pelo menos 6 caracteres
-            'regex:/[a-z]/',      // deve conter pelo menos uma letra minúscula
-            'regex:/[A-Z]/',      // deve conter pelo menos uma letra maiúscula
-            'regex:/[0-9]/',      // deve conter pelo menos um dígito
+            'min:6', // deve ter pelo menos 6 caracteres
+            'regex:/[a-z]/', // deve conter pelo menos uma letra minúscula
+            'regex:/[A-Z]/', // deve conter pelo menos uma letra maiúscula
+            'regex:/[0-9]/', // deve conter pelo menos um dígito
             'regex:/[@$!%*#?&]/', // deve conter um caractere especial
         ];
     }
 
+    public function feedback()
+    {
+        return [
+            'unique'             => 'Este id já está sendo usado.',
+            'required'           => 'Campo obrigatorio.',
+            'confirmed'          => 'A confirmação de senha não corresponde.',
+            'string'             => 'A senha deve ser uma string.',
+            'min'                => 'A senha deve ter pelo menos :min caracteres.',
+            'regex'              => 'A senha deve conter pelo menos uma letra minúscula, uma letra maiúscula, um dígito e um caractere especial.',
+            'regex:/[a-z]/'      => 'A senha deve conter pelo menos uma letra minúscula.',
+            'regex:/[A-Z]/'      => 'A senha deve conter pelo menos uma letra maiúscula.',
+            'regex:/[0-9]/'      => 'A senha deve conter pelo menos um dígito.',
+            'regex:/[@$!%*#?&]/' => 'A senha deve conter pelo menos um caractere especial.'
+        ];
+    }
 
     public function  rulesLogin()
     {
@@ -132,6 +157,7 @@ class User extends Authenticatable
             'password' => 'required',
         ];
     }
+
     public function  feedbackLogin()
     {
         return  [
@@ -139,6 +165,4 @@ class User extends Authenticatable
             'password.required' => 'O campo senha é obrigatório!',
         ];
     }
-
-
 }

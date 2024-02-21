@@ -15,7 +15,7 @@
                 @endif
             </div>
             <div class="info">
-                <a href="{{ route('usuario.meuPerfil') }}" class="d-block">
+                <a href="{{ route('meuPerfil.index') }}" class="d-block">
                     @if (Auth::check())
                         {{ Auth::user()->name }}
                     @endif
@@ -59,3 +59,6 @@
         </nav>
     </div>
 </aside>
+
+
+

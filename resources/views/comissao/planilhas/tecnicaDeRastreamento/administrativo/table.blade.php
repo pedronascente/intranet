@@ -28,7 +28,7 @@
                             {{ $comissao->observacao }}
                         </td>
                         <td>
-                            <x-botao.btn-editar :rota="route('comissao.administrativo.editarComissaoAdministrativo', ['planilha' => $comissao->planilha_id, 'comissao' => $comissao->id])"/>
+                            <x-botao.btn-editar :rota="route('comissao.administrativo.editarComissaoAdministrativo', ['planilha' => $comissao->planilha_id, 'comissao' => $comissao->id])" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota"/>
                         </td>
                     </tr>
                 @endforeach

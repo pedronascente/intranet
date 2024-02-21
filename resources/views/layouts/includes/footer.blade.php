@@ -9,3 +9,7 @@
         </div>
     </div>
 </footer>
+@php
+    $permissoesDoModuloDaRota = session()->get('permissoesDoModuloDaRota');
+    var_dump($permissoesDoModuloDaRota);
+@endphp

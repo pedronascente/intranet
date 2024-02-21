@@ -28,8 +28,8 @@
                         <td>{{ 'R$ ' . number_format($comissao->comissao, 2, ',', '.') }}</td>
                         <td>{{ 'R$ ' . number_format($comissao->desconto_comissao, 2, ',', '.') }}</td>
                         <td>
-                            <x-botao.btn-editar :rota="route('stsace-cftv.edit', $comissao->id)"/>
-                            <x-botao.btn-excluir :rota="route('stsace-cftv.destroy', $comissao->id)" titulo="Excluir Comissão" />
+                            <x-botao.btn-editar :rota="route('stsace-cftv.edit', $comissao->id)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota"/>
+                            <x-botao.btn-excluir :rota="route('stsace-cftv.destroy', $comissao->id)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota"/>
                         </td>
                     </tr>
                 @endforeach

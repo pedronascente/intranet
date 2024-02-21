@@ -7,17 +7,17 @@ use Illuminate\View\Component;
 class BtnExcluir extends Component
 {
     public $rota;
-    public $titulo;
+    public $arrayListPermissoesDoModuloDaRota;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($rota, $titulo)
+    public function __construct($rota, $arrayListPermissoesDoModuloDaRota)
     {
-        $this->rota   = $rota;
-        $this->titulo = $titulo;
+        $this->rota = $rota;
+        $this->arrayListPermissoesDoModuloDaRota = $arrayListPermissoesDoModuloDaRota;
     }
 
     /**

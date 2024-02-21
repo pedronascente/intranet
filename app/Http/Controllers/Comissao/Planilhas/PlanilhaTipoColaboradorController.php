@@ -11,16 +11,21 @@ class PlanilhaTipoColaboradorController extends Controller
 {
   private $planilha;
 
+  private $arrayListPermissoesDoModuloDaRota;
+
   public function __construct(Planilha $planilha)
   {
     $this->planilha = $planilha;
+    $this->middleware(function ($request, $next) {
+      $this->arrayListPermissoesDoModuloDaRota = session()->get('permissoesDoModuloDaRota');
+      return $next($request);
+    });
   }
 
   public function index($id)
   {
-    $planilha      = $this->planilha->with('tipo')->findOrFail($id);
+    $planilha = $this->planilha->with('tipo')->findOrFail($id);
     $tipo_planilha = $planilha->tipo->formulario;
-
     return $this->getViewWithComissaoData($tipo_planilha, $planilha, $this->getComissaoModel($tipo_planilha));
   }
 
@@ -51,15 +56,17 @@ class PlanilhaTipoColaboradorController extends Controller
    */
   private function getViewWithComissaoData($tipo_planilha, $planilha, $comissaoModel)
   {
+
     $valorTotalComissao = $comissaoModel::where('planilha_id', $planilha->id)->sum('comissao');
     $valorTotalComissao = number_format($valorTotalComissao, 2, ',', '.');
 
     return view('comissao.planilhas.' . $tipo_planilha . '.colaborador.index', [
-      'planilha'           => $planilha,
-      'meios'              => $this->getMeio(),
-      'servico_alarme'     => $this->getServicoAlarme(),
-      'listaComissao'      => $comissaoModel::where('planilha_id', $planilha->id)->orderBy('id', 'desc')->paginate(10),
+      'planilha' => $planilha,
+      'meios' => $this->getMeio(),
+      'servico_alarme' => $this->getServicoAlarme(),
+      'listaComissao' => $comissaoModel::where('planilha_id', $planilha->id)->orderBy('id', 'desc')->paginate(10),
       'valorTotalComissao' =>  $valorTotalComissao,
+      'arrayListPermissoesDoModuloDaRota' =>  $this->arrayListPermissoesDoModuloDaRota,
     ]);
   }
 

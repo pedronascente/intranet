@@ -5,83 +5,99 @@ namespace App\Http\Controllers\Login;
 use App\Models\User;
 use App\Models\Token;
 use App\Models\Perfil;
-use App\Models\Colaborador;
+use App\Models\Colaborador\Colaborador;
 use Illuminate\Http\Request;
-use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\PHPMailer;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
+use App\Http\Controllers\Help\CaniveteHelp;
+use Illuminate\Support\Facades\Redirect;
 class UserController extends Controller
 {
     private $user;
+    private $arrayListPermissoesDoModuloDaRota;
 
     public function __construct(User $user)
     {
         $this->user = $user;
+        $this->middleware(function ($request, $next) {
+            $this->arrayListPermissoesDoModuloDaRota = session()->get('permissoesDoModuloDaRota');
+            return $next($request);
+        });
     }
 
     public function index()
     {
-        $user = $this->user->with('perfil')
-                            ->orderBy('id', 'desc')
-                            ->paginate(10);
-        return view('configuracoes.usuario.index', [
-            'collections' => $user,
+        $titulo = "Lista de Usuários";
+        $arrayListUsuario = $this->user->with('perfil')->orderBy('id', 'desc')->paginate(10);
+        return view('usuario.index', [
+            'titulo' => $titulo,
+            'arrayListUsuario' => $arrayListUsuario,
+            'arrayListPermissoesDoModuloDaRota' => $this->arrayListPermissoesDoModuloDaRota,
         ]);
     }
 
     public function create()
     {
-        return view('configuracoes.usuario.create', [
-            'titulo' => 'Cadastrar usário',
-            'perfis' => Perfil::all()
-        ]);
+        if (in_array('Criar', $this->arrayListPermissoesDoModuloDaRota)) {
+            $titulo = 'Cadastrar usário';
+            $Perfil = Perfil::all();
+            return view('usuario.create', [
+                'titulo' => $titulo,
+                'perfis' => $Perfil
+            ]);
+        } else {
+            return redirect()->route('usuario.index')->with('error', "Você não Tem Permissão de Cadastro.");
+        }       
     }
 
     public function store(Request $request)
     {
         $this->user->validarFormulario($request, 'store');
-        $user                 = $this->user;
-        $user->name           = $request->name;
-        $user->status         = $request->status;
-        $user->qtdToken       = $request->qtdToken;
+        $user = new User();
+        $user->name = $request->name;
+        $user->status = $request->status;
+        $user->qtdToken = $request->qtdToken;
         $user->colaborador_id = $request->colaborador_id;
-        $user->perfil_id      = $request->perfil;
-        $user->password       = Hash::make($request->password);
-        $user->save();
-
-        Token::gerarToken($user->user_id, $request->qtdToken);
-
-        return redirect()
-            ->route('usuario.index')
-            ->with('status', "Registrado com sucesso!");
+        $user->perfil_id = $request->perfil;
+        $user->password = Hash::make($request->password);
+        try {
+            $user->save();
+            Token::gerarToken($user->id, $request->qtdToken);
+            return Redirect::route('usuario.index')->with('status', "Registrado com sucesso!");
+        } catch (\Exception $e) {
+            return Redirect::back()->withErrors(['error' => 'Ocorreu um erro ao salvar o usuário. Por favor, tente novamente.']);
+        }
     }
 
     public function edit($id)
     {
-        return view('configuracoes.usuario.edit', [
-            'titulo' => "Editar usuário",
-            'user'   => $this->user->findOrFail($id),
-            'perfis' => Perfil::orderBy('id', 'desc')->get()
-            
-        ]);
+        if (in_array('Criar', $this->arrayListPermissoesDoModuloDaRota)) {
+            $titulo = "Editar usuário";
+            $user = $this->user->findOrFail($id);
+            $perfil = Perfil::orderBy('id', 'desc')->get();
+            return view('usuario.edit', [
+                'titulo' => $titulo,
+                'user' => $user,
+                'perfis' => $perfil
+            ]);
+        } else {
+            return redirect()->route('usuario.index')->with('error', "Você não Tem Permissão de Editar.");
+        }       
     }
 
     public function update(Request $request, $id)
     {
-
         $this->user->validarFormulario($request, 'update');
-        $user         = $this->user->with('perfil')->findOrFail($id);
-        $perfil       = Perfil::findOrFail($request->perfil);
+        $user = $this->user->with('perfil')->findOrFail($id);
+        $perfil = Perfil::findOrFail($request->perfil);
 
         if ($user->qtdToken != $request->qtdToken) {
             Token::gerarToken($id, $request->qtdToken);
         }
 
-        $user->status  = $request->status;
-        $user->name     = $request->name;
+        $user->status = $request->status;
+        $user->name = $request->name;
         $user->qtdToken = $request->qtdToken; 
         $user->perfil()->associate($perfil);
         
@@ -89,54 +105,43 @@ class UserController extends Controller
             $user->password = Hash::make($request->password);
         }
 
-        $user->save();
-        
-        return redirect()
-            ->route('usuario.show', $user->id)
-            ->with('status', "Atualizado com sucesso!");
+        try {
+            $user->save();
+            return redirect()->route('usuario.show', $user->id)->with('status', "Atualizado com sucesso!");
+        } catch (\Exception $e) {
+            return Redirect::back()->withErrors(['error' => 'Ocorreu um erro ao atualizar o usuário. Por favor, tente novamente.']);
+        }
     }
 
     public function show($id)
     {
-        $usuario = $this->user->with('perfil', 'colaborador','tokens')
-                               ->findOrFail($id);
-        return view('configuracoes.usuario.show', [
-            'titulo' => 'Visualizar usuário',
-            'user'   => $usuario,
-            'status' => $usuario->getStatus($id),
-        ]);
-    }
-
-    public function meuPerfil(Request $request)
-    {
-        if (isset($request->user()->id)) {
-            $usuario = $this->user->with('colaborador', 'perfil')
-                                  ->findorFail($request->user()->id);
-            return view('meu_perfil.index', [
-                'id usuario'  => $usuario->id,
-                'usuario'     => $usuario,
-                'colaborador' => $usuario->colaborador,
-                'perfil'      => $usuario->perfil,
-                'status'      => $usuario->getStatus($usuario->id),
+        if (in_array('Visualizar', $this->arrayListPermissoesDoModuloDaRota)) {
+            $titulo = "Visualizar usuário";
+            $usuario = $this->user->with('perfil', 'colaborador', 'tokens')->findOrFail($id);
+            $status = $usuario->getStatus($id);
+            return view('usuario.show', [
+                'titulo' => $titulo,
+                'user' => $usuario,
+                'status' => $status,
+                'arrayListPermissoesDoModuloDaRota' => $this->arrayListPermissoesDoModuloDaRota,
             ]);
         } else {
-            return redirect()
-                ->route('login.form');
-        }
+            return redirect()->route('usuario.index')->with('error', "Você não Tem Permissão de Visualizar.");
+        }      
     }
 
     public function destroy($id)
     {
-        $usuario = $this->user->with('colaborador')->findOrFail($id);
-        if (!empty($usuario->colaborador)) {
-            return redirect()
-                ->route('usuario.index')
-                ->with('warning', "Não foi possivel escluir!, Este usuario está sendo associado a um colaborador.");
-        }
-        $usuario->delete();
-        return redirect()
-            ->route('usuario.index')
-            ->with('status', "Registro excluido com sucesso!");
+        if (in_array('Excluir', $this->arrayListPermissoesDoModuloDaRota)) {
+            $usuario = $this->user->with('colaborador')->findOrFail($id);
+            if (!empty($usuario->colaborador)) {
+                return redirect()->route('usuario.index')->with('warning', "Não foi possivel escluir!, Este usuario está sendo associado a um colaborador.");
+            }
+            $usuario->delete();
+            return redirect()->route('usuario.index')->with('status', "Registro excluido com sucesso!");
+        } else {
+            return redirect()->route('usuario.index')->with('error', "Você não Tem Permissão de Excluir.");
+        }       
     }
 
     public function resetarSenha(Request $request, $id)
@@ -150,9 +155,8 @@ class UserController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        $this->composeEmail($usuario->colaborador, 'senha_recuperada');
-        return redirect()
-            ->route('usuario.senhaSucesso');
+        $this->enviarEmail($usuario->colaborador, 'senha_recuperada');
+        return redirect()->route('usuario.senhaSucesso');
     }
 
     public function recuperarSenhaCreate()
@@ -169,13 +173,10 @@ class UserController extends Controller
             $colaborador->token_reset_pass = $tokenResetEmail;
             $colaborador->update();
             //enviar email :
-            $this->composeEmail($colaborador, 'recuperar_senha');
-            return redirect()
-                ->route('usuario.senhaSucesso');
+            $this->enviarEmail($colaborador, 'recuperar_senha');
+            return redirect()->route('usuario.recuperarSenhaSucesso');
         }
-        return redirect()
-            ->route('usuario.recuperarSenhaCreate')
-            ->with('error', "Este email não está registrado!");
+        return redirect()->route('usuario.recuperarSenhaCreate')->with('error', "Este email não está registrado!");
     }
 
     public function recuperarSenhaSucesso()
@@ -185,7 +186,7 @@ class UserController extends Controller
 
     public function senhaCreate($email, $token)
     {
-        $colaborador = Colaborador::where('email', $email)->where('token_reset_pass', $token)->first();
+        $colaborador = Colaborador::with('usuario')->where('email', $email)->where('token_reset_pass', $token)->first();
         if (!$colaborador) {
             return redirect('/');
         } else {
@@ -198,32 +199,15 @@ class UserController extends Controller
         return view('login.senhaSucesso');
     }
 
-    public function composeEmail($colaborador, $tipoMensagem)
+    private function enviarEmail($colaborador, $tipoMensagem)
     {
-        $mail = new PHPMailer(true);
-        $mail->CharSet = "UTF-8";
-        try {
-            //Server configuracoes
-            $mail->SMTPDebug = 0;                      //Enable verbose debug output
-            $mail->isSMTP();
-            //Send using SMTP
-            $mail->Host       = env('PHP_MAILER_HOST');                     //Set the SMTP server to send through
-            $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-            $mail->Username   = env('PHP_MAILER_USERNAME');;                     //SMTP username
-            $mail->Password   = env('PHP_MAILER_PASSWORD');                               //SMTP password
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-            $mail->Port       = env('PHP_MAILER_PORT');                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-            //Recipients
-            $mail->setFrom('desenvolvimento@grupovolpato.com', 'Intranet');
-            $mail->addAddress($colaborador->email, $colaborador->nome);     //Add a recipient
-            //Content
-            $mail->isHTML(true);                                  //Set email format to HTML
-            $mail->Subject = 'Recuperar Senha';
-            $mail->Body = $this->getBody($colaborador, $tipoMensagem);
-            $mail->send();
-        } catch (Exception $e) {
-            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-        }
+        $CaniveteHelp = new CaniveteHelp();  
+        $CaniveteHelp->enviarEmail([
+            'emailFfrom'=> 'desenvolvimento@grupovolpato.com',
+            'email'=> $colaborador->email,
+            'nome'=> $colaborador->nome,
+            'body'=> $this->getBody($colaborador, $tipoMensagem),
+        ]);
     }
 
     private function getBody($colaborador, $tipoMensagem)
@@ -237,7 +221,7 @@ class UserController extends Controller
                 $html .= "<meta charset='utf-8'>";
                 $html .= "<meta http-equiv='X-UA-Compatible' content='IE=edge'>";
                 $html .= "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">";
-                $html .= "<title>Laravel - Resultados</title>";
+                $html .= "<title>Recuperar minha Senha</title>";
                 $html .= "</head>";
                 $html .= "<body>";
                 $html .= "<p>presado(a) $colaborador->nome</p>";
