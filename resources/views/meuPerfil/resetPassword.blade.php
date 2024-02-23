@@ -1,4 +1,4 @@
-<form action="{{ route('usuario.resetarSenha', $colaborador->usuario->id) }}" method="POST">
+<form action="{{ route('meuPerfil.resetarSenha', $colaborador->usuario->id) }}" method="POST">
     @csrf
     @method('PUT')
     <div class="card-body">

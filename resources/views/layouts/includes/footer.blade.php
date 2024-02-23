@@ -10,6 +10,23 @@
     </div>
 </footer>
 @php
+/*
+Debug :
+
+    $perfilDoUsuarioAutenticado = session()->get('perfilDoUsuarioAutenticado');
+    $categoriasDoUsuarioAutenticadoNome = session()->get('categoriasDoUsuarioAutenticadoNome');
     $permissoesDoModuloDaRota = session()->get('permissoesDoModuloDaRota');
-    var_dump($permissoesDoModuloDaRota);
+    $modulosDoUsuarioAutenticadoSlug = session()->get('modulosDoUsuarioAutenticadoSlug');
+    $MenuBarraLateral = session()->get('MenuBarraLateral');
+
+    var_dump([
+        'perfilDoUsuarioAutenticado'=> $perfilDoUsuarioAutenticado->perfil->id,
+        'categoriasDoUsuarioAutenticadoNome'=> $categoriasDoUsuarioAutenticadoNome,
+        'modulosDoUsuarioAutenticadoSlug'=> $modulosDoUsuarioAutenticadoSlug,
+        'permissoesDoModuloDaRota'=> $permissoesDoModuloDaRota,
+    ]);
+*/    
+
+
 @endphp
+

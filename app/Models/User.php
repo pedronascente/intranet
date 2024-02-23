@@ -54,10 +54,7 @@ class User extends Authenticatable
 
     public function getStatus($id)
     {
-        $status =  DB::table('users')
-            ->select('status')->where('id', $id)
-            ->first();
-
+        $status =  DB::table('users')->select('status')->where('id', $id)->first();
         if ($status->status == 'on') {
             $retornar = 'Ativo';
         } else {
@@ -73,10 +70,10 @@ class User extends Authenticatable
      * @param string $tipo
      * @return void
      */
-    public function validarFormulario( $request, string $tipo)
+    public function validarFormulario( $request, $method)
     {
-        switch ($tipo) {
-            case 'store':
+        switch($method) {
+            case 'post':
                 $rules = [
                     'colaborador_id' => ['required', 'integer', 'unique:users', function ($attribute, $value, $fail) {
                         if (!Colaborador::where('id', $value)->exists()) {
@@ -92,24 +89,21 @@ class User extends Authenticatable
                 ];
 
                 $feedback = $this->feedback();
-
                 $request->validate($rules, $feedback);
             break;
-            case 'update':
-                $regras =  [
-                    'colaborador_id' => ['required', 'integer'],
+            case 'put':
+                $rules =  [
                     'status' => ['required', 'string'],
                     'perfil' => ['required'],
                     'name' => ['required', 'string', 'max:255'],
                 ];
                 if (!is_null($request->password) || !is_null($request->password_confirmation)) {
-                    $regras = array_merge($regras, [
+                    $rules = array_merge($rules, [
                         'password_confirmation' => ['required'],
                         'password' => $this->getRegraPassword(),
                     ]);
                 }
-                $request->validate($regras);
-            
+                $request->validate($rules);
             break;
             case 'resetPassword':
                 $request->validate([

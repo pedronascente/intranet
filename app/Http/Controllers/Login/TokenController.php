@@ -36,30 +36,22 @@ class TokenController extends Controller
             return redirect('/dashboard');
         } else {
             $request->session()->forget('token_validado');
-            return redirect()
-                ->route("token.create")
-                ->with('error', "Digite um token válido!");
+            return redirect()->route("token.create")->with('error', "Digite um token válido!");
         } 
     }
 
     private function getAcessoUsuario($request)
     {
         $usuarioAutenticado              = $request->user();
-
         $perfilDoUsuarioAutenticado      = $this->user->with('Perfil.modulos')->findOrFail($usuarioAutenticado->id);
-       
         $modulosDoUsuarioAutenticadoId   = $perfilDoUsuarioAutenticado->perfil->modulos->pluck('id')->toArray();
-
         $modulosDoUsuarioAutenticadoSlug = $perfilDoUsuarioAutenticado->perfil->modulos->pluck('slug')->toArray();
-
-
-      //  dd($modulosDoUsuarioAutenticadoId);
         //Extrair categorias:
         foreach ($modulosDoUsuarioAutenticadoId as $modulo_id) {
             $Modulo = Modulo::with('categoria')->find($modulo_id);
             $categoriasDoUsuarioAutenticadoNome[] = $Modulo->categoria->nome;
         }
-
+        $request->session()->put('perfilDoUsuarioAutenticado', $perfilDoUsuarioAutenticado);
         $request->session()->put('categoriasDoUsuarioAutenticadoNome', $categoriasDoUsuarioAutenticadoNome);
         $request->session()->put('modulosDoUsuarioAutenticadoId', $modulosDoUsuarioAutenticadoId);
         $request->session()->put('modulosDoUsuarioAutenticadoSlug', $modulosDoUsuarioAutenticadoSlug);
@@ -67,8 +59,8 @@ class TokenController extends Controller
 
     public function getPosicaoToken(Request $request)
     {
-        $usuario      = $this->user->find($request->user()->id);
+        $usuario = $this->user->find($request->user()->id);
         $posicaoToken = rand(1, $usuario->qtdToken);
         return response()->json(['posicao' => $posicaoToken]);
     }
-}
+}  

@@ -45,7 +45,7 @@
             </div>
             <div class="row">
                 <div class="col-8">
-                    <a href="/recuperar">Recuperar senha?</a>
+                    <a href="{{ route('recuperarSenha.informarEmailRecuperarSenha') }}">Recuperar senha?</a>
                 </div>
                 <div class="col-4">
                     <button type="submit" class="btn btn-primary btn-block">Entrar</button>

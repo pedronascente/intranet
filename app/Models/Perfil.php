@@ -54,4 +54,15 @@ class Perfil extends Model
     {
         return $this->belongsToMany(Permissao::class, 'modulo_permissao', 'perfil_id', 'permissao_id');
     }
+
+    public function getPermissao($moduloId, $perfilId)
+    {
+        return Permissao::select('permissoes.id', 'permissoes.nome')
+        ->join('modulo_permissao', 'permissoes.id', '=', 'modulo_permissao.permissao_id')
+        ->join('perfis', 'perfis.id', '=', 'modulo_permissao.perfil_id')
+        ->join('modulos', 'modulos.id', '=', 'modulo_permissao.modulo_id')
+        ->where('modulo_permissao.modulo_id', $moduloId)
+            ->where('modulo_permissao.perfil_id', $perfilId)
+            ->get();
+    }
 }

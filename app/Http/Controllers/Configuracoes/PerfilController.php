@@ -92,31 +92,53 @@ class PerfilController extends Controller
 
     public function edit($id)
     {
-        if (in_array('Editar', $this->arrayListPermissoesDoModuloDaRota)) {
-            $titulo = "Editar Perfil";
-            // Obter o perfil com seus módulos associados e suas permissões específicas
-            $perfil = Perfil::with(['modulos.permissoes' => function ($query) use ($id) {
-                $query->whereHas('modulos_associados', function ($q) use ($id) {
-                    $q->where('perfil_id', $id);
-                });
-            }])->findOrFail($id);
-            $listarModulosAssociados = $perfil->modulos->pluck('id')->toArray();
-            $moduloCategorias = ModuloCategoria::with('modulos')->get();
-            $Permissao = Permissao::all();
+
+        if (!in_array('Editar', $this->arrayListPermissoesDoModuloDaRota)) {
+            return redirect()->route('perfil.index')->with('error', "Você não Tem Permissão de Edição.");
+        }
+
+        //1 Definir titulo da pagina.
+        $titulo = "Editar Perfil";
+        $perfil = Perfil::with('modulos')->findOrFail($id);
+        $arraylistCategoriasEseusModulos = ModuloCategoria::with('modulos')->get();
+        $arrayListModulosAssociados = $perfil->modulos->pluck('id')->toArray();
+        $arrayListPermissoes = Permissao::all();
+
+        $debug = false;
+        if($debug){
+            foreach ($arraylistCategoriasEseusModulos as $categoria) {
+                echo  "<B>" . $categoria->nome . '</B> (Categoria)<br><br>';
+                foreach ($categoria->modulos as $modulo) {
+                    echo  "<br><b>" . $modulo->nome . '</b> (Modulo)<br><br>';
+                    foreach ($arrayListPermissoes as $permissao) {
+                        $permissoesDoModulo = $perfil->getPermissao($modulo->id, $perfil->id)->pluck('id')->toArray();  
+                        echo    '<input type="checkbox" name="ArrayListPermissoes[$modulo->id][]" class="custom-control-input"';
+                        if (in_array($permissao->id, $permissoesDoModulo)) {
+                            echo 'checked';
+                        }
+                        echo '>  - ' . $permissao->nome  . '<br>';
+                    }
+                }
+                echo '<hr>';
+            }
+            var_dump([
+                '$permissoesDoModulo'=> $permissoesDoModulo
+            ]);
+        }else{
             return view('perfil.edit', [
                 'titulo' => $titulo,
                 'perfil' => $perfil,
-                'listarCategoriasEseusModulos' => $moduloCategorias,
-                'listarPermissoes' => $Permissao,
-                'listarModulosAssociados' => $listarModulosAssociados,
+                'arraylistCategoriasEseusModulos' => $arraylistCategoriasEseusModulos,
+                'arrayListModulosAssociados' => $arrayListModulosAssociados,
+                'arrayListPermissoes' => $arrayListPermissoes,
             ]);
-        } else {
-            return redirect()->route('perfil.index')->with('error', "Você não Tem Permissão de Edição.");
         }
     }
 
     public function update(Request $request, $id)
     {
+
+       // dd($request->all(), $id);
         // Validar os dados da requisição
         $request->validate([
             'nome' => 'required|max:190',
@@ -141,7 +163,7 @@ class PerfilController extends Controller
                 }
             }
         }
-        return redirect()->route('perfil.edit', $id)->with('status', "Registro atualizado com sucesso!");
+        return redirect()->back()->with('status', "Registro atualizado com sucesso!");
     }
 
     public function destroy($id)

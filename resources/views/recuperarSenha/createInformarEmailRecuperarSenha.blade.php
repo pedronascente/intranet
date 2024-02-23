@@ -6,7 +6,7 @@
         </div>
         <div class="card">
             <div class="card-body login-card-body  ">
-                <form action="{{ route('usuario.recuperarSenhaCreate') }}" method="post">
+                <form action="{{ route('recuperarSenha.enviarEmailRecuperarSenha') }}" method="post">
                     @csrf
                     <div class="input-group mb-3 mt-3">
                         <input type="text" name="email" class="form-control @error('email') is-invalid @enderror"

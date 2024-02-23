@@ -12,18 +12,6 @@
 @endsection
 
 @section('content')
-
-<!-- Exibir erros de validação -->
-@if($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-
     <div class="card p-3">
         <div class="card">
             <form action="{{ route('usuario.store') }}" method="POST">
@@ -71,7 +59,6 @@
                             </div>
                         </div>
                     </div>
-                    
                     <div class="row">
                         <div class="col-md-5">
                             <div class="form-group">

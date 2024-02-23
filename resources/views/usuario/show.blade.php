@@ -16,16 +16,16 @@
         <div class="card-body box-profile">
             <ul class="list-group list-group-unbordered mb-3">
                 <li class="list-group-item">
-                    <b>Nome</b> <a class="float-right"> {{ $user->name }}</a>
+                    <b>Nome</b> <a class="float-right"> {{ $usuario->name }}</a>
                 </li>
                 <li class="list-group-item">
-                    <b>Perfil</b> <a class="float-right"> {{ $user->perfil->nome }}</a>
+                    <b>Perfil</b> <a class="float-right"> {{ $usuario->perfil->nome }}</a>
                 </li>
                 <li class="list-group-item">
                     <b>Status</b> <a class="float-right"> {{ $status }}</a>
                 </li>
                 <li class="list-group-item">
-                    <b>QTD. de Tokens:</b> <a class="float-right"> {{ $user->qtdToken }}</a>
+                    <b>QTD. de Tokens:</b> <a class="float-right"> {{ $usuario->qtdToken }}</a>
                 </li>
             </ul>
         </div>
@@ -42,8 +42,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if ($user->tokens)
-                            @foreach ($user->tokens as $token )
+                        @if ($usuario->tokens)
+                            @foreach ($usuario->tokens as $token )
                                 <tr class="text-center">
                                     <td>{{$token->token}}</td>
                                     <td>{{$token->posicao}}</td>
@@ -56,7 +56,7 @@
             </div>
         </div>
         <div class="card-footer">
-            <x-botao.btn-editar :rota="route('usuario.edit', $user->id)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota"/>
+            <x-botao.btn-editar :rota="route('usuario.edit', $usuario->id)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota"/>
             <x-botao.btn-voltar :rota="route('usuario.index')" />
         </div>
     </div>

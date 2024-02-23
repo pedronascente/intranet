@@ -71,7 +71,7 @@
         </div>
         <div class="card-body">
             @if ($colaborador)
-                @include('meu_perfil.resetPassword')
+                @include('meuPerfil.resetPassword')
             @endif
         </div>
     </div>

@@ -25,10 +25,11 @@ class PlanilhaController extends Controller
         });
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $colaborador_id = $request->user()->colaborador_id; 
         $titulo = "Lançar Comisssão";
-        $arrayListPlanilhasEmAndamentoEaguardandoHomologacao = $this->planilha->whereIn('planilha_status_id', [1, 4])->orderBy('id', 'desc')->paginate($this->paginate);
+        $arrayListPlanilhasEmAndamentoEaguardandoHomologacao = $this->planilha->where('colaborador_id', $colaborador_id)->whereIn('planilha_status_id', [1, 4])->orderBy('id', 'desc')->paginate($this->paginate);
         return view('comissao.planilha.index', [
             'titulo' => $titulo,
             'arrayListPlanilha' => $arrayListPlanilhasEmAndamentoEaguardandoHomologacao,

@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 class DatabaseSeeder extends Seeder
 {
     public function run()
-    {
+    { 
         // \App\Models\User::factory(10)->create();
         $this->call([
             PermissaoSeeder::class,
@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             ModuloCategoriasSeeder::class,
             ModuloSeeder::class,
             ModuloPerfilSeeder::class,
+            ModuloPermissaoSeed::class,
             MeioSeeder::class,
             ServicoAlarmeSeeder::class,
             PlanilhaTipoSeeder::class,

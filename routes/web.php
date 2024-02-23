@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MeuPerfilController;
 
-use App\Http\Controllers\Login\UserController;
+use App\Http\Controllers\Usuario\UserController;
+use App\Http\Controllers\Usuario\RecuperarSenhaController;
 use App\Http\Controllers\Login\LoginController;
 use App\Http\Controllers\Login\TokenController;
 
@@ -75,28 +76,30 @@ Route::prefix('/meu-perfil')->group(function () {
     Route::get('/', [MeuPerfilController::class, 'index'])->name('meuPerfil.index');
     Route::get('/{id}/edit', [MeuPerfilController::class, 'edit'])->name('meuPerfil.edit');
     Route::put('/{id}', [MeuPerfilController::class, 'update'])->name('meuPerfil.update');
-    Route::put('/resetar-senha/{id}', [UserController::class, 'resetarSenha'])->name('usuario.resetarSenha');
+    Route::put('/resetar-senha/{id}', [MeuPerfilController::class, 'resetarSenhaDoMeuPerfil'])->name('meuPerfil.resetarSenha');
+    Route::get('/sucesso', [MeuPerfilController::class, 'sucessoSenhaResetada'])->name('meuPerfil.sucessoSenhaResetada');
 });
+ 
 
-Route::get('/senha/{email}/{token}', [UserController::class, 'senhaCreate'])->name('senha');
-Route::get('/senha', [UserController::class, 'senhaSucesso'])->name('usuario.senhaSucesso');
+//Route::get('/senha', [UserController::class, 'senhaSucesso'])->name('usuario.senhaSucesso');
 
-Route::prefix('/recuperar')->group(function () {
-    Route::get('/', [UserController::class, 'recuperarSenhaCreate'])->name('usuario.recuperarSenhaCreate');
-    Route::post('/', [UserController::class, 'recuperarSenhaStore']);
-    Route::get('/sucesso', [UserController::class, 'recuperarSenhaSucesso'])->name('usuario.recuperarSenhaSucesso');
+Route::prefix('/recuperar-senha')->group(function () {
+    Route::get('/', [RecuperarSenhaController::class, 'informarEmailRecuperarSenha'])->name('recuperarSenha.informarEmailRecuperarSenha');
+    Route::post('/', [RecuperarSenhaController::class, 'enviarEmailRecuperarSenha'])->name('recuperarSenha.enviarEmailRecuperarSenha');
+    Route::get('/sucesso', [RecuperarSenhaController::class, 'sucessoEnviarEmailRecuperarSenha'])->name('recuperarSenha.sucessoEnviarEmailRecuperarSenha');
+    Route::get('/{email}/{token}', [RecuperarSenhaController::class, 'cadastrarNovaSenha'])->name('recuperarSenha.cadastrarNovaSenha');
+    Route::put('/{id}', [RecuperarSenhaController::class, 'resetarMinhaSenhaDeUsuario'])->name('recuperarSenha.resetarMinhaSenhaDeUsuario');
+    Route::get('success/', [RecuperarSenhaController::class, 'sucessoSenhaRecuperada'])->name('recuperarSenha.sucessoSenhaRecuperada');
 });
 
 Route::middleware(['validarPermissaoDeRota:lancar-comissao'])->group(function () {
     //planililha:
     Route::resource('/planilha', PlanilhaController::class);
     Route::get('/planilha{planilha}/homologar', [PlanilhaController::class, 'homologar'])->name('planilha.homologar');
-    
     Route::prefix('/comissao')->group(function () {
         Route::get('/', function () {
             return redirect()->route('planilha.index');
         });
-        
         //pesquisar colaborador:   
         Route::prefix('/pesquisar')->group(function () {
             Route::get('/', [ColaboradorController::class, 'createPesquisar'])->name('colaborador.pesquisar');

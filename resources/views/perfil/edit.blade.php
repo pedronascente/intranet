@@ -49,14 +49,14 @@
                                     @enderror
                                 </th>
                                 <th>Descrição</th>
-                                @foreach ($listarPermissoes as $permissao)
+                                @foreach ($arrayListPermissoes as $permissao)
                                     <th class="text-center">{{ $permissao->nome }}</th>
                                 @endforeach
                             </tr>
                         </thead>
                         <tbody>
-                            @if($listarCategoriasEseusModulos)
-                                @foreach ($listarCategoriasEseusModulos as $categoria)
+                            @if($arraylistCategoriasEseusModulos)
+                                @foreach ($arraylistCategoriasEseusModulos as $categoria)
                                     @php $firstModule = true; @endphp <!-- Flag para controlar a primeira linha de módulo -->
                                     @foreach ($categoria->modulos as $modulo)
                                         <tr>
@@ -69,19 +69,18 @@
                                             @endif
                                             <td class="p-3">
                                                 <div class="custom-control custom-checkbox">
-                                                    <input class="custom-control-input" type="checkbox" id="moduloCheckbox{{ $modulo->id }}" value="{{ $modulo->id }}" name="ArrayListModulos[]" {{ in_array($modulo->id, $listarModulosAssociados) ? 'checked' : '' }}>
+                                                    <input class="custom-control-input" type="checkbox" id="moduloCheckbox{{ $modulo->id }}" value="{{ $modulo->id }}" name="ArrayListModulos[]" {{ in_array($modulo->id, $arrayListModulosAssociados) ? 'checked' : '' }}>
                                                     <label for="moduloCheckbox{{ $modulo->id }}" class="custom-control-label">
                                                         {{ $modulo->nome }}
                                                     </label>
                                                 </div>
                                             </td>
                                             <td>{{ $modulo->descricao }}</td>
-                                            @foreach ($listarPermissoes as $permissao)
+                                            @foreach ($arrayListPermissoes as $permissao)
                                                 <td class="text-center">
                                                     <div class="custom-control custom-checkbox">
                                                         @php
-                                                            $moduloEncontrado = $perfil->modulos->find($modulo->id);
-                                                            $permissoesDoModulo = $moduloEncontrado ? $moduloEncontrado->permissoes->pluck('id')->toArray() : [];
+                                                            $permissoesDoModulo = $perfil->getPermissao($modulo->id, $perfil->id)->pluck('id')->toArray();
                                                         @endphp
                                                         <input type="checkbox" name="ArrayListPermissoes[{{ $modulo->id }}][]" value="{{ $permissao->id }}" class="custom-control-input" id="permissaoCheckbox{{ $modulo->id }}{{ $permissao->id }}" {{ in_array($permissao->id, $permissoesDoModulo) ? 'checked' : '' }}>
                                                         <label for="permissaoCheckbox{{ $modulo->id }}{{ $permissao->id }}" class="custom-control-label"></label>

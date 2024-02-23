@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Help;
 
-use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\PHPMailer;
 class CaniveteHelp
 {
     public static function formatarDataLogin()
@@ -78,38 +76,4 @@ class CaniveteHelp
       }
       return false;
     }
-    
-     public function enviarEmail($arrayDosDadosDeEnvio){
-
-        $emailFfrom = $arrayDosDadosDeEnvio['emailFfrom'];
-        $email = $arrayDosDadosDeEnvio['email'];
-        $nome = $arrayDosDadosDeEnvio['nome'];
-        $body = $arrayDosDadosDeEnvio['body'];
-
-        $mail = new PHPMailer(true);
-        $mail->CharSet = "UTF-8";
-        try {
-          //Server configuracoes
-          $mail->SMTPDebug = 0;                      //Enable verbose debug output
-          $mail->isSMTP();
-          //Send using SMTP
-          $mail->Host       = env('PHP_MAILER_HOST');                     //Set the SMTP server to send through
-          $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-          $mail->Username   = env('PHP_MAILER_USERNAME');;                     //SMTP username
-          $mail->Password   = env('PHP_MAILER_PASSWORD');                               //SMTP password
-          $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-          $mail->Port       = env('PHP_MAILER_PORT');                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-          //Recipients
-          $mail->setFrom($emailFfrom, 'Intranet');
-          $mail->addAddress($email, $nome);     //Add a recipient
-          //Content
-          $mail->isHTML(true);                                  //Set email format to HTML
-          $mail->Subject = 'Recuperar Senha';
-          $mail->Body = $body;
-          $mail->send();
-        } catch (Exception $e) {
-          echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-        }
-     }
-
 }
