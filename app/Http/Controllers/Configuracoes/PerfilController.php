@@ -96,6 +96,9 @@ class PerfilController extends Controller
             return redirect()->route('perfil.index')->with('error', "Você não Tem Permissão de Edição.");
         }
 
+        if ($id == 1) {
+            return redirect()->route('perfil.index')->with('warning', "Este perfil é do administrador do sistema, portanto não pode ser editado.");
+        }
         //1 Definir titulo da pagina.
         $titulo = "Editar Perfil";
         $perfil = Perfil::with('modulos')->findOrFail($id);

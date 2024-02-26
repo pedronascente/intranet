@@ -43,6 +43,17 @@
                     <div class="row">
                         <div class="col-md-2">
                             <div class="form-group">
+                                <label>Colaborador:</label>
+                                <input type="text" name="colaborador_id"
+                                    class="form-control @error('colaborador_id') is-invalid @enderror"
+                                    placeholder="colaborador id" value="{{ $user->colaborador_id }}">
+                                @error('colaborador_id')
+                                    <span class=" invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
                                 <label>Ativo:</label>
                                 <select name="status" class="custom-select">
                                     <option value="on" @if ($user->status == 'on') selected @endif
