@@ -27,6 +27,4 @@ Debug :
     ]);
 */    
 
-
 @endphp
-
