@@ -92,7 +92,6 @@ class PerfilController extends Controller
 
     public function edit($id)
     {
-
         if (!in_array('Editar', $this->arrayListPermissoesDoModuloDaRota)) {
             return redirect()->route('perfil.index')->with('error', "Você não Tem Permissão de Edição.");
         }

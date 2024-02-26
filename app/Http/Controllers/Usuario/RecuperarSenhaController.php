@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\Usuario;
 
 use App\Models\User;
+use App\Models\Token;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Colaborador\Colaborador;
 use App\Http\Controllers\Help\EnviarEmail;
-use App\Http\Controllers\Help\Emails\BodyEmailRecuperarSenhaUsuario;
+use App\Http\Controllers\Help\Emails\BodyEmailSenhaRecuperada;
+use App\Http\Controllers\Help\Emails\BodyEnviarEmailRecuperarSenhaUsuario;
 
 class RecuperarSenhaController extends Controller
 {
@@ -27,45 +29,48 @@ class RecuperarSenhaController extends Controller
 
   public function enviarEmailRecuperarSenha(Request $request)
   {
-    $request->validate(['email' => 'required|email|email',]);
-    $colaborador = Colaborador::where('email', $request->email)->first();
-    $tokenResetEmail = md5(time());
-    if ($colaborador && $colaborador->count() >= 1) {
-      $colaborador->token_reset_pass = $tokenResetEmail;
-      $colaborador->update();
-      //enviar email:
-      $this->enviarEmail($colaborador, 'recuperar_senha');
-      return redirect()->route('recuperarSenha.sucessoEnviarEmailRecuperarSenha');
-    }
-    return redirect()->route('recuperarSenha.informarEmailRecuperarSenha')->with('error', "Este email não está registrado!");
+      $request->validate(['email' => 'required|email|email',]);
+      $colaborador = Colaborador::where('email', $request->email)->first();
+      $tokenResetEmail = md5(time());
+      if ($colaborador && $colaborador->count() >= 1) {
+        $colaborador->token_reset_pass = $tokenResetEmail;
+        $colaborador->update();
+
+        $this->enviarEmail($colaborador, 'recuperar_senha');
+
+        return redirect()->route('recuperarSenha.sucessoEnviarEmailRecuperarSenha');
+      }
+      return redirect()->route('recuperarSenha.informarEmailRecuperarSenha')->with('error', "Este email não está registrado!");
   }
 
   public function sucessoEnviarEmailRecuperarSenha()
   {
-    return view('recuperarSenha.sucessoEmailEnviadoRecuperarSenha');
+      return view('recuperarSenha.sucessoEmailEnviadoRecuperarSenha');
   }
 
   public function cadastrarNovaSenha($email, $token)
   {
-    $colaborador = Colaborador::with('usuario')->where('email', $email)->where('token_reset_pass', $token)->first();
-    if (!$colaborador) {
-      return redirect('/');
-    } else {
-      return view('recuperarSenha.createCadastrarNovaSenha', ['colaborador' => $colaborador]);
-    }
+      $colaborador = Colaborador::with('usuario')->where('email', $email)->where('token_reset_pass', $token)->first();
+      if (!$colaborador) {
+        return redirect('/');
+      } else {
+        return view('recuperarSenha.createCadastrarNovaSenha', ['colaborador' => $colaborador]);
+      }
   }
 
   public function resetarMinhaSenhaDeUsuario(Request $request, $id)
   {
       $this->user->validarFormulario($request, 'resetPassword');
       $usuario = User::with('colaborador')->findOrFail($id);
+      
       if (empty(!$request->password)) {
         $usuario->password = Hash::make($request->password);
       }
-      $usuario->update();
 
-      //enviar email:
-      $this->enviarEmail($usuario->colaborador, 'senha_recuperada');
+      if($request->resetToken){
+          Token::gerarToken($usuario->id, $usuario->qtdToken);
+      }
+      $this->enviarEmail($usuario, 'senha_recuperada');
 
       Auth::logout();
       $request->session()->invalidate();
@@ -75,18 +80,28 @@ class RecuperarSenhaController extends Controller
   }
 
   public function sucessoSenhaRecuperada(){
-    return view('recuperarSenha.sucessoSenhaRecuperada');
+      return view('recuperarSenha.sucessoSenhaRecuperada');
   }
 
-
-  private function enviarEmail($colaborador, $tipoMensagem)
+  private function enviarEmail($objetoModel, $tipoMensagem)
   {
-    $body = new BodyEmailRecuperarSenhaUsuario($colaborador, $tipoMensagem);
-    $body = $body->getBody();
-    $EnviarEmail = new EnviarEmail();
-    $EnviarEmail->setEmail($colaborador->email);
-    $EnviarEmail->setNome($colaborador->nome);
-    $EnviarEmail->setBody($body);
-    $EnviarEmail->enviarEmail();
+      if($tipoMensagem == 'recuperar_senha'){
+        $email = $objetoModel->email;
+        $nome = $objetoModel->nome;
+        $body = new BodyEnviarEmailRecuperarSenhaUsuario($objetoModel);
+        $body = $body->getBody();
+      
+      }else if($tipoMensagem == 'senha_recuperada'){
+        $email  = $objetoModel->colaborador->email;
+        $nome = $objetoModel->colaborador->nome;
+        $body = new BodyEmailSenhaRecuperada($objetoModel);
+        $body = $body->getBody();
+      }
+
+      $EnviarEmail = new EnviarEmail();
+      $EnviarEmail->setEmail($email);
+      $EnviarEmail->setNome($nome);
+      $EnviarEmail->setBody($body);
+      $EnviarEmail->enviarEmail();
   }
 }

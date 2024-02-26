@@ -26,6 +26,7 @@ class CreateColaboradoresTable extends Migration
             $table->char('ramal', 4);
             $table->bigInteger('numero_matricula')->unique();
             $table->timestamps();
+            $table->integer('colaborador_supervisor_id')->nullable(); 
             $table->integer('base_id')->unsigned();
             $table->foreign('base_id')->references('id')->on('bases');
             $table->integer('empresa_id')->unsigned();

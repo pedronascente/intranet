@@ -9,7 +9,6 @@ class ConfiguracaoController extends Controller
 {
     public function index()
     {
-
         $ModuloCategoria = ModuloCategoria::getCategoriasEseusModulos(2);
         return view('configuracoes.index', ['ModuloCategoria' => $ModuloCategoria]);
     }   

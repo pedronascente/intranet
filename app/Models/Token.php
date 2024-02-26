@@ -34,6 +34,8 @@ class Token extends Model
             $t->setServidorAttribute(substr(md5(time() . rand(10, 100)), 0, 8));
             $t->posicao = $i;
             $t->user_id = $user_id;
+            $t->updated_at = now();
+            $t->created_at = now();
             $t->save();
         }
     }

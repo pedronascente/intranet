@@ -26,6 +26,14 @@
                             <span class=" invalid-feedback">{{ $message }}</span>
                         @enderror
                     </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="resetTokenDeAutenticacao" value="1" name="resetToken">
+                            <label for="resetTokenDeAutenticacao" class="custom-control-label">
+                                Resetar Token de Autenticação?
+                            </label>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-12">
                             <button type="submit" class="btn btn-primary btn-block">Recuperar minha senha</button>

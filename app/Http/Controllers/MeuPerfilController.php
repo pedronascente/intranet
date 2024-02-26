@@ -14,8 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Colaborador\Colaborador;
 use App\Http\Controllers\Help\EnviarEmail;
 use App\Http\Controllers\Help\CaniveteHelp;
-use App\Http\Controllers\Help\Emails\BodyEmailRecuperarSenhaUsuario;
-
+use App\Http\Controllers\Help\Emails\BodyEmailSenhaRecuperada;
 class MeuPerfilController extends Controller
 {
   private $user;
@@ -66,13 +65,9 @@ class MeuPerfilController extends Controller
       $request->validate($colaborador->rules($request, $colaborador), $colaborador->feedback());
       $this->preencherAtributosDoObjeto($request, $colaborador);
       if ($request->editProfile >= 1) {
-        return redirect()
-          ->route('meuPerfil.index')
-          ->with('status', "Registro Atualizado!");
+        return redirect()->route('meuPerfil.index')->with('status', "Registro Atualizado!");
       } else {
-        return redirect()
-          ->route('colaborador.show', $colaborador->id)
-          ->with('status', "Registro Atualizado!");
+        return redirect()->route('colaborador.show', $colaborador->id)->with('status', "Registro Atualizado!");
       }
   }
 
@@ -85,8 +80,7 @@ class MeuPerfilController extends Controller
       }
       $usuario->update();
 
-      //enviar email:
-      $this->enviarEmail($usuario->colaborador, 'senha_recuperada');
+      $this->enviarEmail($usuario);
 
       Auth::logout();
       $request->session()->invalidate();
@@ -98,7 +92,6 @@ class MeuPerfilController extends Controller
   public function sucessoSenhaResetada(){
     return view('meuPerfil.sucessoSenhaResetada');
   }
-
 
   private function preencherAtributosDoObjeto(Request $request, $colaborador)
   {
@@ -132,14 +125,17 @@ class MeuPerfilController extends Controller
     $colaborador->save();
   }
 
-  private function enviarEmail($colaborador, $tipoMensagem)
+  private function enviarEmail($objetoModel)
   {
-    $body = new BodyEmailRecuperarSenhaUsuario($colaborador, $tipoMensagem);
-    $body = $body->getBody();
-    $EnviarEmail = new EnviarEmail();
-    $EnviarEmail->setEmail($colaborador->email);
-    $EnviarEmail->setNome($colaborador->nome);
-    $EnviarEmail->setBody($body);
-    $EnviarEmail->enviarEmail();
+      $email = $objetoModel->colaborador->email;
+      $nome = $objetoModel->colaborador->nome;
+      $body = new BodyEmailSenhaRecuperada($objetoModel);
+      $body = $body->getBody();
+
+      $EnviarEmail = new EnviarEmail();
+      $EnviarEmail->setEmail($email);
+      $EnviarEmail->setNome($nome);
+      $EnviarEmail->setBody($body);
+      $EnviarEmail->enviarEmail();
   }
 }
