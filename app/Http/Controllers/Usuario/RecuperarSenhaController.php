@@ -9,9 +9,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Colaborador\Colaborador;
-use App\Http\Controllers\Help\EnviarEmail;
-use App\Http\Controllers\Help\Emails\BodyEmailSenhaRecuperada;
-use App\Http\Controllers\Help\Emails\BodyEnviarEmailRecuperarSenhaUsuario;
+use App\Http\Controllers\SendEmail\EmailSolicitacaoRecuperarSenha;
+use App\Http\Controllers\SendEmail\EmailRespostaRecuperarSenha;
 
 class RecuperarSenhaController extends Controller
 {
@@ -79,29 +78,39 @@ class RecuperarSenhaController extends Controller
       return redirect()->route('recuperarSenha.sucessoSenhaRecuperada');
   }
 
-  public function sucessoSenhaRecuperada(){
+  public function sucessoSenhaRecuperada()
+  {
       return view('recuperarSenha.sucessoSenhaRecuperada');
   }
 
   private function enviarEmail($objetoModel, $tipoMensagem)
   {
-      if($tipoMensagem == 'recuperar_senha'){
-        $email = $objetoModel->email;
-        $nome = $objetoModel->nome;
-        $body = new BodyEnviarEmailRecuperarSenhaUsuario($objetoModel);
-        $body = $body->getBody();
-      
-      }else if($tipoMensagem == 'senha_recuperada'){
-        $email  = $objetoModel->colaborador->email;
-        $nome = $objetoModel->colaborador->nome;
-        $body = new BodyEmailSenhaRecuperada($objetoModel);
-        $body = $body->getBody();
-      }
-
-      $EnviarEmail = new EnviarEmail();
-      $EnviarEmail->setEmail($email);
-      $EnviarEmail->setNome($nome);
-      $EnviarEmail->setBody($body);
-      $EnviarEmail->enviarEmail();
+      switch ($tipoMensagem) 
+      {
+        case 'recuperar_senha':
+            $e = new EmailSolicitacaoRecuperarSenha();
+            $e->setFrom("desenvolvimento@grupovolpato.com");
+            $e->setName($objetoModel->nome);
+            $e->setEmail($objetoModel->email);
+            $e->setSubject('Recuperar Senha');
+            $e->setTokenResetPass($objetoModel->token_reset_pass);
+            $e->setLink('recuperarSenha.cadastrarNovaSenha');
+            $e->enviarEmail();
+        break;
+        case 'senha_recuperada':
+            $e = new EmailRespostaRecuperarSenha();
+            $e->setFrom("desenvolvimento@grupovolpato.com");
+            $e->setName($objetoModel->colaborador->nome);
+            $e->setEmail($objetoModel->colaborador->email);
+            $e->setSubject('Recuperar Senha');
+            $e->setToken($objetoModel->tokens);
+            $e->enviarEmail();
+            /*
+            []xDbug:
+            echo $e->corpoDoEmail();
+            dd($e);
+            */
+        break;
+      } 
   }
 }

@@ -12,9 +12,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Colaborador\Colaborador;
-use App\Http\Controllers\Help\EnviarEmail;
 use App\Http\Controllers\Help\CaniveteHelp;
-use App\Http\Controllers\Help\Emails\BodyEmailSenhaRecuperada;
+use App\Http\Controllers\SendEmail\EmailRespostaRecuperarSenha;
 class MeuPerfilController extends Controller
 {
   private $user;
@@ -127,15 +126,17 @@ class MeuPerfilController extends Controller
 
   private function enviarEmail($objetoModel)
   {
-      $email = $objetoModel->colaborador->email;
-      $nome = $objetoModel->colaborador->nome;
-      $body = new BodyEmailSenhaRecuperada($objetoModel);
-      $body = $body->getBody();
-
-      $EnviarEmail = new EnviarEmail();
-      $EnviarEmail->setEmail($email);
-      $EnviarEmail->setNome($nome);
-      $EnviarEmail->setBody($body);
-      $EnviarEmail->enviarEmail();
+    $e = new EmailRespostaRecuperarSenha();
+    $e->setFrom("desenvolvimento@grupovolpato.com");
+    $e->setName($objetoModel->colaborador->nome);
+    $e->setEmail($objetoModel->colaborador->email);
+    $e->setSubject('Recuperar Senha');
+    $e->setToken($objetoModel->tokens);
+    $e->enviarEmail();
+    /*
+      [xDbug]
+      echo $e->corpoDoEmail();
+      dd($e);
+    */
   }
 }
