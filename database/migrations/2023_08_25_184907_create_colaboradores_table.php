@@ -16,7 +16,6 @@ class CreateColaboradoresTable extends Migration
         Schema::create('colaboradores', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nome');
-            $table->string('sobrenome');
             $table->string('email')->unique();
             $table->string('token_reset_pass')->nullable();
             $table->char('rg', 20)->nullable();

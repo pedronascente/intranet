@@ -377,7 +377,6 @@ class Planilha extends Model
         $query->where(function ($q) use ($termoPesquisa) {
             $q->whereHas('colaborador', function ($q) use ($termoPesquisa) {
                 $q->where('nome', 'like', '%' . $termoPesquisa . '%')
-                ->orWhere('sobrenome', 'like', '%' . $termoPesquisa . '%')
                 ->orWhere('numero_matricula', 'like', '%' . $termoPesquisa . '%');
             })
                 ->orWhereHas('tipo', function ($q) use ($termoPesquisa) {

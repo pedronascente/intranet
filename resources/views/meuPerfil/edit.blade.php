@@ -29,23 +29,12 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group">
                             <label>Nome:</label>
                             <input type="text" name="nome" maxlength="190" placeholder="Nome"
                                 value="{{ $colaborador->nome }}" class="form-control @error('nome') is-invalid  @enderror">
                             @error('nome')
-                                <span class=" invalid-feedback">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Sobre Nome:</label>
-                            <input type="text" name="sobrenome" maxlength="190" placeholder="Sobre Nome"
-                                value="{{ $colaborador->sobrenome }}"
-                                class="form-control @error('sobrenome') is-invalid  @enderror">
-                            @error('sobrenome')
                                 <span class=" invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>

@@ -21,7 +21,7 @@
                             <div class="form-group">
                                 <label>Colaborador:</label>
                                 <input type="text" class="form-control"
-                                    value="{{ $colaborador->nome }} {{ $colaborador->sobrenome }}" disabled>
+                                    value="{{ $colaborador->nome }}" disabled>
                                 <input type="hidden" name="colaborador_id" class="form-control "
                                     value="{{ $colaborador->id }}">
                             </div>

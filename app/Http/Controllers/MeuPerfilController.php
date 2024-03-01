@@ -95,7 +95,6 @@ class MeuPerfilController extends Controller
   private function preencherAtributosDoObjeto(Request $request, $colaborador)
   {
     $colaborador->nome = $request->nome;
-    $colaborador->sobrenome = $request->sobrenome;
     $colaborador->email = $request->email;
     $colaborador->rg = $request->rg;
     $colaborador->cpf = $request->cpf;

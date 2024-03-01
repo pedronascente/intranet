@@ -43,24 +43,13 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label>Nome:</label>
                                 <input type="text" name="nome" maxlength="190"
                                     class="form-control @error('nome') is-invalid  @enderror" placeholder="Nome"
                                     value="{{ old('nome') }}">
                                 @error('nome')
-                                    <span class=" invalid-feedback">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Sobre Nome:</label>
-                                <input type="text" name="sobrenome" maxlength="190"
-                                    class="form-control @error('sobrenome') is-invalid  @enderror" placeholder="Sobre Nome"
-                                    value="{{ old('sobrenome') }}">
-                                @error('sobrenome')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>

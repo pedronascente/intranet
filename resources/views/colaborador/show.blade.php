@@ -18,7 +18,7 @@
                 alt="{{ $colaborador->nome }}"
                 width="100" class="rounded-circle">
         </div>
-        <h3 class="profile-username text-center">{{ $colaborador->nome . ' ' . $colaborador->sobrenome }}</h3>
+        <h3 class="profile-username text-center">{{ $colaborador->nome }}</h3>
         <p class="text-muted text-center">{{ $colaborador->cargo->nome }}</p>
         <table class="table table-md">
             <tr>

@@ -43,7 +43,7 @@
                                             </a>
                                         </td>
                                         <td>{{ $item->numero_matricula }}</td>
-                                        <td>{{ $item->nome }} {{ $item->sobrenome }}</td>
+                                        <td>{{ $item->nome }}</td>
                                         <td class="text-center">
                                             <x-botao.btn-visualizar :rota="route('colaborador.show', $item->id)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota" />
                                             <x-botao.btn-editar :rota="route('colaborador.edit', $item->id)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota" />

@@ -44,7 +44,7 @@
         <div class="card-body">
             @if ($colaborador)
                 Nome:
-                <p class="text-muted">{{ $colaborador->nome }} {{ $colaborador->sobrenome }}</p> <hr>
+                <p class="text-muted">{{ $colaborador->nome }}</p> <hr>
                 
                 Email:
                 <p class="text-muted"> {{ $colaborador->email }}</p><hr>

@@ -22,7 +22,7 @@
                             <div class="form-group">
                                 <label>Colaborador:</label>
                                 <input type="text" class="form-control"
-                                    value="{{ $planilha->colaborador->nome }} {{ $planilha->colaborador->sobrenome }}" disabled>
+                                    value="{{ $planilha->colaborador->nome }}" disabled>
                             </div>
                         </div>
                     </div>

@@ -25,7 +25,6 @@ class Colaborador extends Model
      */
     protected $fillable = [
         'nome',
-        'sobrenome',
         'empresa_id',
         'cargo_id',
         'user_id',
@@ -109,7 +108,6 @@ class Colaborador extends Model
 
         $validar['nome']             = 'required|min:2|max:191';
         $validar['ramal']            = 'required|integer|min:1|max:9999';
-        $validar['sobrenome']        = 'required|min:5|max:191';
         if ($request->_method != "PUT") {
             $validar['numero_matricula'] = 'required|integer|min:1|max:9999999999|unique:colaboradores,numero_matricula';
         }     
