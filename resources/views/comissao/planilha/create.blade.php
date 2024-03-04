@@ -104,9 +104,10 @@
                 </div>
                 <div class="card-footer">
                     <x-botao.btn-salvar />
+                    <!--
                     <a href="{{ route('colaborador.pesquisar') }}" title="Pesquisar" class="btn btn-warning btn-sm">
                         <i class="fa fa-search"></i> Pesquisar Colaborador
-                    </a>
+                    </a>-->
                     <x-botao.btn-voltar :rota="route('planilha.index')" />
                 </div>
             </form>

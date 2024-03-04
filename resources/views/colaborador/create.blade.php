@@ -72,9 +72,9 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>RG:</label>
-                                <input type="text" name="rg" maxlength="20" placeholder="______________"
+                                <input type="text" name="rg" maxlength="20" placeholder=""
                                     class="form-control @error('rg') is-invalid  @enderror" value="{{ old('rg') }}"
-                                    data-inputmask="'alias': '999999999999999'" data-mask="" inputmode="decimal">
+                                   >
                                 @error('rg')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror

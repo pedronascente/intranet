@@ -8,6 +8,7 @@ use App\Models\Token;
 use App\Models\Modulo;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Help\CaniveteHelp;
 
 class TokenController extends Controller
@@ -42,15 +43,23 @@ class TokenController extends Controller
 
     private function getAcessoUsuario($request)
     {
-        $usuarioAutenticado              = $request->user();
-        $perfilDoUsuarioAutenticado      = $this->user->with('Perfil.modulos')->findOrFail($usuarioAutenticado->id);
-        $modulosDoUsuarioAutenticadoId   = $perfilDoUsuarioAutenticado->perfil->modulos->pluck('id')->toArray();
-        $modulosDoUsuarioAutenticadoSlug = $perfilDoUsuarioAutenticado->perfil->modulos->pluck('slug')->toArray();
-        //Extrair categorias:
-        foreach ($modulosDoUsuarioAutenticadoId as $modulo_id) {
-            $Modulo = Modulo::with('categoria')->find($modulo_id);
-            $categoriasDoUsuarioAutenticadoNome[] = $Modulo->categoria->nome;
+        $perfilDoUsuarioAutenticado         = null;
+        $categoriasDoUsuarioAutenticadoNome = [];
+        $modulosDoUsuarioAutenticadoId      = [];
+        $modulosDoUsuarioAutenticadoSlug    = [];
+        $usuarioAutenticado                 = $request->user();
+        $perfilDoUsuarioAutenticado         = $this->user->with('Perfil.modulos')->findOrFail($usuarioAutenticado->id);
+        $modulosDoUsuarioAutenticadoId      = $perfilDoUsuarioAutenticado->perfil->modulos->pluck('id')->toArray();
+        $modulosDoUsuarioAutenticadoSlug    = $perfilDoUsuarioAutenticado->perfil->modulos->pluck('slug')->toArray();
+
+        if ($modulosDoUsuarioAutenticadoId) {
+            //Extrair categorias:
+            foreach ($modulosDoUsuarioAutenticadoId as $modulo_id) {
+                $Modulo = Modulo::with('categoria')->find($modulo_id);
+                $categoriasDoUsuarioAutenticadoNome[] = $Modulo->categoria->nome;
+            }
         }
+                
         $request->session()->put('perfilDoUsuarioAutenticado', $perfilDoUsuarioAutenticado);
         $request->session()->put('categoriasDoUsuarioAutenticadoNome', $categoriasDoUsuarioAutenticadoNome);
         $request->session()->put('modulosDoUsuarioAutenticadoId', $modulosDoUsuarioAutenticadoId);

@@ -173,4 +173,9 @@ class PlanilhaController extends Controller
         $colaborador = Colaborador::find($id);
         return $colaborador;
     }
+
+    public function show($id)
+    {
+        return redirect()->route('planilha.index');
+    }
 }

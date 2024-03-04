@@ -105,12 +105,12 @@ class RecuperarSenhaController extends Controller
             $e->setSubject('Recuperar Senha');
             $e->setToken($objetoModel->tokens);
             $e->enviarEmail();
-            /*
-            []xDbug:
-            echo $e->corpoDoEmail();
-            dd($e);
-            */
         break;
       } 
+  }
+
+  public function show($id)
+  {
+    return redirect()->route('recuperarSenha.informarEmailRecuperarSenha');
   }
 }

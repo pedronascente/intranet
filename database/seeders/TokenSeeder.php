@@ -14,20 +14,17 @@ class TokenSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('tokens')->insert(['token' => 'A7B4E0BA', 'posicao' => 1, 'user_id' => 1]);
-        DB::table('tokens')->insert(['token' => 'D097AB1A', 'posicao' => 2, 'user_id' => 1]);
-
-        DB::table('tokens')->insert(['token' => '940B81E5', 'posicao' => 1, 'user_id' => 2]);
-        DB::table('tokens')->insert(['token' => 'B73C0AEB', 'posicao' => 2, 'user_id' => 2]);
-
-        DB::table('tokens')->insert(['token' => '0B8194E5', 'posicao' => 1, 'user_id' => 3]);
-        DB::table('tokens')->insert(['token' => 'B73CB0AE', 'posicao' => 2, 'user_id' => 3]);
-        DB::table('tokens')->insert(['token' => 'E5940B81', 'posicao' => 3, 'user_id' => 3]);
-        DB::table('tokens')->insert(['token' => '3C0AEBB7', 'posicao' => 4, 'user_id' => 3]);
-        DB::table('tokens')->insert(['token' => '9E540B81', 'posicao' => 5, 'user_id' => 3]);
-        DB::table('tokens')->insert(['token' => 'B7EB3C0A', 'posicao' => 6, 'user_id' => 3]);
-        DB::table('tokens')->insert(['token' => '3CB70AEB', 'posicao' => 7, 'user_id' => 3]);
-
-        DB::table('tokens')->insert(['token' => '3CB7AEB0', 'posicao' => 1, 'user_id' => 4]);
+        DB::table('tokens')->insert(['token' => 'A7B4E0BA', 'posicao' => 1, 'user_id' => 1]);   
+        DB::table('tokens')->insert(['token' => 'A7B4E0BA', 'posicao' => 1, 'user_id' => 2]);   
+        DB::table('tokens')->insert(['token' => 'A7B4E0BA', 'posicao' => 1, 'user_id' => 3]);   
+        DB::table('tokens')->insert(['token' => 'A7B4E0BA', 'posicao' => 1, 'user_id' => 4]);   
+        DB::table('tokens')->insert(['token' => 'A7B4E0BA', 'posicao' => 1, 'user_id' => 5]);   
+        DB::table('tokens')->insert(['token' => 'A7B4E0BA', 'posicao' => 1, 'user_id' => 6]);   
+        DB::table('tokens')->insert(['token' => 'A7B4E0BA', 'posicao' => 1, 'user_id' => 7]);   
+        DB::table('tokens')->insert(['token' => 'A7B4E0BA', 'posicao' => 1, 'user_id' => 8]);   
+        DB::table('tokens')->insert(['token' => 'A7B4E0BA', 'posicao' => 1, 'user_id' => 9]);   
+        DB::table('tokens')->insert(['token' => 'A7B4E0BA', 'posicao' => 1, 'user_id' => 10]);   
+        DB::table('tokens')->insert(['token' => 'A7B4E0BA', 'posicao' => 1, 'user_id' => 11]);   
+        DB::table('tokens')->insert(['token' => 'A7B4E0BA', 'posicao' => 1, 'user_id' => 12]);   
     }
 }

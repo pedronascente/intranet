@@ -15,18 +15,10 @@
     <div class="card p-3">
         <div class="card-body box-profile">
             <ul class="list-group list-group-unbordered mb-3">
-                <li class="list-group-item">
-                    <b>Nome</b> <a class="float-right"> {{ $usuario->name }}</a>
-                </li>
-                <li class="list-group-item">
-                    <b>Perfil</b> <a class="float-right"> {{ $usuario->perfil->nome }}</a>
-                </li>
-                <li class="list-group-item">
-                    <b>Status</b> <a class="float-right"> {{ $status }}</a>
-                </li>
-                <li class="list-group-item">
-                    <b>QTD. de Tokens:</b> <a class="float-right"> {{ $usuario->qtdToken }}</a>
-                </li>
+                <li class="list-group-item"> <b>Nome:</b> <br>{{ $usuario->name }}</li>
+                <li class="list-group-item"> <b>Perfil:</b> <br>{{ $usuario->perfil->nome }} </li>
+                <li class="list-group-item"> <b>Status:</b> <br>{{ $status }}</li>
+                <li class="list-group-item"> <b>QTD. de Tokens:</b> <br> {{ $usuario->qtdToken }}</li>
             </ul>
         </div>
         <div class="card">
@@ -34,7 +26,7 @@
                 <h3 class="card-title"> <b> Tokens </b> </h3>
             </div>
             <div class="card-body">
-                <table class="table table-bordered ">
+                <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>Token</th>

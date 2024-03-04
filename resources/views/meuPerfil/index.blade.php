@@ -16,22 +16,26 @@
             @if ($colaborador)
                 <div class="text-center">
                     <img src="{{ asset('img/colaborador/' . $colaborador->foto . '') }}" alt="{{ $colaborador->nome }}"
-                        width="70" class="rounded-circle">
+                        width="100" class="rounded-circle">
                 </div>
-                <h3 class="profile-username text-center">{{ $usuario->name }}</h3>
+                <h3 class="profile-username text-center"><b>{{ $usuario->name }}</b></h3>
                 <p class="text-muted text-center">{{ $colaborador->cargo->nome }}</p>
+
                 <ul class="list-group list-group-unbordered mb-3">
                     <li class="list-group-item">
-                        <b>Base</b> <a class="float-right">{{ $colaborador->base->nome }}</a>
+                        <b>Base:</b> <br>{{ $colaborador->base->nome }}
                     </li>
                     <li class="list-group-item">
-                        <b>Empresa</b> <a class="float-right">{{ $colaborador->empresa->nome }}</a>
+                        <b>Perfil:</b> <br>{{ $colaborador->usuario->perfil->nome }}
                     </li>
                     <li class="list-group-item">
-                        <b>Cargo</b> <a class="float-right">{{ $colaborador->cargo->nome }}</a>
+                        <b>Empresa:</b> <br>{{ $colaborador->empresa->nome }}
                     </li>
                     <li class="list-group-item">
-                        <b>Ramal</b> <a class="float-right">{{ $colaborador->ramal }}</a>
+                        <b>Cargo:</b> <br>{{ $colaborador->cargo->nome }}
+                    </li>
+                    <li class="list-group-item">
+                        <b>Ramal:</b> <br>{{ $colaborador->ramal }}
                     </li>
                 </ul>
             @endif
@@ -43,20 +47,23 @@
         </div>
         <div class="card-body">
             @if ($colaborador)
-                Nome:
+                <b>Nome:</b>
                 <p class="text-muted">{{ $colaborador->nome }}</p> <hr>
                 
-                Email:
+                <b>Email:</b>
                 <p class="text-muted"> {{ $colaborador->email }}</p><hr>
                 
-                RG:
+                <b>RG:</b>
                 <p class="text-muted">{{ $colaborador->rg }}</p><hr>
 
-                CPF:
+                <b>CPF:</b>
                 <p class="text-muted">{{ $colaborador->cpf }}</p> <hr>
 
-                CNPJ:
-                <p class="text-muted">{{ $colaborador->cnpj }}</p>
+                @if ($colaborador->cnpj)
+                    <b>CNPJ:</b>
+                    <p class="text-muted">{{ $colaborador->cnpj }}</p>
+                    
+                @endif
                 
                 <a href="{{ route('meuPerfil.edit', $colaborador->id) }}" class="btn bg-gradient-info">
                     Editar

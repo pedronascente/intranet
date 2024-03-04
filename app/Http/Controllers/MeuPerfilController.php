@@ -17,19 +17,16 @@ use App\Http\Controllers\SendEmail\EmailRespostaRecuperarSenha;
 class MeuPerfilController extends Controller
 {
   private $user;
-  private $bases;
-  private $empresas;
-  private $cargos;
   private $path;
   private $CaniveteHelp;
+  private $colaborador;
   
-  public function __construct(User $user)
+  public function __construct(User $user, Colaborador $colaborador)
   {
-    $this->user     = $user;
-    $this->bases    = Base::orderBy('id', 'desc')->get();
-    $this->empresas = Empresa::orderBy('id', 'desc')->get();
-    $this->cargos   = Cargo::orderBy('id', 'desc')->get();
-    $this->path     = 'img/colaborador/';
+    $this->path = 'img/colaborador/';
+    $this->user = $user;
+    $this->colaborador = $colaborador;
+    $this->CaniveteHelp = new CaniveteHelp();
   }
 
   public function index(Request $request)
@@ -51,16 +48,16 @@ class MeuPerfilController extends Controller
   {
     return view('meuPerfil.edit', [
       'titulo' => "Editar Meus dados",
-      'bases' => $this->bases,
-      'cargos' => $this->cargos,
-      'empresas' => $this->empresas,
-      'colaborador' => Colaborador::findOrFail($id),
+      'bases' => $this->getBase(),
+      'cargos' => $this->getCargo(),
+      'empresas' => $this->getEmpresa(),
+      'colaborador' => $this->colaborador->findOrFail($id),
     ]);
   }
 
   public function update(Request $request, $id)
   {
-      $colaborador = Colaborador::with('cargo', 'empresa')->findOrFail($id);
+      $colaborador = $this->colaborador->with('cargo', 'empresa')->findOrFail($id);
       $request->validate($colaborador->rules($request, $colaborador), $colaborador->feedback());
       $this->preencherAtributosDoObjeto($request, $colaborador);
       if ($request->editProfile >= 1) {
@@ -69,25 +66,34 @@ class MeuPerfilController extends Controller
         return redirect()->route('colaborador.show', $colaborador->id)->with('status', "Registro Atualizado!");
       }
   }
-
+  
   public function resetarSenhaDoMeuPerfil(Request $request, $id)
   {
-      $this->user->validarFormulario($request, 'resetPassword');
-      $usuario = User::with('colaborador')->findOrFail($id);
-      if (empty(!$request->password)) {
-        $usuario->password = Hash::make($request->password);
-      }
-      $usuario->update();
+    // Validar senha
+    $this->user->validarFormulario($request, 'resetPassword');
 
-      $this->enviarEmail($usuario);
+    // Buscar o usuário pelo ID
+    $usuario = $this->user->with('colaborador')->findOrFail($id);
 
-      Auth::logout();
-      $request->session()->invalidate();
-      $request->session()->regenerateToken();
+    // Atualizar a senha, se fornecida
+    if (!empty($request->password)) {
+      $usuario->password = Hash::make($request->password);
+      // Salvar as alterações no banco de dados
+      $usuario->save();
+    }
 
-      return redirect()->route('meuPerfil.sucessoSenhaResetada');
+    // Enviar email de confirmação
+    $this->enviarEmail($usuario);
+
+    // Encerrar a sessão do usuário
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    // Redirecionar para a página de sucesso
+    return redirect()->route('meuPerfil.sucessoSenhaResetada');
   }
-  
+
   public function sucessoSenhaResetada(){
     return view('meuPerfil.sucessoSenhaResetada');
   }
@@ -104,8 +110,6 @@ class MeuPerfilController extends Controller
     $colaborador->base()->associate(Base::findOrFail($request->base_id));
     $colaborador->empresa()->associate(Empresa::findOrFail($request->empresa_id));
     $colaborador->cargo()->associate(Cargo::findOrFail($request->cargo_id));
-
-    $this->CaniveteHelp = new CaniveteHelp();
 
     if ($request->hasFile('foto')) {
         $destino = $this->path . $colaborador->foto;
@@ -132,10 +136,47 @@ class MeuPerfilController extends Controller
     $e->setSubject('Recuperar Senha');
     $e->setToken($objetoModel->tokens);
     $e->enviarEmail();
-    /*
-      [xDbug]
-      echo $e->corpoDoEmail();
-      dd($e);
-    */
+  }
+
+  private function getBase(){
+    return   Base::orderBy('id', 'desc')->get();
+  }
+
+  private function getEmpresa(){
+     return Empresa::orderBy('id', 'desc')->get();
+  }
+
+  private function getCargo(){
+     return Cargo::orderBy('id', 'desc')->get();;
+  }
+
+  public function show($id)
+  {
+    return redirect()->route('meuPerfil.index');
   }
 }
+
+
+
+
+
+
+/*
+ public function resetarSenhaDoMeuPerfil(Request $request, $id)
+  {
+      $this->user->validarFormulario($request, 'resetPassword');
+      $usuario = $this->user->with('colaborador')->findOrFail($id);
+      if (empty(!$request->password)) {
+        $usuario->password = Hash::make($request->password);
+      }
+      $usuario->update();
+
+      $this->enviarEmail($usuario);
+
+      Auth::logout();
+      $request->session()->invalidate();
+      $request->session()->regenerateToken();
+
+      return redirect()->route('meuPerfil.sucessoSenhaResetada');
+  }
+*/

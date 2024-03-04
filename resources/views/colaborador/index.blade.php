@@ -25,9 +25,9 @@
                         <thead>
                             <tr>
                                 <th width="5%">ID</th>
-                                <th>Foto</th>
-                                <th> Matricula</th>
+                                <th width="10%">Foto</th>
                                 <th>Colaborador</th>
+                                <th> Matricula</th>
                                 <th width="5%" class="text-center">Permissões</th>
                             </tr>
                         </thead>
@@ -39,11 +39,11 @@
                                         <td>
                                             <a href="{{ route('colaborador.show', $item->id) }}" title="Visualizar">
                                                 <img src="{{ asset('img/colaborador/' . $item->foto . '') }}"
-                                                    alt="{{ $item->nome }}" width="35" class="rounded-circle">
+                                                    alt="{{ $item->nome }}" width="50" class="rounded-circle">
                                             </a>
                                         </td>
-                                        <td>{{ $item->numero_matricula }}</td>
                                         <td>{{ $item->nome }}</td>
+                                        <td>{{ $item->numero_matricula }}</td>
                                         <td class="text-center">
                                             <x-botao.btn-visualizar :rota="route('colaborador.show', $item->id)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota" />
                                             <x-botao.btn-editar :rota="route('colaborador.edit', $item->id)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota" />

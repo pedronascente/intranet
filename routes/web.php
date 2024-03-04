@@ -72,22 +72,21 @@ Route::middleware(['auth', 'validarToken'])->group(function () {
     });      
 });
 
-Route::prefix('/meu-perfil')->group(function () {
+Route::prefix('/meuperfil')->group(function () {
     Route::get('/', [MeuPerfilController::class, 'index'])->name('meuPerfil.index');
     Route::get('/{id}/edit', [MeuPerfilController::class, 'edit'])->name('meuPerfil.edit');
     Route::put('/{id}', [MeuPerfilController::class, 'update'])->name('meuPerfil.update');
+    Route::get('/{id}', [MeuPerfilController::class, 'show']);
     Route::put('/resetar-senha/{id}', [MeuPerfilController::class, 'resetarSenhaDoMeuPerfil'])->name('meuPerfil.resetarSenha');
     Route::get('/sucesso', [MeuPerfilController::class, 'sucessoSenhaResetada'])->name('meuPerfil.sucessoSenhaResetada');
 });
  
-
-//Route::get('/senha', [UserController::class, 'senhaSucesso'])->name('usuario.senhaSucesso');
-
 Route::prefix('/recuperar-senha')->group(function () {
     Route::get('/', [RecuperarSenhaController::class, 'informarEmailRecuperarSenha'])->name('recuperarSenha.informarEmailRecuperarSenha');
     Route::post('/', [RecuperarSenhaController::class, 'enviarEmailRecuperarSenha'])->name('recuperarSenha.enviarEmailRecuperarSenha');
     Route::get('/sucesso', [RecuperarSenhaController::class, 'sucessoEnviarEmailRecuperarSenha'])->name('recuperarSenha.sucessoEnviarEmailRecuperarSenha');
     Route::get('/{email}/{token}', [RecuperarSenhaController::class, 'cadastrarNovaSenha'])->name('recuperarSenha.cadastrarNovaSenha');
+    Route::get('/{id}', [RecuperarSenhaController::class, 'show'])->name('recuperarSenha.show');
     Route::put('/{id}', [RecuperarSenhaController::class, 'resetarMinhaSenhaDeUsuario'])->name('recuperarSenha.resetarMinhaSenhaDeUsuario');
     Route::get('success/', [RecuperarSenhaController::class, 'sucessoSenhaRecuperada'])->name('recuperarSenha.sucessoSenhaRecuperada');
 });

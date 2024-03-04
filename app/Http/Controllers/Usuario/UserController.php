@@ -84,6 +84,10 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
+        if($id  == 1  &&  $request->perfil != 1){
+            return redirect()->route('usuario.index')->with("error", "Este usuario é o administrador, portanto não pode ter seu perfil alterado!");
+        }
+
         $this->user->validarFormulario($request,'put');
         $user = $this->user->with('perfil')->findOrFail($id);
         $perfil = Perfil::findOrFail($request->perfil);
@@ -117,6 +121,7 @@ class UserController extends Controller
         $titulo = "Visualizar usuário";
         $usuario = $this->user->with('perfil', 'colaborador', 'tokens')->findOrFail($id);
         $status = $usuario->getStatus($id);
+
         return view('usuario.show', [
             'titulo' => $titulo,
             'usuario' => $usuario,

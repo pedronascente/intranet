@@ -200,6 +200,16 @@ class ColaboradorController extends Controller
                 File::delete($destino);
             }
             $colaborador->foto = $CaniveteHelp->upload($request, $this->path);
+        }
+
+
+        /*
+        if ($request->hasFile('foto')) {
+            $destino = $this->path . $colaborador->foto;
+            if ($colaborador->foto != 'dummy-round.png' && File::exists($destino)) {
+                File::delete($destino);
+            }
+            $colaborador->foto = $CaniveteHelp->upload($request, $this->path);
         }else{
             if ($foto = $CaniveteHelp->upload($request, $this->path)) {
                 $colaborador->foto = $foto;
@@ -207,6 +217,7 @@ class ColaboradorController extends Controller
                 $colaborador->foto = 'dummy-round.png';
             }
         }
+        */
         $colaborador->save();
     }
 }
