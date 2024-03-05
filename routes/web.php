@@ -55,21 +55,58 @@ Route::middleware('auth')->prefix('/token')->group(function () {
 Route::middleware(['auth','validarToken'])->group(function () {
     Route::redirect('/', '/dashboard', 301);
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
-    Route::get('/configuracoes', [ConfiguracaoController::class, 'index'])->middleware(['validarPermissaoDeRota:configuracoes'])->name('configuracoes.index');
+    Route::middleware([
+        'ValidarPermissaoDeRota:configuracoes',
+        'AtivarDesativarModuloECategoria:configuracoes'
+    ])->get('/configuracoes', [ConfiguracaoController::class, 'index'])->name('configuracoes.index');
 });
 
-Route::middleware(['auth', 'validarToken'])->group(function () {
-    Route::resource('/colaborador', ColaboradorController::class)->middleware(['validarPermissaoDeRota:colaborador']);
-    Route::resource('/cargo', CargoController::class)->middleware(['validarPermissaoDeRota:cargo']);
-    Route::resource('/empresa', EmpresaController::class)->middleware(['validarPermissaoDeRota:empresa']);
-    Route::resource('/base', BaseController::class)->middleware(['validarPermissaoDeRota:base']);
-    Route::resource('/permissao', PermissaoController::class)->middleware(['validarPermissaoDeRota:permissao']);
-    Route::resource('/modulo', ModuloController::class)->middleware(['validarPermissaoDeRota:modulo']);
-    Route::resource('/usuario', UserController::class)->middleware(['validarPermissaoDeRota:usuario']);
-    Route::middleware(['validarPermissaoDeRota:perfil'])->group(function () {
-        Route::resource('/perfil', PerfilController::class);
-        Route::get('perfil/desativar/{id}', [PerfilController::class, 'desativar'])->name('perfil.desativar');
-    });      
+Route::middleware([
+    'auth', 
+    'validarToken'
+    ])->group(function () {
+        Route::middleware([
+            'ValidarPermissaoDeRota:colaborador',
+            'AtivarDesativarModuloECategoria:colaborador'
+        ])->resource('/colaborador', ColaboradorController::class);
+
+        Route::middleware([
+            'ValidarPermissaoDeRota:cargo',
+            'AtivarDesativarModuloECategoria:cargo'
+        ])->resource('/cargo', CargoController::class);
+        
+        Route::middleware([
+            'ValidarPermissaoDeRota:empresa',
+            'AtivarDesativarModuloECategoria:empresa'
+        ])->resource('/empresa', EmpresaController::class);
+
+        Route::middleware([
+            'ValidarPermissaoDeRota:base', 
+            'AtivarDesativarModuloECategoria:base'
+        ])->resource('/base', BaseController::class);
+
+        Route::middleware([
+            'ValidarPermissaoDeRota:permissao', 
+            'AtivarDesativarModuloECategoria:permissao'
+        ])->resource('/permissao', PermissaoController::class);
+
+        Route::middleware([
+            'ValidarPermissaoDeRota:modulo',
+            'AtivarDesativarModuloECategoria:modulo'
+        ])->resource('/modulo', ModuloController::class);
+
+        Route::middleware([
+            'ValidarPermissaoDeRota:usuario', 
+            'AtivarDesativarModuloECategoria:usuario'
+        ])->resource('/usuario', UserController::class);
+        
+        Route::middleware([
+            'ValidarPermissaoDeRota:perfil', 
+            'AtivarDesativarModuloECategoria:perfil'
+        ])->group(function () {
+            Route::resource('/perfil', PerfilController::class);
+            Route::get('perfil/desativar/{id}', [PerfilController::class, 'desativar'])->name('perfil.desativar');
+        });      
 });
 
 Route::prefix('/meuperfil')->group(function () {
@@ -91,7 +128,10 @@ Route::prefix('/recuperar-senha')->group(function () {
     Route::get('success/', [RecuperarSenhaController::class, 'sucessoSenhaRecuperada'])->name('recuperarSenha.sucessoSenhaRecuperada');
 });
 
-Route::middleware(['validarPermissaoDeRota:lancar-comissao'])->group(function () {
+Route::middleware([
+    'ValidarPermissaoDeRota:lancar-comissao',
+    'AtivarDesativarModuloECategoria:lancar-comissao'
+    ])->group(function () {
     //planililha:
     Route::resource('/planilha', PlanilhaController::class);
     Route::get('/planilha{planilha}/homologar', [PlanilhaController::class, 'homologar'])->name('planilha.homologar');
@@ -119,7 +159,10 @@ Route::middleware(['validarPermissaoDeRota:lancar-comissao'])->group(function ()
     });
 });
 
-Route::middleware(['validarPermissaoDeRota:administrar-comissao'])->group(function () {
+Route::middleware([
+    'ValidarPermissaoDeRota:administrar-comissao', 
+    'AtivarDesativarModuloECategoria:administrar-comissao'])
+    ->group(function () {
     Route::prefix('/comissao-administrativo')->group(function () {
         Route::get('/', function () {
             return redirect()->route('comissao.administrativo.index');

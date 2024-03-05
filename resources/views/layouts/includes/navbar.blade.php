@@ -7,8 +7,11 @@
       </ul>
       <ul class="navbar-nav ml-auto">
           <li class="nav-item dropdown">
-              <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
-                  <i class="nav-icon fa fa-cog" aria-hidden="true"></i>
+                    <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
+                    @if (Auth::check())
+                        {{ Auth::user()->name }}
+                    @endif  
+                    <i class="nav-icon fa fa-cog" aria-hidden="true"></i>
               </a>
               <div class="dropdown-menu dropdown-menu-md dropdown-menu-right" style="left: inherit; right: 0px;">
                   <a href="{{ route('configuracoes.index') }}" class="dropdown-item dropdown-footer">Configurações</a>

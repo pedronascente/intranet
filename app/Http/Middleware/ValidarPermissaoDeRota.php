@@ -24,7 +24,7 @@ class ValidarPermissaoDeRota
 
         $perfilId = auth()->user()->perfil_id; 
 
-        Modulo::ativarDesativarModulo($modulo);
+
 
         // Encontrar o módulo com base no slug da rota
         $modulo = Modulo::with(['permissoes' => function ($query) use ($perfilId) {

@@ -21,7 +21,8 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-        \App\Http\Middleware\NotFoundHandler::class,   
+        \App\Http\Middleware\NotFoundHandler::class,
+        \App\Http\Middleware\GerarMenuDaBarraLateral::class,
     ];
 
     /**
@@ -31,7 +32,7 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
-           \App\Http\Middleware\GerarMenuDaBarraLateral::class,
+          
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
@@ -41,6 +42,7 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\LogAcesso::class,
             
+           
         ],
 
         'api' => [
@@ -68,7 +70,8 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'validarToken' => \App\Http\Middleware\ValidarToken::class,
-        'validarPermissaoDeRota' => \App\Http\Middleware\ValidarPermissaoDeRota::class,
+        'ValidarPermissaoDeRota' => \App\Http\Middleware\ValidarPermissaoDeRota::class,
+        'AtivarDesativarModuloECategoria' => \App\Http\Middleware\AtivarDesativarModuloECategoria::class,
     ];
 }
  

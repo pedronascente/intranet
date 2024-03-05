@@ -17,7 +17,7 @@
             <div class="info">
                 <a href="{{ route('meuPerfil.index') }}" class="d-block">
                     @if (Auth::check())
-                        {{ Auth::user()->name }}
+                        {{ Auth::user()->colaborador->nome }}
                     @endif
                 </a> 
             </div>

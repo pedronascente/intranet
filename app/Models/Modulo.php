@@ -49,15 +49,15 @@ class Modulo extends Model
         ];
     }
     
-    public static function ativarDesativarModulo($slug)
+    public static function AtivarDesativarModuloECategoria($slug)
     {
-        
-        DB::table('modulos')->where('slug', '<>', $slug)->update(['ativo' => '']);// Desativa todos os módulos exceto aquele com o slug fornecido
-        DB::table('modulos')->where('slug', $slug)->update(['ativo' => 'active']);  // Ativa o módulo com o slug fornecido
+       
+         DB::table('modulos')->where('slug', '<>', $slug)->update(['ativo' => '']);// Desativa todos os módulos exceto aquele com o slug fornecido
+         DB::table('modulos')->where('slug', $slug)->update(['ativo' => 'active']);  // Ativa o módulo com o slug fornecido
 
         $modulo = DB::table('modulos')->where('slug', $slug)->first();
-
-        DB::table('modulo_categorias')->where('id', '<>',$modulo->modulo_categoria_id)->update(['ativo' => '']);
+      
+        DB::table('modulo_categorias')->where('id', '<>', $modulo->modulo_categoria_id)->update(['ativo' => '']);
         DB::table('modulo_categorias')->where('id', $modulo->modulo_categoria_id)->update(['ativo' => 'active']);
 
     }
