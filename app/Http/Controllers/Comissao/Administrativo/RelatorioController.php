@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Comissao;
+namespace App\Http\Controllers\Comissao\Administrativo;
 
 use Illuminate\Http\Request;
 use App\Models\Comissao\Planilha;
@@ -18,7 +18,8 @@ class RelatorioController extends Controller
         $this->planilha = $planilha;
     }
 
-    public function relatorio(Request $request){
+    public function getRelatorio(Request $request)
+    {
         $status          = $request->input('status');
         $filtro          = $request->input('filtro');
         $dataInicial     = $request->input('data_inicial') ? CaniveteHelp::formatarDataAnoMesDia($request->input('data_inicial')) : null;

@@ -22,7 +22,9 @@ class ValidarPermissaoDeRota
             return redirect()->route('login.form');
         }
 
-        $perfilId = auth()->user()->perfil_id; // Você pode ajustar de acordo com a forma como obtém o perfil ID
+        $perfilId = auth()->user()->perfil_id; 
+
+        Modulo::ativarDesativarModulo($modulo);
 
         // Encontrar o módulo com base no slug da rota
         $modulo = Modulo::with(['permissoes' => function ($query) use ($perfilId) {

@@ -31,6 +31,7 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
+           \App\Http\Middleware\GerarMenuDaBarraLateral::class,
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
@@ -68,7 +69,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'validarToken' => \App\Http\Middleware\ValidarToken::class,
         'validarPermissaoDeRota' => \App\Http\Middleware\ValidarPermissaoDeRota::class,
-        'gerarMenuDaBarraLateral' => \App\Http\Middleware\GerarMenuDaBarraLateral::class,
     ];
 }
  

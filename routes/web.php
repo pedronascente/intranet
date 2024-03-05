@@ -21,12 +21,12 @@ use App\Http\Controllers\Configuracoes\PerfilController;
 use App\Http\Controllers\Configuracoes\ConfiguracaoController;
 use App\Http\Controllers\Configuracoes\PermissaoController;
 
-use App\Http\Controllers\Comissao\ArquivoController;
-use App\Http\Controllers\Comissao\ImprimirPlanilhaController;
-use App\Http\Controllers\Comissao\AdministrativoController;
-use App\Http\Controllers\Comissao\PlanilhaController;
-use App\Http\Controllers\Comissao\RelatorioController as PlanilhaRelatorioController;
+use App\Http\Controllers\Comissao\Administrativo\ArquivoController;
+use App\Http\Controllers\Comissao\Administrativo\ImprimirPlanilhaController;
+use App\Http\Controllers\Comissao\Administrativo\AdministrarComissaoController;
+use App\Http\Controllers\Comissao\Administrativo\RelatorioController as PlanilhaRelatorioController;
 
+use App\Http\Controllers\Comissao\PlanilhaController;
 use App\Http\Controllers\Comissao\Planilhas\EntregaDeAlarmeController;
 use App\Http\Controllers\Comissao\Planilhas\PortariaVirtualController;
 use App\Http\Controllers\Comissao\Planilhas\ReclamacaoDeClienteController;
@@ -52,7 +52,7 @@ Route::middleware('auth')->prefix('/token')->group(function () {
     Route::get('/get-posicao-token', [TokenController::class, 'getPosicaoToken']);
 });
 
-Route::middleware(['auth','validarToken', 'gerarMenuDaBarraLateral'])->group(function () {
+Route::middleware(['auth','validarToken'])->group(function () {
     Route::redirect('/', '/dashboard', 301);
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/configuracoes', [ConfiguracaoController::class, 'index'])->middleware(['validarPermissaoDeRota:configuracoes'])->name('configuracoes.index');
@@ -125,7 +125,7 @@ Route::middleware(['validarPermissaoDeRota:administrar-comissao'])->group(functi
             return redirect()->route('comissao.administrativo.index');
         });
         Route::name('comissao.')->group(function () {
-            Route::resource('/administrativo', AdministrativoController::class);
+            Route::resource('/administrativo', AdministrarComissaoController::class);
             Route::name('administrativo.')->group(function () {
                 Route::prefix('/arquivos')->group(function () {
                     Route::get('/', [ArquivoController::class, 'index'])->name('arquivo.index');
@@ -133,13 +133,13 @@ Route::middleware(['validarPermissaoDeRota:administrar-comissao'])->group(functi
                     Route::get('/{id}/arquivar', [ArquivoController::class, 'arquivar'])->name('arquivo.arquivar');
                 });
                 Route::prefix('/planilha')->group(function () {
-                    Route::get('/{id}/reprovar', [AdministrativoController::class, 'editReprovar'])->name('reprovar');
-                    Route::put('/{id}', [AdministrativoController::class, 'updateReprovar'])->name('reprovarUpdate');
+                    Route::get('/{id}/reprovar', [AdministrarComissaoController::class, 'editReprovar'])->name('reprovar');
+                    Route::put('/{id}', [AdministrarComissaoController::class, 'updateReprovar'])->name('reprovarUpdate');
                 });
                 Route::get('/imprimir-pdf/{id}', [ImprimirPlanilhaController::class, 'imprimirPDF'])->name('imprimirPDF');
                 Route::get('{id}/planilha', [PlanilhaTipoAdministrativoController::class, 'index'])->name('tipoAdministrativo.index');
-                Route::get('relatorio/buscar', [PlanilhaRelatorioController::class, 'relatorio'])->name('relatorio');
-                Route::get('{planilha}/{comissao}/editarComissaoAdministrativo', [AdministrativoController::class, 'editarComissaoAdministrativo'])->name('editarComissaoAdministrativo'); 
+                Route::get('relatorio/buscar', [PlanilhaRelatorioController::class, 'getRelatorio'])->name('relatorio');
+                Route::get('{planilha}/{comissao}/editarComissaoAdministrativo', [AdministrarComissaoController::class, 'editarComissaoAdministrativo'])->name('editarComissaoAdministrativo'); 
             });
         });
     });

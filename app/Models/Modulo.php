@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Modulo extends Model
 {
@@ -33,11 +34,11 @@ class Modulo extends Model
     public function rules()
     {
         return [
-            'modulo_posicao_id'   => 'required|integer',
+            'modulo_posicao_id' => 'required|integer',
             'modulo_categoria_id' => 'required|integer',
-            'nome'                => 'required|max:190|min:2',
-            'rota'                => 'required|max:190|min:2',
-            'descricao'           => 'required|max:190|min:5',
+            'nome' => 'required|max:190|min:2',
+            'rota' => 'required|max:190|min:2',
+            'descricao' => 'required|max:190|min:5',
         ];
     }
 
@@ -46,5 +47,18 @@ class Modulo extends Model
         return  [
             'required' => 'Campo obrigatório.',
         ];
+    }
+    
+    public static function ativarDesativarModulo($slug)
+    {
+        
+        DB::table('modulos')->where('slug', '<>', $slug)->update(['ativo' => '']);// Desativa todos os módulos exceto aquele com o slug fornecido
+        DB::table('modulos')->where('slug', $slug)->update(['ativo' => 'active']);  // Ativa o módulo com o slug fornecido
+
+        $modulo = DB::table('modulos')->where('slug', $slug)->first();
+
+        DB::table('modulo_categorias')->where('id', '<>',$modulo->modulo_categoria_id)->update(['ativo' => '']);
+        DB::table('modulo_categorias')->where('id', $modulo->modulo_categoria_id)->update(['ativo' => 'active']);
+
     }
 }

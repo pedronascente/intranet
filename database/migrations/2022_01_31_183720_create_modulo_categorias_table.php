@@ -16,6 +16,7 @@ class CreateModuloCategoriasTable extends Migration
         Schema::create('modulo_categorias', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nome');
+            $table->string('ativo')->nullable();
             $table->timestamps();
             $table->engine = 'InnoDB';
         });

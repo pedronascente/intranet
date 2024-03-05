@@ -29,26 +29,30 @@
                     $modulosDoUsuarioAutenticadoId = session()->get('modulosDoUsuarioAutenticadoId');
                     $categoriasDoUsuarioAutenticadoNome = session()->get('categoriasDoUsuarioAutenticadoNome');
                 @endphp
-                @if (session()->get('MenuBarraLateral'))
-                    @foreach (session()->get('MenuBarraLateral') as $categoria)
+                @if ($MenuBarraLateral)
+                    @foreach ($MenuBarraLateral as $categoria)
                         @if(in_array($categoria->nome,$categoriasDoUsuarioAutenticadoNome))
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
+                            <li class="nav-item   @if($categoria->ativo) menu-is-opening menu-open @endif">
+                                <a href="#" class="nav-link  {{ $categoria->ativo }} ">
                                     <i class="nav-icon fas fa-edit"></i>
-                                    <p>{{  $categoria->nome }}<i class="fas fa-angle-left right"></i></p>
+                                    <p>{{ $categoria->nome }}<i class="fas fa-angle-left right"></i></p>
                                 </a>
-                                <ul class="nav nav-treeview" style="display: none;">
+                                <ul class="nav nav-treeview" 
+                                    @if($categoria->ativo) 
+                                        style="display: block;" 
+                                    @endif 
+                                    >
                                     @foreach ( $categoria->modulos as $modulo)
                                         @if (in_array($modulo->id, $modulosDoUsuarioAutenticadoId))
                                             <li class="nav-item">
-                                                <a href="{{ $modulo->rota }}" class="nav-link">
+                                                <a href="{{ $modulo->rota }}" class="nav-link  {{ $modulo->ativo }}" >
                                                     <i class="far fa-circle nav-icon"></i>
                                                     <p>
-                                                        {{ $modulo->nome  }}  
+                                                        {{ $modulo->nome  }} 
                                                     </p>
                                                 </a>
                                             </li>
-                                    @endif
+                                        @endif
                                     @endforeach
                                 </ul>
                             </li>
@@ -59,6 +63,3 @@
         </nav>
     </div>
 </aside>
-
-
-

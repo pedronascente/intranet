@@ -45,7 +45,7 @@ class TokenController extends Controller
     {
         $perfilDoUsuarioAutenticado         = null;
         $categoriasDoUsuarioAutenticadoNome = [];
-        $modulosDoUsuarioAutenticadoId      = [];
+        $modulosDoUsuarioAutenticadoId      = []; 
         $modulosDoUsuarioAutenticadoSlug    = [];
         $usuarioAutenticado                 = $request->user();
         $perfilDoUsuarioAutenticado         = $this->user->with('Perfil.modulos')->findOrFail($usuarioAutenticado->id);

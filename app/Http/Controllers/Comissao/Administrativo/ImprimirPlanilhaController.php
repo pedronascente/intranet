@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Comissao;
+namespace App\Http\Controllers\Comissao\Administrativo;
 
 use PDF;
 use App\Models\Comissao\Planilha;

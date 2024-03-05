@@ -1,14 +1,13 @@
-<?php 
+<?php
 
 namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use App\Models\ModuloCategoria;
 
-class GerarMenuDaBarraLateral
+class MenuMiddleware
 {
-    /** 
+    /**
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -17,10 +16,6 @@ class GerarMenuDaBarraLateral
      */
     public function handle(Request $request, Closure $next)
     {
-        $ModuloCategoria = ModuloCategoria::getCategoriasEseusModulos(1);
-
-        view()->share('MenuBarraLateral', $ModuloCategoria);
-        //$request->session()->put('MenuBarraLateral', $ModuloCategoria);
         return $next($request);
     }
 }

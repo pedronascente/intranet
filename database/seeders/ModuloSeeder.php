@@ -77,6 +77,7 @@ class ModuloSeeder extends Seeder
             'rota'                => '/comissao',                    
             'slug'                => 'lancar-comissao',
             'descricao'           => "Responsável por lanças as comissões dos colaboradores.",
+            'ativo'               => 'active',
             'modulo_categoria_id' => 1,
             'modulo_posicao_id'   => 1,  
         ]);

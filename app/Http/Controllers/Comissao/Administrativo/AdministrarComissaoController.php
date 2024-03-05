@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Comissao;
+namespace App\Http\Controllers\Comissao\Administrativo;
 
 use Illuminate\Http\Request;
 use App\Models\Comissao\Planilha;
@@ -21,14 +21,12 @@ use App\Models\Comissao\Planilhas\ComercialAlarmeCercaEletricaCFTV;
 use App\Models\Comissao\Planilhas\SupervisaoComercialAlarmesCercaEletricaCFTV;
 use App\Models\Comissao\Planilhas\SupervisaoTecnicaESacAlarmesCercaEletricaCFTV;
 
-class AdministrativoController extends Controller
+class AdministrarComissaoController extends Controller
 {
-    private $titulo;
     private $planilha;
 
     public function __construct(Planilha $planilha)
     {
-        $this->titulo   = "Planilha";
         $this->planilha = $planilha;      
     }
 
@@ -44,19 +42,16 @@ class AdministrativoController extends Controller
                 ->paginate(10); 
         }
         return view('comissao.administrativo.conferir', [
-            'titulo'      => "Conferir " . $this->titulo, 
+            'titulo' => "Administrar Comissão", 
             'collections' => $collections, 
         ]);
     }
 
     public function edit($id)
     {
-        $planilha = $this->planilha->with('colaborador', 'periodo', 'tipo')
-                         ->findOrFail($id);
-       
         return view('comissao.administrativo.edit', [
-            'titulo'   => "Editar " . $this->titulo, 
-            'planilha' => $planilha, 
+            'titulo'   => "Editar Planilha", 
+            'planilha' => $this->planilha->with('colaborador', 'periodo', 'tipo')->findOrFail($id), 
             'periodos' => PlanilhaPeriodo::orderBy('nome', 'asc')->get(), 
             'tipos'    => PlanilhaTipo::orderBy('id', 'desc')->get(), 
             'status'   => PlanilhaStatus::orderBy('id', 'asc')->get(), 
@@ -75,7 +70,7 @@ class AdministrativoController extends Controller
     public function editReprovar($id)
     {
         return view('comissao.administrativo.edit-reprovar', [
-            'titulo'   =>  "Reprovar  " . $this->titulo , 
+            'titulo'=>  "Reprovar Planilha", 
             'planilha' => $this->planilha->findOrFail($id), 
         ]);
     }
@@ -85,9 +80,7 @@ class AdministrativoController extends Controller
         $request->validate($this->planilha->rules_reprovar(), $this->planilha->rules_reprovar());
         $planilha = $this->planilha->findOrFail($id);
         $planilha->update($request->all());
-        return redirect()
-                    ->route('comissao.administrativo.index')
-                    ->with('status', 'Registro Reprovado com sucesso.');
+        return redirect()->route('comissao.administrativo.index')->with('status', 'Registro Reprovado com sucesso.');
     }
 
     public function getValorTotalComissao(Planilha $planilha)
@@ -95,7 +88,7 @@ class AdministrativoController extends Controller
         $tipoPlanilha = optional($planilha->tipo)->formulario;
         if ($tipoPlanilha) {
             $comissaoModel = $this->getComissaoModel($tipoPlanilha);
-            $valor         = $comissaoModel::where('planilha_id', $planilha->id)->sum('comissao');
+            $valor = $comissaoModel::where('planilha_id', $planilha->id)->sum('comissao');
             return number_format($valor, 2, ',', '.');
         }
         return 0;
@@ -110,8 +103,7 @@ class AdministrativoController extends Controller
 
     public function show()
     {
-        return redirect()
-            ->route('comissao.administrativo.index');
+        return redirect()->route('comissao.administrativo.index');
     }
 
     /*
@@ -119,9 +111,9 @@ class AdministrativoController extends Controller
     */
     public function editarComissaoAdministrativo($planilha,$comissao)
     {
-        $id             = $comissao;
-        $meio           = Meio::all();
-        $planilha       = $this->planilha->with('tipo')->findOrFail($planilha);
+        $id = $comissao;
+        $meio = Meio::all();
+        $planilha = $this->planilha->with('tipo')->findOrFail($planilha);
         $servico_alarme = ServicoAlarme::all();
         
         if($planilha->tipo->formulario == 'comercialAlarmeCercaEletricaCFTV'){

@@ -14,6 +14,7 @@ class CreateModulosTable extends Migration
             $table->string('rota');
             $table->string('slug');
             $table->string('descricao');
+            $table->string('ativo')->nullable();
             $table->timestamps();
             $table->unsignedInteger('modulo_posicao_id')->nullable();
             $table->foreign('modulo_posicao_id')->references('id')->on('modulo_posicoes');

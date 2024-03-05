@@ -1,6 +1,6 @@
 <?php 
 
-namespace App\Http\Controllers\Comissao;
+namespace App\Http\Controllers\Comissao\Administrativo;
 
 use Illuminate\Http\Request;
 use App\Models\Comissao\Planilha;
@@ -9,11 +9,9 @@ use App\Http\Controllers\Controller;
 class ArquivoController extends Controller
 {
     private $planilha;
-    private $titulo;
 
     public function __construct(Planilha $planilha)
     {
-        $this->titulo   = "Planilha Arquivada";
         $this->planilha = $planilha;
     }
 
@@ -29,7 +27,7 @@ class ArquivoController extends Controller
                 ->paginate(10); 
         }
         return view('comissao.administrativo.arquivos', [
-            'titulo'      => $this->titulo,
+            'titulo'      => "Planilha Arquivada",
             'collections' => $collections,
         ]);
     }
