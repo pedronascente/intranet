@@ -30,7 +30,7 @@ class Modulo extends Model
     {
         return $this->belongsToMany(Permissao::class,'modulo_permissao');
     }
-
+  
     public function rules()
     {
         return [
@@ -48,17 +48,26 @@ class Modulo extends Model
             'required' => 'Campo obrigatório.',
         ];
     }
-    
+
     public static function AtivarDesativarModuloECategoria($slug)
     {
-       
-         DB::table('modulos')->where('slug', '<>', $slug)->update(['ativo' => '']);// Desativa todos os módulos exceto aquele com o slug fornecido
-         DB::table('modulos')->where('slug', $slug)->update(['ativo' => 'active']);  // Ativa o módulo com o slug fornecido
+        // Ativa o módulo com o slug fornecido e desativa todos os outros módulos
+        DB::table('modulos')->update(['ativo' => DB::raw("CASE WHEN slug = '{$slug}' THEN 'active' ELSE '' END")]);
 
-        $modulo = DB::table('modulos')->where('slug', $slug)->first();
-      
-        DB::table('modulo_categorias')->where('id', '<>', $modulo->modulo_categoria_id)->update(['ativo' => '']);
-        DB::table('modulo_categorias')->where('id', $modulo->modulo_categoria_id)->update(['ativo' => 'active']);
+        // Ativa a categoria do módulo com o slug fornecido e desativa todas as outras categorias
+        DB::table('modulo_categorias')->where('id', DB::table('modulos')->where('slug', $slug)->value('modulo_categoria_id'))
+        ->update(['ativo' => 'active']);
 
+        DB::table('modulo_categorias')->where('id', '<>', DB::table('modulos')->where('slug', $slug)->value('modulo_categoria_id'))
+        ->update(['ativo' => '']);
+    }
+
+    public function getModulo($filtro = null)
+    {
+        $query = $this->orderBy('id', 'desc');
+        if ($filtro) {
+            $query->where('nome', 'like', '%' . $filtro . '%');
+        }
+        return $query->paginate(10);
     }
 }

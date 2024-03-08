@@ -30,12 +30,11 @@ class ModuloController extends Controller
         });
     }
 
-    public function index()
+    public function index(Request $request)
     {  
-        $titulo ="Listar Módulos";
-        $arrayListModulo = $this->modulo->orderBy('id', 'desc')->paginate(10); 
+        $arrayListModulo = $this->modulo->getModulo($request->filtro); 
         return view('modulo.index', [
-            'titulo' => $titulo,
+            'titulo' => "Listar Módulos",
             'arrayListModulo' => $arrayListModulo,
             'arrayListPermissoesDoModuloDaRota' => $this->arrayListPermissoesDoModuloDaRota,
         ]);
