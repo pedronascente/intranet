@@ -135,4 +135,23 @@ class Colaborador extends Model
             'required' => 'Campo obrigatório.',
         ];
     }
+
+    public function getColaborador($filtro = null)
+    {
+        $query = $this->orderBy('id', 'desc');
+        if ($filtro) {
+            $query->where('nome', 'like', '%' . $filtro . '%');
+            $query->orWhere('numero_matricula', 'like', '%' . $filtro . '%');
+            $query->orWhere('rg', 'like', '%' . $filtro . '%');
+            $query->orWhere('cpf', 'like', '%' . $filtro . '%');
+            $query->orWhere('email', 'like', '%' . $filtro . '%');
+        }
+
+         //$sql = $query->toSql(); // Aqui você obtém o SQL gerado
+         //dd($sql); // Aqui você exibe o SQL gerado
+
+        return $query->paginate(10);
+    }
+
 }
+

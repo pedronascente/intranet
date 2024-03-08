@@ -5,8 +5,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
-           <a href="/configuracoes">Configurações</a> /
-           <a href="{{ route('perfil.index') }}">perfil</a> 
+           <a href="{{ route('perfil.index') }}">Perfil</a> 
         </li>
     </ol>
 @endsection

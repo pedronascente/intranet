@@ -25,12 +25,12 @@ class CargoController extends Controller
         });
     }
 
-    public function index()
+    public function index(Request $request )
     {
-        $titulo = "Lista dos Cargos";
-        $arrayListCargos = $this->cargo->orderBy('id', 'desc')->paginate(10);
+
+        $arrayListCargos = $this->cargo->getCargo($request->filtro);
         return view('cargo.index', [
-            'titulo' => $titulo,
+            'titulo' => "Listar Cargos",
             'arrayListCargos' => $arrayListCargos,
             'arrayListPermissoesDoModuloDaRota' => $this->arrayListPermissoesDoModuloDaRota,
         ]);

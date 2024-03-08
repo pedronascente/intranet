@@ -27,7 +27,7 @@ class PermissaoController extends Controller
 
     public function index()
     {
-        $titulo = "Lista de Permissões";
+        $titulo = "Listar Permissões";
         $arrayListPermissao = $this->permissao->orderBy('id', 'desc')->paginate(10);
         return view('permissao.index', [
             'titulo' => $titulo,

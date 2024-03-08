@@ -5,7 +5,6 @@
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
-            <a href="/configuracoes">Configurações</a> /
             <a href="{{ route('usuario.index') }}">usuário</a>
         </li>
     </ol>
@@ -19,9 +18,28 @@
                 @method('PUT')
                 <div class="card-body">
                     <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label>Perfil:</label>
+                                <select name="perfil" class="custom-select @error('perfil') is-invalid @enderror">
+                                    <option value="">Selecione...</option>
+                                    @if ($perfis)
+                                        @foreach ($perfis as $item)
+                                            <option value="{{ $item->id }} "
+                                                @if ($user->perfil->id == $item->id) selected @endif
+                                                @if (old('perfil')) selected @endif>
+                                                {{ $item->nome }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                                @error('perfil')
+                                    <span class=" invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label>QTD. de Tokens:</label>
+                                <label>Token:</label>
                                 <select name="qtdToken" class="custom-select @error('qtdToken') is-invalid @enderror">
                                     <option value="">...</option>
                                     @for ($i = 1; $i <= 40; $i++)
@@ -39,9 +57,7 @@
                                 @enderror
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-2">
+                         <div class="col-md-2">
                             <div class="form-group">
                                 <label>Ativo:</label>
                                 <select name="status" class="custom-select">
@@ -52,27 +68,6 @@
                                         @if (old('status') == 'off') selected @endif>
                                         Inativo</option>
                                 </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-5">
-                            <div class="form-group">
-                                <label>Perfil:</label>
-                                <select name="perfil" class="custom-select @error('perfil') is-invalid @enderror">
-                                    <option value="">Selecione...</option>
-                                    @if ($perfis)
-                                        @foreach ($perfis as $item)
-                                            <option value="{{ $item->id }} "
-                                                @if ($user->perfil->id == $item->id) selected @endif
-                                                @if (old('perfil')) selected @endif>
-                                                {{ $item->nome }}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                                @error('perfil')
-                                    <span class=" invalid-feedback">{{ $message }}</span>
-                                @enderror
                             </div>
                         </div>
                     </div>
@@ -99,8 +94,6 @@
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
-                        </div>
-                        <div class="col-md-6">
                             <div class="form-group">
                                 <label>Confirma senha:</label>
                                 <input type="text" name="password_confirmation"
@@ -111,8 +104,10 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="col-md-6">
+                             <x-ui.panel-dica-boa-senha />
+                        </div>
                     </div>
-                    <x-ui.panel-dica-boa-senha />
                 </div>
                 <div class="card-footer">
                     <x-botao.btn-salvar />

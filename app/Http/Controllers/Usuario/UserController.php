@@ -17,7 +17,6 @@ class UserController extends Controller
 
     public function __construct(User $user)
     {
- 
         $this->user = $user;
         $this->middleware(function ($request, $next) {
             $this->arrayListPermissoesDoModuloDaRota = session()->get('permissoesDoModuloDaRota');
@@ -25,12 +24,11 @@ class UserController extends Controller
         });
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $titulo = "Lista de Usuários";
-        $arrayListUsuario = $this->user->with('perfil')->orderBy('id', 'desc')->paginate(10);
+        $arrayListUsuario = $this->user->getUsuarioESeuPerfil($request->filtro);
         return view('usuario.index', [
-            'titulo' => $titulo,
+            'titulo' => "Listar Usuários",
             'arrayListUsuario' => $arrayListUsuario,
             'arrayListPermissoesDoModuloDaRota' => $this->arrayListPermissoesDoModuloDaRota,
         ]);
@@ -41,7 +39,7 @@ class UserController extends Controller
         if (!in_array('Criar', $this->arrayListPermissoesDoModuloDaRota)) {
             return redirect()->route('usuario.index')->with('error', "Você não Tem Permissão de Cadastro.");
         }
-        $titulo = 'Cadastrar usário';
+        $titulo = 'Cadastrar usuário';
         $Perfil = Perfil::all();
         return view('usuario.create', [
             'titulo' => $titulo,

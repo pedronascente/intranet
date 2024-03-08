@@ -74,7 +74,7 @@
     
     <div class="card p-3">
         <div class="card-header">
-            <h3 class="card-title"><b>Segurança</b> </h3>
+            <h3 class="card-title"><b>Alterar Senha:</b> </h3>
         </div>
         <div class="card-body">
             @if ($colaborador)

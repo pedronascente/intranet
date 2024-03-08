@@ -5,8 +5,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
-            <a href="/configuracoes">Configurações</a> 
-            <a href="/configuracoes/modulo">modulo</a> 
+            <a href="/configuracoes/modulo">Módulo</a> 
         </li>
     </ol>
 @endsection

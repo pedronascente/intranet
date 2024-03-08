@@ -59,12 +59,11 @@ class ColaboradorController extends Controller
         });
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $titulo = "Lista dos Colaboradores";
-        $arrayListDeColaboradores = $this->colaborador->with('usuario')->orderBy('id', 'desc')->paginate(10);
+        $arrayListDeColaboradores = $this->colaborador->getColaborador($request->filtro);
         return view('colaborador.index', [
-            'titulo' => $titulo,
+            'titulo' => "Listar Colaboradores",
             'arrayListDeColaboradores' => $arrayListDeColaboradores,
             'arrayListPermissoesDoModuloDaRota' => $this->arrayListPermissoesDoModuloDaRota
         ]);
@@ -201,23 +200,6 @@ class ColaboradorController extends Controller
             }
             $colaborador->foto = $CaniveteHelp->upload($request, $this->path);
         }
-
-
-        /*
-        if ($request->hasFile('foto')) {
-            $destino = $this->path . $colaborador->foto;
-            if ($colaborador->foto != 'dummy-round.png' && File::exists($destino)) {
-                File::delete($destino);
-            }
-            $colaborador->foto = $CaniveteHelp->upload($request, $this->path);
-        }else{
-            if ($foto = $CaniveteHelp->upload($request, $this->path)) {
-                $colaborador->foto = $foto;
-            } else {
-                $colaborador->foto = 'dummy-round.png';
-            }
-        }
-        */
         $colaborador->save();
     }
 }

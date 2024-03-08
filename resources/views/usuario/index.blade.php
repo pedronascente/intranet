@@ -5,7 +5,6 @@
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
-            <a href="/configuracoes">Configurações</a> /
             <a href="{{ route('usuario.index') }}">usuário</a>
        </li>
     </ol>
@@ -20,6 +19,9 @@
         </div>
         @if (in_array('Listar',$arrayListPermissoesDoModuloDaRota))
             <div class="card">
+                <div class="card-header table-responsive">
+                   <x-search-form />
+                </div>
                 <div class="card-body table-responsive p-0">
                     <table class="table table-hover text-nowrap  table-striped"> 
                         <thead>

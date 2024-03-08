@@ -37,4 +37,19 @@ class Cargo extends Model
             'nome.unique' => 'Este nome já está sendo utilizado.',
         ];
     }
+
+    public function getCargo($filtro = null)
+    {
+        $query = $this->orderBy('id', 'desc');
+
+        if ($filtro) {
+            $query->where('nome', 'like', '%' . $filtro . '%');
+        }
+
+       // $sql = $query->toSql(); // Aqui você obtém o SQL gerado
+       // dd($sql); // Aqui você exibe o SQL gerado
+
+        return $query->paginate(10);
+    }
+
 }

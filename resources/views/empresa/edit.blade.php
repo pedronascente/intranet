@@ -5,8 +5,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
-            <a href="/configuracoes">Configurações</a> /
-             <a href="/configuracoes/empresa">empresa</a>
+             <a href="{{ route('empresa.index') }}">empresa</a>
         </li>
     </ol>
 @endsection

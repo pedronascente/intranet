@@ -48,8 +48,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if ($collections)
-                            @foreach ($collections as $item)
+                        @if ($arrayListPlanilhas)
+                            @foreach ($arrayListPlanilhas as $item)
                                 @php
                                     $valorTotalComissao = app('App\Http\Controllers\Comissao\Administrativo\AdministrarComissaoController')->getValorTotalComissao($item);
                                 @endphp

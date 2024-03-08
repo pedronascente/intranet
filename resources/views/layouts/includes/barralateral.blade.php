@@ -27,7 +27,7 @@
                 data-accordion="false">
                 @php
                     $modulosDoUsuarioAutenticadoId = session()->get('modulosDoUsuarioAutenticadoId');
-                    $categoriasDoUsuarioAutenticadoNome = session()->get('categoriasDoUsuarioAutenticadoNome');
+                    $categoriasDoUsuarioAutenticadoNome = session()->get('categoriasDoUsuarioAutenticadoNome') ? session()->get('categoriasDoUsuarioAutenticadoNome') : [];
                 @endphp
                 @if ($MenuBarraLateral)
                     @foreach ($MenuBarraLateral as $categoria)

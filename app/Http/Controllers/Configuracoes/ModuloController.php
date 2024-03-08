@@ -32,7 +32,7 @@ class ModuloController extends Controller
 
     public function index()
     {  
-        $titulo ="Lista de Módulos";
+        $titulo ="Listar Módulos";
         $arrayListModulo = $this->modulo->orderBy('id', 'desc')->paginate(10); 
         return view('modulo.index', [
             'titulo' => $titulo,

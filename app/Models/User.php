@@ -91,7 +91,7 @@ class User extends Authenticatable
                 $feedback = $this->feedback();
                 $request->validate($rules, $feedback);
             break;
-            case 'put':
+            case 'put':  
                 $rules =  [
                     'status' => ['required', 'string'],
                     'perfil' => ['required'],
@@ -120,7 +120,8 @@ class User extends Authenticatable
             'required',
             'confirmed',
             'string',
-            'min:6', // deve ter pelo menos 6 caracteres
+            'min:10', // deve ter pelo menos 10 caracteres
+            'max:25', // deve ter max  25 caracteres
             'regex:/[a-z]/', // deve conter pelo menos uma letra minúscula
             'regex:/[A-Z]/', // deve conter pelo menos uma letra maiúscula
             'regex:/[0-9]/', // deve conter pelo menos um dígito
@@ -134,13 +135,14 @@ class User extends Authenticatable
             'unique'             => 'Este id já está sendo usado.',
             'required'           => 'Campo obrigatorio.',
             'confirmed'          => 'A confirmação de senha não corresponde.',
-            'string'             => 'A senha deve ser uma string.',
-            'min'                => 'A senha deve ter pelo menos :min caracteres.',
-            'regex'              => 'A senha deve conter pelo menos uma letra minúscula, uma letra maiúscula, um dígito e um caractere especial.',
-            'regex:/[a-z]/'      => 'A senha deve conter pelo menos uma letra minúscula.',
-            'regex:/[A-Z]/'      => 'A senha deve conter pelo menos uma letra maiúscula.',
-            'regex:/[0-9]/'      => 'A senha deve conter pelo menos um dígito.',
-            'regex:/[@$!%*#?&]/' => 'A senha deve conter pelo menos um caractere especial.'
+            'string'             => 'Senha deve ser uma string.',
+            'min'                => 'Senha deve ter entre 6 e 25 caracteres.',
+            'max'                => 'Senha deve ter entre 6 e 25 caracteres.',
+            'regex'              => 'Senha deve conter pelo menos 1 letra minúscula, 1 letra maiúscula, 1 dígito e 1 caractere especial.',
+            'regex:/[a-z]/'      => 'Senha deve conter pelo menos 1 letra minúscula.',
+            'regex:/[A-Z]/'      => 'Senha deve conter pelo menos 1 letra maiúscula.',
+            'regex:/[0-9]/'      => 'Senha deve conter pelo menos 1 dígito.',
+            'regex:/[@$!%*#?&]/' => 'Senha deve conter pelo menos 1 caractere especial.'
         ];
     }
 
@@ -158,5 +160,27 @@ class User extends Authenticatable
             'name.required' => 'O campo usuario é obrigatório!',
             'password.required' => 'O campo senha é obrigatório!',
         ];
+    }
+
+    public function getUsuarioESeuPerfil($filtro = null)
+    {
+        $query = $this->with(['perfil', 'colaborador.empresa'])->orderByDesc('id');
+
+        if ($filtro) {
+            $query->where(function ($query) use ($filtro) {
+                $query->where('name', 'like', '%' . $filtro . '%')
+                ->orWhereHas('colaborador', function ($query) use ($filtro) {
+                    $query->where('nome', 'like', '%' . $filtro . '%')
+                    ->orWhere('name', 'like', '%' . $filtro . '%')
+                    ->whereHas('empresa', function ($query) use ($filtro) {
+                        $query->where('nome', 'like', '%' . $filtro . '%');
+                    });
+                });
+            });
+        }
+
+        //$sql = $query->toSql(); // Aqui você obtém o SQL gerado
+        //dd($sql); // Aqui você exibe o SQL gerado
+        return $query->paginate(10);
     }
 }

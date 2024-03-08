@@ -28,7 +28,7 @@ class BaseController extends Controller
 
     public function index()
     {
-        $titulo = "Lista das Bases";
+        $titulo = "Listar Bases";
         $arrayListBase = $this->base->orderBy('id', 'desc')->paginate(10);
         return view('base.index', [
             'titulo' => $titulo,

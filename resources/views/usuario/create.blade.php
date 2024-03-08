@@ -5,8 +5,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
-            <a href="/configuracoes">Configurações</a> /
-            <a href="{{ route('usuario.index') }}">usuário</a>
+            <a href="{{ route('usuario.index') }}">Usuário</a>
         </li>
     </ol>
 @endsection
@@ -18,27 +17,9 @@
                 @csrf
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-1">
+                        <div class="col-md-2">
                             <div class="form-group">
-                                <label>QTD. de Tokens:</label>
-                                <select name="qtdToken" class="custom-select @error('qtdToken') is-invalid @enderror">
-                                    <option value="">...</option>
-                                    @for ($i = 1; $i <= 40; $i++)
-                                        <option value="{{ $i }}" @if (old('qtdToken') == $i) selected @endif>
-                                            {{ $i }}
-                                        </option>
-                                    @endfor
-                                </select>
-                                @error('qtdToken')
-                                    <span class=" invalid-feedback">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-1">
-                            <div class="form-group">
-                                <label>ID Colaborador:</label>
+                                <label>Id Colaborador:</label>
                                 <input type="text" name="colaborador_id"
                                     class="form-control @error('colaborador_id') is-invalid @enderror"
                                     placeholder="Id " value="{{ old('colaborador_id') }}">
@@ -47,20 +28,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-md-1">
-                            <div class="form-group">
-                                <label>Ativo:</label>
-                                <select name="status" class="custom-select">
-                                    <option value="on" @if (old('status') == 'on') selected @endif>
-                                        Sim</option>
-                                    <option value="off" @if (old('status') == 'off') selected @endif>
-                                        Não</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label>Perfil:</label>
                                 <select name="perfil" class="custom-select @error('perfil') is-invalid @enderror">
@@ -76,6 +44,33 @@
                                 @error('perfil')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Token:</label>
+                                <select name="qtdToken" class="custom-select @error('qtdToken') is-invalid @enderror">
+                                    <option value="">...</option>
+                                    @for ($i = 1; $i <= 40; $i++)
+                                        <option value="{{ $i }}" @if (old('qtdToken') == $i) selected @endif>
+                                            {{ $i }}
+                                        </option>
+                                    @endfor
+                                </select>
+                                @error('qtdToken')
+                                    <span class=" invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Ativo:</label>
+                                <select name="status" class="custom-select">
+                                    <option value="on" @if (old('status') == 'on') selected @endif>
+                                        Sim</option>
+                                    <option value="off" @if (old('status') == 'off') selected @endif>
+                                        Não</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -95,18 +90,16 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Senha:</label>
-                                <input type="text" name="password"
+                                <input type="password" name="password"
                                     class="form-control @error('password') is-invalid @enderror" placeholder="senha"
                                     value="{{ old('password') }}">
                                 @error('password')
                                     <span class=" invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
-                        </div>
-                        <div class="col-md-6">
                             <div class="form-group">
                                 <label>Confirma senha:</label>
-                                <input type="text" name="password_confirmation"
+                                <input type="password" name="password_confirmation"
                                     class="form-control @error('password_confirmation') is-invalid @enderror"
                                     placeholder="confirmar senha" value="{{ old('password_confirmation') }}">
                                 @error('password_confirmation')
@@ -114,8 +107,11 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <x-ui.panel-dica-boa-senha />
+                        </div>
                     </div>
-                    <x-ui.panel-dica-boa-senha />
+                    
                 </div>
                 <div class="card-footer">
                     <x-botao.btn-salvar />

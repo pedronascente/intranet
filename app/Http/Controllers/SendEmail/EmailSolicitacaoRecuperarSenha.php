@@ -39,13 +39,13 @@ class EmailSolicitacaoRecuperarSenha extends Email
     $this->_html .= "<p>Recebemos em nosso sistema uma solicitação para recuperar sua senha </p>";
     $this->_html .= "<p>Por favor, caso não tenha solicitado favor, ignore este email. caso contrario ...</p>";
     $this->_html .= "
-              <h1>Super Dicas para uma boa senha!</h1>
+                  <h5>A sua senha <b>deve conter</b> pelo menos:</h5>
                   <ul>
-                      <li>deve ter pelo menos 6 caracteres: [ min:6 ]</li>
-                      <li>deve conter pelo menos uma letra minúscula: [a-z]</li>
-                      <li>deve conter pelo menos uma letra maiúscula: [A-Z]</li>
-                      <li>deve conter pelo menos um dígito: [0-9]</li>
-                      <li>deve conter um caractere especial:[@$!%*#?&]</li>
+                      <li>10 até 25 caracteres</li>
+                      <li>1 Minúscula</li>
+                      <li>1 Maiúscula</li>
+                      <li>1 Dígito [0-9]</li>
+                      <li>1 caractere especial:[@$!%*#?&]</li>
                   </ul>";
     $this->_html .= "
                   <br>
@@ -57,6 +57,8 @@ class EmailSolicitacaoRecuperarSenha extends Email
     return $this->_html;
   }
 }
+
+
 
 /*
   *****************************************************************************

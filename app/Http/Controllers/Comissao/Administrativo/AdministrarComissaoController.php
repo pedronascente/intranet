@@ -34,16 +34,16 @@ class AdministrarComissaoController extends Controller
     {
         $arrayPlanilhaStatusId = [3, 5];
         if($request->query('ano') || $request->query('filtro')){
-            $collections = $this->planilha->getPlanilha($request, $arrayPlanilhaStatusId);
+            $arrayListPlanilhas = $this->planilha->getPlanilha($request, $arrayPlanilhaStatusId);
         }else{
-            $collections = $this->planilha
+            $arrayListPlanilhas = $this->planilha
                 ->whereIn('planilha_status_id', $arrayPlanilhaStatusId)
                 ->orderBy('id', 'desc') 
                 ->paginate(10); 
         }
         return view('comissao.administrativo.conferir', [
-            'titulo' => "Administrar Comissão", 
-            'collections' => $collections, 
+            'titulo' => "Administrar Comissão",
+            'arrayListPlanilhas' => $arrayListPlanilhas, 
         ]);
     }
 
