@@ -59,21 +59,5 @@ class CaniveteHelp
         return $dataFormatada;
     }
 
-    /**
-     * Realiza o upload de uma foto.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return string|false
-     */
-    public function upload($request, $path)
-    {
-      if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
-        $requestImagem  = $request->foto;
-        $extension      = $requestImagem->extension();
-        $imagemName     = md5($requestImagem->getClientOriginalName() . strtotime('now')) . '.' . $extension;
-        $requestImagem->move(public_path($path), $imagemName);
-        return $imagemName;
-      }
-      return false;
-    }
+    
 }

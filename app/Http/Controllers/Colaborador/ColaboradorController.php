@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Colaborador;
 
+use Illuminate\Http\Request;
 use App\Models\Colaborador\Base;
 use App\Models\Colaborador\Cargo;
 use App\Models\Colaborador\Empresa;
-use App\Models\Colaborador\Colaborador;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
-use App\Http\Controllers\Help\CaniveteHelp;
+use App\Models\Colaborador\Colaborador;
+use App\Http\Controllers\Colaborador\Foto;
 
 class ColaboradorController extends Controller
 {
@@ -42,6 +42,13 @@ class ColaboradorController extends Controller
     private $cargos;
  
     private $path;
+    
+    /**
+     * Instância de Foto
+     *
+     * @var Foto
+     */
+    private $foto;
 
     private $arrayListPermissoesDoModuloDaRota;
 
@@ -52,6 +59,7 @@ class ColaboradorController extends Controller
         $this->empresas = Empresa::orderBy('id', 'desc')->get();
         $this->cargos = Cargo::orderBy('id', 'desc')->get();
         $this->path = 'img/colaborador/';
+        $this->foto = new Foto();
 
         $this->middleware(function ($request, $next) {
             $this->arrayListPermissoesDoModuloDaRota = session()->get('permissoesDoModuloDaRota');
@@ -191,14 +199,12 @@ class ColaboradorController extends Controller
         $colaborador->empresa()->associate(Empresa::findOrFail($request->empresa_id));
         $colaborador->cargo()->associate(Cargo::findOrFail($request->cargo_id));
     
-        $CaniveteHelp = new CaniveteHelp();
-    
         if ($request->hasFile('foto')) {
             $destino = $this->path . $colaborador->foto;
             if ($colaborador->foto != 'dummy-round.png' && File::exists($destino)) {
                 File::delete($destino);
             }
-            $colaborador->foto = $CaniveteHelp->upload($request, $this->path);
+            $colaborador->foto = $this->foto->upload($request, $this->path);
         }
         $colaborador->save();
     }
