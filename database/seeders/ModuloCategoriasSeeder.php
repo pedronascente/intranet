@@ -30,5 +30,10 @@ class ModuloCategoriasSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+        DB::table('modulo_categorias')->insert([
+            'nome' => 'Cliente',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 }

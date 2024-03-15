@@ -6,38 +6,43 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MeuPerfilController;
 
-use App\Http\Controllers\Usuario\UserController;
-use App\Http\Controllers\Usuario\RecuperarSenhaController;
 use App\Http\Controllers\Login\LoginController;
 use App\Http\Controllers\Login\TokenController;
+use App\Http\Controllers\Usuario\UserController;
+use App\Http\Controllers\Cliente\ClienteController;
+use App\Http\Controllers\Cliente\ContatoController;
+use App\Http\Controllers\Cliente\EnderecoController;
+use App\Http\Controllers\Cliente\VeiculoController;
+use App\Http\Controllers\Cliente\DocumentacaoController;
 
 use App\Http\Controllers\Colaborador\BaseController;
 use App\Http\Controllers\Colaborador\CargoController;
+use App\Http\Controllers\Comissao\PlanilhaController;
 use App\Http\Controllers\Colaborador\EmpresaController;
-use App\Http\Controllers\Colaborador\ColaboradorController;
 
 use App\Http\Controllers\Configuracoes\ModuloController;
 use App\Http\Controllers\Configuracoes\PerfilController;
-use App\Http\Controllers\Configuracoes\ConfiguracaoController;
+use App\Http\Controllers\Usuario\RecuperarSenhaController;
+use App\Http\Controllers\Colaborador\ColaboradorController;
+
 use App\Http\Controllers\Configuracoes\PermissaoController;
-
+use App\Http\Controllers\Configuracoes\ConfiguracaoController;
 use App\Http\Controllers\Comissao\Administrativo\ArquivoController;
-use App\Http\Controllers\Comissao\Administrativo\ImprimirPlanilhaController;
-use App\Http\Controllers\Comissao\Administrativo\AdministrarComissaoController;
-use App\Http\Controllers\Comissao\Administrativo\RelatorioController as PlanilhaRelatorioController;
-
-use App\Http\Controllers\Comissao\PlanilhaController;
 use App\Http\Controllers\Comissao\Planilhas\EntregaDeAlarmeController;
+
 use App\Http\Controllers\Comissao\Planilhas\PortariaVirtualController;
 use App\Http\Controllers\Comissao\Planilhas\ReclamacaoDeClienteController;
+use App\Http\Controllers\Comissao\Administrativo\ImprimirPlanilhaController;
 use App\Http\Controllers\Comissao\Planilhas\TecnicaDeRastreamentoController;
 use App\Http\Controllers\Comissao\Planilhas\PlanilhaTipoColaboradorController;
+use App\Http\Controllers\Comissao\Administrativo\AdministrarComissaoController;
 use App\Http\Controllers\Comissao\Planilhas\PlanilhaTipoAdministrativoController;
 use App\Http\Controllers\Comissao\Planilhas\ComercialRastreamentoVeicularController;
 use App\Http\Controllers\Comissao\Planilhas\SupervisaoComercialRastreamentoController;
 use App\Http\Controllers\Comissao\Planilhas\TecnicaAlarmesCercaEletricaCFTVController;
 use App\Http\Controllers\Comissao\Planilhas\ComercialAlarmeCercaEletricaCFTVController;
 use App\Http\Controllers\Comissao\Planilhas\SupervisaoComercialAlarmesCercaEletricaCFTVController;
+use App\Http\Controllers\Comissao\Administrativo\RelatorioController as PlanilhaRelatorioController;
 use App\Http\Controllers\Comissao\Planilhas\SupervisaoTecnicaESacAlarmesCercaEletricaCFTVController;
 
 Route::prefix('/login')->group(function () {
@@ -161,8 +166,8 @@ Route::middleware([
 
 Route::middleware([
     'ValidarPermissaoDeRota:administrar-comissao', 
-    'AtivarDesativarModuloECategoria:administrar-comissao'])
-    ->group(function () {
+    'AtivarDesativarModuloECategoria:administrar-comissao'
+    ])->group(function () {
     Route::prefix('/comissao-administrativo')->group(function () {
         Route::get('/', function () {
             return redirect()->route('comissao.administrativo.index');
@@ -187,3 +192,29 @@ Route::middleware([
         });
     });
 });
+
+
+Route::middleware([
+    'ValidarPermissaoDeRota:cliente',
+    'AtivarDesativarModuloECategoria:cliente'
+])->resource('/cliente', ClienteController::class);
+
+Route::middleware([
+    'ValidarPermissaoDeRota:contato',
+    'AtivarDesativarModuloECategoria:contato'
+])->resource('/contato', ContatoController::class);
+
+Route::middleware([
+    'ValidarPermissaoDeRota:endereco',
+    'AtivarDesativarModuloECategoria:endereco'
+])->resource('/endereco', EnderecoController::class);
+
+Route::middleware([
+    'ValidarPermissaoDeRota:veiculo',
+    'AtivarDesativarModuloECategoria:veiculo'
+])->resource('/veiculo', VeiculoController::class);
+
+Route::middleware([
+    'ValidarPermissaoDeRota:documentacao',
+    'AtivarDesativarModuloECategoria:documentacao'
+])->resource('/documentacao', DocumentacaoController::class);

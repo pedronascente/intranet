@@ -17,14 +17,13 @@ class ValidarPermissaoDeRota
      */
     public function handle(Request $request, Closure $next, $modulo)
     {
+
         // Se o usuário não estiver logado, redirecionar para a página de login
         if (!auth()->check()) {
             return redirect()->route('login.form');
         }
 
         $perfilId = auth()->user()->perfil_id; 
-
-
 
         // Encontrar o módulo com base no slug da rota
         $modulo = Modulo::with(['permissoes' => function ($query) use ($perfilId) {
@@ -40,8 +39,7 @@ class ValidarPermissaoDeRota
             // Define as permissões na sessão
             $request->session()->put('permissoesDoModuloDaRota', $permissoesDoPerfil);
         } else {
-            // Caso o módulo não seja encontrado, você pode lidar com isso aqui
-            // Por exemplo, redirecionar ou retornar uma resposta adequada
+            redirect()->route('dashboard.index')->with('error', "Modulo não localizado.");
         }
 
         // Continua com o próximo middleware na cadeia

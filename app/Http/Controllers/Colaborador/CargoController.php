@@ -21,7 +21,7 @@ class CargoController extends Controller
         $this->cargo = $cargo;
         $this->middleware(function ($request, $next) {
             $this->arrayListPermissoesDoModuloDaRota = session()->get('permissoesDoModuloDaRota');
-            return $next($request);
+             return $next($request);
         });
     }
 
