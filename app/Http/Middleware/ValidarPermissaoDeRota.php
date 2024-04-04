@@ -38,9 +38,13 @@ class ValidarPermissaoDeRota
 
             // Define as permissões na sessão
             $request->session()->put('permissoesDoModuloDaRota', $permissoesDoPerfil);
-        } else {
+        } 
+
+        /*
+        else {
             redirect()->route('dashboard.index')->with('error', "Modulo não localizado.");
         }
+        */
 
         // Continua com o próximo middleware na cadeia
         return $next($request);

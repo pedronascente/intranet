@@ -17,17 +17,17 @@
                 <h3>Pessoa Juridica</h3>
             </div>
             <div class="card-body">
-                 <form action="{{ route('colaborador.store') }}" method="POST" enctype="multipart/form-data"  name="Formulario-create">
+                 <form action="{{ route('cliente.store') }}" method="POST">
                     @csrf
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="form-group">
                                     <label>Razão Social:</label>
-                                    <input type="text" name="nome" maxlength="190"
-                                        class="form-control @error('nome') is-invalid  @enderror" placeholder="Nome"
-                                        value="{{ old('nome') }}">
-                                    @error('nome')
+                                    <input type="text" name="razao_social" maxlength="190"
+                                        class="form-control @error('razao_social') is-invalid  @enderror" placeholder="Razão Ssocial"
+                                        value="{{ old('razao_social') }}">
+                                    @error('razao_social')
                                         <span class=" invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -47,50 +47,28 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="form-group">
-                                    <label>1 Socio:</label>
-                                    <input type="text" name="nome" maxlength="190"
-                                        class="form-control @error('nome') is-invalid  @enderror" placeholder="Nome"
-                                        value="{{ old('nome') }}">
-                                    @error('nome')
+                                    <label>Insc. Municipal:</label>
+                                    <input type="text" name="socio_um" maxlength="190"
+                                        class="form-control @error('socio_um') is-invalid  @enderror" placeholder="Sócio"
+                                        value="{{ old('socio_um') }}">
+                                    @error('socio_um')
                                         <span class=" invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Cpf:</label>
-                                    <input type="text" name="cnpj" maxlength="20" placeholder="__.__.___/_____-__"
-                                        class="form-control @error('cnpj') is-invalid  @enderror" value="{{ old('cnpj') }}"
-                                        data-inputmask="'alias': '99.999.999/9999-99'" data-mask="" inputmode="decimal">
-                                    @error('cnpj')
+                                    <label>RG / Insc. Estadual:</label>
+                                    <input type="text" name="cpf_socio_um" maxlength="20" placeholder="___.___.___-__"
+                                        class="form-control @error('cpf_socio_um') is-invalid  @enderror" value="{{ old('cpf_socio_um') }}"
+                                        data-inputmask="'alias': '99.999.999-99'" data-mask="" inputmode="decimal">
+                                    @error('cpf_socio_um')
                                         <span class=" invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="form-group">
-                                    <label>2 Socio:</label>
-                                    <input type="text" name="nome" maxlength="190"
-                                        class="form-control @error('nome') is-invalid  @enderror" placeholder="Nome"
-                                        value="{{ old('nome') }}">
-                                    @error('nome')
-                                        <span class=" invalid-feedback">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Cpf:</label>
-                                    <input type="text" name="cnpj" maxlength="20" placeholder="__.__.___/_____-__"
-                                        class="form-control @error('cnpj') is-invalid  @enderror" value="{{ old('cnpj') }}"
-                                        data-inputmask="'alias': '99.999.999/9999-99'" data-mask="" inputmode="decimal">
-                                    @error('cnpj')
-                                        <span class=" invalid-feedback">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
+                        
                         </div>
                     </div>
                     <div class="card-footer">
@@ -99,7 +77,6 @@
                     </div>
                 </form>
             </div>
-            
         </div>
     </div>
 @endsection

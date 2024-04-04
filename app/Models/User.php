@@ -20,8 +20,6 @@ class User extends Authenticatable
         'status',
         'password',
         'remember_token',
-        'created_at',
-        'updated_at',
         'perfil_id',
         'colaborador_id',
         'qtdToken'
@@ -63,13 +61,6 @@ class User extends Authenticatable
         return $retornar;
     }
 
-    /**
-     * Responsável por validar formulário de usuário
-     *
-     * @param Request $request
-     * @param string $tipo
-     * @return void
-     */
     public function validarFormulario( $request, $method)
     {
         switch($method) {
@@ -114,7 +105,7 @@ class User extends Authenticatable
         }
     }
 
-    public function getRegraPassword()
+    private function getRegraPassword()
     {
         return [
             'required',
@@ -129,7 +120,7 @@ class User extends Authenticatable
         ];
     }
 
-    public function feedback()
+    private function feedback()
     {
         return [
             'unique'             => 'Este id já está sendo usado.',

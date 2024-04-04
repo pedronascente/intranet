@@ -1,35 +1,37 @@
-
-
 <?php
 use Illuminate\Support\Facades\Route;
- 
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\MeuPerfilController;
 
+use App\Http\Controllers\DashboardController;
+
+use App\Http\Controllers\Contrato\ContratoRastreamentoController;
+
+use App\Http\Controllers\MeuPerfilController;
 use App\Http\Controllers\Login\LoginController;
 use App\Http\Controllers\Login\TokenController;
 use App\Http\Controllers\Usuario\UserController;
+
+use App\Http\Controllers\Cliente\SocioController;
 use App\Http\Controllers\Cliente\ClienteController;
 use App\Http\Controllers\Cliente\ContatoController;
-use App\Http\Controllers\Cliente\EnderecoController;
 use App\Http\Controllers\Cliente\VeiculoController;
-use App\Http\Controllers\Cliente\DocumentacaoController;
+use App\Http\Controllers\Cliente\EnderecoController;
 
 use App\Http\Controllers\Colaborador\BaseController;
 use App\Http\Controllers\Colaborador\CargoController;
 use App\Http\Controllers\Comissao\PlanilhaController;
 use App\Http\Controllers\Colaborador\EmpresaController;
 
+use App\Http\Controllers\Cliente\DocumentacaoController;
 use App\Http\Controllers\Configuracoes\ModuloController;
 use App\Http\Controllers\Configuracoes\PerfilController;
+
 use App\Http\Controllers\Usuario\RecuperarSenhaController;
 use App\Http\Controllers\Colaborador\ColaboradorController;
-
 use App\Http\Controllers\Configuracoes\PermissaoController;
 use App\Http\Controllers\Configuracoes\ConfiguracaoController;
+
 use App\Http\Controllers\Comissao\Administrativo\ArquivoController;
 use App\Http\Controllers\Comissao\Planilhas\EntregaDeAlarmeController;
-
 use App\Http\Controllers\Comissao\Planilhas\PortariaVirtualController;
 use App\Http\Controllers\Comissao\Planilhas\ReclamacaoDeClienteController;
 use App\Http\Controllers\Comissao\Administrativo\ImprimirPlanilhaController;
@@ -217,4 +219,15 @@ Route::middleware([
 Route::middleware([
     'ValidarPermissaoDeRota:documentacao',
     'AtivarDesativarModuloECategoria:documentacao'
-])->resource('/documentacao', DocumentacaoController::class);
+])->resource('/documento', DocumentacaoController::class);
+
+Route::middleware([
+    'ValidarPermissaoDeRota:socio',
+    'AtivarDesativarModuloECategoria:socio'
+])->resource('/socio', SocioController::class);
+
+
+Route::middleware([
+    'ValidarPermissaoDeRota:contrato',
+    'AtivarDesativarModuloECategoria:contrato'
+])->resource('/contrato',ContratoRastreamentoController::class);

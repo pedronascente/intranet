@@ -9,14 +9,36 @@ class Base extends Model
 {
     use HasFactory;
 
+    private $paginacao;
+
     protected $fillable = [
         'nome',
     ];
+
+    public function setPaginacao($paginacao)
+    {     
+      $this->paginacao = $paginacao;
+    }
+
+    public function getPaginacao()
+    {     
+      return  $this->paginacao;
+    }
+
+    public function getBaseOrderByIdDesc(){
+       return $this->orderBy('id', 'desc')->paginate($this->getPaginacao());
+    }
 
     public function colaboradores()
     {
         return $this->hasMany(Colaborador::class);
     }
+
+    public function salvar($nome){
+        $this->nome = $nome;
+        $this->save();
+    }
+
 
     public function rules($method)
     {

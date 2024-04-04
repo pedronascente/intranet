@@ -31,24 +31,6 @@ class Modulo extends Model
         return $this->belongsToMany(Permissao::class,'modulo_permissao');
     }
   
-    public function rules()
-    {
-        return [
-            'modulo_posicao_id' => 'required|integer',
-            'modulo_categoria_id' => 'required|integer',
-            'nome' => 'required|max:190|min:2',
-            'rota' => 'required|max:190|min:2',
-            'descricao' => 'required|max:190|min:5',
-        ];
-    }
-
-    public function feedback()
-    {   
-        return  [
-            'required' => 'Campo obrigatório.',
-        ];
-    }
-    
     public static function AtivarDesativarModuloECategoria($slug)
     {
 
@@ -65,10 +47,44 @@ class Modulo extends Model
 
     public function getModulo($filtro = null)
     {
-        $query = $this->orderBy('id', 'desc');
+        $query = $this::with('categoria')->orderBy('id', 'desc');
+
         if ($filtro) {
-            $query->where('nome', 'like', '%' . $filtro . '%');
+            $query->where(function ($query) use ($filtro) {
+                $query->where('nome', 'like', '%' . $filtro . '%')
+                ->orWhere('slug', 'like', '%' . $filtro . '%')
+                ->orWhereHas('categoria', function ($query) use ($filtro) {
+                    $query->where('nome', 'like', '%' . $filtro . '%');
+                });
+            });
         }
+
         return $query->paginate(10);
+    }
+
+    public function validarFormulario($request)
+    {
+        if($request->nova_categoria == null && $request->modulo_categoria_id == null)
+        {
+            $rules = [
+                'modulo_posicao_id' => 'required|integer',
+                'modulo_categoria_id' => 'required|integer',
+                'nome' => 'required|max:190|min:2',
+                'rota' => 'required|max:190|min:2',
+                'descricao' => 'required|max:190|min:5',
+            ];
+        }else{
+            $rules = [
+                'modulo_posicao_id' => 'required|integer',
+                'nome' => 'required|max:190|min:2',
+                'rota' => 'required|max:190|min:2',
+                'descricao' => 'required|max:190|min:5',
+            ];
+        }
+
+        $feedback = [
+            'required' => 'Campo obrigatório.',
+        ];
+        $request->validate($rules, $feedback);
     }
 }

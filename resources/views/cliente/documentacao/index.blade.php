@@ -13,7 +13,7 @@
 @section('content')
     <div class="card p-3">
         <div class="card-header text-center">
-          <h3>Digite o CPF do Cliente</h3>
+          <h3>Digite número do contrato</h3>
              <x-search-form />
         </div>
          @include('cliente.documentacao.table')  

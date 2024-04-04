@@ -20,61 +20,37 @@ class DocumentacaoController extends Controller
     public function index()
     {
         return view('cliente.documentacao.index', [
-            'titulo' => 'Listar Dcumentacao',
+            'titulo' => 'Listar Documentos',
             'arrayListPermissoesDoModuloDaRota' => $this->arrayListPermissoesDoModuloDaRota,
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function create()
     {
-        //
+        return view('cliente.documentacao.create', [
+            'titulo' => 'Anexar Documentos',
+            'arrayListPermissoesDoModuloDaRota' => $this->arrayListPermissoesDoModuloDaRota,
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        return $this->index();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+  
     public function edit($id)
     {
-        //
+        'excluir doc';
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //

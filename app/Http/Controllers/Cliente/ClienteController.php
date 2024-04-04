@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 class ClienteController extends Controller
 {
     protected $arrayListPermissoesDoModuloDaRota; //VALIDA AS PERMISSÕES DOS MODULOS
-
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
@@ -49,30 +48,29 @@ class ClienteController extends Controller
 
     public function store(Request $request)
     {
-        //
+        return $this->show($request);   
     }
 
     public function show($id)
     {
         return view('cliente.cliente.show', [
-            'titulo' => 'Visualizar Cliente',
-            'arrayListPermissoesDoModuloDaRota' => $this->arrayListPermissoesDoModuloDaRota,
+            "titulo" => "Visualizar Cliente",
+            "arrayListPermissoesDoModuloDaRota" => $this->arrayListPermissoesDoModuloDaRota,
         ]);
     }
 
     public function edit($id)
     {
-
         if ($id) {
-            switch (1) {
-                case 'j':
-                    return view('cliente.cliente.juridica.create', [
+            switch ($id) {
+                case 1:
+                    return view('cliente.cliente.juridica.edit', [
                         'titulo' => 'Editar Cliente',
                     ]);
                     break;
 
-                default:
-                    return view('cliente.cliente.fisica.create', [
+                case 2:
+                    return view('cliente.cliente.fisica.edit', [
                         'titulo' => 'Editar Cliente',
                     ]);
                     break;
@@ -84,8 +82,7 @@ class ClienteController extends Controller
     {
         //
     }
-
-   
+    
     public function destroy($id)
     {
         echo 'Destruir Clientes';

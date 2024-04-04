@@ -1,8 +1,10 @@
 <?php 
 
-namespace App\Http\Controllers\Colaborador;
+namespace App\Classes;
 
-class Foto{
+use Illuminate\Support\Facades\File;
+class UploadImagem
+{
 
   private $path;
   private $requestImagem;
@@ -14,7 +16,7 @@ class Foto{
    * @return string|false
    */
   public function upload($request, $path)
-  {
+  { 
     $this->path = $path;
 
     if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
@@ -30,6 +32,15 @@ class Foto{
   private function  gerarNovoNomeDaFoto()
   {
    return  md5($this->requestImagem->getClientOriginalName() . strtotime('now')) . '.' . $this->extension;
+  }
+
+  public function delete($destino)
+  {
+     File::delete($destino);
+  }
+  public function exists($destino)
+  {
+    File::exists($destino);
   }
 
 }

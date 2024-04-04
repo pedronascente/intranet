@@ -30,7 +30,6 @@
                                 <th>Cliente</th>
                                 <th>CPF</th>
                                 <th>CNPJ</th>
-                                
                                 <th width="5%" class="text-center">Permissões</th>
                             </tr>
                         </thead>
@@ -42,9 +41,8 @@
                                 <td></td>
                                 <td>699.731.460-00</td>
                                 <td class="text-center">
-                                    <x-botao.btn-visualizar :rota="route('cliente.show', 33)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota" />
-                                    <x-botao.btn-editar :rota="route('cliente.edit', 33)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota" />
-                                    <x-botao.btn-excluir :rota="route('cliente.destroy', 33)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota" />
+                                    <x-botao.btn-visualizar :rota="route('cliente.show', 1)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota" />
+                                    <x-botao.btn-excluir :rota="route('cliente.destroy', 1)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota" />
                                 </td>
                             </tr>
                             <tr>
@@ -54,9 +52,8 @@
                                 <td>86.293.080/0001-36</td>
                                 <td></td>
                                 <td class="text-center">
-                                    <x-botao.btn-visualizar :rota="route('cliente.show', 33)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota" />
-                                    <x-botao.btn-editar :rota="route('cliente.edit', 33)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota" />
-                                    <x-botao.btn-excluir :rota="route('cliente.destroy', 33)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota" />
+                                    <x-botao.btn-visualizar :rota="route('cliente.show', 2)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota" />
+                                    <x-botao.btn-excluir :rota="route('cliente.destroy', 2)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota" />
                                 </td>
                             </tr>
                         </tbody>

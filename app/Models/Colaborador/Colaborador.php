@@ -3,19 +3,17 @@
 namespace App\Models\Colaborador;
 
 use App\Models\User;
+use App\Classes\UploadImagem;
 use App\Models\Comissao\Planilha;
+use App\Interfaces\IColaborador; // Adicionado o namespace da interface
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Colaborador extends Model
+class Colaborador extends Model implements IColaborador // Implementa a interface IColaborador
 {
     use HasFactory;
 
-    /**
-     * Define a tabela associada ao modelo.
-     *
-     * @var string
-     */
     protected $table = "colaboradores";
 
     /**
@@ -37,6 +35,26 @@ class Colaborador extends Model
         'ramal',
         'nuemro_matricula',
     ];
+
+    public function newObjetoBase()
+    {
+       return new Base;
+    }
+
+    public function newObjetoEmpresa()
+    {
+        return new Empresa(); 
+    }
+
+    public function newObjetoCargo()
+    {
+        return new Cargo; 
+    }
+
+    public function newUploadImagem()
+    {
+       return new UploadImagem;
+    }
 
     /**
      * Relacionamento: Colaborador pertence a uma Empresa.
@@ -110,7 +128,7 @@ class Colaborador extends Model
         $validar['ramal']            = 'required|integer|min:1|max:9999';
         if ($request->_method != "PUT") {
             $validar['numero_matricula'] = 'required|integer|min:1|max:9999999999|unique:colaboradores,numero_matricula';
-        }     
+        }
         $validar['rg']               = 'required|max:15';
         $validar['base_id']          = 'required';
         $validar['empresa_id']       = 'required';
@@ -124,11 +142,6 @@ class Colaborador extends Model
         return $validar;
     }
 
-    /**
-     * Define as mensagens de feedback para as regras de validação.
-     *
-     * @return array
-     */
     public function feedback()
     {
         return [
@@ -146,12 +159,6 @@ class Colaborador extends Model
             $query->orWhere('cpf', 'like', '%' . $filtro . '%');
             $query->orWhere('email', 'like', '%' . $filtro . '%');
         }
-
-         //$sql = $query->toSql(); // Aqui você obtém o SQL gerado
-         //dd($sql); // Aqui você exibe o SQL gerado
-
         return $query->paginate(10);
     }
-
 }
-

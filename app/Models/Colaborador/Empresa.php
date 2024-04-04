@@ -16,9 +16,26 @@ class Empresa extends Model
         'imglogo',
     ];
 
+    private $paginacao;
+
     public function colaboradores()
     {
         return $this->hasMany(Colaborador::class);
+    }
+
+    public function setPaginacao($paginacao)
+    {
+        $this->paginacao = $paginacao;
+    }
+
+    public function getPaginacao()
+    {
+        return  $this->paginacao;
+    }
+
+    public function getEmpresaOrderByIdDesc()
+    {
+        return $this->orderBy('id', 'desc')->paginate($this->getPaginacao());
     }
 
     public function rules($method)
@@ -55,20 +72,15 @@ class Empresa extends Model
         ];
     }
 
-    /**
-     * Verifica a duplicidade de uma empresa com base no nome ou CNPJ.
-     *
-     * @param Request $request
-     * @return int
-     */
+
     public function validarDuplicidade($request)
     {
-        return $this->empresa->where('nome', $request->nome)
+        return $this->where('nome', $request->nome)
             ->orWhere('cnpj', $request->cnpj)
             ->get()->count();
     }
 
-    /**
+    /** 
      * Realiza o upload da imagem do logo.
      *
      * @param Request $request

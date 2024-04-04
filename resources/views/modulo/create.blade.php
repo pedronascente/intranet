@@ -16,22 +16,38 @@
             <form action="{{ route('modulo.store') }}" method="POST" name="Formulario-modulo-create">
                 @csrf
                 <div class="card-body">
-                    <div class="form-group">
-                        <label>Categoria:</label>
-                        <select name="modulo_categoria_id" class="custom-select  @error('modulo_categoria_id') is-invalid  @enderror">
-                            <option value="">...</option>
-                            @if($modulo_categorias)
-                                @foreach ( $modulo_categorias as $categoria)
-                                   <option value="{{ $categoria->id }}" @if(old('modulo_categoria_id') == $categoria->id) selected @endif>
-                                       {{ $categoria->nome }}  
-                                   </option>             
-                                @endforeach
-                            @endif
-                        </select>
-                        @error('modulo_categoria_id')
-                            <span class=" invalid-feedback">{{ $message }}</span>
-                        @enderror
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Categoria:</label>
+                                <select name="modulo_categoria_id" class="custom-select  @error('modulo_categoria_id') is-invalid  @enderror">
+                                    <option value="">...</option>
+                                    @if($modulo_categorias)
+                                        @foreach ( $modulo_categorias as $categoria)
+                                        <option value="{{ $categoria->id }}" @if(old('modulo_categoria_id') == $categoria->id) selected @endif>
+                                        {{ $categoria->nome }}  
+                                        </option>             
+                                        @endforeach
+                                    @endif
+                                </select>
+                                @error('modulo_categoria_id')
+                                <span class=" invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div  class="col-md-6">
+                            <div class="form-group">
+                                <label>Nova Categoria:</label>
+                                <input type="text" name="nova_categoria" class="form-control @error('nova_categoria') is-invalid  @enderror"
+                                    placeholder="nova_categoria" value="{{ old('nova_categoria') }}">
+                                @error('nova_categoria')
+                                    <span class=" invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>   
+                        </div>    
                     </div>
+
+
                     <div class="form-group">
                         <label>Posição do menu:</label>
                         <select name="modulo_posicao_id" class="custom-select  @error('modulo_posicao_id') is-invalid  @enderror">

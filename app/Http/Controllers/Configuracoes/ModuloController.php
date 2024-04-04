@@ -19,13 +19,27 @@ class ModuloController extends Controller
      */
     private $modulo;
 
-    private $arrayListPermissoesDoModuloDaRota;
+    /**
+     * Instância da ModuloPosicao
+     *
+     * @var ModuloPosicao
+     */
+    private $posicao;
+    
+    /**
+     * Instância da ModuloPosicao
+     *
+     * @var ModuloCategoria
+     */
+    private $categoria;
+
+    private $arrayListPermissoesDoModuloDaRota ;
 
     public function __construct(Modulo $modulo)
     {
         $this->modulo = $modulo;
         $this->middleware(function ($request, $next) {
-            $this->arrayListPermissoesDoModuloDaRota = session()->get('permissoesDoModuloDaRota');
+            $this->arrayListPermissoesDoModuloDaRota = session()->get('permissoesDoModuloDaRota')? session()->get('permissoesDoModuloDaRota') : [];
             return $next($request);
         });
     }
@@ -44,8 +58,8 @@ class ModuloController extends Controller
     {
         if (in_array('Criar', $this->arrayListPermissoesDoModuloDaRota)) {
             $titulo = "Cadastrar Módulo";
-            $ModuloPosicao = ModuloPosicao::all();
-            $ModuloCategoria = ModuloCategoria::all();
+            $ModuloPosicao = $this->getPosicao();
+            $ModuloCategoria = $this->getCategoria();
             return view('modulo.create', [
                 'titulo' => $titulo,
                 'modulo_posicoes' => $ModuloPosicao,
@@ -57,8 +71,8 @@ class ModuloController extends Controller
     }
 
     public function store(Request $request)
-    {        
-        $request->validate($this->modulo->rules(), $this->modulo->feedback());
+    {
+        $this->modulo->validarFormulario($request);
         $modulo = $this->modulo;
         $this->preencheModulo($modulo, $request);
         $modulo->save();
@@ -69,9 +83,9 @@ class ModuloController extends Controller
     {
         if (in_array('Editar', $this->arrayListPermissoesDoModuloDaRota)) {
             $titulo = "Editar Módulo";
-            $Modulo = Modulo::with('categoria', 'posicao')->findOrFail($id);
-            $ModuloPosicao = ModuloPosicao::all();
-            $ModuloCategoria = ModuloCategoria::all();
+            $Modulo = $this->modulo->with('categoria', 'posicao')->findOrFail($id);
+            $ModuloPosicao = $this->getPosicao();
+            $ModuloCategoria = $this->getCategoria();
             return view('modulo.edit', [
                 'titulo' => $titulo,
                 'modulo' => $Modulo,
@@ -85,7 +99,7 @@ class ModuloController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate($this->modulo->rules(), $this->modulo->feedback());
+        $this->modulo->validarFormulario($request);
         $modulo = $this->modulo->findOrFail($id);
         $this->preencheModulo($modulo, $request);
         $modulo->update();
@@ -112,12 +126,40 @@ class ModuloController extends Controller
         return redirect()->route('modulo.index');
     }
 
-    private function preencheModulo($modulo,$request){
+    private function preencheModulo($modulo,$request)
+    {
+        if($request->nova_categoria){
+            $categoria_id = $this->cadastrarCategoria(new ModuloCategoria(), $request); 
+        }else{
+            $categoria_id = $request->modulo_categoria_id;
+        }
         $modulo->nome = $request->nome;
-        $modulo->modulo_categoria_id = $request->modulo_categoria_id;
+        $modulo->modulo_categoria_id = $categoria_id;
         $modulo->modulo_posicao_id = $request->modulo_posicao_id;
         $modulo->rota = $request->rota;
-        $modulo->slug = CaniveteHelp::generateSlug($request->nome);
+        $modulo->slug = $this->gerarSlug($request->nome);
         $modulo->descricao = $request->descricao;
+    }
+
+    private function gerarSlug($parmetro)
+    {
+         return  CaniveteHelp::generateSlug($parmetro);
+    }
+
+    private function getPosicao()
+    {
+        return $this->posicao = ModuloPosicao::all();
+    }
+
+    private function getCategoria()
+    {
+        return $this->categoria =  ModuloCategoria::all();
+    }
+
+    private function  cadastrarCategoria($categoria,$request){
+        $inser_categoria = $categoria;
+        $inser_categoria->nome = $request->nova_categoria;
+        $inser_categoria->save();
+        return  $inser_categoria->id;
     }
 }

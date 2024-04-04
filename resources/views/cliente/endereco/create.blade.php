@@ -12,19 +12,30 @@
 
 @section('content')
     <div class="card p-3">
+          
+        @include('cliente.cliente.cliente_cpf') 
+         
         <div class="card">
             <div class="card-header">
-                <h3>Pessoa Juridica</h3>
-            </div>
+              <h4> Endereço</h4>
+          </div>
             <div class="card-body">
-                 <form action="{{ route('colaborador.store') }}" method="POST" enctype="multipart/form-data"  name="Formulario-create">
+                 <form action="{{ route('endereco.store') }}" method="POST"   name="Formulario-create">
                     @csrf
                     <div class="card-body">
-                           <div class="row">
-                            <div class="col-md-12">
-                                <h3>Endereço de Entrega</h3>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                     <label>Tipo Endereço:</label>
+                                        <select name="estado_civil" class="custom-select ">
+                                            <option value="">Selecione...</option>
+                                            <option value="casado">Residencial</option>
+                                            <option value="solteiro" selected="">Entrega</option>
+                                        </select>
+                                </div>
                             </div>
                         </div>
+                        
                         <div class="row">
                             <div class="col-md-5">
                                 <div class="form-group">
@@ -111,11 +122,17 @@
                     </div>
                     <div class="card-footer">
                         <x-botao.btn-salvar />
-                        <x-botao.btn-voltar :rota="route('cliente.create')" />
+                        <x-botao.btn-voltar :rota="route('cliente.show',1)" />
                     </div>
                 </form>
             </div>
-            
         </div>
     </div>
 @endsection
+
+
+
+
+
+
+

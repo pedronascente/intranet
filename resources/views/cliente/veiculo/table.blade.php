@@ -32,8 +32,8 @@
                 <td>2342342342342332423</td>
                 <td>PRETO</td>
                 <td>
-                    <x-botao.btn-editar :rota="route('cliente.edit', 33)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota" />
-                    <x-botao.btn-excluir :rota="route('cliente.edit', 33)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota" />
+                    <x-botao.btn-editar :rota="route('veiculo.edit', 33)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota" />
+                    <x-botao.btn-excluir :rota="route('veiculo.edit', 33)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota" />
                   </td>
             </tr>
             <tr>
@@ -48,14 +48,14 @@
                 <td>777777777777</td>
                 <td>VERDE</td>
                 <td>
-                    <x-botao.btn-editar :rota="route('cliente.edit', 33)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota" />
-                    <x-botao.btn-excluir :rota="route('cliente.edit', 33)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota" />
+                    <x-botao.btn-editar :rota="route('veiculo.edit', 33)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota" />
+                    <x-botao.btn-excluir :rota="route('veiculo.edit', 33)" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota" />
                 </td>
             </tr>
         </tbody>
       </table> 
     </div> 
     <div class="card-footer">
-      <x-botao.btn-cadastrar :rota="route('cliente.create')" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota" />
+      <x-botao.btn-cadastrar :rota="route('veiculo.create')" :arrayListPermissoesDoModuloDaRota="$arrayListPermissoesDoModuloDaRota" />
     </div>
 </div>
