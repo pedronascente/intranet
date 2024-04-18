@@ -28,7 +28,6 @@
             </div>
             <div class="card-body table-responsive p-0">
                 @include('comissao.planilhas.tecnicaDeRastreamento.colaborador.table')
-                <x-ui.modalDelete />
             </div>
         </div>
     </div>

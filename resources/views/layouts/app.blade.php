@@ -45,7 +45,9 @@
             @include('layouts.includes.footer')
         </div>
     </div>
-    @include('layouts.includes.scripts')
-</body>
 
+    @include('layouts.includes.scripts')
+    
+</body>
+<x-ui.modalDelete />
 </html>

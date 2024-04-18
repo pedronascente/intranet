@@ -97,5 +97,13 @@ class ModuloSeeder extends Seeder
             'modulo_categoria_id' => 3,
             'modulo_posicao_id'   => 2,   
         ]);
+        DB::table('modulos')->insert([
+            'nome'                => 'Regua',
+            'rota'                => '/automacao-regua/adm',     
+            'slug'                => 'automacao-regua-adm',
+            'descricao'           => "responsavel por , gerenciar o cadastro dos condomino - reguas- tomadas",
+            'modulo_categoria_id' => 7,
+            'modulo_posicao_id'   => 1,   
+        ]);
     }
 } 

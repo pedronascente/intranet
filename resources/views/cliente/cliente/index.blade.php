@@ -60,11 +60,9 @@
                     </table>
                 </div>
                 <div class="card-footer">
-                    
                 </div>
             </div>
     </div>
-    <x-ui.modalDelete />
 @endsection
 
 

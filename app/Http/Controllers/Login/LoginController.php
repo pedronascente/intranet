@@ -16,12 +16,7 @@ class LoginController extends Controller
     {
         $this->user = $user;   
     }
-    /**
-     *  Mostrar formulario pro usuário fazer login.
-     *
-     * @param Request $request
-     * @return void
-     */
+    
     public function create()
     {
         $messagem = CaniveteHelp::formatarDataLogin();
@@ -32,12 +27,6 @@ class LoginController extends Controller
         );
     }
 
-    /**
-     * Autenticar  usuário na aplicação.
-     *
-     * @param Request $request
-     * @return void
-     */
     public function login(Request $request)
     {
         $credenciais = $request->validate($this->user->rulesLogin(), $this->user->feedbackLogin());
@@ -51,20 +40,12 @@ class LoginController extends Controller
                 $this->logout($request);
                 return redirect()->back()->with('error', 'Você não possui um Token válido.');
             }
-            //Recuperar Perfil -modulos - Permissões: 
-           // $this->criarSessaoPerfil($request, $usuarioDB->perfil->id);
             return redirect()->route('token.create');
         } else {
             return redirect()->back()->with('error', 'Usuário ou senha inválido.');
         }
     }
 
-    /**
-     * Desconectar o usuário do aplicativo.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function logout(Request $request)
     {
         Auth::logout();

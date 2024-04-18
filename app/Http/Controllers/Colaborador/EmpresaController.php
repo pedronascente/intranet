@@ -15,37 +15,32 @@ class EmpresaController extends Controller
      */
     private $empresa;
 
-    private $arrayListPermissoesDoModuloDaRota;
-
+   
     public function __construct(Empresa $empresa)
     {
         $this->empresa = $empresa;
-        $this->middleware(function ($request, $next) {
-            $this->arrayListPermissoesDoModuloDaRota = session()->get('permissoesDoModuloDaRota');
-            return $next($request);
-        });
     }
 
     public function index()
     {
-        $arrayListEmpresa = $this->empresa->getEmpresaOrderByIdDesc();
-        return view('empresa.index', [
-            'arrayListEmpresa' => $arrayListEmpresa,
-            'arrayListPermissoesDoModuloDaRota' => $this->arrayListPermissoesDoModuloDaRota,
+         return view('empresa.index', [
+            "titulo"=>"Listar Empresa",
+            'arrayListEmpresa' => $this->empresa->getEmpresaOrderByIdDesc(),
         ]);
     }
 
     public function create()
     {
-        $this->ValidarPermissoesDoModuloDaRota('Criar');
-        $titulo = "Cadastrar Empresa";
-        return view('empresa.create', ['titulo' => $titulo]);
+        if (!$this->validarpermissao('Criar')) {
+            return redirect()->back();
+        }
+  
+        return view('empresa.create', ['titulo' => "Cadastrar Empresa"]);
     }
 
     public function store(Request $request)
     {
         $request->validate($this->empresa->rules('store'), $this->empresa->feedback());
-
         if ($this->empresa->validarDuplicidade($request)) {
             return redirect()->route('empresa.index')->with('warning', 'Já existe uma empresa com este nome ou CNPJ!');
         }
@@ -62,12 +57,12 @@ class EmpresaController extends Controller
 
     public function edit($id)
     {
-        $this->ValidarPermissoesDoModuloDaRota('Editar');
-        $titulo  = "Editar Empresa";
-        $Empresa = $this->empresa->findOrFail($id);
+        if (!$this->validarpermissao('Editar')) {
+            return redirect()->back();
+        }
         return view('empresa.edit', [
-            'empresa' => $Empresa,
-            'titulo' => $titulo,
+            "titulo" => "Editar Empresa",
+            "empresa" => $this->empresa->findOrFail($id),
         ]);
     }
 
@@ -89,7 +84,10 @@ class EmpresaController extends Controller
 
     public function destroy($id)
     {
-        $this->ValidarPermissoesDoModuloDaRota("Excluir");    
+        if (!$this->validarpermissao('Excluir')) {
+            return redirect()->back();
+        }
+   
         $empresa = $this->empresa->with('colaboradores')->findOrFail($id);
         if ($empresa->colaboradores->count() >= 1) {
             return redirect()->route('empresa.index')->with('warning', 'Esta empresa tem colaborador associado e não pode ser excluída.');
@@ -112,27 +110,5 @@ class EmpresaController extends Controller
     public function show($id)
     {
         return redirect()->route('empresa.index');
-    }
-
-    private function ValidarPermissoesDoModuloDaRota($permissao)
-    {
-        switch ($permissao) {
-            case 'Criar':
-                if (!in_array('Criar', $this->arrayListPermissoesDoModuloDaRota)) {
-                    return redirect()->route('base.index')->with('error', "Você não tem permissão de cadastro.");
-                }
-                break;
-            case 'Editar':
-                if (!in_array('Editar', $this->arrayListPermissoesDoModuloDaRota)) {
-                    return redirect()->route('base.index')->with('error', "Você não tem permissão de edição.");
-                }
-                break;
-            case 'Excluir':
-                if (!in_array('Excluir', $this->arrayListPermissoesDoModuloDaRota)) {
-                    return redirect()->route('base.index')->with('error', "Você não tem permissão de excluir.");
-                }
-                break;
-        }
-        return true;
-    }
+    }    
 } 

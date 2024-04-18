@@ -10,4 +10,14 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    public function validarpermissao($permissao)
+    {
+        $arrayPermissoes = session()->get('permissoesDoModuloDaRota');
+
+        if (in_array($permissao, $arrayPermissoes)) {
+            return true;
+        }
+        return false;
+    }
 }

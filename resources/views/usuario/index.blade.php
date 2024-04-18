@@ -70,5 +70,4 @@
             </div>
         @endif
     </div>
-    <x-ui.modalDelete/>
 @endsection

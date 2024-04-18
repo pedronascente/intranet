@@ -17,37 +17,31 @@ class ColaboradorController extends Controller
  
     private $path;
     
-    private $arrayListPermissoesDoModuloDaRota;
-
     public function __construct(Colaborador $colaborador)
     {
         $this->colaborador = $colaborador;
         $this->path = 'img/colaborador/';
-       
-        $this->middleware(function ($request, $next) {
-            $this->arrayListPermissoesDoModuloDaRota = session()->get('permissoesDoModuloDaRota');
-            return $next($request);
-        });
     }
 
     public function index(Request $request)
     {
-        $arrayListDeColaboradores = $this->colaborador->getColaborador($request->filtro);
         return view('colaborador.index', [
             'titulo' => "Listar Colaboradores",
-            'arrayListDeColaboradores' => $arrayListDeColaboradores,
-            'arrayListPermissoesDoModuloDaRota' => $this->arrayListPermissoesDoModuloDaRota
+            'arrayListDeColaboradores' => $this->colaborador->getColaborador($request->filtro),
         ]);
     }
 
     public function create()
     {
-        $this->ValidarPermissoesDoModuloDaRota('Criar');
-        return view('colaborador.create', [
-            'titulo' => "Cadastrar Colaborador",
-            'bases' =>  $this->colaborador->newObjetoBase()->getBaseOrderByIdDesc(),
-            'empresas' => $this->colaborador->newObjetoEmpresa()->getEmpresaOrderByIdDesc(),
-            'cargos' =>  $this->colaborador->newObjetoCargo()->getCargoOrderByIdDesc(),
+        if (!$this->validarpermissao('Criar')) {
+            return redirect()->back();
+        }
+
+        return view("colaborador.create", [
+            "titulo" => "Cadastrar Colaborador",
+            "bases" => $this->colaborador->newObjetoBase()->getBaseOrderByIdDesc(),
+            "empresas" => $this->colaborador->newObjetoEmpresa()->getEmpresaOrderByIdDesc(),
+            "cargos" => $this->colaborador->newObjetoCargo()->getCargoOrderByIdDesc(),
         ]);
     }
 
@@ -61,18 +55,22 @@ class ColaboradorController extends Controller
 
     public function show($id)
     {
-        $this->ValidarPermissoesDoModuloDaRota('Visualizar');
-        $titulo = "Visualizar Colaborador";
+        if (!$this->validarpermissao('Visualizar')) {
+            return redirect()->back();
+        }
+
         return view('colaborador.show', [
-            'titulo' => $titulo,
+            'titulo' => "Visualizar Colaborador",
             'colaborador' => $this->colaborador->findOrFail($id),
-            'arrayListPermissoesDoModuloDaRota' => $this->arrayListPermissoesDoModuloDaRota
         ]);
     }
 
     public function edit($id)
     {
-        $this->ValidarPermissoesDoModuloDaRota('Editar');
+        if (!$this->validarpermissao('Editar')) {
+            return redirect()->back();
+        }
+
         return view('colaborador.edit', [
             'titulo' => "Editar Colaborador",
             'colaborador' => $this->colaborador->findOrFail($id),
@@ -92,13 +90,17 @@ class ColaboradorController extends Controller
 
     public function destroy($id)
     {
-        $this->ValidarPermissoesDoModuloDaRota('Excluir');
-        $colaborador = $this->colaborador->with('usuario')->find($id);
-        if (!$colaborador) {
-            return redirect()->route('colaborador.index')
-            ->with('error', "Colaborador não encontrado.");
+        if (!$this->validarpermissao('Excluir')) {
+            return redirect()->back();
         }
-        if ($colaborador->usuario) {
+
+        $colaborador = $this->colaborador->with('usuario')->find($id);
+        if (!$colaborador) 
+        {
+            return redirect()->route('colaborador.index')->with('error', "Colaborador não encontrado.");
+        }
+        if ($colaborador->usuario) 
+        {
             return redirect()->route('colaborador.show', $id)->with('warning', "Este colaborador tem Usuário associado, portanto não pode ser excluído.");
         }
         $this->deleteColaborador($colaborador);
@@ -129,7 +131,8 @@ class ColaboradorController extends Controller
     private function deleteColaborador($colaborador)
     {
         $destino = $this->path . $colaborador->foto;
-        if ($colaborador->foto != 'dummy-round.png' && $this->colaborador->newUploadImagem()->exists($destino)) {
+        if ($colaborador->foto != 'dummy-round.png' && $this->colaborador->newUploadImagem()->exists($destino)) 
+        {
             $this->colaborador->newUploadImagem()->delete($destino);
         }
         $colaborador->delete();
@@ -158,29 +161,4 @@ class ColaboradorController extends Controller
         $colaborador->save();
     }
 
-    private function ValidarPermissoesDoModuloDaRota($permissao)
-    {
-        switch ($permissao) {
-            case 'Criar':
-                if (!in_array('Criar', $this->arrayListPermissoesDoModuloDaRota)) {
-                    return redirect()->route('base.index')->with('error', "Você não tem permissão de cadastro.");
-                }
-                break;
-            case 'Visualizar':
-                if (!in_array('Visualizar', $this->arrayListPermissoesDoModuloDaRota)) {
-                    return redirect()->route('base.index')->with('error', "Você não tem permissão de Visualização.");
-                }
-            case 'Editar':
-                if (!in_array('Editar', $this->arrayListPermissoesDoModuloDaRota)) {
-                    return redirect()->route('base.index')->with('error', "Você não tem permissão de edição.");
-                }
-                break;
-            case 'Excluir':
-                if (!in_array('Excluir', $this->arrayListPermissoesDoModuloDaRota)) {
-                    return redirect()->route('base.index')->with('error', "Você não tem permissão de excluir.");
-                }
-                break;
-        }
-        return true;
-    }
 }

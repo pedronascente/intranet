@@ -13,37 +13,30 @@ use Illuminate\Support\Facades\Redirect;
 class UserController extends Controller
 {
     private $user;
-    private $arrayListPermissoesDoModuloDaRota;
 
     public function __construct(User $user)
     {
         $this->user = $user;
-        $this->middleware(function ($request, $next) {
-            $this->arrayListPermissoesDoModuloDaRota = session()->get('permissoesDoModuloDaRota');
-            return $next($request);
-        });
     }
 
     public function index(Request $request)
     {
-        $arrayListUsuario = $this->user->getUsuarioESeuPerfil($request->filtro);
         return view('usuario.index', [
             'titulo' => "Listar Usuários",
-            'arrayListUsuario' => $arrayListUsuario,
-            'arrayListPermissoesDoModuloDaRota' => $this->arrayListPermissoesDoModuloDaRota,
+            'arrayListUsuario' => $this->user->getUsuarioESeuPerfil($request->filtro),
         ]);
     }
 
     public function create()
     {
-        if (!in_array('Criar', $this->arrayListPermissoesDoModuloDaRota)) {
-            return redirect()->route('usuario.index')->with('error', "Você não Tem Permissão de Cadastro.");
+        
+        if (!$this->validarpermissao('Criar')) {
+            return redirect()->back();
         }
-        $titulo = 'Cadastrar usuário';
-        $Perfil = Perfil::all();
+
         return view('usuario.create', [
-            'titulo' => $titulo,
-            'perfis' => $Perfil
+            'titulo' => 'Cadastrar usuário',
+            'perfis' => Perfil::all()
         ]);
     }
 
@@ -68,16 +61,13 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        if (!in_array('Editar', $this->arrayListPermissoesDoModuloDaRota)) {
-            return redirect()->route('usuario.index')->with('error', "Você não tem permissao de edição.");
+        if (!$this->validarpermissao('Editar')) {
+            return redirect()->back();
         }
-        $titulo = "Editar usuário";
-        $user = $this->user->findOrFail($id);
-        $perfil = Perfil::orderBy('id', 'desc')->get();
         return view('usuario.edit', [
-            'titulo' => $titulo,
-            'user' => $user,
-            'perfis' => $perfil
+            'titulo' => "Editar usuário",
+            'user' => $this->user->findOrFail($id),
+            'perfis' => Perfil::orderBy('id', 'desc')->get()
         ]);   
     }
 
@@ -114,8 +104,8 @@ class UserController extends Controller
 
     public function show($id)
     {
-        if (!in_array('Visualizar', $this->arrayListPermissoesDoModuloDaRota)) {
-            return redirect()->route('usuario.index')->with('error', "Você não Tem Permissão de Visualizar.");
+        if (!$this->validarpermissao('Visualizar')) {
+            return redirect()->back();
         }
         $titulo = "Visualizar usuário";
         $usuario = $this->user->with('perfil', 'colaborador', 'tokens')->findOrFail($id);
@@ -125,14 +115,13 @@ class UserController extends Controller
             'titulo' => $titulo,
             'usuario' => $usuario,
             'status' => $status,
-            'arrayListPermissoesDoModuloDaRota' => $this->arrayListPermissoesDoModuloDaRota,
         ]);
     }
 
     public function destroy($id)
     {
-        if (!in_array('Excluir', $this->arrayListPermissoesDoModuloDaRota)) {
-            return redirect()->route('usuario.index')->with('error', "Você não Tem Permissão de Excluir.");
+        if (!$this->validarpermissao('Excluir')) {
+            return redirect()->back();
         }
         $usuario = $this->user->with('colaborador')->findOrFail($id);
         if (!empty($usuario->colaborador)) {
@@ -141,5 +130,4 @@ class UserController extends Controller
         $usuario->delete();
         return redirect()->route('usuario.index')->with('status', "Registro excluido com sucesso!");    
     }
-    
 }

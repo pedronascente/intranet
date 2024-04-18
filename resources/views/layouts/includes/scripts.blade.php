@@ -27,14 +27,47 @@
 <script src="{{ asset('/dist/js/adminlte.js') }}"></script>
 
 <script>
-    $(function() {
-        bsCustomFileInput.init();
-        $('[data-mask]').inputmask();
-        $('#deleteModal').on('shown.bs.modal', function(event) {
-            var button = $(event.relatedTarget);
-            var rota = button.data('route');
-            // Atualiza o atributo action do formulário com o valor da URL
-            $('#deleteForm').attr('action', rota);
-        });
+    // Funções relacionadas ao modal de exclusão
+$(document).ready(function() {
+    bsCustomFileInput.init();
+    $('[data-mask]').inputmask();
+    
+    $('#deleteModal').on('shown.bs.modal', function(event) {
+        var button = $(event.relatedTarget);
+        var rota = button.data('route');
+        // Atualiza o atributo action do formulário com o valor da URL
+        $('#deleteForm').attr('action', rota);
     });
+});
+
+// Funções relacionadas ao modal de edição de tomada
+function fazerConsulta(rota) {
+    $.ajax({
+        url: rota,
+        method: 'GET',
+        success: function(response) {
+            preencherModal(response);
+        },
+        error: function(xhr, status, error) {
+            // Manipule o erro aqui, se necessário
+            console.error(error);
+        }
+    });
+}
+
+function preencherModal(data) {
+    $('#tomada_tomada').val(data.tomada);
+    $('#tomada_api').val(data.api);
+    $('#editarTomadaForm').attr('action', data.rota);
+    $('#editarTomadaModal').modal('show');
+}
+
+$(document).ready(function() {
+    $('.editarTomadaLink').click(function() {
+        var rota = $(this).data('route');
+        fazerConsulta(rota);
+    });
+});
+ 
+@stack('scripts')
 </script>

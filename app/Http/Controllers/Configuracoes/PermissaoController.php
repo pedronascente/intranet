@@ -14,36 +14,27 @@ class PermissaoController extends Controller
      * @var Permissao
      */
     private $permissao;
-    private $arrayListPermissoesDoModuloDaRota;
 
     public function __construct(Permissao $permissao)
     {
       $this->permissao = $permissao;
-        $this->middleware(function ($request, $next) {
-            $this->arrayListPermissoesDoModuloDaRota = session()->get('permissoesDoModuloDaRota');
-            return $next($request);
-        });
+        
     }
 
     public function index()
     {
-        $titulo = "Listar Permissões";
-        $arrayListPermissao = $this->permissao->orderBy('id', 'desc')->paginate(10);
         return view('permissao.index', [
-            'titulo' => $titulo,
-            'arrayListPermissao' => $arrayListPermissao,
-            'arrayListPermissoesDoModuloDaRota' => $this->arrayListPermissoesDoModuloDaRota,
+            "titulo" => "Listar Permissões",
+            "arrayListPermissao" => $this->permissao->orderBy('id', 'desc')->paginate(10),
         ]);
     }
 
     public function create()
     {
-        if (in_array('Criar', $this->arrayListPermissoesDoModuloDaRota)) {
-            $titulo = "Cadastrar Permissão";
-            return view('permissao.create', ['titulo' => $titulo]);
-        } else {
-            return redirect()->route('permissao.index')->with('error', "Você não Tem Permissão de Cadastro.");
-        } 
+        if (!$this->validarpermissao('Criar')) {
+            return redirect()->back();
+        }
+        return view('permissao.create', ['titulo' => "Cadastrar Permissão"]);
     }
 
     public function store(Request $request)
@@ -60,16 +51,13 @@ class PermissaoController extends Controller
 
     public function edit($id)
     {
-        if (in_array('Editar', $this->arrayListPermissoesDoModuloDaRota)) {
-            $titulo = "Editar Permissão";
-            $Permissao = $this->permissao->findOrFail($id);
-            return view('permissao.edit', [
-                'titulo' => $titulo,
-                'permissao' => $Permissao
-            ]);
-        } else {
-            return redirect()->route('permissao.index')->with('error', "Você não Tem Permissão de Edição.");
-        }         
+        if (!$this->validarpermissao('Editar')) {
+            return redirect()->back();
+        }
+        return view('permissao.edit', [
+            'titulo' => "Editar Permissão",
+            'permissao' => $this->permissao->findOrFail($id)
+        ]);         
     }
 
     public function update(Request $request, $id)
@@ -83,17 +71,16 @@ class PermissaoController extends Controller
 
     public  function destroy($id)
     {
-        if (in_array('Excluir', $this->arrayListPermissoesDoModuloDaRota)) {
-            $permissao = $this->permissao->with('perfis')->findOrFail($id);
-            if ($permissao->perfis->count() >= 1) {
-                return redirect()->route('permissao.index')->with('warning', "Está permissão está relacionada a um perfil, Não pode ser excluida.");
-            } else {
-                $permissao->delete();
-                return redirect()->route('permissao.index')->with('status', "Registro Excluido!");
-            }
+        if (!$this->validarpermissao('Excluir')) {
+            return redirect()->back();
+        }
+        $permissao = $this->permissao->with('perfis')->findOrFail($id);
+        if ($permissao->perfis->count() >= 1) {
+            return redirect()->route('permissao.index')->with('warning', "Está permissão está relacionada a um perfil, Não pode ser excluida.");
         } else {
-            return redirect()->route('permissao.index')->with('error', "Você não Tem Permissão de Excluir.");
-        }           
+            $permissao->delete();
+            return redirect()->route('permissao.index')->with('status', "Registro Excluido!");
+        }       
     }
 
     public function show($id)

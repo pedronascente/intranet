@@ -28,7 +28,6 @@
             </div>
             <div class="card-body table-responsive p-0">
                 @include('comissao.planilhas.portariaVirtual.colaborador.table')
-                <x-ui.modalDelete />
             </div>
         </div>
     </div>

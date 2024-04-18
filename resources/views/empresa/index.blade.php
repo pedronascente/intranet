@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('titulo', 'Empresa')
+@section('titulo', $titulo)
  
 @section('breadcrumb')
     <ol class="breadcrumb float-sm-right">
@@ -56,5 +56,4 @@
             </div>
         @endif
     </div>
-    <x-ui.modalDelete />
 @endsection

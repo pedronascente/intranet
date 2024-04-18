@@ -14,36 +14,28 @@ class CargoController extends Controller
      * @var Cargo
      */
     private $cargo;
-    protected $arrayListPermissoesDoModuloDaRota;//VALIDA AS PERMISSÕES DOS MODULOS
 
     public function __construct(Cargo $cargo)
     {
         $this->cargo = $cargo;
-        $this->middleware(function ($request, $next) {
-            $this->arrayListPermissoesDoModuloDaRota = session()->get('permissoesDoModuloDaRota');
-             return $next($request);
-        });
+        
     }
 
     public function index(Request $request )
-    {
-
-        $arrayListCargos = $this->cargo->getCargo($request->filtro);
+    {   
         return view('cargo.index', [
             'titulo' => "Listar Cargos",
-            'arrayListCargos' => $arrayListCargos,
-            'arrayListPermissoesDoModuloDaRota' => $this->arrayListPermissoesDoModuloDaRota,
+            'arrayListCargos' => $this->cargo->getCargo($request->filtro),
         ]);
     }
 
     public function create()
-    {
-        if (in_array('Criar', $this->arrayListPermissoesDoModuloDaRota)) {
-            $titulo = "Cadastrar Cargo";
-            return view('cargo.create', ['titulo' => $titulo]);
-        } else {
-            return redirect()->route('cargo.index')->with('error', "Você não Tem Permissão de Cadastro.");
+    {  
+        if(!$this->validarpermissao('Criar')){
+            return redirect()->back();
         }
+        $titulo = "Cadastrar Cargo";
+        return view('cargo.create', ['titulo' => $titulo]);  
     }
 
     public function store(Request $request)
@@ -60,16 +52,14 @@ class CargoController extends Controller
 
     public function edit($id)
     {
-        if (in_array('Editar', $this->arrayListPermissoesDoModuloDaRota)) {
-            $titulo = "Editar Cargo";
-            $cargo  = $this->cargo->findOrFail($id);
-            return view('cargo.edit', [
-                'titulo' => $titulo,
-                'cargo' => $cargo,
-            ]);
-        } else {
-            return redirect()->route('cargo.index')->with('error', "Você não Tem Permissão de Edição.");
+        if (!$this->validarpermissao('Edit')) {
+            return redirect()->back();
         }
+
+        return view('cargo.edit', [
+            'titulo' => "Editar Cargo",
+            'cargo' => $this->cargo->findOrFail($id),
+        ]);
     }
 
     public function update(Request $request, $id)
@@ -83,19 +73,18 @@ class CargoController extends Controller
 
     public function destroy($id)
     {
-        if (in_array('Excluir', $this->arrayListPermissoesDoModuloDaRota)) {
-            $cargo = $this->cargo->with('colaboradores')->findOrFail($id);
-            if ($cargo) {
-                if ($cargo->colaboradores->count() >= 1) {
-                    return redirect()->route('cargo.index')->with('warning', "Este cargo tem colaborador associado, por tanto não pode ser excluida.");
-                }
-                $cargo->delete();
-                return redirect()->route('cargo.index')->with('status', "Registro Excluido!");
-            } else {
-                return redirect()->route('cargo.index')->with('warning', "Registro não encontrado.");
+        if (!$this->validarpermissao('Excluir')) {
+            return redirect()->back();
+        }
+        $cargo = $this->cargo->with('colaboradores')->findOrFail($id);
+        if ($cargo) {
+            if ($cargo->colaboradores->count() >= 1) {
+                return redirect()->route('cargo.index')->with('warning', "Este cargo tem colaborador associado, por tanto não pode ser excluida.");
             }
+            $cargo->delete();
+            return redirect()->route('cargo.index')->with('status', "Registro Excluido!");
         } else {
-            return redirect()->route('cargo.index')->with('error', "Você não Tem Permissão de Excluir.");
+            return redirect()->route('cargo.index')->with('warning', "Registro não encontrado.");
         }
     }
 
@@ -103,4 +92,5 @@ class CargoController extends Controller
     {
         return redirect()->route('cargo.index');
     }
+    
 }

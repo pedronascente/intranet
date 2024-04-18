@@ -15,35 +15,26 @@ class BaseController extends Controller
      */
     private $base;
 
-    private $arrayListPermissoesDoModuloDaRota;
-   
     public function __construct(Base $base)
     {
         $this->base = $base;
-        $this->base->setPaginacao(10);
-        $this->middleware(function ($request, $next) {
-            $this->arrayListPermissoesDoModuloDaRota = session()->get('permissoesDoModuloDaRota');
-            return $next($request);
-        });
+        $this->base->setPaginacao(10);  
     }
 
     public function index()
     {
-        $titulo = "Listar Bases";
-        $arrayListBase = $this->base->getBaseOrderByIdDesc();
-        
         return view('base.index', [
-            'titulo' => $titulo,
-            'arrayListBase' => $arrayListBase,
-            'arrayListPermissoesDoModuloDaRota' => $this->arrayListPermissoesDoModuloDaRota,
+            "titulo" => "Listar Bases",
+            "arrayListBase" => $this->base->getBaseOrderByIdDesc(),
         ]);
     }
 
     public function create()
     {
-        $this->ValidarPermissoesDoModuloDaRota('Criar');
-        $titulo = "Cadastrar Base";
-        return view('base.create', ['titulo' => $titulo]);
+        if (!$this->validarpermissao('Criar')) {
+            return redirect()->back();
+        }
+        return view('base.create', ['titulo' => "Cadastrar Base"]);
     }
 
     public function store(Request $request)
@@ -55,12 +46,12 @@ class BaseController extends Controller
 
     public function edit($id)
     {
-        $this->ValidarPermissoesDoModuloDaRota('Editar');
-        $Base = $this->base->findOrFail($id);
-        $titulo = 'Editar Base';
+        if (!$this->validarpermissao('Editar')) {
+            return redirect()->back();
+        }
         return view('base.edit', [
-            'titulo' => $titulo,
-            'base' => $Base
+            'titulo' => "Editar Base",
+            'base' => $this->base->findOrFail($id)
         ]);
     }
 
@@ -75,15 +66,21 @@ class BaseController extends Controller
 
     public function destroy($id)
     {
-        $this->ValidarPermissoesDoModuloDaRota('Excluir');
+        if (!$this->validarpermissao('Excluir')) {
+            return redirect()->back();
+        }
         $base = $this->base->with('colaboradores')->findOrFail($id);
-        if ($base) {
-            if ($base->colaboradores->count() >= 1) {
+        if ($base) 
+        {
+            if ($base->colaboradores->count() >= 1) 
+            {
                 return redirect()->route('base.index')->with('warning', "Esta Base está sendo utilizada, por tanto não pode ser excluida.");
             }
             $base->delete();
             return redirect()->route('base.index')->with('status', "Registro Excluido!");
-        } else {
+        } 
+        else 
+        {
             return redirect()->route('base.index')->with('warning', "Registro não encontrado.");
         }
     }
@@ -91,27 +88,5 @@ class BaseController extends Controller
     public function show($id)
     {
         return redirect()->route('base.index');
-    }
-
-    private function ValidarPermissoesDoModuloDaRota($permissao){
-
-        switch ($permissao) {
-            case 'Criar':
-                if (!in_array('Criar', $this->arrayListPermissoesDoModuloDaRota)) {
-                    return redirect()->route('base.index')->with('error', "Você não tem permissão de cadastro.");
-                }
-            break;
-            case 'Editar':
-                if (!in_array('Editar', $this->arrayListPermissoesDoModuloDaRota)) {
-                    return redirect()->route('base.index')->with('error', "Você não tem permissão de edição.");
-                }
-            break;
-            case 'Excluir':
-                if (!in_array('Excluir', $this->arrayListPermissoesDoModuloDaRota)) {
-                    return redirect()->route('base.index')->with('error', "Você não tem permissão de excluir.");
-                }
-            break;     
-        }
-        return true;
     }
 } 

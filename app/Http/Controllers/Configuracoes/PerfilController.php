@@ -15,42 +15,30 @@ use App\Http\Controllers\Controller;
 class PerfilController extends Controller
 {
     private $perfil;
-    private $arrayListPermissoesDoModuloDaRota;
     
     public function __construct(Perfil $perfil)
     {
         $this->perfil = $perfil;
-        $this->middleware(function ($request, $next) {
-            $this->arrayListPermissoesDoModuloDaRota = session()->get('permissoesDoModuloDaRota');
-            return $next($request);
-        });
     }
 
     public function index()
     {
-        $titulo = 'Perfil';
-        $arrayListPerfil = $this->perfil->orderBy('id', 'desc')->paginate(10);
         return view('perfil.index', [
-            'titulo' => $titulo,
-            'arrayListPerfil' => $arrayListPerfil,
-            'arrayListPermissoesDoModuloDaRota' => $this->arrayListPermissoesDoModuloDaRota,
+            "titulo" => 'Perfil',
+            "arrayListPerfil" => $this->perfil->orderBy('id', 'desc')->paginate(10),
         ]);
     }
 
     public function create()
     {
-        if (in_array('Criar', $this->arrayListPermissoesDoModuloDaRota)) {
-            $titulo =  "Cadastrar Perfil";
-            $ModuloCategoria = ModuloCategoria::with('modulos')->get();
-            $Permissao = Permissao::all();
-            return view('perfil.create', [
-                'titulo' => $titulo,
-                'listarCategoriasEseusModulos' => $ModuloCategoria,
-                'listarPermissoes' => $Permissao
-            ]);
-        } else {
-            return redirect()->route('perfil.index')->with('error', "Você não Tem Permissão de Cadastro.");
-        }         
+        if (!$this->validarpermissao('Criar')) {
+            return redirect()->back();
+        }
+        return view('perfil.create', [
+            "titulo" => "Cadastrar Perfil",
+            "listarCategoriasEseusModulos" => ModuloCategoria::with('modulos')->get(),
+            "listarPermissoes" => Permissao::all()
+        ]);      
     }
 
     public function store(Request $request)
@@ -92,15 +80,9 @@ class PerfilController extends Controller
 
     public function edit($id)
     {
-        if (!in_array('Editar', $this->arrayListPermissoesDoModuloDaRota)) {
-            return redirect()->route('perfil.index')->with('error', "Você não Tem Permissão de Edição.");
+        if (!$this->validarpermissao('Editar')) {
+            return redirect()->back();
         }
-
-        /*
-        if ($id == 1) {
-            return redirect()->route('perfil.index')->with('warning', "Este perfil é do administrador do sistema, portanto não pode ser editado.");
-        }
-        */
         //1 Definir titulo da pagina.
         $titulo = "Editar Perfil";
         $perfil = Perfil::with('modulos')->findOrFail($id);
@@ -141,8 +123,6 @@ class PerfilController extends Controller
 
     public function update(Request $request, $id)
     {
-
-       // dd($request->all(), $id);
         // Validar os dados da requisição
         $request->validate([
             'nome' => 'required|max:190',
@@ -172,17 +152,17 @@ class PerfilController extends Controller
 
     public function destroy($id)
     {
-        if (in_array('Excluir', $this->arrayListPermissoesDoModuloDaRota)) {
-            $perfil = $this->perfil->with('user')->findOrFail($id);
-            if ($perfil->user) {
-                return redirect()->route('perfil.index')->with('warning', "Este Perfil tem usuario(s) associado(s), por tanto não pode ser excluida.");
-            } else {
-                $perfil->delete();
-                return redirect()->route('perfil.index')->with('status', "Registro Excluido!");
-            }
+        if (!$this->validarpermissao('Excluir')) {
+            return redirect()->back();
+        }
+
+        $perfil = $this->perfil->with('user')->findOrFail($id);
+        if ($perfil->user) {
+            return redirect()->route('perfil.index')->with('warning', "Este Perfil tem usuario(s) associado(s), por tanto não pode ser excluida.");
         } else {
-            return redirect()->route('perfil.index')->with('error', "Você não Tem Permissão de Excluir.");
-        }       
+            $perfil->delete();
+            return redirect()->route('perfil.index')->with('status', "Registro Excluido!");
+        }   
     }
 
     private function validarRequisitos($request){
